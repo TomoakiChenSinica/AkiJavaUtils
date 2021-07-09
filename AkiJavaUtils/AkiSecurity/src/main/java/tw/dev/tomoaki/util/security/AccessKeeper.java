@@ -17,7 +17,7 @@ public class AccessKeeper {
     public enum Method {
         NoHead(1, "去頭", "編碼後去頭"),
         NoTail(2, "去尾", "編碼後去尾"),
-        NoHeadAndNoTail(3, "去頭去尾", "編碼後去頭去尾");
+        NoHeadAndNoTail(3, "去頭去尾", "編碼後去頭去尾"); 
 
         private Integer code;
         private String summary;
