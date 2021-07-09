@@ -10,6 +10,7 @@
         <module>AkiDateTime</module>
         <module>AkiDataValidator</module>
         <module>AkiStringUtils</module>
+        <module>AkiArticle</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
