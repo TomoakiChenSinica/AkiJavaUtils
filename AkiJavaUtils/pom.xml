@@ -12,6 +12,7 @@
         <module>AkiStringUtils</module>
         <module>AkiArticle</module>
         <module>AkiCast</module>
+        <module>AkiWeb</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
