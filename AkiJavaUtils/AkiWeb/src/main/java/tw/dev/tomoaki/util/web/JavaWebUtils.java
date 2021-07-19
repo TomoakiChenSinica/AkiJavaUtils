@@ -46,7 +46,6 @@ public class JavaWebUtils {
     
     public static void writeImageIO(HttpServletResponse response, String fileContentType, byte[] fileBin) throws IOException {
         //ImageIO 速度較慢，在 payara4.1 上測試，大約慢 2.8秒
-//        Long startMilli = System.currentTimeMillis();
         response.setContentType(fileContentType);
         OutputStream os = response.getOutputStream();
         BufferedImage bi = ImageIO.read(new ByteArrayInputStream(fileBin));
@@ -57,7 +56,6 @@ public class JavaWebUtils {
     }
 
     public static void temp2(HttpServletResponse response, String fileContentType, byte[] fileBin) throws IOException {
-//        Long startMilli = System.currentTimeMillis();
         response.setContentType(fileContentType);
         try (PrintWriter out = response.getWriter()) {
             String fileStr = new String(fileBin);
@@ -65,9 +63,6 @@ public class JavaWebUtils {
             out.flush();
             out.close();
         }
-//        Long endMilli = System.currentTimeMillis();
-//        Long passMilli = endMilli - startMilli;
-//        System.out.println("passMilli = " + passMilli);
     }
     
 //    丟 inputstream 進來的版本?
@@ -133,14 +128,10 @@ public class JavaWebUtils {
      */
     public static void downloadFile(HttpServletResponse response, InputStream downloadFileInputStream, String downloadedFileName, ServletContext context) throws UnsupportedEncodingException, IOException {
         ServletOutputStream fileWriter = response.getOutputStream();
-       //OutputStream fileWriter = response.getOutputStream();
-        //ServletContextcontext = getServletConfig().getServletContext();
         String mimeType = context.getMimeType(downloadedFileName);
         if (mimeType == null) {
             mimeType = "application/octet-stream";
         }
-//        System.out.println("mimeType = " + mimeType);
-//        System.out.println("[JavaWebUtils] doDownload() : mimeType = " + mimeType);
         response.setContentType(mimeType);   //這行是讓他變下載、而非跳轉頁面的開始
         //上述描述為之前試出來的結果，但看起來可能不是這樣....，可以確定的是，和以下的配合後，現在這樣寫會強制下載
         response.setContentLength((int) downloadFileInputStream.available());
