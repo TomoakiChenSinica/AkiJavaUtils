@@ -22,10 +22,14 @@ import java.util.Locale;
  * 原本是要像在家裡重寫 DateTimeProvider 那樣，整理分類重構程式。 <br>
  * 但看了一下新的 LocalDate、LocalTime、LocalDateTime，很多功能都自帶(比如plusDays.....) <br>
  * 有一些String 跟 Date轉換也直接更好用 (LocalDateTime.parse) <br>
- * https://www.baeldung.com/java-8-date-time-intro
- * https://stackoverflow.com/questions/19431234/converting-between-java-time-localdatetime-and-java-util-date
+ * https://www.baeldung.com/java-8-date-time-intro <br>
+ * https://stackoverflow.com/questions/19431234/converting-between-java-time-localdatetime-and-java-util-date <br>
  *
- * 所以這隻的方向改成
+ * 基本上Java8 原生的 LocalDateTime、LocalDate、LocalTime 已經很完善 <br>
+ * 這邊只是就個人需求稍微方便而已 <br>
+ *
+ * 預設的時間格式為 yyyy-MM-dd HH:mm:ss 。<br>
+ * 之後應該可以開放指定格式
  *
  */
 public class DateTimeUtil {
@@ -39,9 +43,8 @@ public class DateTimeUtil {
     private static final DateTimeFormatter DEFAULT_DATE_FORMMATTER = DateTimeUtil.Provider.obtainFormatter(DEFAULT_DATE_FORMAT);
     private static final DateTimeFormatter DEFAULT_TIME_FORMMATTER = DateTimeUtil.Provider.obtainFormatter(DEFAULT_TIME_FORMAT);
 
-    /*
-    基本上Java8 原生的 LocalDateTime、LocalDate、LocalTime 已經很完善 <br>
-    這邊只是就個人需求稍微方便而已
+    /**
+     *
      */
     public static class Provider {
 
@@ -50,6 +53,14 @@ public class DateTimeUtil {
             return formatter;
         }
 
+        /**
+         * 將比較舊的日期時間 java.util.Date 轉成 String。<br>
+         * 轉出來的日期時間格式為 yyyy-MM-dd HH:mm:ss <br>
+         *
+         * @param utilDateTime 日期時間資料，格式為 java.util.Date
+         * @return yyyy-MM-dd HH:mm:ss 這種時間格式的字串
+         *
+         */
         public static String parseDateTimeToString(java.util.Date utilDateTime) {
             String strDateTime = null;
             SimpleDateFormat timeFormat = new SimpleDateFormat(DEFAULT_DATE_TIME_FORMAT);
@@ -57,6 +68,14 @@ public class DateTimeUtil {
             return strDateTime;
         }
 
+        /**
+         * 將比較舊的日期時 ava.util.Date 轉成 String。<br>
+         * 轉出來的日期格式為 yyyy-MM-dd <br>
+         *
+         * @param utilDate 日期時間資料，格式為 java.util.Date
+         * @return yyyy-MM-dd 這種日期格式的字串
+         *
+         */
         public static String parseDateToString(java.util.Date utilDate) {
             String strDate = null;
             SimpleDateFormat timeFormat = new SimpleDateFormat(DEFAULT_DATE_FORMAT);
@@ -64,6 +83,14 @@ public class DateTimeUtil {
             return strDate;
         }
 
+        /**
+         * 將日期時間字串轉成日期時間資料(entity)，<br>
+         * 資料格式為 java.time.LocalDateTime <br>
+         * 
+         * @param strDateTime 日期時間字串。字串格式為 yyyy-MM-dd HH:mm:ss
+         * @return 日期時間資料，格式為 java.time.LocalDateTime
+         * 
+         */
         public static LocalDateTime parse2DateTime(String strDateTime) {
             return strDateTime == null ? null : LocalDateTime.parse(strDateTime, DEFAULT_DATE_TIME_FORMMATTER);
         }
@@ -149,7 +176,6 @@ public class DateTimeUtil {
         Date --> LocalDateTime反而StakOvertflow的似乎比較簡潔(嗎)
         不過 LocalDate反而又沒有相同的 method
          */
-
         /**
          *
          * [FIXME] 目前似乎有機率沒考慮到「GMT+8」
@@ -183,7 +209,7 @@ public class DateTimeUtil {
             LocalDate ld = utilDate == null ? null : utilDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             return ld;
         }
-        
+
         public static java.sql.Date covert2SqlDate(Date utilDate) {
             java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
             return sqlDate;
@@ -194,23 +220,18 @@ public class DateTimeUtil {
     public static class Analyzer {
 
         public static Boolean inRange(Date utilTheDate, Date utilStartDate, Date utilEndDate) {
-            return (
-                    (utilStartDate == null || !utilTheDate.before(utilStartDate)) && 
-                    (utilEndDate == null ||  !utilTheDate.after(utilEndDate))
-             );
+            return ((utilStartDate == null || !utilTheDate.before(utilStartDate))
+                    && (utilEndDate == null || !utilTheDate.after(utilEndDate)));
         }
 
         public static Boolean inRange(LocalDate theDate, LocalDate startDate, LocalDate endDate) {
-            return (
-                    (startDate == null || !theDate.isBefore(startDate)) && 
-                    (endDate == null || !theDate.isAfter(endDate))
-            );
+            return ((startDate == null || !theDate.isBefore(startDate))
+                    && (endDate == null || !theDate.isAfter(endDate)));
         }
-        
+
 //        public static Boolean isOverlap(Date utilStartDate1, Date utilEndDate1, Date utilStartDate2, Date utilEndDate2) {
 //            
 //        }
-
         public static Boolean inRange(LocalDateTime theDateTime, LocalDateTime startDateTime, LocalDateTime endDateTime) {
             return (!theDateTime.isBefore(startDateTime) && !theDateTime.isAfter(endDateTime));
             //不在開始時間之前、不在開始時間之後-->在時間區間之間            
