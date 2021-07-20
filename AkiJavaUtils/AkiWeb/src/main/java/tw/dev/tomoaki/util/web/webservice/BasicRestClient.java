@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tw.dev.tomoaki.util.web;
+package tw.dev.tomoaki.util.web.webservice;
 
 //import com.fasterxml.jackson.annotation.JsonInclude;
 //import com.fasterxml.jackson.core.JsonFactory;
@@ -61,13 +61,11 @@ public abstract class BasicRestClient {
     protected Response doGet(WebTarget target, MediaType[] acceptMediaTypes, String bearerToken, List<String> cookies) {
         Invocation.Builder builder = target.request().accept(acceptMediaTypes);
         if (bearerToken != null) {
-//            System.out.println("Authorization[Bearer " + bearerToken + "]");
             builder.header("Authorization", "Bearer " + bearerToken);
         }
 
         if (cookies != null) {
             for (String cookie : cookies) {
-//                System.out.println("Cookie[" + cookie + "]" );
                 builder.header("Cookie", cookie);
             }
         }
