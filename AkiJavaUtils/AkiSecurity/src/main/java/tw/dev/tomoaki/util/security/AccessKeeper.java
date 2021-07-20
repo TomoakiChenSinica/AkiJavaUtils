@@ -94,7 +94,6 @@ public class AccessKeeper {
             return keeper;
         }
     }
-    
 
     protected static String byte2Hex(byte b) {
         String[] hex = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"};
@@ -104,8 +103,8 @@ public class AccessKeeper {
             i += 256;
         }
         return hex[i / 16] + hex[i % 16];
-    }    
-   
+    }
+
     protected String obtainPasswordCutHead(String oriPassword) {
         String strongPassword = null;
         int cutLength = oriPassword.length() / 3;
@@ -120,7 +119,7 @@ public class AccessKeeper {
         int endIndex = oriPassword.length() - cutLength;
         strongPassword = oriPassword.substring(0, endIndex);
         return strongPassword;
-    }    
+    }
 
     protected String createEncodedPassowrd(String... inputs) {
         String thePassword = null;
@@ -139,21 +138,43 @@ public class AccessKeeper {
         //System.out.println("buffer and string : " + sb + "  " + thePassword);
         return thePassword;
     }
-    
+
     protected Boolean isPasswordMatch(String userAccessPassword, String correctPassword) {
         return userAccessPassword != null && userAccessPassword.equals(correctPassword);
     }
-    
 
+    /**
+     * 根據使用者輸入產生 password
+     *
+     * @param inputs 使用者輸入，可以是無數個字串(String)
+     * @return 密碼，編碼之後再裁切而成
+     *
+     */
     public String createPassword(String... inputs) {
         return this.createPassword(Method.NoHeadAndNoTail.getCode(), inputs);
     }
 
+    /**
+     * 根據使用者輸入產生 password
+     *
+     * @param methodCode 編碼後，形成密碼前的裁切方式代碼
+     * @param inputs 使用者輸入，可以是無數個字串(String)
+     * @return 密碼，編碼之後再裁切而成
+     *
+     */
     public String createPassword(Integer methodCode, String... inputs) {
         Method designatedMethod = Method.codeOf(methodCode);
         return this.createPassword(designatedMethod, inputs);
     }
 
+    /**
+     * 根據使用者輸入產生 password
+     *
+     * @param designatedMethod 編碼後，形成密碼前的裁切方式
+     * @param inputs 使用者輸入，可以是無數個字串(String)
+     * @return 密碼，編碼之後再裁切而成
+     *
+     */
     public String createPassword(Method designatedMethod, String... inputs) {
         String strongPassword = null;
         String oriPassword = createEncodedPassowrd(inputs);
@@ -175,34 +196,48 @@ public class AccessKeeper {
 
     }
 
-
-
+    /**
+     * 使用者的密碼是由使用者的輸入資料產生。<br>
+     * 確認使用者使用的密碼，是否與輸入的資料相符。 <br>
+     *
+     * @param userAccessPassword 使用者的密碼
+     * @param inputs 使用者的輸入資料
+     * @return 使用者的密碼是否與輸入資料相符
+     */
     public Boolean checkPassword(String userAccessPassword, String... inputs) {
         Method defaultMethod = Method.NoHeadAndNoTail;
         return this.checkPassword(userAccessPassword, defaultMethod, inputs);
     }
 
-    public Boolean checkPassword(String userAccessPassworduserAccessPassword, Integer methodCode, String... inputs) {
+    /**
+     * 使用者的密碼是由使用者的輸入資料產生。<br>
+     * 確認使用者使用的密碼，是否與輸入的資料相符。 <br>
+     *
+     * @param userAccessPassword 使用者的密碼
+     * @param methodCode 編碼後，成為密碼前的裁切方式
+     * @param inputs 使用者的輸入
+     * @return 使用者的密碼是否與輸入資料相符
+     */
+    public Boolean checkPassword(String userAccessPassword, Integer methodCode, String... inputs) {
         Method method = Method.codeOf(methodCode);
-        return this.checkPassword(userAccessPassworduserAccessPassword, method, inputs);
+        return this.checkPassword(userAccessPassword, method, inputs);
     }
 
-//    public Boolean checkPassword(String id, String userAccessPassword, String strMethod) {
-//        if (strMethod != null && !"".equals(strMethod)) {
-//            Integer method = Integer.parseInt(strMethod);
-//            return this.checkPassword(id, userAccessPassword, method);
-//        } else {
-//            return false;
-//        }
-//    }
-    
+    /**
+     * 使用者的密碼是由使用者的輸入資料產生。<br>
+     * 確認使用者使用的密碼，是否與輸入的資料相符。 <br>
+     *
+     * @param userAccessPassword 使用者的密碼
+     * @param designatedMethod 編碼後，成為密碼前的裁切方式
+     * @param inputs 使用者的輸入
+     * @return 使用者的密碼是否與輸入資料相符
+     */
     public Boolean checkPassword(String userAccessPassword, Method designatedMethod, String... inputs) {
         String correctassword = this.createPassword(designatedMethod, inputs);
         return this.isPasswordMatch(userAccessPassword, correctassword);
     }
 
- 
- // Conflict With checkPassword(String userAccessPassword, String... inputs)
+    // Conflict With checkPassword(String userAccessPassword, String... inputs)
 //    public Boolean checkPassword(String userAccessPassword, String correctPassword) {
 //        return userAccessPassword != null && userAccessPassword.equals(correctPassword);
 //    }
