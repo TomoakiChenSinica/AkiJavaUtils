@@ -48,6 +48,13 @@ public abstract class AbstractDataMiner<T, Q extends DataMinerOptionQuery> {
         return this.trySearch(query);
     }   
     
+    protected Boolean isDataListNull() {
+        return this.oriDataList == null;
+    }
+    
+    protected Boolean isDataListEmpty() {
+        return this.oriDataList != null && this.oriDataList.isEmpty();
+    }
     
     protected abstract Q copyQuery(Q query);
     
