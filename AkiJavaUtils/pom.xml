@@ -16,6 +16,7 @@
         <module>AkiImageUtils</module>
         <module>AkiEntity</module>
         <module>AkiFramework</module>
+        <module>AkiRegularExpression</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -7,9 +7,7 @@ package tw.dev.tomoaki.util.datetime;
 
 import java.util.Calendar;
 import java.util.Date;
-//import tw.dev.tomoaki.util.DateTimeProvider;
 import java.util.List;
-//import tw.dev.tomoaki.util.wordanalysis.RegularExpression;
 
 /**
  *
@@ -17,17 +15,16 @@ import java.util.List;
  */
 public class DateTimeFormatParser {
 //
-//    private static final String YEAR_BLOCK_KEY = "\\[YYYY(\\+)?[0-9]*\\]";
-//    private static final String YEAR_KEY = "YYYY(\\+)?[0-9]*";
-//
-//    //貞緯擴充
-//    private static final String MONTH_BLOCK_KEY = "\\[MM(\\+)?(\\-)?[0-9]*\\]";
-//    private static final String MONTH_KEY = "MM(\\+)?(\\-)?[0-9]*";
-//
-//    private static final String DATE_BLOCK_KEY = "\\[DD(\\+)?(\\-)?[0-9]*\\]";
-//    private static final String DATE_KEY = "DD(\\+)?(\\-)?[0-9]*";
-//    //
-//
+    private static final String YEAR_BLOCK_KEY = "\\[YYYY(\\+)?(\\-)?[0-9]*\\]";
+    private static final String YEAR_KEY = "YYYY(\\+)?(\\-)?[0-9]*";
+
+    //貞緯擴充
+    private static final String MONTH_BLOCK_KEY = "\\[MM(\\+)?(\\-)?[0-9]*\\]";
+    private static final String MONTH_KEY = "MM(\\+)?(\\-)?[0-9]*";
+
+    private static final String DATE_BLOCK_KEY = "\\[DD(\\+)?(\\-)?[0-9]*\\]";
+    private static final String DATE_KEY = "DD(\\+)?(\\-)?[0-9]*";   
+
 //    public static Date parseFormat2Date(Integer annualYear, String format) {
 //        RegularExpression regex = new RegularExpression();
 //        List<String> findList = regex.doTestGroup(YEAR_KEY, format, RegularExpression.CHOICE_MATCHES);
@@ -37,7 +34,6 @@ public class DateTimeFormatParser {
 //            Boolean containPlus = word.contains("+");
 //            if (containPlus == true) {
 //                String[] infos = word.split("\\+"); //<-- contains 不管 regular expression ，但是 split 有
-//                //String yearPart = infos[0];
 //                String plusYearPart = infos[1];
 //                Integer plusYear = Integer.parseInt(plusYearPart);
 //                theYear = annualYear + plusYear;
