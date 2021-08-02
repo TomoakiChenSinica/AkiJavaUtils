@@ -25,7 +25,8 @@ import javax.ws.rs.client.ClientBuilder;
  * @author hcfeng
  */
 public class RestClientFactory {
-
+    
+    //我無法先生好 Client等Url進來，因為根據URL才知道要用哪一種Client
     public static Client configureClient(String url) {
 
         Client client = null; 

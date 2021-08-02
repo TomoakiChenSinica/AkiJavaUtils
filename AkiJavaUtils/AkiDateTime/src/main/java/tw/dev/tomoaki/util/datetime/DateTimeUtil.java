@@ -5,6 +5,7 @@
  */
 package tw.dev.tomoaki.util.datetime;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -213,6 +214,11 @@ public class DateTimeUtil {
         public static java.sql.Date covert2SqlDate(Date utilDate) {
             java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
             return sqlDate;
+        }
+        
+        public static java.sql.Timestamp convert2SqlTimestamp(Date utilDate) {
+            Timestamp ts=new Timestamp(utilDate.getTime());  
+            return ts;
         }
 
     }

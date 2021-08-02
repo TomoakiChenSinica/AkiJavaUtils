@@ -19,5 +19,13 @@
             <version>7.0</version>
             <scope>provided</scope>
         </dependency>        
+
+            <!-- Client 底層需要 org 底下的 ClientBuilder 來生成Client。平常狀況下payara好像自己有(X) ，是另外包含在 Jersey-Client 這個 lib的-->    
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>2.25.1</version>
+            <scope>provided</scope>
+        </dependency>              
     </dependencies>
 </project>

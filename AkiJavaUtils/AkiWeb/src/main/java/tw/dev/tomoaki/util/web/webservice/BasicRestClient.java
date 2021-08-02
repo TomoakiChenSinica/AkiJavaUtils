@@ -5,21 +5,7 @@
  */
 package tw.dev.tomoaki.util.web.webservice;
 
-//import com.fasterxml.jackson.annotation.JsonInclude;
-//import com.fasterxml.jackson.core.JsonFactory;
-//import com.fasterxml.jackson.core.JsonParser;
-//import com.fasterxml.jackson.core.JsonProcessingException;
-//import com.fasterxml.jackson.core.type.TypeReference;
-//import com.fasterxml.jackson.databind.DeserializationFeature;
-//import com.fasterxml.jackson.databind.ObjectMapper;
-//import com.fasterxml.jackson.databind.SerializationFeature;
-//import com.fasterxml.jackson.databind.type.CollectionType;
-//import com.fasterxml.jackson.databind.type.MapType;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
-import java.util.Map;
-//import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
