@@ -17,6 +17,7 @@
         <module>AkiEntity</module>
         <module>AkiFramework</module>
         <module>AkiRegularExpression</module>
+        <module>AkiMail</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
