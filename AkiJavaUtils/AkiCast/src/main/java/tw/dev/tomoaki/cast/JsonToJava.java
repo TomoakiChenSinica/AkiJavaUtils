@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -107,12 +108,16 @@ public class JsonToJava<T, E> {   //要加在這裡
         return JsonToJava.getJavaObject(strMapJson, objectType);
     }
 
+    public static <T> T getJavaComplexObject(String json, TypeReference<T> typeRef) throws IOException {
+        T javaObject;
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        javaObject = mapper.readValue(json, typeRef);
+        return (T) javaObject;
+    }
 }
 
-//
-//
-//
-//
+//<editor-fold defaultstate="collapsed" desc="以下是舊的 JsonToJava 格式">
 ///**
 // *
 // * @author tomoaki
@@ -159,3 +164,5 @@ public class JsonToJava<T, E> {   //要加在這裡
 ////   }
 ////  
 //}
+
+//</editor-fold>
