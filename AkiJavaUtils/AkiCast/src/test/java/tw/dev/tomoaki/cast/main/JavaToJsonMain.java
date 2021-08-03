@@ -8,7 +8,7 @@ package tw.dev.tomoaki.cast.main;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.Arrays;
 import java.util.List;
-import tw.dev.tomoaki.cast.JavaToJson;
+import tw.dev.tomoaki.util.cast.JavaToJson;
 
 /**
  *
