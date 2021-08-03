@@ -23,6 +23,7 @@ public class JavaToJsonMain {
         // TODO code application logic here
         List list1 = Arrays.asList(1, 2, 3);
         System.out.println(JavaToJson.getJsonString(list1));
+        
     }
     
 }
