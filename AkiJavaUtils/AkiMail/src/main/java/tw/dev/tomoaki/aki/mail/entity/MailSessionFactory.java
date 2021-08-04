@@ -13,8 +13,10 @@ import javax.mail.Session;
  * @author arche
  */
 public class MailSessionFactory {
-
+    
+    /*  */
     private static final String PROP_HOST = "mail.smtp.host";
+    private static final String PROP_PORT = "mail.smtp.port";
     
     public static Session create(String host) {
         Properties properties = System.getProperties();
@@ -22,4 +24,12 @@ public class MailSessionFactory {
         Session session = Session.getDefaultInstance(properties);
         return session;
     }
+    
+    public static Session create(String host, String port) {
+        Properties properties = System.getProperties();
+        properties.setProperty(PROP_HOST, host);
+        properties.setProperty(PROP_PORT, port);        
+        Session session = Session.getDefaultInstance(properties);
+        return session;
+    }    
 }

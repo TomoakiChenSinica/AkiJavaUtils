@@ -18,7 +18,34 @@ public class SMTPClient {
 
     private String hostName;
     private Integer port;
-    
+
+    private static final String DEFAULT_HOST = "localhost";
+
+    protected SMTPClient() {
+    }
+
+    public static class Factory {
+
+        public static SMTPClient create() {
+            SMTPClient client = new SMTPClient();
+            client.hostName = DEFAULT_HOST;
+            return client;
+        }
+        
+        public static SMTPClient create(String hostName) {
+            SMTPClient client = new SMTPClient();
+            client.hostName = hostName;
+            return client;
+        }        
+       
+        public static SMTPClient create(String hostName, Integer port) {
+            SMTPClient client = new SMTPClient();
+            client.hostName = hostName;
+            client.port = port;
+            return client;
+        }                
+    }
+
     public void sendPlainTextMessage(String fromAddr, String toAddr, String subject, String plainText) throws MessagingException {
         MimeMessage msg = MessageFactory.createPlainTextMsg(hostName, fromAddr, subject, plainText, toAddr);
         Transport.send(msg);
