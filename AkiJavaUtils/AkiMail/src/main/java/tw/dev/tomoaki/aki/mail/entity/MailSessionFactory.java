@@ -20,11 +20,10 @@ public class MailSessionFactory {
     
     public static Session create(String host) {
         Properties properties = new Properties();//System.getProperties();
-        System.out.println("properties : " + properties);
         properties.setProperty(PROP_HOST, host);
-        properties.put("mail.smtp.auth", "false");
-        properties.put("mail.smtp.starttls.enable", "true");        
-        properties.put("mail.smtp.port", "25");
+//        properties.put("mail.smtp.auth", "false");
+//        properties.put("mail.smtp.starttls.enable", "true");        
+//        properties.put("mail.smtp.port", "25");
         Session session = Session.getDefaultInstance(properties);
         return session;
     }
