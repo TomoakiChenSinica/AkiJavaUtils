@@ -16,7 +16,7 @@ import tw.dev.tomoaki.aki.mail.entity.MessageFactory;
  */
 public class SMTPClient {
 
-    private String hostName;
+    private String hostName = "localhost";
     private Integer port;
 
     private static final String DEFAULT_HOST = "localhost";
