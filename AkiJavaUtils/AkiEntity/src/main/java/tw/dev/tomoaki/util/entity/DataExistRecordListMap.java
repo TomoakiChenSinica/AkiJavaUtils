@@ -30,6 +30,14 @@ public class DataExistRecordListMap<T, R> {
         recordExistMap.add(recordMemo);
         theMap.put(key, recordExistMap);
     }
+    
+    public void addAll(T key, List<R> recordMemoList) {
+        if (recordMemoList != null) {
+            for (R record : recordMemoList) {
+                this.add(key, record);
+            }
+        }
+    }    
 
     public List<R> getRecords(T key) {
         DataExistMap<R> recordExistMap = this.theMap.get(key);

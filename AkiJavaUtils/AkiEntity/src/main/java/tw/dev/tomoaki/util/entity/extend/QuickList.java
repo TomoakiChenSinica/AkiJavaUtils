@@ -48,7 +48,7 @@ public class QuickList<T extends Object> implements List<T> {
 
     @Override
     public Object[] toArray() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.dataExistMap.existList().toArray();
     }
 
     @Override
@@ -114,7 +114,7 @@ public class QuickList<T extends Object> implements List<T> {
 
     @Override
     public T get(int i) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.dataExistMap.existList().get(i);
     }
 
     @Override
@@ -144,12 +144,12 @@ public class QuickList<T extends Object> implements List<T> {
 
     @Override
     public ListIterator<T> listIterator() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.dataExistMap.existList().listIterator();
     }
 
     @Override
     public ListIterator<T> listIterator(int i) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.dataExistMap.existList().listIterator(i);
     }
 
     @Override
@@ -157,4 +157,19 @@ public class QuickList<T extends Object> implements List<T> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public String toString() {
+        String result = "[";
+        Integer counter = 0;
+        List<T> entityList = this.dataExistMap.existList();
+        for(T entity : entityList) {
+            counter++;
+            if(counter >= 2) {
+                result += ", ";
+            }
+            result += entity;
+        }
+        result += "]";
+        return result;
+    }
 }
