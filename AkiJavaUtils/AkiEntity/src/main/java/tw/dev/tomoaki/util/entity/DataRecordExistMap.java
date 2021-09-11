@@ -5,7 +5,6 @@
  */
 package tw.dev.tomoaki.util.entity;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +16,7 @@ import java.util.Set;
  * 此entity 是用來記錄某個物質/資料(對不起我想不到用甚麼詞) T 出現過幾次，及每次出現的詳細狀況R， <br>
  * 與DataExistRecordMap 不同的是，此entity 會檢查出現的狀況R是否重複 <br>
  */
-public class DataExistRecordListMap<T, R> {
+public class DataRecordExistMap<T, R> {
     //拉出
     private Map<T, DataExistMap<R>> theMap = new HashMap();
 

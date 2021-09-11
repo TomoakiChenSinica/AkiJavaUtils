@@ -15,7 +15,7 @@ import java.util.Set;
  *
  * @author tomoaki
  */
-public class DataExistRecordMap<T, R> {
+public class DataRecordMap<T, R> {
     //拉出
     private Map<T, List<R>> theMap = new HashMap();
     
