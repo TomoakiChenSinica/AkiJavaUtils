@@ -69,15 +69,6 @@ public class JsonToJava<T, E> {   //要加在這裡
         return javaObject;
     }
 
-    /*
-   public Object getJavObject(JsonParser jp,Class<T> )
-   {
-        
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        Object javaObject = mapper.readValue(jp, objectType);        
-        return javaObject;
-   }*/
     /**
      * type1 to get list object with jackson
      *
@@ -96,13 +87,6 @@ public class JsonToJava<T, E> {   //要加在這裡
         return javaListObject;
     }
 
-//   public static <T>T convertMapToObject(Map jsonMap, Class<T> objectType) {
-//        T javaObject;
-//        ObjectMapper mapper = new ObjectMapper();
-//        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-//        javaObject = mapper.convertValue(jsonMap, objectType);
-//        return (T)javaObject; 
-//   }   
     public static <T> T convertMapToObject(Map jsonMap, Class<T> objectType) throws JsonProcessingException, IOException {
         String strMapJson = JavaToJson.getJsonString(jsonMap);
         return JsonToJava.getJavaObject(strMapJson, objectType);
@@ -115,6 +99,14 @@ public class JsonToJava<T, E> {   //要加在這裡
         javaObject = mapper.readValue(json, typeRef);
         return (T) javaObject;
     }
+    
+    
+    //https://kucw.github.io/blog/2020/6/java-jackson/
+//    public static JavaType obtainType() {
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        
+//        
+//    }
 }
 
 //<editor-fold defaultstate="collapsed" desc="以下是舊的 JsonToJava 格式">
