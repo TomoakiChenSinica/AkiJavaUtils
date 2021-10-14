@@ -170,6 +170,25 @@ public class DateTimeUtil {
 
     public static class Converter {
 
+        public static LocalDateTime convert2DateTime(Date utilDateTime) {
+            LocalDateTime ldt = utilDateTime == null ? null : LocalDateTime.ofInstant(utilDateTime.toInstant(), ZoneId.systemDefault());
+            return ldt;
+        }
+        
+        public static LocalDateTime convert2DateTime(Timestamp timeStamp) {
+            return timeStamp == null ? null : timeStamp.toLocalDateTime();
+        }
+
+        public static LocalDate convert2Date(Date utilDate) {
+            LocalDate ld = utilDate == null ? null : utilDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            return ld;
+        }        
+        
+        public static LocalDate convert2Date(Timestamp timeStamp) {
+            return timeStamp == null ? null : timeStamp.toLocalDateTime().toLocalDate();
+        }
+        
+        
         /*
           https://www.baeldung.com/java-date-to-localdate-and-localdatetime 
         不過這邊應用在 LocalDateTime --> Date。
@@ -187,10 +206,12 @@ public class DateTimeUtil {
         public static Date convert(LocalDateTime localDateTime) {
             return localDateTime == null ? null : Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
         }
+        //以上這個可以改成 convert2UtilDateTime
 
         public static Date convert(LocalDate localDate) {
             return localDate == null ? null : java.sql.Date.valueOf(localDate);
         }
+        //以上這個可以改成 convert2UtilDate
 
         /**
          * 詳細解說：<br>
@@ -201,25 +222,25 @@ public class DateTimeUtil {
          * @return 將丟入的 java.util.Date轉成新的日期格式(java.time.LocalDateTime)。
          *
          */
-        public static LocalDateTime convert2DateTime(Date utilDateTime) {
-            LocalDateTime ldt = utilDateTime == null ? null : LocalDateTime.ofInstant(utilDateTime.toInstant(), ZoneId.systemDefault());
-            return ldt;
-        }
 
-        public static LocalDate convert2Date(Date utilDate) {
-            LocalDate ld = utilDate == null ? null : utilDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            return ld;
-        }
 
         public static java.sql.Date covert2SqlDate(Date utilDate) {
-            java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+            java.sql.Date sqlDate = utilDate == null ? null : new java.sql.Date(utilDate.getTime());
             return sqlDate;
         }
         
         public static java.sql.Timestamp convert2SqlTimestamp(Date utilDate) {
-            Timestamp ts=new Timestamp(utilDate.getTime());  
+            Timestamp ts= utilDate == null ? null : new Timestamp(utilDate.getTime());  
             return ts;
         }
+        
+        public static java.sql.Timestamp convert2SqlTimestamp(LocalDate date) {
+            return date == null ? null : Timestamp.valueOf(date.atStartOfDay());
+        }
+        
+        public static java.sql.Timestamp convert2SqlTimestamp(LocalDateTime dateTime) {
+            return dateTime == null ? null : Timestamp.valueOf(dateTime);
+        }        
 
     }
 
