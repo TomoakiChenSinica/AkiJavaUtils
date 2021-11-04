@@ -25,15 +25,10 @@
     </properties>
     <distributionManagement>
         <repository>
-            <id>tw.dev.tomoaki</id>
-            <name>releases</name>
-            <url>https://github.com/TomoakiChenSinica/AkiJavaUtils</url>
+            <id> maven-central-https</id>  
+            <name> Maven Central Https</name>  
+            <url> https://repo.maven.apache.org/maven2/</url>  
             <uniqueVersion>true</uniqueVersion>
         </repository>
-        <snapshotRepository>
-            <id>tw.dev.tomoaki</id>
-            <name>snapshots</name>
-            <url>https://github.com/TomoakiChenSinica/AkiJavaUtils</url>
-        </snapshotRepository>
     </distributionManagement> 
 </project>
