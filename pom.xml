@@ -23,4 +23,17 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+    <distributionManagement>
+        <repository>
+            <id>tw.dev.tomoaki</id>
+            <name>releases</name>
+            <url>https://github.com/TomoakiChenSinica/AkiJavaUtils</url>
+            <uniqueVersion>true</uniqueVersion>
+        </repository>
+        <snapshotRepository>
+            <id>tw.dev.tomoaki</id>
+            <name>snapshots</name>
+            <url>https://github.com/TomoakiChenSinica/AkiJavaUtils</url>
+        </snapshotRepository>
+    </distributionManagement> 
 </project>
