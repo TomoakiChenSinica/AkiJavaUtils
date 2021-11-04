@@ -25,9 +25,12 @@
     </properties>
     <distributionManagement>
         <repository>
-            <id> maven-central-https</id>  
+            <!--            <id> maven-central-https</id>  
             <name> Maven Central Https</name>  
-            <url> https://repo.maven.apache.org/maven2/</url>  
+            <url> https://repo.maven.apache.org/maven2/</url>  -->
+            <id>corp1</id>
+            <name>Corporate Repository</name>
+            <url>scp://repo/maven2</url>            
             <uniqueVersion>false</uniqueVersion>
         </repository>
     </distributionManagement> 
