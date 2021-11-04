@@ -28,7 +28,7 @@
             <id> maven-central-https</id>  
             <name> Maven Central Https</name>  
             <url> https://repo.maven.apache.org/maven2/</url>  
-            <uniqueVersion>true</uniqueVersion>
+            <uniqueVersion>false</uniqueVersion>
         </repository>
     </distributionManagement> 
 </project>
