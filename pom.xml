@@ -32,6 +32,7 @@
             <name>Corporate Repository</name>
             <url>scp://repo/maven2</url>            
             <uniqueVersion>false</uniqueVersion>
+      <layout>default</layout>            
         </repository>
     </distributionManagement> 
 </project>
