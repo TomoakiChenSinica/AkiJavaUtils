@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>tw.dev.tomoaki</groupId>
-        <artifactId>AkiJavaUtils</artifactId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
+    <groupId>tw.dev.tomoaki</groupId>
     <artifactId>AkiWeb</artifactId>
+    <version>1.0-SNAPSHOT</version>    
     <packaging>jar</packaging>
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -20,7 +17,7 @@
             <scope>provided</scope>
         </dependency>        
 
-            <!-- Client 底層需要 org 底下的 ClientBuilder 來生成Client。平常狀況下payara好像自己有(X) ，是另外包含在 Jersey-Client 這個 lib的-->    
+        <!-- Client 底層需要 org 底下的 ClientBuilder 來生成Client。平常狀況下payara好像自己有(X) ，是另外包含在 Jersey-Client 這個 lib的-->    
         <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-client</artifactId>
