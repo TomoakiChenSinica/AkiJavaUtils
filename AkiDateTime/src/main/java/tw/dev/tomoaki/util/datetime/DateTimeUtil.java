@@ -108,6 +108,11 @@ public class DateTimeUtil {
         public static LocalTime parse2Time(String strTime) {
             return strTime == null ? null : LocalTime.parse(strTime, DEFAULT_TIME_FORMMATTER);
         }
+        
+        public static LocalTime parse2Time(String strTime, String timeFormat) {
+            DateTimeFormatter formatter = Provider.obtainFormatter(timeFormat);            
+            return strTime == null ? null : LocalTime.parse(strTime, formatter);            
+        }
 
         public static LocalDate obtainDayOfWeek(LocalDate theDate, Integer dayOfWeek) {
             //要檢查 dayOfWeek 1 ~ 7
