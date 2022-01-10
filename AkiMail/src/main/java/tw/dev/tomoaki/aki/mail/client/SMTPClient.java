@@ -47,7 +47,7 @@ public class SMTPClient {
     }
 
     public void sendPlainTextMessage(String fromAddr, String toAddr, String subject, String plainText) throws MessagingException {
-        MimeMessage msg = MessageFactory.createPlainTextMsg(hostName, fromAddr, subject, plainText, toAddr);
+        MimeMessage msg = MessageFactory.createPlainTextMsg(hostName, fromAddr, toAddr, subject, plainText);
         Transport.send(msg);
     }
 
