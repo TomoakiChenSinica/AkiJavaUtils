@@ -7,6 +7,7 @@ package tw.dev.tomoaki.util.entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -23,12 +24,10 @@ public class DataExistMap<T> implements Serializable{
     
     public DataExistMap(){
     }
-    
-    //new
+       
     public DataExistMap(DataExistMap<T> sourceDataExistMap){
         this.dataExistMap = new HashMap(sourceDataExistMap.getDataExistMap());
-    }
-    //
+    }   
     
     public DataExistMap(Collection<T> dataList){
         if(dataList!= null){
@@ -37,6 +36,15 @@ public class DataExistMap<T> implements Serializable{
             }
         }
     }
+    
+    public static class Factory {
+        public static <T>DataExistMap create(T... datas) {
+            List<T> dataList = Arrays.asList(datas);
+            DataExistMap<T> dataMap = new DataExistMap(dataList);            
+            return dataMap;
+        }
+    }
+    
     
     public void useLinkedMap(){
         this.dataExistMap = new LinkedHashMap();
