@@ -12,3 +12,4 @@
 /AkiJavaUtils/AkiRegularExpression/target/
 /AkiJavaUtils/AkiMail/target/
 AkiJavaUtils/AkiMail/nb-configuration.xml
+*.class
