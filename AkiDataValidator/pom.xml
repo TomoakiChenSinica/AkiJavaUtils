@@ -11,5 +11,6 @@
     <modules>
         <module>AkiTaiwanDataValidtor</module>
         <module>AkiCommonDataValidator</module>
+        <module>AkiIPValidator</module>
     </modules>
 </project>

@@ -15,19 +15,19 @@ import tw.dev.tomoaki.util.entity.DataExistMap;
  */
 public class PairDataDiff<T> {
 
-    private DataExistMap<T> standardGroup;
-    private DataExistMap<T> compareGroup;
+    protected DataExistMap<T> standardGroup;
+    protected DataExistMap<T> compareGroup;
     
     
     /**
      * compare 組相對於 standard 組多了哪些資料 
      */
-    private List<T> moreDataList;
+    protected List<T> moreDataList;
     
     /**
      * compare 組相對於 standard 組少了哪些資料 
      */
-    private List<T> lessDataList;
+    protected List<T> lessDataList;
 
     protected PairDataDiff() {
         this.moreDataList = new ArrayList();

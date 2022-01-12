@@ -22,12 +22,14 @@ import java.util.Map;
 public class DataExistMap<T> implements Serializable{
     private Map<T, Boolean> dataExistMap = new HashMap();
     
+    
+//<editor-fold defaultstate="collapsed" desc="以下是constructor 相關">
     public DataExistMap(){
     }
-       
+        
     public DataExistMap(DataExistMap<T> sourceDataExistMap){
         this.dataExistMap = new HashMap(sourceDataExistMap.getDataExistMap());
-    }   
+    }    
     
     public DataExistMap(Collection<T> dataList){
         if(dataList!= null){
@@ -36,20 +38,18 @@ public class DataExistMap<T> implements Serializable{
             }
         }
     }
-    
-    public static class Factory {
-        public static <T>DataExistMap create(T... datas) {
-            List<T> dataList = Arrays.asList(datas);
-            DataExistMap<T> dataMap = new DataExistMap(dataList);            
-            return dataMap;
-        }
-    }
-    
-    
+        
     public void useLinkedMap(){
         this.dataExistMap = new LinkedHashMap();
-    }
+    }    
+//</editor-fold>
     
+    public static class Factory {
+        public static <T>DataExistMap create(T... datas) {            
+            DataExistMap<T> dataExistMap = new DataExistMap(Arrays.asList(datas));
+            return dataExistMap;
+        }
+    }    
     
     public void add(T data){
         dataExistMap.put(data, Boolean.TRUE);
