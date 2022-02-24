@@ -11,6 +11,7 @@ import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import tw.dev.tomoaki.util.web.webservice.exception.WebServiceResponseException;
 //import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 
 /**
@@ -45,17 +46,22 @@ public abstract class BasicRestClient {
     }
 
     protected Response doGet(WebTarget target, MediaType[] acceptMediaTypes, String bearerToken, List<String> cookies) {
-        Invocation.Builder builder = target.request().accept(acceptMediaTypes);
-        if (bearerToken != null) {
-            builder.header("Authorization", "Bearer " + bearerToken);
-        }
-
-        if (cookies != null) {
-            for (String cookie : cookies) {
-                builder.header("Cookie", cookie);
+        try {
+            Invocation.Builder builder = target.request().accept(acceptMediaTypes);
+            if (bearerToken != null) {
+                builder.header("Authorization", "Bearer " + bearerToken);
             }
+
+            if (cookies != null) {
+                for (String cookie : cookies) {
+                    builder.header("Cookie", cookie);
+                }
+            }
+            return builder.get();
+        } catch(Exception ex) {
+            WebServiceResponseException resultEx = WebServiceResponseException.Factory.create(target);
+            throw resultEx;
         }
-        return builder.get();
     }
     //</editor-fold>
 
@@ -84,18 +90,22 @@ public abstract class BasicRestClient {
     }
 
     protected <T> Response doPut(WebTarget target, MediaType[] acceptMediaTypes, MediaType requestMediaType, String bearerToken, List<String> cookies, T entity) {
-        Invocation.Builder builder = target.request().accept(acceptMediaTypes);
-        if (bearerToken != null) {
-            builder.header("Authorization", "Bearer " + bearerToken);
-        }
-
-        if (cookies != null) {
-            for (String cookie : cookies) {
-//                System.out.println("Cookie[" + cookie + "]" );
-                builder.header("Cookie", cookie);
+        try {
+            Invocation.Builder builder = target.request().accept(acceptMediaTypes);
+            if (bearerToken != null) {
+                builder.header("Authorization", "Bearer " + bearerToken);
             }
+
+            if (cookies != null) {
+                for (String cookie : cookies) {
+                    builder.header("Cookie", cookie);
+                }
+            }
+            return builder.put(Entity.entity(entity, requestMediaType));
+        } catch (Exception ex) {
+            WebServiceResponseException resultEx = WebServiceResponseException.Factory.create(target);
+            throw resultEx;
         }
-        return builder.put(Entity.entity(entity, requestMediaType));
     }
     //</editor-fold>        
 
@@ -124,18 +134,23 @@ public abstract class BasicRestClient {
     }
 
     protected <T> Response doPost(WebTarget target, MediaType[] acceptMediaTypes, MediaType requestMediaType, String bearerToken, List<String> cookies, T entity) {
-        Invocation.Builder builder = target.request().accept(acceptMediaTypes);
-        if (bearerToken != null) {
-            builder.header("Authorization", "Bearer " + bearerToken);
-        }
-
-        if (cookies != null) {
-            for (String cookie : cookies) {
-//                System.out.println("Cookie[" + cookie + "]" );
-                builder.header("Cookie", cookie);
+        try {
+            Invocation.Builder builder = target.request().accept(acceptMediaTypes);
+            if (bearerToken != null) {
+                builder.header("Authorization", "Bearer " + bearerToken);
             }
+
+            if (cookies != null) {
+                for (String cookie : cookies) {
+//                System.out.println("Cookie[" + cookie + "]" );
+                    builder.header("Cookie", cookie);
+                }
+            }
+            return builder.post(Entity.entity(entity, requestMediaType));
+        } catch (Exception ex) {
+            WebServiceResponseException resultEx = WebServiceResponseException.Factory.create(target);
+            throw resultEx;
         }
-        return builder.post(Entity.entity(entity, requestMediaType));
     }
     //</editor-fold>            
 
@@ -164,18 +179,22 @@ public abstract class BasicRestClient {
     }
 
     protected <T> Response doDelete(WebTarget target, MediaType[] acceptMediaTypes, MediaType requestMediaType, String bearerToken, List<String> cookies/*, T entity*/) {
-        Invocation.Builder builder = target.request().accept(acceptMediaTypes);
-        if (bearerToken != null) {
-            builder.header("Authorization", "Bearer " + bearerToken);
-        }
-
-        if (cookies != null) {
-            for (String cookie : cookies) {
-//                System.out.println("Cookie[" + cookie + "]" );
-                builder.header("Cookie", cookie);
+        try {
+            Invocation.Builder builder = target.request().accept(acceptMediaTypes);
+            if (bearerToken != null) {
+                builder.header("Authorization", "Bearer " + bearerToken);
             }
+
+            if (cookies != null) {
+                for (String cookie : cookies) {
+                    builder.header("Cookie", cookie);
+                }
+            }
+            return builder.delete();
+        } catch (Exception ex) {
+            WebServiceResponseException resultEx = WebServiceResponseException.Factory.create(target);
+            throw resultEx;
         }
-        return builder.delete();
     }
     //</editor-fold>         
 

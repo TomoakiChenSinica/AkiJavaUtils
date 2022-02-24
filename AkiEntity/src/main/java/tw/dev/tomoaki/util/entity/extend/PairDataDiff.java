@@ -36,6 +36,13 @@ public class PairDataDiff<T> {
 
     public static class Factory {
 
+        /**
+         * 比較 standard組 和  compare組 的不同
+         * 
+         * @param standardList standard組的資料清單
+         * @param compareList compare組的資料清單
+         * @return 差異資料
+         */
         public static <T> PairDataDiff create(List<T> standardList, List<T> compareList) { //function 的 要放前面?
             PairDataDiff diff = new PairDataDiff();
             diff.standardGroup = new DataExistMap(standardList);
@@ -73,10 +80,20 @@ public class PairDataDiff<T> {
         }
     }    
 
+    /**
+     * compare組(後面那組資料清單) 比 standard組(前面那組資料清單) 多了哪些資料
+     * 
+     * @return compare組 比 standard組 多了哪些資料
+     */
     public List<T> getMoreDataList() {
         return moreDataList;
     }
 
+    /**
+     * compare組(後面那組資料清單) 比 standard組(前面那組資料清單) 少了哪些資料
+     * 
+     * @return compare組 比 standard組 少了哪些資料
+     */    
     public List<T> getLessDataList() {
         return lessDataList;
     }

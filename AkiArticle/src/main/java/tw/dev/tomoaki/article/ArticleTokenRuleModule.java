@@ -10,5 +10,6 @@ package tw.dev.tomoaki.article;
  * @author tomoaki
  */
 public interface ArticleTokenRuleModule {
-    public void addRule(ArticleCreator creator);    
+
+    public void addRule(ArticleCreator creator);
 }

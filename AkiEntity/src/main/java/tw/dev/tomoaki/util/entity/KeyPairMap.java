@@ -97,5 +97,9 @@ public class KeyPairMap<Tkey1, Tkey2, Tvalue> {
     public void setInnerMap(Tkey1 key1, Map<Tkey2, Tvalue> innerMap) {
         theMap.put(key1, innerMap);
     }
+    
+    public Boolean isEmpty() {
+        return this.theMap.isEmpty();
+    }
 
 }

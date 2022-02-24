@@ -239,6 +239,6 @@ public class AccessKeeper {
 
     // Conflict With checkPassword(String userAccessPassword, String... inputs)
 //    public Boolean checkPassword(String userAccessPassword, String correctPassword) {
-//        return userAccessPassword != null && userAccessPassword.equals(correctPassword);
+//        return userAccessPassword != null && userAccessPassword.equals(correctPassword); 
 //    }
 }

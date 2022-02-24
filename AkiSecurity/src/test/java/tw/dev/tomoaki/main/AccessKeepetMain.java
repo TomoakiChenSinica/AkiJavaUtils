@@ -20,9 +20,10 @@ public class AccessKeepetMain {
     public static void main(String[] args) throws NoSuchAlgorithmException {
         // TODO code application logic here
         AccessKeeper keeper = AccessKeeper.Factory.create();
-        String password = keeper.createPassword("TomoakiTesing");
-        System.out.println(keeper.checkPassword(password, "TomoakiTesing"));
-        System.out.println(keeper.checkPassword(password, "TomoakiTesin"));
+        String password = keeper.createPassword("tomoaki.outside@gmail.com", "Netflix");
+        System.out.println(password);
+//        System.out.println(keeper.checkPassword(password, "TomoakiTesing"));
+//        System.out.println(keeper.checkPassword(password, "TomoakiTesin"));
 
     }
 
