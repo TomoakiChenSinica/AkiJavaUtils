@@ -33,6 +33,7 @@ public abstract class BasicAuthFilter implements Filter {
 
     private static final boolean debug = false;
     private FilterConfig filterConfig = null;
+    
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -100,13 +101,17 @@ public abstract class BasicAuthFilter implements Filter {
 
             String oriUrl = this.findOriUrl(req, resp, session);
             if (oriUrl != null) {
+                System.out.println("PASS1");
                 session.removeAttribute(this.getSessionAttrOriUrl());
                 if (oriUrl.contains(this.getLoginPageUrl())) {
+                    System.out.println("PASS2");
                     resp.sendRedirect(this.getDefaultPageUrl());
                 } else {
+                    System.out.println("PASS3");
                     resp.sendRedirect(oriUrl);
                 }
             } else {
+                System.out.println("PASS4");
 //                resp.sendRedirect("/CardLogManagement/pages/cardLog/cardLogList.jsf");
             }
 
@@ -130,32 +135,33 @@ public abstract class BasicAuthFilter implements Filter {
         String oriUrl = req.getRequestURL().toString();
         Map<String, String[]> paramMap = req.getParameterMap();
         String oriUrlWithQueryParam = this.obtainUrlWithQueryParam(oriUrl, paramMap);
+        System.out.println("oriUrl = " + oriUrl + ", oriUrlWithQueryParam = " + oriUrlWithQueryParam);
         session.setAttribute(this.getSessionAttrOriUrl(), oriUrlWithQueryParam);
     }
-    
+
     private String obtainUrlWithQueryParam(String url, Map<String, String[]> queryParamMap) {
-        Map<String, String> flattenMap = null;
-        if(queryParamMap != null && queryParamMap.isEmpty() == false) {
-            flattenMap = new LinkedHashMap();
-            for(Entry<String, String[]> entry : queryParamMap.entrySet()) {
+        List<String> strParamPairList = null;
+        if (queryParamMap != null && queryParamMap.isEmpty() == false) {
+            strParamPairList = new ArrayList();
+            for (Entry<String, String[]> entry : queryParamMap.entrySet()) {
                 String key = entry.getKey();
                 String[] values = entry.getValue();
-                for(String value : values) {
-                    flattenMap.put(key, value);
+                for (String value : values) {
+                    String strParamPair = key + "=" + value;
+                    strParamPairList.add(strParamPair);
                 }
             }
         }
-        if(flattenMap != null) {
-            String queryParamPart = "?";
-            List<Entry<String, String>> paramEntryList= new ArrayList(flattenMap.entrySet());
-            Integer listSize = paramEntryList.size();
-            for(Integer index = 1 ; index <= listSize; index++) {
-                Entry<String, String> param = paramEntryList.get(index);
-                if(index >= 2 && !Objects.equals(index, listSize)) {
-                    String paramName = param.getKey();
-                    String paramValue = param.getValue();
-                    queryParamPart += paramName + "=" + paramValue;
+        if (strParamPairList != null && strParamPairList.isEmpty() == false) {
+            String queryParamPart = "?";            
+            Integer listSize = strParamPairList.size();
+            for (Integer count = 1; count <= listSize; count++) {
+                Integer index = count - 1;
+                String strParamPair = strParamPairList.get(index);
+                if (count >= 2) {
+                    queryParamPart += "&";
                 }
+                queryParamPart += strParamPair;
             }
             url += queryParamPart;
         }
