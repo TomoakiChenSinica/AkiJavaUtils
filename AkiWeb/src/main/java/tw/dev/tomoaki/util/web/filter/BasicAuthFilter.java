@@ -101,17 +101,13 @@ public abstract class BasicAuthFilter implements Filter {
 
             String oriUrl = this.findOriUrl(req, resp, session);
             if (oriUrl != null) {
-                System.out.println("PASS1");
                 session.removeAttribute(this.getSessionAttrOriUrl());
-                if (oriUrl.contains(this.getLoginPageUrl())) {
-                    System.out.println("PASS2");
+                if (oriUrl.contains(this.getLoginPageUrl()) && oriUrl.lastIndexOf("/") == (oriUrl.length() -1) )  {
                     resp.sendRedirect(this.getDefaultPageUrl());
                 } else {
-                    System.out.println("PASS3");
                     resp.sendRedirect(oriUrl);
                 }
             } else {
-                System.out.println("PASS4");
 //                resp.sendRedirect("/CardLogManagement/pages/cardLog/cardLogList.jsf");
             }
 
