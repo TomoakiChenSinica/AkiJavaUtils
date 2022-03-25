@@ -211,6 +211,7 @@ public class DateTimeUtil {
         public static Date convert(LocalDateTime localDateTime) {
             return localDateTime == null ? null : Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
         }
+        
         //以上這個可以改成 convert2UtilDateTime
 
         public static Date convert(LocalDate localDate) {

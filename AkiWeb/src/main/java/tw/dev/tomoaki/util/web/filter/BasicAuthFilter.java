@@ -131,7 +131,7 @@ public abstract class BasicAuthFilter implements Filter {
         String oriUrl = req.getRequestURL().toString();
         Map<String, String[]> paramMap = req.getParameterMap();
         String oriUrlWithQueryParam = this.obtainUrlWithQueryParam(oriUrl, paramMap);
-        System.out.println("oriUrl = " + oriUrl + ", oriUrlWithQueryParam = " + oriUrlWithQueryParam);
+//        System.out.println("oriUrl = " + oriUrl + ", oriUrlWithQueryParam = " + oriUrlWithQueryParam);
         session.setAttribute(this.getSessionAttrOriUrl(), oriUrlWithQueryParam);
     }
 

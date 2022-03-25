@@ -19,6 +19,7 @@
         <module>AkiMail</module>
         <module>AkiDateTime</module>
         <module>AkiGoogleCalendar</module>
+        <module>AkiException</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

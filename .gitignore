@@ -14,3 +14,4 @@
 /AkiGoogleCalendar/target/*
 *.class
 *.jar
+/AkiException/target/
