@@ -14,6 +14,8 @@ import java.util.Set;
 import tw.dev.tomoaki.article.entity.ArticleTokenOption;
 import tw.dev.tomoaki.article.helper.ArticleHelper;
 import tw.dev.tomoaki.article.module.BasicTokenModule;
+import tw.dev.tomoaki.article.module.intf.ArticleIndependentTokenRuleModule;
+import tw.dev.tomoaki.article.module.intf.ArticleTokenModule;
 //import tw.dev.tomoaki.util.DateTimeProvider;
 
 /**
@@ -23,7 +25,7 @@ import tw.dev.tomoaki.article.module.BasicTokenModule;
 public abstract class ArticleCreator {
 
     private Map<String, String> tokensReplaceMapper;
-    protected List<ArticleTokenRuleModule> moduleList;
+    protected List<ArticleTokenModule> moduleList;
 
     public ArticleCreator() {
         this.doVariableInit();
@@ -83,7 +85,7 @@ public abstract class ArticleCreator {
     public List<ArticleTokenOption> getTokenOptionList() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
         if(this.moduleList != null && this.moduleList.isEmpty() == false) {
             List<ArticleTokenOption> optionList = new ArrayList();
-            for(ArticleTokenRuleModule module : moduleList) {
+            for(ArticleTokenModule module : moduleList) {
                 List<ArticleTokenOption> partOptionList = ArticleHelper.obtainModuleTokenList(module);
                 optionList.addAll(partOptionList);
             }
@@ -92,7 +94,7 @@ public abstract class ArticleCreator {
         return null;
     }
     
-    public List<ArticleTokenRuleModule> getModuleList() {
+    public List<ArticleTokenModule> getModuleList() {
         return this.moduleList;
     }
 //</editor-fold>
@@ -100,6 +102,7 @@ public abstract class ArticleCreator {
     
     private void doVariableInit() {
         this.tokensReplaceMapper = new LinkedHashMap();
+        this.moduleList = new ArrayList();
     }
 
 //    private void doBaseReplaceRulesSetup() {

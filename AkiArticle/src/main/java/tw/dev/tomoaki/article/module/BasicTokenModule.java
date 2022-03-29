@@ -7,14 +7,14 @@ package tw.dev.tomoaki.article.module;
 
 import java.time.LocalDate;
 import tw.dev.tomoaki.article.ArticleCreator;
-import tw.dev.tomoaki.article.ArticleTokenRuleModule;
 import tw.dev.tomoaki.article.annotaion.ArticleToken;
+import tw.dev.tomoaki.article.module.intf.ArticleIndependentTokenRuleModule;
 
 /**
  *
  * @author Tomoaki Chen
  */
-public class BasicTokenModule implements ArticleTokenRuleModule {
+public class BasicTokenModule extends ArticleIndependentTokenRuleModule {
 
     @ArticleToken(summary = "當下的西元年份", description = "當下的西元年份，此為舊token，不建議使用")
     public final static String TOKEN_OLD_NOW_YEAAR = "${NowYear}";

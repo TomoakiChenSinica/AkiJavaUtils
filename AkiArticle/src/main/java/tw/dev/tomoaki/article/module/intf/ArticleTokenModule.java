@@ -3,14 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tw.dev.tomoaki.article;
+package tw.dev.tomoaki.article.module.intf;
 
 /**
  *
- * @author tomoaki
+ * @author Tomoaki Chen
  */
-public interface ArticleEntityDataTokenRuleModule<T> {
+public interface ArticleTokenModule {
     
-    public void addRule(ArticleCreator creator, T data);
-
 }
