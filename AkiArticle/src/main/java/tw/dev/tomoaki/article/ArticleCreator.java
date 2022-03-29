@@ -5,12 +5,12 @@
  */
 package tw.dev.tomoaki.article;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import tw.dev.tomoaki.article.module.BasicTokenModule;
 //import tw.dev.tomoaki.util.DateTimeProvider;
 
 /**
@@ -20,12 +20,7 @@ import java.util.Set;
 public abstract class ArticleCreator {
 
     private Map<String, String> tokensReplaceMapper;
-
-    public final static String TOKEN_OLD_NOW_YEAAR = "${NowYear}";
-    public final static String TOKEN_OLD_ROC_YEAR = "${rocYear}";
-
-    public final static String TOKEN_NOW_YEAR = "${Common.NowYear}";
-    public final static String TOKEN_NOW_ROC_YEAR = "${Common.NowRocYear}";
+    protected List<ArticleTokenRuleModule> moduleList;
 
     public ArticleCreator() {
         this.doVariableInit();
@@ -79,21 +74,31 @@ public abstract class ArticleCreator {
     public Map<String, String> getTokenMap() {
         return this.tokensReplaceMapper;
     }
+    
+    public List<ArticleTokenRuleModule> getModuleList() {
+        return this.moduleList;
+    }
 
     private void doVariableInit() {
         this.tokensReplaceMapper = new LinkedHashMap();
     }
 
-    private void doBaseReplaceRulesSetup() {
-        LocalDate today = LocalDate.now();
-        Integer thisYear = today.getYear();
-        Integer taiwanThisYear = thisYear - 1911;
-        this.addTokenReplaceRule(TOKEN_OLD_NOW_YEAAR, thisYear);
-        this.addTokenReplaceRule(TOKEN_OLD_ROC_YEAR, taiwanThisYear);
-        this.addTokenReplaceRule(TOKEN_NOW_YEAR, thisYear);
-        this.addTokenReplaceRule(TOKEN_NOW_ROC_YEAR, taiwanThisYear);
-    }
+//    private void doBaseReplaceRulesSetup() {
+//        LocalDate today = LocalDate.now();
+//        Integer thisYear = today.getYear();
+//        Integer taiwanThisYear = thisYear - 1911;
+//        this.addTokenReplaceRule(TOKEN_OLD_NOW_YEAAR, thisYear);
+//        this.addTokenReplaceRule(TOKEN_OLD_ROC_YEAR, taiwanThisYear);
+//        this.addTokenReplaceRule(TOKEN_NOW_YEAR, thisYear);
+//        this.addTokenReplaceRule(TOKEN_NOW_ROC_YEAR, taiwanThisYear);
+//    }
 
+    private void doBaseReplaceRulesSetup() {
+        BasicTokenModule basicTokenModule = new BasicTokenModule();
+        basicTokenModule.addRule(this);
+        this.moduleList.add(basicTokenModule);
+    }
+    
     private String replaceTokens(String oriText, Map<String, String> tokensMapper) {
         String newText = oriText;
         Set<Map.Entry<String, String>> tokensMapperEntrySet = tokensMapper.entrySet();
