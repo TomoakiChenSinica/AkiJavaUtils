@@ -5,11 +5,14 @@
  */
 package tw.dev.tomoaki.article;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import tw.dev.tomoaki.article.entity.ArticleTokenOption;
+import tw.dev.tomoaki.article.helper.ArticleHelper;
 import tw.dev.tomoaki.article.module.BasicTokenModule;
 //import tw.dev.tomoaki.util.DateTimeProvider;
 
@@ -59,6 +62,8 @@ public abstract class ArticleCreator {
         }
     }
 
+    
+//<editor-fold defaultstate="collapsed" desc="外部使用的">        
     public String getArticle(String oriText) {
         this.doCustomRulesSetup();
         String newText = this.replaceTokens(oriText, tokensReplaceMapper);
@@ -75,10 +80,24 @@ public abstract class ArticleCreator {
         return this.tokensReplaceMapper;
     }
     
+    public List<ArticleTokenOption> getTokenOptionList() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+        if(this.moduleList != null && this.moduleList.isEmpty() == false) {
+            List<ArticleTokenOption> optionList = new ArrayList();
+            for(ArticleTokenRuleModule module : moduleList) {
+                List<ArticleTokenOption> partOptionList = ArticleHelper.obtainModuleTokenList(module);
+                optionList.addAll(partOptionList);
+            }
+            return optionList;
+        }
+        return null;
+    }
+    
     public List<ArticleTokenRuleModule> getModuleList() {
         return this.moduleList;
     }
-
+//</editor-fold>
+    
+    
     private void doVariableInit() {
         this.tokensReplaceMapper = new LinkedHashMap();
     }
