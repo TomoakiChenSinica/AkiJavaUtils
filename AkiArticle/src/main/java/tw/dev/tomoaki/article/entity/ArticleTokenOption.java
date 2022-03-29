@@ -10,5 +10,33 @@ package tw.dev.tomoaki.article.entity;
  * @author Tomoaki Chen
  */
 public class ArticleTokenOption {
-    
+
+    private String token;
+    private String summary;
+    private String detail;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+
 }
