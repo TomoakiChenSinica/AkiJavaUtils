@@ -68,6 +68,11 @@ public class DateTimeUtil {
             strDateTime = timeFormat.format(utilDateTime);
             return strDateTime;
         }
+        
+        public static String parseDateTimeToString(LocalDateTime localDateTime) {
+            DateTimeFormatter formatter = DEFAULT_DATE_TIME_FORMMATTER;
+            return localDateTime.format(formatter);
+        }
 
         /**
          * 將比較舊的日期時 ava.util.Date 轉成 String。<br>
@@ -83,6 +88,11 @@ public class DateTimeUtil {
             strDate = timeFormat.format(utilDate);
             return strDate;
         }
+        
+        public static String parseDateToString(LocalDate localDate) {
+            return localDate.format(DEFAULT_DATE_FORMMATTER);
+        }
+        
 
         /**
          * 將日期時間字串轉成日期時間資料(entity)，<br>

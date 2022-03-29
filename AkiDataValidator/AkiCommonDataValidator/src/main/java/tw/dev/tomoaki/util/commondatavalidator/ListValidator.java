@@ -51,21 +51,25 @@ public class ListValidator {
     }
     
     public static <T> Boolean isDataEqual(List<T> list1, List<T> list2, Class<T> clazzType) {
-        Integer size1 = list1.size();
-        Integer size2 = list2.size();
-        if( size1.equals(size2) == false ) {
-            return false;
-        } else {
-            Map<T, Boolean> dataExistMap = new HashMap();
-            for(T data1 : list1) {
-                dataExistMap.put(data1, Boolean.TRUE);
-            }
-            for(T data2 : list2) {
-                if(dataExistMap.get(data2) == null) {
-                    return false; //有一個找不到就可以false
+        if(list1 != null && list2 !=null) {
+            Integer size1 = list1.size();
+            Integer size2 = list2.size();
+            if( size1.equals(size2) == false ) {
+                return false;
+            } else {
+                Map<T, Boolean> dataExistMap = new HashMap();
+                for(T data1 : list1) {
+                    dataExistMap.put(data1, Boolean.TRUE);
                 }
+                for(T data2 : list2) {
+                    if(dataExistMap.get(data2) == null) {
+                        return false; //有一個找不到就可以false
+                    }
+                }
+                return true;
             }
-            return true;
+        } else {
+            return list1 == null && list2 == null; //如果兩者都為 null才可以說相等
         }
     }
     
