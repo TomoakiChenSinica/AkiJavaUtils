@@ -19,16 +19,29 @@ public class MessageFactory {
 
     private static final String DEFAULT_CHARSET = "UTF-8";
 
-    public static MimeMessage createPlainTextMsg(String smtpHost, String fromAddr, String subject, String text, String... toAddrs) throws MessagingException {
+    public static MimeMessage createPlainTextMsg(String smtpHost, String fromAddr, String subject, String plainText, String... toAddrs) throws MessagingException {
         //MimeMessage 其實是 Message型態的樣子
         Session session = MailSessionFactory.create(smtpHost);
         MimeMessage message = new MimeMessage(session);
         message.setFrom(new InternetAddress(fromAddr));
         message.setSubject(subject, DEFAULT_CHARSET);
-        message.setText(text, DEFAULT_CHARSET);
+        message.setText(plainText, DEFAULT_CHARSET);
         for (String toAddr : toAddrs) {
             message.setRecipients(Message.RecipientType.TO, toAddr);
         }
         return message;
     }
+    
+    public static MimeMessage createHtmlTextMsg(String smtpHost, String fromAddr, String subject, String htmlText, String... toAddrs) throws MessagingException {
+        //MimeMessage 其實是 Message型態的樣子
+        Session session = MailSessionFactory.create(smtpHost);
+        MimeMessage message = new MimeMessage(session);
+        message.setFrom(new InternetAddress(fromAddr));
+        message.setSubject(subject, DEFAULT_CHARSET);
+        message.setContent(htmlText, "text/html;charset=UTF-8");
+        for (String toAddr : toAddrs) {
+            message.setRecipients(Message.RecipientType.TO, toAddr);
+        }
+        return message;
+    }    
 }

@@ -51,4 +51,8 @@ public class SMTPClient {
         Transport.send(msg);
     }
 
+    public void sendHtmlMessage(String fromAddr, String toAddr, String subject, String htmlText) throws MessagingException {
+        MimeMessage msg = MessageFactory.createHtmlTextMsg(hostName, fromAddr, subject, htmlText, toAddr);
+        Transport.send(msg);
+    }    
 }
