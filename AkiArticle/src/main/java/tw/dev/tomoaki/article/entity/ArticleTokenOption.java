@@ -11,10 +11,19 @@ package tw.dev.tomoaki.article.entity;
  */
 public class ArticleTokenOption {
 
+    private String name;
     private String token;
     private String summary;
-    private String detail;
+    private String description;
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }   
+    
     public String getToken() {
         return token;
     }
@@ -31,12 +40,12 @@ public class ArticleTokenOption {
         this.summary = summary;
     }
 
-    public String getDetail() {
-        return detail;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDetail(String detail) {
-        this.detail = detail;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 }

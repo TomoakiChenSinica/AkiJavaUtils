@@ -34,11 +34,12 @@ public class ArticleHelper {
         Field[] fields = ArticleHelper.obtainFields(module);
         for (Field field : fields) {
             String tokenName = field.getName();
-            System.out.println("tokenName= " + tokenName);
+//            System.out.println("tokenName= " + tokenName);
+            String token = field.get(module).toString();
 
             Annotation[] annotations = field.getDeclaredAnnotations();
             for (Annotation annotation : annotations) {
-                System.out.println(annotation);
+//                System.out.println(annotation);
 
                 Method[] methods = annotation.annotationType().getDeclaredMethods();
                 /*
@@ -52,7 +53,8 @@ public class ArticleHelper {
                 }
                  */
                 ArticleTokenOption tokenOption = new ArticleTokenOption();
-                tokenOption.setToken(tokenName);
+                tokenOption.setName(tokenName);
+                tokenOption.setToken(token);
                 List<JavaMethodInfo> infoList = JavaMethodHelper.obtainPureMethodOnly(annotation, methods);
                 if (infoList != null) {
                     for (JavaMethodInfo info : infoList) {
@@ -63,8 +65,8 @@ public class ArticleHelper {
                                 tokenOption.setSummary(annotationAttrValue);
                                 break;
                             }
-                            case "detail": {
-                                tokenOption.setSummary(annotationAttrValue);
+                            case "description": {
+                                tokenOption.setDescription(annotationAttrValue);
                             }
                         }
                     }

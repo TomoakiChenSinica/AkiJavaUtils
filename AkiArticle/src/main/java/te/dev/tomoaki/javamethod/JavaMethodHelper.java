@@ -25,7 +25,7 @@ public class JavaMethodHelper {
             methodInfoList = new ArrayList();
             for (Method method : methods) {
                 Class attrValueType = method.getReturnType();
-                System.out.println("[JavaMethodHelper] attrValueType= " + attrValueType);
+//                System.out.println("[JavaMethodHelper] attrValueType= " + attrValueType);
                 if (method.getParameterTypes().length == 0 && attrValueType != void.class) {
                     String attrName = method.getName();
                     Object attrValue = method.invoke(ownMethodObject);
