@@ -5,6 +5,7 @@
  */
 package tw.dev.tomoaki.aki.mail.entity;
 
+import java.util.List;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -27,10 +28,27 @@ public class MessageFactory {
         message.setSubject(subject, DEFAULT_CHARSET);
         message.setText(plainText, DEFAULT_CHARSET);
         for (String toAddr : toAddrs) {
-            message.setRecipients(Message.RecipientType.TO, toAddr);
+            message.addRecipients(Message.RecipientType.TO, toAddr);
         }
         return message;
     }
+    
+    public static MimeMessage createPlainTextMsg(String smtpHost, String fromAddr, String subject, String plainText, List<String>toAddrs) throws MessagingException {
+        //MimeMessage 其實是 Message型態的樣子
+        Session session = MailSessionFactory.create(smtpHost);
+        MimeMessage message = new MimeMessage(session);
+        message.setFrom(new InternetAddress(fromAddr));
+        message.setSubject(subject, DEFAULT_CHARSET);
+        message.setText(plainText, DEFAULT_CHARSET);
+        for (String toAddr : toAddrs) {
+            message.addRecipients(Message.RecipientType.TO, toAddr);
+        }
+        return message;
+    }    
+    
+    
+    
+    
     
     public static MimeMessage createHtmlTextMsg(String smtpHost, String fromAddr, String subject, String htmlText, String... toAddrs) throws MessagingException {
         //MimeMessage 其實是 Message型態的樣子
@@ -40,8 +58,22 @@ public class MessageFactory {
         message.setSubject(subject, DEFAULT_CHARSET);
         message.setContent(htmlText, "text/html;charset=UTF-8");
         for (String toAddr : toAddrs) {
-            message.setRecipients(Message.RecipientType.TO, toAddr);
+//            message.setRecipients(Message.RecipientType.TO, toAddr);
+            message.addRecipients(Message.RecipientType.TO, toAddr);
         }
         return message;
     }    
+    
+    public static MimeMessage createHtmlTextMsg(String smtpHost, String fromAddr, String subject, String htmlText, List<String>toAddrs) throws MessagingException {
+        //MimeMessage 其實是 Message型態的樣子
+        Session session = MailSessionFactory.create(smtpHost);
+        MimeMessage message = new MimeMessage(session);
+        message.setFrom(new InternetAddress(fromAddr));
+        message.setSubject(subject, DEFAULT_CHARSET);
+        message.setContent(htmlText, "text/html;charset=UTF-8");
+        for (String toAddr : toAddrs) {
+            message.addRecipients(Message.RecipientType.TO, toAddr);
+        }
+        return message;
+    }        
 }

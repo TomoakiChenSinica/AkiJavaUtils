@@ -5,6 +5,7 @@
  */
 package tw.dev.tomoaki.aki.mail.client;
 
+import java.util.List;
 import javax.mail.MessagingException;
 import javax.mail.Transport;
 import javax.mail.internet.MimeMessage;
@@ -51,8 +52,24 @@ public class SMTPClient {
         Transport.send(msg);
     }
 
-    public void sendHtmlMessage(String fromAddr, String toAddr, String subject, String htmlText) throws MessagingException {
-        MimeMessage msg = MessageFactory.createHtmlTextMsg(hostName, fromAddr, subject, htmlText, toAddr);
+    public void sendPlainTextMessage(String fromAddr, List<String> toAddr, String subject, String plainText) throws MessagingException {
+        MimeMessage msg = MessageFactory.createPlainTextMsg(hostName, fromAddr, subject, plainText, toAddr);
         Transport.send(msg);
     }    
+    
+    public void sendHtmlMessage(String fromAddr, String toAddr, String subject, String htmlText) throws MessagingException {
+        MimeMessage msg = MessageFactory.createHtmlTextMsg(hostName, fromAddr, subject, processHtmlMessage(htmlText), toAddr);
+        Transport.send(msg);
+    }    
+    
+    public void sendHtmlMessage(String fromAddr, List<String> toAddr, String subject, String htmlText) throws MessagingException {
+        MimeMessage msg = MessageFactory.createHtmlTextMsg(hostName, fromAddr, subject, processHtmlMessage(htmlText), toAddr);
+        Transport.send(msg);
+    }        
+    
+    protected String processHtmlMessage(String htmlText) {
+        htmlText = htmlText.replace("\r\n", "<br/>");
+        htmlText = htmlText.replace("\n", "<br/>");
+        return htmlText;
+    }
 }
