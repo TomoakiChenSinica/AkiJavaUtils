@@ -36,6 +36,10 @@ import java.util.Map;
  */
 public class JsonToJava<T> {   //要加在這裡
     
+    public static ObjectMapper obtainCleanObjectMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper;
+    }    
     
    public static <T>T getJavaObject(String json,Class<T> objectType) throws IOException {
         if(json != null){
