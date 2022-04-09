@@ -21,6 +21,7 @@ public class AccessKeepetMain {
     public static void main(String[] args) throws NoSuchAlgorithmException {
         // TODO code application logic here
 //        AccessKeeper keeper = AccessKeeper.Factory.create();
+<<<<<<< Updated upstream
 //        String password = keeper.createPassword("tomoaki.outside@gmail.com", "Netflix");
 //        System.out.println(password);
 //        System.out.println(keeper.checkPassword(password, "TomoakiTesing"));
@@ -30,6 +31,25 @@ public class AccessKeepetMain {
             LocalDateTime nowDateTime = LocalDateTime.now();
             System.out.println(nowDateTime);
         }
+=======
+//        String password = keeper.createPassword("TomoakiTesing");
+//        System.out.println(keeper.checkPassword(password, "TomoakiTesing"));
+//        System.out.println(keeper.checkPassword(password, "TomoakiTesin"));
+        Netflix();
+        DisneyPlus();
     }
-
+    
+    public static void Netflix() throws NoSuchAlgorithmException {
+        AccessKeeper keeper = AccessKeeper.Factory.create();
+        String password = keeper.createPassword("tomoaki.outside@gmail.com", "Netflix");
+        System.out.println(password);
+>>>>>>> Stashed changes
+    }
+    
+    public static void DisneyPlus() throws NoSuchAlgorithmException {
+        AccessKeeper keeper = AccessKeeper.Factory.create();
+        String password = keeper.createPassword("tomoaki.outside@gmail.com", "DisneyPlus");
+        System.out.println(password);
+    }    
+    
 }
