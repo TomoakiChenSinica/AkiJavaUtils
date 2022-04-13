@@ -9,6 +9,7 @@ package tw.dev.tomoaki.util.datatransfer;
 
 import java.util.ArrayList;
 import java.util.List;
+import tw.dev.tomoaki.util.datatransfer.entity.DataTrasnferError;
 import tw.dev.tomoaki.util.exception.ExceptionHandler;
 
 /**
@@ -16,33 +17,13 @@ import tw.dev.tomoaki.util.exception.ExceptionHandler;
  * @author Tomoaki Chen
  */
 public class AbstractTransferImpl<T> extends ExceptionHandler {
-//    
-//    protected AbstractTransferImpl() {
-//        this.exceptionList = new ArrayList();
-//    }
-//    
-//    protected List<Exception> exceptionList;
-//    
-//    protected void addException(Exception ex){
-//        this.exceptionList.add(ex);
-//    }
-//    
-//    public List<Exception> getExceptionList(){
-//        return this.exceptionList;
-//    }
-//    
-//    public Integer getNumsOfException() {
-//        return this.exceptionList.size();
-//    }
-//    
-//    public Boolean getIsExceptionOccur() {
-//        return (exceptionList != null && exceptionList.isEmpty() == false);
-//    }
+
     protected List<T> needCreatedList;
     protected List<T> needEditedList;
     protected List<T> notNeedEditedList;
     protected List<T> needRemovedList;    
     protected List<T> resultList;
+    protected List<DataTrasnferError<T>> errorList;
     
     protected void doRecordNeedCreated(T data) {
         if(needCreatedList == null) {
@@ -84,6 +65,10 @@ public class AbstractTransferImpl<T> extends ExceptionHandler {
     }
     
     protected void doRecordTransferError(T data, Exception ex) {
+        if(this.errorList == null) {
+            this.errorList = new ArrayList();
+        }
+        this.errorList.add(DataTrasnferError.Factory.create(data, ex));
     }
 
     public List<T> getNeedCreatedList() {
@@ -105,5 +90,8 @@ public class AbstractTransferImpl<T> extends ExceptionHandler {
     public List<T> getResultList() {
         return resultList;
     }
-    
+
+    public List<DataTrasnferError<T>> getErrorList() {
+        return errorList;
+    }            
 }
