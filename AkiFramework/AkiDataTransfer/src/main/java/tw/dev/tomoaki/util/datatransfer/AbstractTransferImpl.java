@@ -10,13 +10,14 @@ package tw.dev.tomoaki.util.datatransfer;
 import java.util.ArrayList;
 import java.util.List;
 import tw.dev.tomoaki.util.datatransfer.entity.DataTrasnferError;
+import tw.dev.tomoaki.util.datatransfer.entity.DataTransferPureTextError;
 import tw.dev.tomoaki.util.exception.ExceptionHandler;
 
 /**
  *
  * @author Tomoaki Chen
  */
-public class AbstractTransferImpl<T> extends ExceptionHandler {
+public abstract class AbstractTransferImpl<T> extends ExceptionHandler {
 
     protected List<T> needCreatedList;
     protected List<T> needEditedList;
@@ -24,6 +25,8 @@ public class AbstractTransferImpl<T> extends ExceptionHandler {
     protected List<T> needRemovedList;    
     protected List<T> resultList;
     protected List<DataTrasnferError<T>> errorList;
+    protected List<DataTransferPureTextError> pureTextErrorList;
+    
     
     protected void doRecordNeedCreated(T data) {
         if(needCreatedList == null) {
@@ -70,7 +73,20 @@ public class AbstractTransferImpl<T> extends ExceptionHandler {
         }
         this.errorList.add(DataTrasnferError.Factory.create(data, ex));
     }
-
+    
+    protected void doRecordTransferPureTextError(T data, Exception ex) {
+        try {
+            if(this.pureTextErrorList == null) {
+                this.pureTextErrorList = new ArrayList();
+            }
+            this.pureTextErrorList.add(DataTransferPureTextError.Factory.create(obtainTransferPureTextError(data), ex));
+        } catch(UnsupportedOperationException uoe) {
+            System.out.format("[%s] obtainTransferPureTextError() Is Not Implemented Yet", this.getClass().getSimpleName());
+        }
+    }    
+    
+    protected abstract String obtainTransferPureTextError(T data);        
+   
     public List<T> getNeedCreatedList() {
         return needCreatedList;
     }
@@ -93,5 +109,9 @@ public class AbstractTransferImpl<T> extends ExceptionHandler {
 
     public List<DataTrasnferError<T>> getErrorList() {
         return errorList;
-    }            
+    }    
+
+    public List<DataTransferPureTextError> getPureTextErrorList() {
+        return pureTextErrorList;
+    }
 }
