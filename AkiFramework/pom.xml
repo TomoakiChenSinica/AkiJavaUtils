@@ -10,5 +10,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>AkiDataMiner</module>
+        <module>AkiDataTransfer</module>
     </modules>
 </project>
