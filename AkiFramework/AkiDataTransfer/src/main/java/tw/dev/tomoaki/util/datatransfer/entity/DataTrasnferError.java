@@ -11,8 +11,9 @@ package tw.dev.tomoaki.util.datatransfer.entity;
  */
 public class DataTrasnferError<T> {
 
-    private T data;
-    private Exception exception;
+    protected T data;
+    protected Exception exception;
+    protected String errorMsg;
 
     protected DataTrasnferError() {
     }
@@ -21,8 +22,9 @@ public class DataTrasnferError<T> {
 
         public static <T>DataTrasnferError create(T data, Exception exception) {
             DataTrasnferError result = new DataTrasnferError();
-            result.setData(data);
-            result.setException(exception);
+            result.data = data;
+            result.exception = exception;
+            result.errorMsg = DataTransferErrorHelper.obtainStackTrace(exception);
             return result;
         }
     }
@@ -31,16 +33,13 @@ public class DataTrasnferError<T> {
         return data;
     }
 
-    public void setData(T data) {
-        this.data = data;
-    }
-
     public Exception getException() {
         return exception;
     }
 
-    public void setException(Exception exception) {
-        this.exception = exception;
+
+    public String getErrorMsg() {
+        return errorMsg;
     }
 
 }

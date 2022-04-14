@@ -16,76 +16,80 @@ import tw.dev.tomoaki.util.exception.ExceptionHandler;
 /**
  *
  * @author Tomoaki Chen
+ * @param <S> 來源的 class type
+ * @param <T> 結果的 class type
+
  */
-public abstract class AbstractTransferImpl<T> extends ExceptionHandler {
+public abstract class AbstractTransferImpl<S, T> extends ExceptionHandler {
 
     protected List<T> needCreatedList;
     protected List<T> needEditedList;
     protected List<T> notNeedEditedList;
     protected List<T> needRemovedList;    
     protected List<T> resultList;
-    protected List<DataTrasnferError<T>> errorList;
+//    protected List<DataTrasnferError<T>> errorList;
+    protected List<DataTrasnferError<S>> errorList;
     protected List<DataTransferPureTextError> pureTextErrorList;
     
     
-    protected void doRecordNeedCreated(T data) {
+    protected void doRecordNeedCreated(T targetData) {
         if(needCreatedList == null) {
             this.needCreatedList = new ArrayList();
         }
-        this.needCreatedList.add(data);
-        this.doRecordResult(data);
+        this.needCreatedList.add(targetData);
+        this.doRecordResult(targetData);
     }
     
-    protected void doRecordNeedEdited(T data) {
+    protected void doRecordNeedEdited(T targetData) {
         if(needEditedList == null) {
             this.needEditedList = new ArrayList();
         }
-        this.needEditedList.add(data);
-        this.doRecordResult(data);
+        this.needEditedList.add(targetData);
+        this.doRecordResult(targetData);
     }    
     
-    protected void doRecordNotNeedEdited(T data) {
+    protected void doRecordNotNeedEdited(T targetData) {
         if(notNeedEditedList == null) {
             this.notNeedEditedList = new ArrayList();
         }
-        this.notNeedEditedList.add(data);
-        this.doRecordResult(data);
+        this.notNeedEditedList.add(targetData);
+        this.doRecordResult(targetData);
     }
     
-    protected void doRecordNeedRemoved(T data) {
+    protected void doRecordNeedRemoved(T targetData) {
         if(this.needRemovedList == null) {
             this.needRemovedList = new ArrayList();
         }
-        this.needRemovedList.add(data);
+        this.needRemovedList.add(targetData);
         //要不要從resultList移除....
     }
     
-    protected void doRecordResult(T data) {
+    protected void doRecordResult(T targetData) {
         if(this.resultList == null) {
             this.resultList = new ArrayList();
         }
-        this.resultList.add(data);
+        this.resultList.add(targetData);
     }
     
-    protected void doRecordTransferError(T data, Exception ex) {
+    protected void doRecordTransferError(S sourceData, Exception ex) {
         if(this.errorList == null) {
             this.errorList = new ArrayList();
         }
-        this.errorList.add(DataTrasnferError.Factory.create(data, ex));
+        this.errorList.add(DataTrasnferError.Factory.create(sourceData, ex));
     }
     
-    protected void doRecordTransferPureTextError(T data, Exception ex) {
+    protected void doRecordTransferPureTextError(S sourceData, Exception ex) {
         try {
             if(this.pureTextErrorList == null) {
                 this.pureTextErrorList = new ArrayList();
             }
-            this.pureTextErrorList.add(DataTransferPureTextError.Factory.create(obtainTransferPureTextError(data), ex));
+            this.pureTextErrorList.add(DataTransferPureTextError.Factory.create(obtainTransferPureTextError(sourceData), ex));
         } catch(UnsupportedOperationException uoe) {
             System.out.format("[%s] obtainTransferPureTextError() Is Not Implemented Yet", this.getClass().getSimpleName());
         }
     }    
     
-    protected abstract String obtainTransferPureTextError(T data);        
+    protected abstract String obtainTransferPureTextError(S sourceData);        
    
     public List<T> getNeedCreatedList() {
         return needCreatedList;
@@ -107,7 +111,7 @@ public abstract class AbstractTransferImpl<T> extends ExceptionHandler {
         return resultList;
     }
 
-    public List<DataTrasnferError<T>> getErrorList() {
+    public List<DataTrasnferError<S>> getErrorList() {
         return errorList;
     }    
 

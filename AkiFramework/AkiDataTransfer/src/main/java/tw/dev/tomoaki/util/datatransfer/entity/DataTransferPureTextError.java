@@ -18,8 +18,9 @@ public class DataTransferPureTextError extends DataTrasnferError<String> {
 
         public static DataTransferPureTextError create(String dataPureText, Exception exception) {
             DataTransferPureTextError error = new DataTransferPureTextError();
-            error.setData(dataPureText);
-            error.setException(exception);
+            error.data = dataPureText;
+            error.exception = exception;
+            error.errorMsg = DataTransferErrorHelper.obtainStackTrace(exception);
             return error;
         }
     }
