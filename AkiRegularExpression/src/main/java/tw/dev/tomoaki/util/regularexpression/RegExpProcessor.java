@@ -40,8 +40,8 @@ public class RegExpProcessor {
 //        return matcher.find();
 //    }
     
-    public RegExpResult processMatch(String input) {
-        Matcher matcher = this.thePattern.matcher(input);
-        return RegExpResult.Factory.create(matcher.results().collect(Collectors.toList())); //不先轉乘List直接丟stream 會有exception
-    }
+//    public RegExpResult processMatch(String input) {
+//        Matcher matcher = this.thePattern.matcher(input);
+//        return RegExpResult.Factory.create(matcher.results().collect(Collectors.toList())); //不先轉乘List直接丟stream 會有exception
+//    }
 }

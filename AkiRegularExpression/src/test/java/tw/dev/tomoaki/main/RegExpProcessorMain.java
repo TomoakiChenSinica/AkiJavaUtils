@@ -12,11 +12,11 @@ import tw.dev.tomoaki.util.regularexpression.RegExpResult;
  */
 public class RegExpProcessorMain {
 
-    public static void main(String[] args) {
-        String pattern = "[0-9]";
-        RegExpProcessor processor = RegExpProcessor.Factory.create(pattern);
-        RegExpResult result = processor.processMatch("ABC");
-        System.out.println(result.isFind());
-        System.out.println(result.getGroupResults());        
-    }
+//    public static void main(String[] args) {
+//        String pattern = "[0-9]";
+//        RegExpProcessor processor = RegExpProcessor.Factory.create(pattern);
+//        RegExpResult result = processor.processMatch("ABC");
+//        System.out.println(result.isFind());
+//        System.out.println(result.getGroupResults());        
+//    }
 }

@@ -128,6 +128,12 @@ public class AccessKeeper {
             str += input + middlePk;
         }
         str = prefixPk + str + suffixPk;
+        
+//        System.out.format("[AkiSecurity][AccessKeeper] str= %s \r\n", str);
+        
+        //以下這部分抄自建烽的寫法，重新探討後，我在想這邊是否符合一般的 md5 32bits 16bits ? 因為這邊看起來變成每個byte(8bit?) 都去做
+        //參考此篇  https://ithelp.ithome.com.tw/articles/10212717
+        // 「其實MD5的長度原生為128bit, 也就是128個0跟1組合，但這樣的方式不易閱讀, 所以我們會轉成16進制, 每4個bit表示1個16進制，所以 128/4 = 32, 就變32位元了, 這也是大部分人用的方法。」
         byte[] encodeByte = md.digest(str.getBytes());
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < encodeByte.length; i++) {
@@ -135,7 +141,8 @@ public class AccessKeeper {
         }
 
         thePassword = sb.toString();
-        //System.out.println("buffer and string : " + sb + "  " + thePassword);
+//        System.out.println("md5(32bit, to hex) : " + thePassword);
+//        System.out.format("[AkiSecurity][AccessKeeper] thePassword= %s \r\n", thePassword);
         return thePassword;
     }
 
