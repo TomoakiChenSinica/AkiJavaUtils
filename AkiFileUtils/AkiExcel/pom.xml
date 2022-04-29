@@ -12,7 +12,6 @@
             <artifactId>jxl</artifactId>
             <version>2.6.12</version>
         </dependency>
-
     </dependencies>
     <properties>
         <maven.compiler.source>11</maven.compiler.source>

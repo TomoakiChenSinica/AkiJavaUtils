@@ -16,3 +16,4 @@
 *.jar
 /AkiException/target/
 /AkiFramework/AkiDataTransfer/target/
+/AkiFileUtils/AkiExcel/target/
