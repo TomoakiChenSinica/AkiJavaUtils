@@ -12,14 +12,15 @@ import java.io.FileOutputStream;
  * @author arche
  */
 public class ArchiveFileOutputStream {
-    
+
     private String fileName;
     private FileOutputStream fileOutputStream;
 
     protected ArchiveFileOutputStream() {
     }
-    
+
     public static class Factory {
+
         public static ArchiveFileOutputStream create(String fileName, FileOutputStream fileOutputStream) {
             ArchiveFileOutputStream afos = new ArchiveFileOutputStream();
             afos.fileName = fileName;
@@ -27,7 +28,7 @@ public class ArchiveFileOutputStream {
             return afos;
         }
     }
-    
+
     public String getFileName() {
         return fileName;
     }
