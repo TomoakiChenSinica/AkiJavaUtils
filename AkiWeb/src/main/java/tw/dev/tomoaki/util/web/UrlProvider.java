@@ -24,17 +24,6 @@ public class UrlProvider {
     private String systemPath = "";
     private String localPath = "";
 
-//    public UrlProvider(HttpServletRequest request) {
-//        this.request = request;
-//        this.doParseRequestInfo();
-//    }
-//
-//    public UrlProvider(String protocol, String hostName, Integer port, String contextPath) {
-//        this.protocol = protocol;
-//        this.hostName = hostName;
-//        this.port = port;
-//        this.contextPath = contextPath;
-//    }
     protected UrlProvider() {
     }
 
@@ -53,11 +42,11 @@ public class UrlProvider {
             provider.doParseRequestInfo();
             return provider;
         }
-        
+
         public static UrlProvider create(String protocol, String hostName, Integer port, String contextPath) {
             UrlProvider provider = new UrlProvider(protocol, hostName, port, contextPath);
             return provider;
-        }        
+        }
     }
 
 //<editor-fold defaultstate="collapsed" desc="設定變數">
@@ -67,17 +56,11 @@ public class UrlProvider {
         this.port = request.getServerPort();
         this.contextPath = request.getContextPath().replaceAll("/", "");
     }
-    
+
 //</editor-fold>
-    
-    
-    public void setWebRequest(HttpServletRequest request) {
+    protected void setupWebRequest(HttpServletRequest request) {
         this.request = request;
     }
-
-//    public String getURL() {
-//        return null;
-//    }
 
     public String getLocalPath() {
         if (localPath == null || "".equals(localPath)) {
@@ -85,19 +68,19 @@ public class UrlProvider {
         }
         return localPath;
     }
-    
+
     public String getProtocol() {
         return this.protocol;
     }
-    
+
     public String getHostName() {
         return this.hostName;
     }
-    
+
     public Integer getPort() {
         return this.port;
     }
-    
+
     public String getContextPath() {
         return this.contextPath;
     }
@@ -114,7 +97,7 @@ public class UrlProvider {
         }
 
         theURL += this.systemPath;
-        System.out.println(theURL);
+//        System.out.println(theURL);
         return theURL;
     }
 
