@@ -17,59 +17,77 @@
 package tw.dev.tomoaki.excel.entity;
 
 //import tw.dev.tomoaki.function.DateTimeProvider;
-
 /**
  *
  * @author tomoaki
  */
 public class ExcelTable {
 
-    private int tableRow = 1;  //default為1
-    private int tableCol = 1;
+    protected Integer tableRow = 1;  //default為1
+    protected Integer tableCol = 1;
 
-    private int nowRow;
-    private int nowCol;
+    protected Integer nowRow;
+    protected Integer nowCol;
 
-    private int totalData;
-    private int maxData;
-    private String[][] Data;
+    protected Integer totalData;
+    protected Integer maxData;
+    protected String[][] dataTable;
 
-    public ExcelTable() {
-        //
+    protected ExcelTable() {
         this.tableRow = 1;
         this.tableCol = 1;
     }
 
-    public ExcelTable(int row, int col) {
+    protected ExcelTable(Integer row, Integer col) {
         this.tableRow = row;
         this.tableCol = col;
-        initTable();
     }
 
-    public void initTable() {
-        //System.out.println("init table start");        
-        Data = new String[tableRow][tableCol];
+    public static class Factory {
+
+        public static ExcelTable create() {
+            ExcelTable excelTable = new ExcelTable();
+            excelTable.initTable();
+            return excelTable;
+        }
+
+        public static ExcelTable create(Integer row, Integer col) {
+            ExcelTable excelTable = new ExcelTable(row, col);
+            excelTable.initTable();
+            return excelTable;
+        }
+    }
+
+    protected void doInitDataTable() {
+        dataTable = new String[tableRow][tableCol];
         //System.out.println("init table data size is done");        
+    }
+
+    protected void doSetupEmptyDataTable() {
         for (int i = 0; i < tableRow; i++) {
             for (int j = 0; j < tableCol; j++) {
-                Data[i][j] = "";
+                dataTable[i][j] = "";
             }
         }
+    }
+    
+    protected void doInitVariable() {
         maxData = tableRow * tableCol;
-        /*
-        for(int i = 0 ; i<tableRow ;i++)
-        {
-            for(int j = 0 ;j<tableCol ; j++)
-                System.out.print(Data[i][j] + "  ");
-            System.out.println("\n");
-        }*/
-
         totalData = 0;
         nowRow = 0;
         nowCol = 0;
-        //System.out.println("init table finish");
+    }
+
+    protected void initTable() {
+        this.doInitDataTable();
+        this.doSetupEmptyDataTable();
+        this.doInitVariable();
+        // System.out.println("init table finish");
         // System.out.println("maxData = " + maxData + " totalData = " + totalData);
     }
+    
+    
+    
 
     public void countNowPosition() {
         nowRow = totalData / tableCol;
@@ -125,14 +143,13 @@ public class ExcelTable {
      */
     public void insertCell(String data) {
         //System.out.println("nowRow = " + nowRow + "nowCol = " + nowCol);
-        if (this.checkInsert(nowRow, nowCol)) //檢查是否超過範圍，合法(未超過範圍)為true，不合法(超過範圍)為false
-        {
+        if (this.checkInsert(nowRow, nowCol)) {//檢查是否超過範圍，合法(未超過範圍)為true，不合法(超過範圍)為false
             //System.out.println("寫入 nowRow = " + nowRow + " nowCol = " + nowCol);
-            Data[nowRow][nowCol] = data;
+            dataTable[nowRow][nowCol] = data;
             totalData++;
             this.countNowPosition();
         } else {
-            System.out.println("超出table大小 " + data + " 無法寫入");
+            throw new ExcelTableOperationException("超出table大小, data= %s 無法寫入", data);
         }
     }
 
@@ -141,7 +158,7 @@ public class ExcelTable {
      *
      * @param data : int型別的資訊
      */
-    public void insertCell(int data) {
+    public void insertCell(Integer data) {
         String strData = Integer.toString(data);
         insertCell(strData);
     }
@@ -159,13 +176,16 @@ public class ExcelTable {
 
     /**
      * 將資料放到指定的儲存格中 theRow = y軸 theCol = x軸
+     *
+     * @param data 資料，格式為 String
+     * @param theRow y軸資料
+     * @param theCol x軸資料
      */
-    public void insertCell(String data, int theRow, int theCol) //theRow --> y 軸, theCol --> x軸
-    {
+    public void insertCell(String data, int theRow, Integer theCol) {
         if (this.checkInsert(theRow, theCol)) {
-            Data[theRow][theCol] = data;
+            dataTable[theRow][theCol] = data;
         } else {
-            System.out.println("超出table大小");
+            throw new ExcelTableOperationException("超出table大小");
         }
     }
 
@@ -178,7 +198,7 @@ public class ExcelTable {
      *
      *
      */
-    public void insertTitleRow(String[] titleData, int row) {
+    public void insertTitleRow(String[] titleData, Integer row) {
         this.tableCol = titleData.length;
         this.tableRow = row;
         this.initTable();
@@ -188,6 +208,11 @@ public class ExcelTable {
 
     }
 
+    
+    
+    
+    
+    
     public boolean checkInsert(int theRow, int theCol) {
         if (theRow >= this.tableRow || theCol >= this.tableCol) {
             return false;
@@ -197,8 +222,7 @@ public class ExcelTable {
     }
 
     public boolean checkInsert() {
-        if (this.totalData >= this.maxData) //大於等於就錯(好像怪怪的
-        {
+        if (this.totalData >= this.maxData) {//大於等於就錯(好像怪怪的
             return false;
         } else {
             return true;
@@ -216,6 +240,6 @@ public class ExcelTable {
     }
 
     public String getData(int theRow, int theCol) {
-        return Data[theRow][theCol];
+        return dataTable[theRow][theCol];
     }
 }
