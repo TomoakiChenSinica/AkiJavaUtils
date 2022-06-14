@@ -23,15 +23,16 @@ package tw.dev.tomoaki.excel.entity;
  */
 public class ExcelTable {
 
+    
     protected Integer tableRow = 1;  //default為1
     protected Integer tableCol = 1;
+    protected String[][] dataTable;
 
     protected Integer nowRow;
     protected Integer nowCol;
 
     protected Integer totalData;
     protected Integer maxData;
-    protected String[][] dataTable;
 
     protected ExcelTable() {
         this.tableRow = 1;
@@ -58,6 +59,8 @@ public class ExcelTable {
         }
     }
 
+//<editor-fold defaultstate="collapsed" desc="設定/初始化變數的 methods">
+      
     protected void doInitDataTable() {
         dataTable = new String[tableRow][tableCol];
         //System.out.println("init table data size is done");        
@@ -86,9 +89,11 @@ public class ExcelTable {
         // System.out.println("maxData = " + maxData + " totalData = " + totalData);
     }
     
+//</editor-fold>
     
     
-
+    
+//<editor-fold defaultstate="collapsed" desc="取得變數的 methods">
     public void countNowPosition() {
         nowRow = totalData / tableCol;
         nowCol = totalData % tableCol;
@@ -135,6 +140,14 @@ public class ExcelTable {
     public int getNowCol() {
         return nowCol;
     }
+
+    public String getData(Integer theRow, Integer theCol) {
+        return dataTable[theRow][theCol];
+    }
+    
+//</editor-fold>
+
+
 
     /**
      * 照順序的將Cell一個一個加進去，加到哪一Row、Col由 nowRow、nowCol紀錄
@@ -205,7 +218,6 @@ public class ExcelTable {
         for (int colIndex = 0; colIndex < tableCol; colIndex++) {
             this.insertCell(titleData[colIndex]);
         }
-
     }
 
     
@@ -213,7 +225,7 @@ public class ExcelTable {
     
     
     
-    public boolean checkInsert(int theRow, int theCol) {
+    public boolean checkInsert(Integer theRow, Integer theCol) {
         if (theRow >= this.tableRow || theCol >= this.tableCol) {
             return false;
         } else {
@@ -237,9 +249,5 @@ public class ExcelTable {
             System.out.print("\n");
         }
          */
-    }
-
-    public String getData(int theRow, int theCol) {
-        return dataTable[theRow][theCol];
     }
 }
