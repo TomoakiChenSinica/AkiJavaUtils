@@ -6,7 +6,9 @@
 package tw.dev.tomoaki.util.web;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -15,6 +17,7 @@ import java.util.List;
 public class UrlAppender {
 
     protected List<String> urlPathList;
+    protected Map<String, Object> queryParamMap;
 
     protected Boolean trimHeadSlash = true;
     protected Boolean trimTailSlash = true;
@@ -29,6 +32,7 @@ public class UrlAppender {
         public static UrlAppender create() {
             UrlAppender appender = new UrlAppender();
             appender.initUrlPathList();
+            appender.initQueryParamMap();
             return appender;
         }
     }
@@ -37,6 +41,10 @@ public class UrlAppender {
     protected void initUrlPathList() {
         this.urlPathList = new ArrayList();
     }    
+    
+    protected void initQueryParamMap() {
+        this.queryParamMap = new LinkedHashMap();
+    }
 //</editor-fold>
     
 //<editor-fold defaultstate="collapsed" desc="調整設定">
@@ -74,17 +82,40 @@ public class UrlAppender {
         return this;
     }
     
+    public UrlAppender appendQueryParam(String paramName, Object paramValue) {
+        queryParamMap.put(paramName, paramValue);
+        return this;
+    }
+    
     public String buildUrl() {
         String url = "";
-        Integer counter = 0;
+        Integer pathCounter = 0;
         for(String path : this.urlPathList) {
-            counter++;
-            if(counter >= 2) {
+            pathCounter++;
+            if(pathCounter >= 2) {
                 url += "/";
             }
             url += path;
         }
+        if(!this.queryParamMap.isEmpty()) {
+            url += "?";
+            Integer paramCounter = 0;            
+            for(String paramName : queryParamMap.keySet()) {
+                paramCounter++;
+                if(paramCounter >= 2) {
+                    url += "&";
+                }
+                Object paramValue = this.queryParamMap.get(paramName);
+                if(paramValue != null) {
+                    url += paramName + "=" + paramValue;
+                } else {
+                     url += paramName + "=";               
+                }
+            }
+        }
+        
         this.initUrlPathList();
+        this.initQueryParamMap();
         return url;
     }
     
