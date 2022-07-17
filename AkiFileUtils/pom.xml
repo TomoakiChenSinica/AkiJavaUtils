@@ -8,5 +8,6 @@
     <modules>
         <module>AkiExcel</module>
         <module>AkiArchiveFile</module>
+        <module>AkiFileExplorer</module>
     </modules>
 </project>
