@@ -6,6 +6,8 @@
 package tw.dev.tomoaki.fileexplorer.core;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -19,26 +21,27 @@ public abstract class AbsFileAnalyzer<T extends AbsFileAnalyzeResult> {
         this.resultClazz = resultClazz;
     }
     
-    public T doAnalyze(File desigFile) {
+    public List<T> doAnalyze(File desigFile) {
         try {
-            T result = (T) resultClazz.getConstructor().newInstance();
+            List<T> resultList = new ArrayList();
+//            T result = (T) resultClazz.getConstructor().newInstance();
             if (desigFile != null && desigFile.exists()) {
                 if (desigFile.isDirectory()) {
-                    result = this.doAnalyze4Dir(desigFile, result);
+                    resultList = this.doAnalyze4Dir(desigFile, resultList);
                 }
 
                 if (desigFile.isFile()) {
-                    result = this.doAnalyze4File(desigFile, result);
+                    resultList = this.doAnalyze4File(desigFile, resultList);
                 }
             }
-            return result;
+            return resultList;
         } catch(Exception ex) {
             throw new FileAnalyzeException(ex);
         }
     }
     
-    public abstract T doAnalyze4Dir(File dir, T result);
+    public abstract List<T> doAnalyze4Dir(File dir, List<T> resultList);
     
-    public abstract T doAnalyze4File(File file, T result);
+    public abstract List<T> doAnalyze4File(File file, List<T> resultList);
     
 }
