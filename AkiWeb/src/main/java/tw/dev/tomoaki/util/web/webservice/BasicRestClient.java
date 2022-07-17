@@ -46,6 +46,7 @@ public abstract class BasicRestClient {
     }
 
     protected Response doGet(WebTarget target, MediaType[] acceptMediaTypes, String bearerToken, List<String> cookies) {
+        Response resp = null;
         try {
             Invocation.Builder builder = target.request().accept(acceptMediaTypes);
             if (bearerToken != null) {
@@ -58,8 +59,8 @@ public abstract class BasicRestClient {
                 }
             }
             return builder.get();
-        } catch(Exception ex) {
-            WebServiceResponseException resultEx = WebServiceResponseException.Factory.create(target);
+        } catch (Exception ex) {
+            WebServiceResponseException resultEx = (resp == null) ? WebServiceResponseException.Factory.create(target, ex) : WebServiceResponseException.Factory.create(target, resp);
             throw resultEx;
         }
     }
@@ -90,6 +91,7 @@ public abstract class BasicRestClient {
     }
 
     protected <T> Response doPut(WebTarget target, MediaType[] acceptMediaTypes, MediaType requestMediaType, String bearerToken, List<String> cookies, T entity) {
+        Response resp = null;
         try {
             Invocation.Builder builder = target.request().accept(acceptMediaTypes);
             if (bearerToken != null) {
@@ -103,7 +105,7 @@ public abstract class BasicRestClient {
             }
             return builder.put(Entity.entity(entity, requestMediaType));
         } catch (Exception ex) {
-            WebServiceResponseException resultEx = WebServiceResponseException.Factory.create(target);
+            WebServiceResponseException resultEx = (resp == null) ? WebServiceResponseException.Factory.create(target, ex) : WebServiceResponseException.Factory.create(target, resp);
             throw resultEx;
         }
     }
@@ -134,6 +136,7 @@ public abstract class BasicRestClient {
     }
 
     protected <T> Response doPost(WebTarget target, MediaType[] acceptMediaTypes, MediaType requestMediaType, String bearerToken, List<String> cookies, T entity) {
+        Response resp = null;
         try {
             Invocation.Builder builder = target.request().accept(acceptMediaTypes);
             if (bearerToken != null) {
@@ -146,9 +149,10 @@ public abstract class BasicRestClient {
                     builder.header("Cookie", cookie);
                 }
             }
-            return builder.post(Entity.entity(entity, requestMediaType));
+            resp = builder.post(Entity.entity(entity, requestMediaType));
+            return resp;
         } catch (Exception ex) {
-            WebServiceResponseException resultEx = WebServiceResponseException.Factory.create(target);
+            WebServiceResponseException resultEx = (resp == null) ? WebServiceResponseException.Factory.create(target, ex) : WebServiceResponseException.Factory.create(target, resp);
             throw resultEx;
         }
     }
@@ -179,6 +183,8 @@ public abstract class BasicRestClient {
     }
 
     protected <T> Response doDelete(WebTarget target, MediaType[] acceptMediaTypes, MediaType requestMediaType, String bearerToken, List<String> cookies/*, T entity*/) {
+        Response resp = null;
+
         try {
             Invocation.Builder builder = target.request().accept(acceptMediaTypes);
             if (bearerToken != null) {
@@ -192,7 +198,7 @@ public abstract class BasicRestClient {
             }
             return builder.delete();
         } catch (Exception ex) {
-            WebServiceResponseException resultEx = WebServiceResponseException.Factory.create(target);
+            WebServiceResponseException resultEx = (resp == null) ? WebServiceResponseException.Factory.create(target, ex) : WebServiceResponseException.Factory.create(target, resp);
             throw resultEx;
         }
     }
@@ -204,7 +210,6 @@ public abstract class BasicRestClient {
 ////        client.register(SseFeature.class);        
 //        return client;
 //    }
-
 //<editor-fold defaultstate="collapsed" desc="以下等同於 JsonToJava">
 //    protected static class JsonToJava {
 //
@@ -270,7 +275,7 @@ public abstract class BasicRestClient {
 //        }
 //    }
 //</editor-fold>
-
+    
 //<editor-fold defaultstate="collapsed" desc="以下等同於 JavaToJson">   
 //    protected static class JavaToJson {
 //
