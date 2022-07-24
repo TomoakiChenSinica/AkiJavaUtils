@@ -21,6 +21,7 @@
         <module>AkiGoogleCalendar</module>
         <module>AkiException</module>
         <module>AkiFileUtils</module>
+        <module>AkiHttp</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
