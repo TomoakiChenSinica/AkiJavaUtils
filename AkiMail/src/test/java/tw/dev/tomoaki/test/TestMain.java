@@ -5,8 +5,10 @@
  */
 package tw.dev.tomoaki.test;
 
-import java.util.Arrays;
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
+import javax.mail.MessagingException;
+import tw.dev.tomoaki.aki.mail.client.SMTPClient;
 import tw.dev.tomoaki.aki.mail.helper.MailReceiptHelper;
 
 /**
@@ -15,10 +17,16 @@ import tw.dev.tomoaki.aki.mail.helper.MailReceiptHelper;
  */
 public class TestMain {
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws MessagingException, IOException {
         String strReceipts = "tomoaki@iis.sinica.edu.tw ; tomoaki.sinica@gmail.com , tomoaki.nccu@gmail.com";
 //        List<String> receipts = Arrays.asList(strReceipts.split(";|,"));
 //        System.out.println(receipts);
         System.out.println(MailReceiptHelper.analyzeReceiptsByCommaSplit(strReceipts));
+        File file = new File("C:\\Users\\arche\\Pictures\\貓咪老師.jpg");
+        System.out.println(file.getName());
+        SMTPClient smtpClient = SMTPClient.Factory.create();
+//        smtpClient.sendHtmlMessage("tomoaki@iis.sinica.edu.tw", "tomoaki.nccu@gmail.com", "Testing", "Hello World");
+        smtpClient.sendPlainTextMessage("tomoaki@iis.sinica.edu.tw", "tomoaki.nccu@gmail.com", "這是我的測試", "這張圖片如何。\r\n測試中，不要擋信RRRR。Do Re Mi Fa So LAAAAAAAAAAAAAAAaa", file);
+
     }
 }

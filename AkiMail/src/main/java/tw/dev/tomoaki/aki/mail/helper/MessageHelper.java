@@ -7,7 +7,12 @@ package tw.dev.tomoaki.aki.mail.helper;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.List;
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -58,16 +63,21 @@ public class MessageHelper {
         return message;
     }
 //  https://www.javatpoint.com/example-of-sending-attachment-with-email-using-java-mail-api  
-    public static MimeMessage setupMulitPartPlainTextContent(MimeMessage message, String plainTextContent, String charSet, List<File> fileList) throws MessagingException, IOException {
+    public static MimeMessage setupMulitPartPlainTextContent(MimeMessage message, String plainTextContent, String contentType, List<File> fileList) throws MessagingException, IOException {
         Multipart multipart = new MimeMultipart();
         
         MimeBodyPart plainTextContentBodyPart = new MimeBodyPart();
-        plainTextContentBodyPart.setText(plainTextContent, charSet);
+        plainTextContentBodyPart.setContent(plainTextContent, contentType);
         multipart.addBodyPart(plainTextContentBodyPart);
         
         for(File file : fileList) {
             MimeBodyPart attachmentBodyPart = new MimeBodyPart();
             attachmentBodyPart.attachFile(file);
+            attachmentBodyPart.setFileName(file.getName());            
+//            attachmentBodyPart.setFileName(URLEncoder.encode(file.getName(), "UTF-8"));
+//            DataSource dataSource = new FileDataSource(file);
+//            attachmentBodyPart.setDataHandler(new DataHandler(dataSource, URLConnection.guessContentTypeFromName(file.getName())) );
+//            attachmentBodyPart.setFileName(file.getName());            
             multipart.addBodyPart(attachmentBodyPart);
         }
         message.setContent(multipart);

@@ -36,7 +36,7 @@ public class MultiPartMessageFactory {
         MultiPartMessageFactory factory = new MultiPartMessageFactory();
         factory.smtpHost = hostName;
         factory.sender = sender;
-
+        factory.doInit();
         return factory;
     }
 
@@ -91,6 +91,7 @@ public class MultiPartMessageFactory {
         MimeMessage msg = MessageFactory.createEmptyMsg(smtpHost);
         msg = MessageHelper.setupSender(msg, sender);
         msg = MessageHelper.setupReceivers(msg, receiverList);
+        msg = MessageHelper.setupSubject(msg, subject, DEFAULT_CHARSET);
         if(this.attachmentList == null || this.attachmentList.isEmpty()) {
             MessageHelper.setupHtmlContent(msg, content, DEFAULT_CONTENT_TYPE);
         } else {
