@@ -5,6 +5,7 @@
  */
 package tw.dev.tomoaki.aki.mail.client;
 
+import java.io.File;
 import java.util.List;
 import javax.mail.MessagingException;
 import javax.mail.Transport;
@@ -32,19 +33,19 @@ public class SMTPClient {
             client.hostName = DEFAULT_HOST;
             return client;
         }
-        
+
         public static SMTPClient create(String hostName) {
             SMTPClient client = new SMTPClient();
             client.hostName = hostName;
             return client;
-        }        
-       
+        }
+
         public static SMTPClient create(String hostName, Integer port) {
             SMTPClient client = new SMTPClient();
             client.hostName = hostName;
             client.port = port;
             return client;
-        }                
+        }
     }
 
     public void sendPlainTextMessage(String fromAddr, String toAddr, String subject, String plainText) throws MessagingException {
@@ -55,21 +56,57 @@ public class SMTPClient {
     public void sendPlainTextMessage(String fromAddr, List<String> toAddr, String subject, String plainText) throws MessagingException {
         MimeMessage msg = MessageFactory.createPlainTextMsg(hostName, fromAddr, subject, plainText, toAddr);
         Transport.send(msg);
-    }    
+    }
+
+    public void sendPlainTextMessage(String fromAddr, String toAddr, String subject, String plainText, File file) {
+        throw new UnsupportedOperationException("Method Not Supported Yet");
+    }
+
+    public void sendPlainTextMessage(String fromAddr, String toAddr, String subject, String plainText, List<File> fileList) {
+        throw new UnsupportedOperationException("Method Not Supported Yet");
+    }
+
+    public void sendPlainTextMessage(String fromAddr, List<String> toAddr, String subject, String plainText, File file) {
+        throw new UnsupportedOperationException("Method Not Supported Yet");
+    }
+
+    public void sendPlainTextMessage(String fromAddr, List<String> toAddr, String subject, String plainText, List<File> fileList) {
+        throw new UnsupportedOperationException("Method Not Supported Yet");
+    }
+
+    
+    
     
     public void sendHtmlMessage(String fromAddr, String toAddr, String subject, String htmlText) throws MessagingException {
         MimeMessage msg = MessageFactory.createHtmlTextMsg(hostName, fromAddr, subject, processHtmlMessage(htmlText), toAddr);
         Transport.send(msg);
-    }    
-    
+    }
+
     public void sendHtmlMessage(String fromAddr, List<String> toAddr, String subject, String htmlText) throws MessagingException {
         MimeMessage msg = MessageFactory.createHtmlTextMsg(hostName, fromAddr, subject, processHtmlMessage(htmlText), toAddr);
         Transport.send(msg);
-    }        
-    
+    }
+
+    public void sendHtmlMessage(String fromAddr, String toAddr, String subject, String htmlText, File file) {
+        throw new UnsupportedOperationException("Method Not Supported Yet");
+    }
+
+    public void sendHtmlMessage(String fromAddr, String toAddr, String subject, String htmlText, List<File> fileList) {
+        throw new UnsupportedOperationException("Method Not Supported Yet");
+    }
+
+    public void sendHtmlMessage(String fromAddr, List<String> toAddr, String subject, String htmlText, File file) {
+        throw new UnsupportedOperationException("Method Not Supported Yet");
+    }
+
+    public void sendHtmlMessage(String fromAddr, List<String> toAddr, String subject, String htmlText, List<File> fileList) {
+        throw new UnsupportedOperationException("Method Not Supported Yet");
+    }
+
     protected String processHtmlMessage(String htmlText) {
         htmlText = htmlText.replace("\r\n", "<br/>");
         htmlText = htmlText.replace("\n", "<br/>");
         return htmlText;
     }
+
 }
