@@ -6,11 +6,13 @@
 package tw.dev.tomoaki.aki.mail.client;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import javax.mail.MessagingException;
 import javax.mail.Transport;
 import javax.mail.internet.MimeMessage;
 import tw.dev.tomoaki.aki.mail.entity.MessageFactory;
+import tw.dev.tomoaki.aki.mail.entity.MultiPartMessageFactory;
 
 /**
  *
@@ -58,20 +60,28 @@ public class SMTPClient {
         Transport.send(msg);
     }
 
-    public void sendPlainTextMessage(String fromAddr, String toAddr, String subject, String plainText, File file) {
-        throw new UnsupportedOperationException("Method Not Supported Yet");
+    public void sendPlainTextMessage(String fromAddr, String toAddr, String subject, String plainText, File file) throws MessagingException, IOException {
+        MultiPartMessageFactory multiPartMsgFactory = MultiPartMessageFactory.obtain(hostName, fromAddr);
+        MimeMessage msg = multiPartMsgFactory.addReceiver(toAddr).setupSubject(subject).appendContent(plainText).addAttachment(file).produceMessage();
+        Transport.send(msg);        
     }
 
-    public void sendPlainTextMessage(String fromAddr, String toAddr, String subject, String plainText, List<File> fileList) {
-        throw new UnsupportedOperationException("Method Not Supported Yet");
+    public void sendPlainTextMessage(String fromAddr, String toAddr, String subject, String plainText, List<File> fileList) throws MessagingException, IOException {
+        MultiPartMessageFactory multiPartMsgFactory = MultiPartMessageFactory.obtain(hostName, fromAddr);
+        MimeMessage msg = multiPartMsgFactory.addReceiver(toAddr).setupSubject(subject).appendContent(plainText).addAllAttachment(fileList).produceMessage();
+        Transport.send(msg); 
     }
 
-    public void sendPlainTextMessage(String fromAddr, List<String> toAddr, String subject, String plainText, File file) {
-        throw new UnsupportedOperationException("Method Not Supported Yet");
+    public void sendPlainTextMessage(String fromAddr, List<String> toAddr, String subject, String plainText, File file) throws MessagingException, IOException {
+        MultiPartMessageFactory multiPartMsgFactory = MultiPartMessageFactory.obtain(hostName, fromAddr);
+        MimeMessage msg = multiPartMsgFactory.addAllReceiver(toAddr).setupSubject(subject).appendContent(plainText).addAttachment(file).produceMessage();
+        Transport.send(msg); 
     }
 
-    public void sendPlainTextMessage(String fromAddr, List<String> toAddr, String subject, String plainText, List<File> fileList) {
-        throw new UnsupportedOperationException("Method Not Supported Yet");
+    public void sendPlainTextMessage(String fromAddr, List<String> toAddr, String subject, String plainText, List<File> fileList) throws MessagingException, IOException {
+        MultiPartMessageFactory multiPartMsgFactory = MultiPartMessageFactory.obtain(hostName, fromAddr);
+        MimeMessage msg = multiPartMsgFactory.addAllReceiver(toAddr).setupSubject(subject).appendContent(plainText).addAllAttachment(fileList).produceMessage();
+        Transport.send(msg); 
     }
 
     

@@ -6,6 +6,7 @@
 package tw.dev.tomoaki.aki.mail.entity;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.mail.MessagingException;
@@ -18,6 +19,9 @@ import tw.dev.tomoaki.aki.mail.helper.MessageHelper;
  */
 public class MultiPartMessageFactory {
 
+    private static final String DEFAULT_CHARSET = "UTF-8";
+    private static final String DEFAULT_CONTENT_TYPE = "text/html;charset=UTF-8";    
+    
     private String smtpHost;
     private String sender;
     private List<String> receiverList;
@@ -83,11 +87,15 @@ public class MultiPartMessageFactory {
         return this;
     }
 
-    public MimeMessage produceMessage() throws MessagingException {
+    public MimeMessage produceMessage() throws MessagingException, IOException {
         MimeMessage msg = MessageFactory.createEmptyMsg(smtpHost);
         msg = MessageHelper.setupSender(msg, sender);
         msg = MessageHelper.setupReceivers(msg, receiverList);
-        
+        if(this.attachmentList == null || this.attachmentList.isEmpty()) {
+            MessageHelper.setupHtmlContent(msg, content, DEFAULT_CONTENT_TYPE);
+        } else {
+            MessageHelper.setupMulitPartPlainTextContent(msg, content, DEFAULT_CONTENT_TYPE, attachmentList);
+        }
         return msg;
     }
     
