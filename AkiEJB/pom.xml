@@ -3,14 +3,15 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>tw.dev.tomoaki</groupId>
-        <artifactId>AkiFileUtils</artifactId>
+        <artifactId>AkiJavaUtils</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>AkiFileExplorer</artifactId>
+    <groupId>tw.dev.tomoaki.akiejb</groupId>
+    <artifactId>AkiEJB</artifactId>
     <packaging>jar</packaging>
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>18</maven.compiler.source>
+        <maven.compiler.target>18</maven.compiler.target>
+        <exec.mainClass>tw.dev.tomoaki.akiejb.AkiEJB</exec.mainClass>
     </properties>
 </project>

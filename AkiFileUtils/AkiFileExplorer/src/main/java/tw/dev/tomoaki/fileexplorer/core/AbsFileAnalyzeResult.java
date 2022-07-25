@@ -9,6 +9,6 @@ package tw.dev.tomoaki.fileexplorer.core;
  *
  * @author arche
  */
-public class AbsFileAnalyzeResult {
+public interface AbsFileAnalyzeResult {
     
 }

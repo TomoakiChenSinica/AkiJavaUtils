@@ -18,3 +18,8 @@
 /AkiFramework/AkiDataTransfer/target/
 /AkiFileUtils/AkiExcel/target/
 /AkiFileUtils/AkiArchiveFile/target/
+/AkiFileUtils/AkiFileExplorer/target/
+/AkiEJB/target/
+AkiArticle/nb-configuration.xml
+AkiFileUtils/AkiFileExplorer/nb-configuration.xml
+AkiFramework/AkiDataMiner/nb-configuration.xml
