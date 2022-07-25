@@ -97,20 +97,28 @@ public class SMTPClient {
         Transport.send(msg);
     }
 
-    public void sendHtmlMessage(String fromAddr, String toAddr, String subject, String htmlText, File file) {
-        throw new UnsupportedOperationException("Method Not Supported Yet");
+    public void sendHtmlMessage(String fromAddr, String toAddr, String subject, String htmlText, File file) throws MessagingException, IOException {
+        MultiPartMessageFactory multiPartMsgFactory = MultiPartMessageFactory.obtain(hostName, fromAddr);
+        MimeMessage msg = multiPartMsgFactory.addReceiver(toAddr).setupSubject(subject).appendContent(htmlText).addAttachment(file).produceMessage();
+        Transport.send(msg); 
     }
 
-    public void sendHtmlMessage(String fromAddr, String toAddr, String subject, String htmlText, List<File> fileList) {
-        throw new UnsupportedOperationException("Method Not Supported Yet");
+    public void sendHtmlMessage(String fromAddr, String toAddr, String subject, String htmlText, List<File> fileList) throws MessagingException, IOException {
+       MultiPartMessageFactory multiPartMsgFactory = MultiPartMessageFactory.obtain(hostName, fromAddr);
+        MimeMessage msg = multiPartMsgFactory.addReceiver(toAddr).setupSubject(subject).appendContent(htmlText).addAllAttachment(fileList).produceMessage();
+        Transport.send(msg); 
     }
 
-    public void sendHtmlMessage(String fromAddr, List<String> toAddr, String subject, String htmlText, File file) {
-        throw new UnsupportedOperationException("Method Not Supported Yet");
+    public void sendHtmlMessage(String fromAddr, List<String> toAddr, String subject, String htmlText, File file) throws MessagingException, IOException {
+        MultiPartMessageFactory multiPartMsgFactory = MultiPartMessageFactory.obtain(hostName, fromAddr);
+        MimeMessage msg = multiPartMsgFactory.addAllReceiver(toAddr).setupSubject(subject).appendContent(htmlText).addAttachment(file).produceMessage();
+        Transport.send(msg);
     }
 
-    public void sendHtmlMessage(String fromAddr, List<String> toAddr, String subject, String htmlText, List<File> fileList) {
-        throw new UnsupportedOperationException("Method Not Supported Yet");
+    public void sendHtmlMessage(String fromAddr, List<String> toAddr, String subject, String htmlText, List<File> fileList) throws MessagingException, IOException {
+        MultiPartMessageFactory multiPartMsgFactory = MultiPartMessageFactory.obtain(hostName, fromAddr);
+        MimeMessage msg = multiPartMsgFactory.addAllReceiver(toAddr).setupSubject(subject).appendContent(htmlText).addAllAttachment(fileList).produceMessage();
+        Transport.send(msg);
     }
 
     protected String processHtmlMessage(String htmlText) {

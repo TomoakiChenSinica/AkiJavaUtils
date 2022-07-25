@@ -11,7 +11,7 @@ import tw.dev.tomoaki.fileexplorer.core.AbsFileAnalyzeResult;
  *https://www.webucator.com/article/how-to-display-the-contents-of-a-directory-in-java/
  * @author arche
  */
-public class BasicFileAnalyzeResult extends AbsFileAnalyzeResult {
+public class BasicFileAnalyzeResult /*extends AbsFileAnalyzeResult*/ {
     
     private String fileName;
 }

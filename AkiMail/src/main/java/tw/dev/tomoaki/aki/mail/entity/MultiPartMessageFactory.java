@@ -97,6 +97,7 @@ public class MultiPartMessageFactory {
         } else {
             MessageHelper.setupMulitPartPlainTextContent(msg, content, DEFAULT_CONTENT_TYPE, attachmentList);
         }
+        this.doInit();
         return msg;
     }
     

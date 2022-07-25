@@ -80,7 +80,7 @@ public class MessageHelper {
              attachmentBodyPart.setHeader("Content-Type", "application/octet-stream; name=\"" + file.getName() + "\";charset=UTF-8");
              attachmentBodyPart.setHeader("Content-Disposition", "attachment; filename=\"" + URLEncoder.encode(file.getName(), "UTF-8")  + "\"" /*+ ";name=\"" + file.getName() + "\""*/); //影響瀏覽器下載?
              /*
-              
+               
              1. Content-TypeFileName 不URLEncode ，不在在後面 chartset UTF-8，會被gmail deny
              2. Content-Type 後面加UTF-8，不加URL Encode可以正常寄信，不過還是亂碼(Disposition 尚未Encode或加Charset，也未加上 charset=utf-8
              3. Content-Type 後面加UTF-8，URLEncode，會被擋信
