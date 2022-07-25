@@ -7,13 +7,8 @@ package tw.dev.tomoaki.aki.mail.helper;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.List;
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.activation.FileDataSource;
-import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
