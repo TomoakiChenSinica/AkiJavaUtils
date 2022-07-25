@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tw.dev.tomoaki.aki.mail.entity;
+package tw.dev.tomoaki.aki.mail.factory;
 
 import java.util.List;
 import javax.mail.Message;
@@ -17,7 +17,7 @@ import tw.dev.tomoaki.aki.mail.helper.MessageHelper;
  *
  * @author arche
  */
-public class MessageFactory {
+public class TextMessageFactory {
 
     private static final String DEFAULT_CHARSET = "UTF-8";
     private static final String DEFAULT_CONTENT_TYPE = "text/html;charset=UTF-8";
@@ -39,7 +39,7 @@ public class MessageFactory {
 //            message.addRecipients(Message.RecipientType.TO, toAddr);
 //        }
 //        return message;
-        MimeMessage message = MessageFactory.createEmptyMsg(smtpHost);
+        MimeMessage message = TextMessageFactory.createEmptyMsg(smtpHost);
         message = MessageHelper.setupSender(message, fromAddr);
         message = MessageHelper.setupSubject(message, subject, DEFAULT_CHARSET);
         message = MessageHelper.setupPlainTextContent(message, plainText, plainText);
@@ -57,7 +57,7 @@ public class MessageFactory {
 //        for (String toAddr : toAddrs) {
 //            message.addRecipients(Message.RecipientType.TO, toAddr);
 //        }
-        MimeMessage message = MessageFactory.createEmptyMsg(smtpHost);
+        MimeMessage message = TextMessageFactory.createEmptyMsg(smtpHost);
         message = MessageHelper.setupSender(message, fromAddr);
         message = MessageHelper.setupSubject(message, subject, DEFAULT_CHARSET);
         message = MessageHelper.setupPlainTextContent(message, plainText, plainText);
@@ -80,7 +80,7 @@ public class MessageFactory {
 ////            message.setRecipients(Message.RecipientType.TO, toAddr);
 //            message.addRecipients(Message.RecipientType.TO, toAddr);
 //        }
-        MimeMessage message = MessageFactory.createEmptyMsg(smtpHost);
+        MimeMessage message = TextMessageFactory.createEmptyMsg(smtpHost);
         message = MessageHelper.setupSender(message, fromAddr);
         message = MessageHelper.setupSubject(message, subject, DEFAULT_CHARSET);
         message = MessageHelper.setupHtmlContent(message, htmlText, DEFAULT_CONTENT_TYPE);
@@ -98,7 +98,7 @@ public class MessageFactory {
 //        for (String toAddr : toAddrs) {
 //            message.addRecipients(Message.RecipientType.TO, toAddr);
 //        }
-        MimeMessage message = MessageFactory.createEmptyMsg(smtpHost);
+        MimeMessage message = TextMessageFactory.createEmptyMsg(smtpHost);
         message = MessageHelper.setupSender(message, fromAddr);
         message = MessageHelper.setupSubject(message, subject, DEFAULT_CHARSET);
         message = MessageHelper.setupHtmlContent(message, htmlText, DEFAULT_CONTENT_TYPE);

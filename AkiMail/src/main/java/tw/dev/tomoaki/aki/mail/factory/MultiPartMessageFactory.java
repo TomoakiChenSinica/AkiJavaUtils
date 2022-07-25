@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tw.dev.tomoaki.aki.mail.entity;
+package tw.dev.tomoaki.aki.mail.factory;
 
 import java.io.File;
 import java.io.IOException;
@@ -88,14 +88,14 @@ public class MultiPartMessageFactory {
     }
 
     public MimeMessage produceMessage() throws MessagingException, IOException {
-        MimeMessage msg = MessageFactory.createEmptyMsg(smtpHost);
+        MimeMessage msg = TextMessageFactory.createEmptyMsg(smtpHost);
         msg = MessageHelper.setupSender(msg, sender);
         msg = MessageHelper.setupReceivers(msg, receiverList);
         msg = MessageHelper.setupSubject(msg, subject, DEFAULT_CHARSET);
         if(this.attachmentList == null || this.attachmentList.isEmpty()) {
             MessageHelper.setupHtmlContent(msg, content, DEFAULT_CONTENT_TYPE);
         } else {
-            MessageHelper.setupMulitPartPlainTextContent(msg, content, DEFAULT_CONTENT_TYPE, attachmentList);
+            MessageHelper.setupHtmlContentWithFile(msg, content, DEFAULT_CONTENT_TYPE, attachmentList);
         }
         this.doInit();
         return msg;

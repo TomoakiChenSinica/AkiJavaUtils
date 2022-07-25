@@ -7,7 +7,6 @@ package tw.dev.tomoaki.aki.mail.helper;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.List;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -57,36 +56,49 @@ public class MessageHelper {
         message.setContent(htmlTextContent, contentType);
         return message;
     }
-    
+
+//    public static MimeMessage setupPlainTextContent(MimeMessage message)
 //  https://www.javatpoint.com/example-of-sending-attachment-with-email-using-java-mail-api  
-    public static MimeMessage setupMulitPartPlainTextContent(MimeMessage message, String plainTextContent, String contentType, List<File> fileList) throws MessagingException, IOException {
+    public static MimeMessage setupPlainTextContentWithFile(MimeMessage message, String plainTextContent, String charSet, List<File> fileList) throws MessagingException, IOException {
         Multipart multipart = new MimeMultipart();
-        
-        MimeBodyPart plainTextContentBodyPart = new MimeBodyPart();
-        plainTextContentBodyPart.setContent(plainTextContent, contentType);
+
+//        MimeBodyPart plainTextContentBodyPart = new MimeBodyPart();
+//        plainTextContentBodyPart.setContent(plainTextContent, contentType);
+        MimeBodyPart plainTextContentBodyPart = MimeBodyPartHelper.obtain4PlainTextContent(plainTextContent, charSet);
         multipart.addBodyPart(plainTextContentBodyPart);
-        
-        for(File file : fileList) {
-            MimeBodyPart attachmentBodyPart = MimeBodyPartHelper.obtainByFile(file);
+
+        for (File file : fileList) {
+            MimeBodyPart attachmentBodyPart = MimeBodyPartHelper.obtain4File(file);
             multipart.addBodyPart(attachmentBodyPart);
         }
         message.setContent(multipart);
         return message;
     }
-    
-    public static MimeMessage setupMulitPartHtmlContent(MimeMessage message, String htmlContent, String contentType, List<File> fileList) throws MessagingException, IOException {
+
+    public static MimeMessage setupHtmlContentWithFile(MimeMessage message, String htmlContent, String contentType, List<File> fileList) throws MessagingException, IOException {
         Multipart multipart = new MimeMultipart();
+
+//        MimeBodyPart plainTextContentBodyPart = new MimeBodyPart();
+//        plainTextContentBodyPart.setContent(htmlContent, contentType);
+//        multipart.addBodyPart(plainTextContentBodyPart);
+        MimeBodyPart htmlContentBodyPart = MimeBodyPartHelper.obtain4HtmlContent(htmlContent, contentType);
+        multipart.addBodyPart(htmlContentBodyPart);
         
-        MimeBodyPart plainTextContentBodyPart = new MimeBodyPart();
-        plainTextContentBodyPart.setContent(htmlContent, contentType);
-        multipart.addBodyPart(plainTextContentBodyPart);
-        
-        for(File file : fileList) {
-            MimeBodyPart attachmentBodyPart = MimeBodyPartHelper.obtainByFile(file);
+        for (File file : fileList) {
+            MimeBodyPart attachmentBodyPart = MimeBodyPartHelper.obtain4File(file);
             multipart.addBodyPart(attachmentBodyPart);
         }
         message.setContent(multipart);
         return message;
-    }    
+    }
 
+    
+    public static MimeMessage setupBodyParts(MimeMessage message, List<MimeBodyPart> bodyPartList) throws MessagingException {
+        Multipart multipart = new MimeMultipart();
+        for(MimeBodyPart bodyPart : bodyPartList) {
+            multipart.addBodyPart(bodyPart);
+        }
+        message.setContent(multipart);
+        return message;        
+    }
 }

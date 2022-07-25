@@ -16,8 +16,21 @@ import javax.mail.internet.MimeBodyPart;
  */
 public class MimeBodyPartHelper {
  
+    public static MimeBodyPart obtain4PlainTextContent(String plainText, String charSet) throws MessagingException {
+        MimeBodyPart plainTextContentBodyPart = new MimeBodyPart();
+        plainTextContentBodyPart.setText(plainText, charSet);
+        return plainTextContentBodyPart;
+    }
+
+    public static MimeBodyPart obtain4HtmlContent(String htmlText, String contentType) throws MessagingException {
+        MimeBodyPart plainTextContentBodyPart = new MimeBodyPart();
+        plainTextContentBodyPart.setContent(htmlText, contentType);
+        return plainTextContentBodyPart;
+    }
+
     
-    public static MimeBodyPart obtainByFile(File file) throws IOException, MessagingException {
+    
+    public static MimeBodyPart obtain4File(File file) throws IOException, MessagingException {
         MimeBodyPart attachmentBodyPart = new MimeBodyPart();
         attachmentBodyPart.attachFile(file);
         attachmentBodyPart.setHeader("Content-Type", "application/octet-stream; name=\"" + file.getName() + "\";charset=UTF-8");
