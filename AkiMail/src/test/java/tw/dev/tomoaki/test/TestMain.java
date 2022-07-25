@@ -22,7 +22,7 @@ public class TestMain {
 //        List<String> receipts = Arrays.asList(strReceipts.split(";|,"));
 //        System.out.println(receipts);
         System.out.println(MailReceiptHelper.analyzeReceiptsByCommaSplit(strReceipts));
-        File file = new File("C:\\Users\\arche\\Pictures\\測試.odt");
+        File file = new File("C:\\Users\\Tomoaki Chen\\Pictures\\TEST\\image2.png");
         System.out.println(file.getName());
         SMTPClient smtpClient = SMTPClient.Factory.create();
 //        smtpClient.sendHtmlMessage("tomoaki@iis.sinica.edu.tw", "tomoaki.nccu@gmail.com", "Testing", "Hello World");
