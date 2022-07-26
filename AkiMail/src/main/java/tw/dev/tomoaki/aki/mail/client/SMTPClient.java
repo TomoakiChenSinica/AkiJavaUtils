@@ -35,12 +35,14 @@ public class SMTPClient {
         public static SMTPClient create() {
             SMTPClient client = new SMTPClient();
             client.hostName = DEFAULT_HOST;
+            client.doSetupMailProperty();            
             return client;
         }
 
         public static SMTPClient create(String hostName) {
             SMTPClient client = new SMTPClient();
             client.hostName = hostName;
+            client.doSetupMailProperty();            
             return client;
         }
 
@@ -48,8 +50,13 @@ public class SMTPClient {
             SMTPClient client = new SMTPClient();
             client.hostName = hostName;
             client.port = port;
+            client.doSetupMailProperty();
             return client;
         }
+    }
+    
+    private void doSetupMailProperty() {
+        System.setProperty("mail.mime.splitlongparameters", "false");
     }
 
     public void sendPlainTextMessage(String fromAddr, String toAddr, String subject, String plainText) throws MessagingException {
