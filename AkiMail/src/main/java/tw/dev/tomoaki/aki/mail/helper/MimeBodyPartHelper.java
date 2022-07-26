@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeUtility;
 
 /**
  *
@@ -33,8 +34,9 @@ public class MimeBodyPartHelper {
     public static MimeBodyPart obtain4File(File file) throws IOException, MessagingException {
         MimeBodyPart attachmentBodyPart = new MimeBodyPart();
         attachmentBodyPart.attachFile(file);
-        attachmentBodyPart.setHeader("Content-Type", "application/octet-stream; name=\"" + file.getName() + "\";charset=UTF-8");
-        attachmentBodyPart.setHeader("Content-Disposition", "attachment; filename=\"" + URLEncoder.encode(file.getName(), "UTF-8") + "\"" /*+ ";name=\"" + file.getName() + "\""*/); //影響瀏覽器下載?
+        String mimeFileName = MimeUtility.encodeText(file.getName(), "UTF-8", null);
+//        attachmentBodyPart.setHeader("Content-Type", "application/octet-stream; name=\"" + mimeFileName + "\"");
+        attachmentBodyPart.setHeader("Content-Disposition", "attachment; filename=\"" + mimeFileName + "\"" /*+ ";name=\"" + file.getName() + "\""*/); //影響瀏覽器下載?
         /*
                
              1. Content-TypeFileName 不URLEncode ，不在在後面 chartset UTF-8，會被gmail deny
@@ -49,6 +51,10 @@ public class MimeBodyPartHelper {
              10.兩個都不Encode變亂碼
              11. 前者encode還是亂碼
              12.前者不encode ，後者encode，後面也不用刻意加 utf-8，下載框是對的
+             13. 後者有 MimeUtlity encode後正常
+             14. 但前者如果也encode又被擋信
+             15.只留後者可以
+             16. 乾脆直接用setFileName?(未改)
          */
         return attachmentBodyPart;
     }
