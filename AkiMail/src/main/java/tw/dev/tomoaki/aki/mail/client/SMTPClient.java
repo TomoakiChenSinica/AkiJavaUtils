@@ -91,10 +91,11 @@ public class SMTPClient {
                 msg = multiPartMsgFactory.addReceiver(toAddr).setupSubject(subject).appendContent(plainText).addAllAttachment(attachmentList).produceMessage();
             } else if(attachmentData  instanceof MimeBodyPart) {
                 MimeBodyMessageFactory mimeBodyMessageFactory = MimeBodyMessageFactory.obtain(hostName, fromAddr);
-                mimeBodyMessageFactory = mimeBodyMessageFactory.addReceiver(toAddr).setupSubject(subject);
+                mimeBodyMessageFactory = mimeBodyMessageFactory.addReceiver(toAddr).setupSubject(subject).appendPlainTextBody(plainText);
                 for(Object objBodyPart : attachmentList){
                     MimeBodyPart bodyPart = (MimeBodyPart)objBodyPart;
                     mimeBodyMessageFactory.appendMimeBody(bodyPart);
+                    msg = mimeBodyMessageFactory.produceMessage();
                 }
             }
             Transport.send(msg);             
