@@ -14,16 +14,16 @@ import org.apache.commons.io.IOUtils;
  *
  * @author Tomoaki Chen
  */
-public class FileIOProcessor {
+public class FileWriteUtils {
 
-    public void writeFile(InputStream sourceFileStream, String targetFilePath) throws IOException {
+    public static void writeFile(InputStream sourceFileStream, String targetFilePath) throws IOException {
         File targetFile = new File(targetFilePath);
-        java.nio.file.Files.copy(sourceFileStream, targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);        
+        java.nio.file.Files.copy(sourceFileStream, targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
         IOUtils.closeQuietly(sourceFileStream);
     }
-    
-    public void writeFile(InputStream sourceFileStream, File targetFile) throws IOException {
-    java.nio.file.Files.copy(sourceFileStream, targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);        
-        IOUtils.closeQuietly(sourceFileStream);    
+
+    public static void writeFile(InputStream sourceFileStream, File targetFile) throws IOException {
+        java.nio.file.Files.copy(sourceFileStream, targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        IOUtils.closeQuietly(sourceFileStream);
     }
 }
