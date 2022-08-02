@@ -4,8 +4,8 @@
  */
 package tw.dev.tomoaki.main;
 
-import tw.dev.tomoaki.fileexplorer.filepath.DirFilePath;
-import tw.dev.tomoaki.fileexplorer.filepath.FilePathProvider;
+import tw.dev.tomoaki.fileexplorer.impl.filepath.DirFilePath;
+import tw.dev.tomoaki.fileexplorer.impl.filepath.FilePathProvider;
 
 /**
  *
