@@ -1,6 +1,17 @@
 # AkiJavaUtils
 Some Common Utils For Java
 
+Add Repository
+```xml
+	<repositories>
+		<repository>
+		    <id>jitpack.io</id>
+		    <url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+```
+
+
 For All Utils
 ```xml
 <dependency>
