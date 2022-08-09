@@ -19,16 +19,24 @@ public class LocaleKeyByISO3CodeMap {
 
     public LocaleKeyByISO3CodeMap() {
         theMap = new HashMap();
-//        Locale taiwanLocale = Locale.TAIWAN;
         String[] countryISOCodes = Locale.getISOCountries();
         for (String iso2Code : countryISOCodes) {
             Locale locale = new Locale("", iso2Code);
-            //            System.out.println("displayName : " + locale.getDisplayCountry(taiwanLocale) + ", ISO3 Country : " + " " + locale.getISO3Country());
             String iso3Code =  locale.getISO3Country();
             theMap.put(iso3Code, locale);            
         }
     }
     
+//    public LocaleKeyByISO3CodeMap(Locale desigLocale) {
+//        theMap = new HashMap();
+//        String[] countryISOCodes = Locale.getISOCountries();
+//        for (String iso2Code : countryISOCodes) {
+//            Locale locale = new Locale(desigLocale.getDisplayLanguage(), iso2Code);            
+//            String iso3Code =  locale.getISO3Country();
+//            theMap.put(iso3Code, locale);            
+//        }
+//    }    
+        
     public Locale getLocale(String iso3Code){
         return theMap.get(iso3Code);
     }
@@ -40,11 +48,15 @@ public class LocaleKeyByISO3CodeMap {
         return this.getLocale(iso3Code).getDisplayCountry();
     }
     
-    public String getLocaleDisplayCountryName(String iso3Code, Locale locale){
+    /**
+     * @param iso3Code 要尋找的國家的 iso3 Code 
+     * @param desigLang 指定國家名稱顯示語言， Locale.Xxxxx
+     */
+    public String getLocaleDisplayCountryName(String iso3Code, Locale desigLang){
         if(iso3Code == null || iso3Code.isEmpty()) {
             return "";
         }        
-        return this.getLocale(iso3Code).getDisplayCountry(locale);
+        return this.getLocale(iso3Code).getDisplayCountry(desigLang);
     }    
       
 }
