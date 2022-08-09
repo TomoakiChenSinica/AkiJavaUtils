@@ -17,25 +17,25 @@ public class LocaleHelper {
 
     public static List<CountryInfo> obtainChCountryInfoList() {
         List<CountryInfo> countryInfoList = new ArrayList();
-        
-        Locale twLocale = Locale.TAIWAN;        
+
+        Locale twLocale = Locale.TAIWAN;
         Locale enLocale = Locale.ENGLISH;
-        
+
         String[] countryISOCodes = Locale.getISOCountries();
         for (String iso2Code : countryISOCodes) {
             Locale locale = new Locale("", iso2Code);
             //            System.out.println("displayName : " + locale.getDisplayCountry(taiwanLocale) + ", ISO3 Country : " + " " + locale.getISO3Country());
             String iso3Code = locale.getISO3Country();
-            String displayName;                    
+            String displayName;
             String chName = locale.getDisplayCountry(twLocale);
-           String enName = locale.getDisplayCountry(enLocale);
-           displayName = chName + " / " + enName; 
-            
+            String enName = locale.getDisplayCountry(enLocale);
+            displayName = chName + " / " + enName;
+
             CountryInfo countryInfo = new CountryInfo();
             countryInfo.setDisplayName(displayName);
             countryInfo.setIso2Code(iso2Code);
             countryInfo.setIso3Code(iso3Code);
-            
+
             countryInfoList.add(countryInfo);
         }
         return countryInfoList;
