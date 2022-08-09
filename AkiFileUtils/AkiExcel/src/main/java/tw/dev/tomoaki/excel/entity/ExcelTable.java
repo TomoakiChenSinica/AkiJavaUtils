@@ -17,6 +17,13 @@
 package tw.dev.tomoaki.excel.entity;
 
 //import tw.dev.tomoaki.function.DateTimeProvider;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import java.util.List;
+import java.util.Map;
+import tw.dev.tomoaki.util.cast.JavaToJson;
+import tw.dev.tomoaki.util.cast.JsonToJava;
+
 /**
  *
  * @author tomoaki
@@ -57,6 +64,11 @@ public class ExcelTable {
             excelTable.initTable();
             return excelTable;
         }
+        
+//        public static ExcelTable create(List dataList) throws JsonProcessingException {
+//            String strDataListJson = JavaToJson.getJsonString(dataList);
+////            List<Map> mapDataList = JsonToJava.
+//        }
     }
 
 //<editor-fold defaultstate="collapsed" desc="設定/初始化變數的 methods">

@@ -23,6 +23,7 @@
         <module>AkiFileUtils</module>
         <module>AkiEJB</module>
         <module>AkiHttp</module>
+        <module>AkiCountryUtils</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
