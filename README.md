@@ -1,5 +1,6 @@
 # AkiJavaUtils
 Some Common Utils For Java
+[![](https://jitpack.io/v/TomoakiChenSinica/AkiJavaUtils.svg)](https://jitpack.io/#TomoakiChenSinica/AkiJavaUtils)
 
 Add Repository
 ```xml
