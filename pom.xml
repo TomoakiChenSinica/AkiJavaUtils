@@ -25,7 +25,9 @@
         <module>AkiHttp</module>
         <module>AkiCountryUtils</module>
     </modules>
-    <dependencies>
+    <!-- 
+    不用特別加這個，直接
+   <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>AkiSecurity</artifactId>
@@ -38,6 +40,7 @@
             <type>pom</type>
         </dependency>        
     </dependencies>
+    -->
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
