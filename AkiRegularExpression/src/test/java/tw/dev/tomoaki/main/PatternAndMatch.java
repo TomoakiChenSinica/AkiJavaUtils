@@ -15,7 +15,7 @@ import tw.dev.tomoaki.util.regularexpression.RegExpProcessor;
  * @author arche
  */
 public class PatternAndMatch {
-//
+
 //    /**
 //     * @param args the command line arguments
 //     */
