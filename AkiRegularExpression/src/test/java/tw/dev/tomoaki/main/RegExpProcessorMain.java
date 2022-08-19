@@ -16,13 +16,13 @@ import tw.dev.tomoaki.util.regularexpression.RegExpResult;
 public class RegExpProcessorMain {
 
     public static void main(String[] args) {
-        String article = "This is a book, <a>https://stackoverflow.com</a>";
+        String article = "This is a book, https://stackoverflow.com";
         String pattern = RegExpCommonPattern.PURE_HTML_URL;
         RegExpProcessor processor = RegExpProcessor.Factory.create(pattern);
         RegExpResult result = processor.processMatch(article);
         System.out.println(result.isFind());
         System.out.println(result.getGroupResults());
-        System.out.println(processor.processFormatReplace(article, "<a>%s</a>"));
+        System.out.println(processor.processFormatReplace(article, "<a href=\"" + RegExpProcessor.formatReplaceToken + "\" target=\"_blank\">" + RegExpProcessor.formatReplaceToken + " </a>"));
     }
 
     public static void testNums() {

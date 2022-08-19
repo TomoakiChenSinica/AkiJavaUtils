@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
 public class RegExpProcessor {
 
     private Pattern thePattern;
+    public static final String formatReplaceToken = "%s";
 
     protected RegExpProcessor() {
     }
@@ -51,7 +52,7 @@ public class RegExpProcessor {
      * 將尋找到的字，用指定的 pattern (可被包含進去)更換調 input
      * 
      * @param input 要進行尋找並更換的文字
-     * @param r
+     * @param formatPattern
      */
     public String processFormatReplace(String input, String formatPattern) {
         Matcher matcher = this.thePattern.matcher(input);
@@ -60,7 +61,8 @@ public class RegExpProcessor {
         if(result.isFind()) {
             List<String> groupResultList = result.getGroupResults();
             for(String groupResult : groupResultList) {
-                String partResult = String.format(formatPattern, groupResult);
+//                String partResult = String.format(formatPattern, groupResult);
+                String partResult = formatPattern.replace(formatReplaceToken, groupResult);
                 replaceResult = replaceResult.replaceAll(thePattern.pattern(), partResult);
             }
         }
