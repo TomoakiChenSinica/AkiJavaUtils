@@ -32,3 +32,4 @@ nb-configuration.xml
 /AkiHttp/target/
 AkiDataValidator/AkiIPValidator/target/classes/.netbeans_automatic_build
 AkiDataValidator/AkiIPValidator/target/test-classes/.netbeans_automatic_build
+/AkiDataUtils/target/

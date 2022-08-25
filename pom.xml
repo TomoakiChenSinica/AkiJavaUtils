@@ -24,6 +24,7 @@
         <module>AkiEJB</module>
         <module>AkiHttp</module>
         <module>AkiCountryUtils</module>
+        <module>AkiDataUtils</module>
     </modules>
     <!-- 
     不用特別加這個，直接
