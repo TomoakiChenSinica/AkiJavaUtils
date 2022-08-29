@@ -121,6 +121,14 @@ public abstract class ArticleCreator {
         this.moduleList.add(basicTokenModule);
     }
     
+    private void doModuleListRulesSetup() {
+        if(moduleList != null) {
+            moduleList.forEach(module -> {
+               
+            });
+        }
+    }
+    
     private String replaceTokens(String oriText, Map<String, String> tokensMapper) {
         String newText = oriText;
         Set<Map.Entry<String, String>> tokensMapperEntrySet = tokensMapper.entrySet();
