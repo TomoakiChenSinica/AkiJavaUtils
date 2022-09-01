@@ -5,6 +5,7 @@
  */
 package tw.dev.tomoaki.article.module.intf;
 
+import java.util.List;
 import tw.dev.tomoaki.article.ArticleCreator;
 
 /**
@@ -14,4 +15,6 @@ import tw.dev.tomoaki.article.ArticleCreator;
 public abstract class ArticleEntityDataTokenRuleModule<T> implements ArticleTokenModule {
     
     public abstract void addRule(ArticleCreator creator, T data);
+    
+    public abstract void addRule(ArticleCreator creator, List<T> dataList);
 }

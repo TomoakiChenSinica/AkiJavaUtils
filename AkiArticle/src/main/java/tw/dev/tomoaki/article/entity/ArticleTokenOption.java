@@ -48,4 +48,12 @@ public class ArticleTokenOption {
         this.description = description;
     }
 
+    @Override
+    public String toString() {
+        String format = "name= %s, token= %s, summary= %s, description= %s";
+        return String.format(format, this.name, this.token, this.summary, this.description);
+    }
+    
+   
+
 }

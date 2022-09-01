@@ -10,11 +10,12 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import tw.dev.tomoaki.article.entity.ArticleTokenOption;
 import tw.dev.tomoaki.article.helper.ArticleHelper;
 import tw.dev.tomoaki.article.module.BasicTokenModule;
-import tw.dev.tomoaki.article.module.intf.ArticleIndependentTokenRuleModule;
+import tw.dev.tomoaki.article.module.intf.ArticleEntityDataTokenRuleModule;
 import tw.dev.tomoaki.article.module.intf.ArticleTokenModule;
 //import tw.dev.tomoaki.util.DateTimeProvider;
 
@@ -39,8 +40,8 @@ public abstract class ArticleCreator {
         }
     }
 
-    protected abstract void doCustomRulesSetup();    
-    
+    protected abstract void doCustomRulesSetup();
+
     public void addTokenReplaceRule(String token, String word) {
         this.tokensReplaceMapper.put(token, word);
     }
@@ -64,13 +65,13 @@ public abstract class ArticleCreator {
         }
     }
 
-    
-//<editor-fold defaultstate="collapsed" desc="外部使用的">        
     public String getArticle(String oriText) {
         this.doCustomRulesSetup();
         String newText = this.replaceTokens(oriText, tokensReplaceMapper);
         return newText;
     }
+    
+//<editor-fold defaultstate="collapsed" desc="外部使用的">        
 
     public List<String> getTokensList() {
         List<String> tokensList = new ArrayList();
@@ -81,11 +82,11 @@ public abstract class ArticleCreator {
     public Map<String, String> getTokenMap() {
         return this.tokensReplaceMapper;
     }
-    
+
     public List<ArticleTokenOption> getTokenOptionList() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-        if(this.moduleList != null && this.moduleList.isEmpty() == false) {
+        if (this.moduleList != null && this.moduleList.isEmpty() == false) {
             List<ArticleTokenOption> optionList = new ArrayList();
-            for(ArticleTokenModule module : moduleList) {
+            for (ArticleTokenModule module : moduleList) {
                 List<ArticleTokenOption> partOptionList = ArticleHelper.obtainModuleTokenList(module);
                 optionList.addAll(partOptionList);
             }
@@ -93,13 +94,12 @@ public abstract class ArticleCreator {
         }
         return null;
     }
-    
+
     public List<ArticleTokenModule> getModuleList() {
         return this.moduleList;
     }
 //</editor-fold>
-    
-    
+
     private void doVariableInit() {
         this.tokensReplaceMapper = new LinkedHashMap();
         this.moduleList = new ArrayList();
@@ -114,21 +114,22 @@ public abstract class ArticleCreator {
 //        this.addTokenReplaceRule(TOKEN_NOW_YEAR, thisYear);
 //        this.addTokenReplaceRule(TOKEN_NOW_ROC_YEAR, taiwanThisYear);
 //    }
-
     private void doBaseReplaceRulesSetup() {
         BasicTokenModule basicTokenModule = new BasicTokenModule();
         basicTokenModule.addRule(this);
         this.moduleList.add(basicTokenModule);
     }
-    
-    private void doModuleListRulesSetup() {
-        if(moduleList != null) {
-            moduleList.forEach(module -> {
-               
-            });
-        }
-    }
-    
+
+//    private void doModuleListRulesSetup() {
+//        if(moduleList != null) {
+//            moduleList.forEach(module -> {
+//               if(Objects.equals(module.getClass(), ArticleEntityDataTokenRuleModule.class) ) {
+//                   ArticleEntityDataTokenRuleModule dataTokenModule = (ArticleEntityDataTokenRuleModule)module;
+//                   dataTokenModule.addRule(this, t);
+//               }
+//            });
+//        }
+//    }
     private String replaceTokens(String oriText, Map<String, String> tokensMapper) {
         String newText = oriText;
         Set<Map.Entry<String, String>> tokensMapperEntrySet = tokensMapper.entrySet();

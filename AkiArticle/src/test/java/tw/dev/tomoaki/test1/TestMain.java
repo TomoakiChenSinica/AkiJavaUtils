@@ -5,6 +5,7 @@
  */
 package tw.dev.tomoaki.test1;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import tw.dev.tomoaki.test1.entity.Player;
@@ -21,13 +22,20 @@ public class TestMain {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        test1();
     }
 
     private static void test1() {
-        Player player = Player.obtain("Dustin", "Ackley", 34);
-        String article = "${Player.LastName}, ${Player.FirstName} who is ${Player.Age} olds";
-        PlayerReportCreator creator = new PlayerReportCreator();
-        System.out.println(creator.getArticle(article));
+        try {
+            Player player = Player.obtain("Dustin", "Ackley", 34);
+            String article = "${Player.LastName}, ${Player.FirstName} who is ${Player.Age} olds";
+            PlayerReportCreator creator = new PlayerReportCreator();
+            System.out.println(creator.getTokenOptionList());
+            System.out.println(creator.setupPlayerInfo(player).getArticle(article));
+            
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     private static List<Player> obtainTestingList() {
