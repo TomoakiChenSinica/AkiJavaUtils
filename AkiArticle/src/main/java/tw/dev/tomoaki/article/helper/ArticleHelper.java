@@ -27,31 +27,17 @@ public class ArticleHelper {
         return fields;
     }
 
-//    public static List<String> obtainModuleTokenList(Object module) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-//        List<String> tokenList = new ArrayList();
     public static List<ArticleTokenOption> obtainModuleTokenList(Object module) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
         List<ArticleTokenOption> tokenList = new ArrayList();
         Field[] fields = ArticleHelper.obtainFields(module);
         for (Field field : fields) {
             String tokenName = field.getName();
-//            System.out.println("tokenName= " + tokenName);
             String token = field.get(module).toString();
 
             Annotation[] annotations = field.getDeclaredAnnotations();
             for (Annotation annotation : annotations) {
-//                System.out.println(annotation);
-
                 Method[] methods = annotation.annotationType().getDeclaredMethods();
-                /*
-                for(Method method : methods) {
-                    Class attrValueType = method.getReturnType();
-                    if(method.getParameterTypes().length == 0 && attrValueType!= void.class) {
-                        String attrName = method.getName();
-                        Object attrValue = method.invoke(annotation);
-                        System.out.println("attrName= " + attrName + ", attrValue= " + attrValue);
-                    }
-                }
-                 */
+                
                 ArticleTokenOption tokenOption = new ArticleTokenOption();
                 tokenOption.setName(tokenName);
                 tokenOption.setToken(token);
@@ -59,14 +45,20 @@ public class ArticleHelper {
                 if (infoList != null) {
                     for (JavaMethodInfo info : infoList) {
                         String annotationAttrName = info.getMethodName();
-                        String annotationAttrValue = info.getMethodReturnValue().toString();
+                        Object objAnnotationAttrValue = info.getMethodReturnValue();
+//                        System.out.println("objAnnotationAttrValue= " + objAnnotationAttrValue + ", type= " + objAnnotationAttrValue.getClass().getSimpleName());
                         switch (annotationAttrName) {
                             case "summary": {
-                                tokenOption.setSummary(annotationAttrValue);
+                                tokenOption.setSummary(objAnnotationAttrValue.toString());
                                 break;
                             }
                             case "description": {
-                                tokenOption.setDescription(annotationAttrValue);
+                                tokenOption.setDescription(objAnnotationAttrValue.toString());
+                                break;
+                            }
+                            case "level": {
+                                tokenOption.setLevel((Integer)objAnnotationAttrValue);
+                                break;
                             }
                         }
                     }
