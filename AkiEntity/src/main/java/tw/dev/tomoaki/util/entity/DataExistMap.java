@@ -163,4 +163,7 @@ public class DataExistMap<T> implements Serializable {
     public Integer size(){
         return dataExistMap.size();
     }    
+    
+    public void test() {
+    }
 }
