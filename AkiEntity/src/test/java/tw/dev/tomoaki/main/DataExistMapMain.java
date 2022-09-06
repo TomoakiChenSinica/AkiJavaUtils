@@ -25,17 +25,19 @@ public class DataExistMapMain {
     public static void test1() {
         Animal dog = new Animal("Dog", 4);
         Animal cat = new Animal("Cat", 4);
-        Animal bird = new Animal("Bird", 2);
+        Animal bird = new Animal("Bird", 6);
         Animal bird2 = new Animal("Bird", 2);
         
-        DataExistMap<Animal> animalExistMap = new DataExistMap();
+        DataExistMap<Animal> animalExistMap = DataExistMap.Factory.createOrdered();//new DataExistMap();
         animalExistMap.add(dog);
         animalExistMap.add(cat);
         animalExistMap.add(bird);
-        animalExistMap.add(bird);
-        
+        animalExistMap.add(bird);        
         animalExistMap.add(bird2);        
         System.out.println(animalExistMap.getDataList());
+        
+        DataExistMap<Animal> animalExistMap2 = animalExistMap.getCopy();
+        System.out.println(animalExistMap2.getDataList());        
     }
 
 }

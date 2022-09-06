@@ -23,8 +23,9 @@ public class DataRecordExistMap<T, R> {
     public void add(T key, R recordMemo) {
         DataExistMap<R> recordExistMap = theMap.get(key);
         if (recordExistMap == null) {
-            recordExistMap = new DataExistMap();
-            recordExistMap.useLinkedMap();
+//            recordExistMap = new DataExistMap();
+//            recordExistMap.useLinkedMap();
+            recordExistMap = DataExistMap.Factory.createOrdered();
         }
         recordExistMap.add(recordMemo);
         theMap.put(key, recordExistMap);
