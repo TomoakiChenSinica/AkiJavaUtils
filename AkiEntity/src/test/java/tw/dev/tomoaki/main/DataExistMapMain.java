@@ -6,6 +6,7 @@
 package tw.dev.tomoaki.main;
 
 import tw.dev.tomoaki.entity.Animal;
+import tw.dev.tomoaki.main.entity.Phylum;
 import tw.dev.tomoaki.util.entity.DataExistMap;
 
 /**
@@ -19,7 +20,8 @@ public class DataExistMapMain {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        test1();
+//        test1();
+        test2();
     }
 
     public static void test1() {
@@ -38,6 +40,17 @@ public class DataExistMapMain {
         
         DataExistMap<Animal> animalExistMap2 = animalExistMap.getCopy();
         System.out.println(animalExistMap2.getDataList());        
+    }
+    
+    public static void test2() {
+        DataExistMap<Phylum> phylumMap = new DataExistMap<Phylum>();
+        phylumMap.add(Phylum.Bryozoa);
+        phylumMap.add(Phylum.Arthropoda);
+        phylumMap.add(Phylum.Chaetognatha);
+        
+        
+        System.out.println(phylumMap.contains(Phylum.Bryozoa));
+        System.out.println(phylumMap.contains(Phylum.codeOf("Bryozoa")));
     }
 
 }
