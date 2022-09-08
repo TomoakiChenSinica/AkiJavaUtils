@@ -69,7 +69,7 @@ public abstract class ArticleCreator {
     
     public void addTokenReplaceRule(Integer desigLevel, String token, Integer num) {
         String strNum = Integer.toString(num);
-        this.tokensReplaceMapper.putdesigLevel1, token, strNum);
+        this.tokensReplaceMapper.put(desigLevel, token, strNum);
     }    
 
     public void addTokenReplaceRule(String token, Long num) {
@@ -93,7 +93,7 @@ public abstract class ArticleCreator {
 
     public String getArticle(String oriText) {
         this.doCustomRulesSetup();
-        String newText = this.replaceTokens(oriText, tokensReplaceMapper);
+        String newText = this.replaceTokens(oriText/*, tokensReplaceMapper*/);
         return newText;
     }
     
@@ -101,12 +101,12 @@ public abstract class ArticleCreator {
 
     public List<String> getTokensList() {
         List<String> tokensList = new ArrayList();
-        tokensList.addAll(this.tokensReplaceMapper.keySet());
+        tokensList.addAll(this.tokensReplaceMapper.getFlatTokenList());
         return tokensList;
     }
 
     public Map<String, String> getTokenMap() {
-        return this.tokensReplaceMapper;
+        return this.tokensReplaceMapper.getFlatTokenReplaceMap();
     }
 
     public List<ArticleTokenOption> getTokenOptionList() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
@@ -137,14 +137,17 @@ public abstract class ArticleCreator {
         this.moduleList.add(basicTokenModule);
     }
 
-    private String replaceTokens(String oriText, Map<String, String> tokensMapper) {
+    private String replaceTokens(String oriText/*, Map<String, String> tokensMapper*/) {
         String newText = oriText;
-        Set<Map.Entry<String, String>> tokensMapperEntrySet = tokensMapper.entrySet();
-        for (Map.Entry<String, String> tokensMapperEntry : tokensMapperEntrySet) {
-            String token = tokensMapperEntry.getKey();
-            String word = tokensMapperEntry.getValue();
-            if (token != null && word != null) {
-                newText = newText.replace(token, word);
+        List<Map<String, String>> tokensMapperList = this.tokensReplaceMapper.getTokenReplaceMapList();
+            for(Map<String, String> tokensMapper : tokensMapperList) {
+            Set<Map.Entry<String, String>> tokensMapperEntrySet = tokensMapper.entrySet();
+            for (Map.Entry<String, String> tokensMapperEntry : tokensMapperEntrySet) {
+                String token = tokensMapperEntry.getKey();
+                String word = tokensMapperEntry.getValue();
+                if (token != null && word != null) {
+                    newText = newText.replace(token, word);
+                }
             }
         }
         return newText;

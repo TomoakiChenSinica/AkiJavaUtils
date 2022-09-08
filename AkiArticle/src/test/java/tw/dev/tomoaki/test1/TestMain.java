@@ -30,7 +30,7 @@ public class TestMain {
             Player player = Player.obtain("Dustin", "Ackley", 34);
             String article = "${Player.LastName}, ${Player.FirstName} who is ${Player.Age} olds";
             PlayerReportCreator creator = new PlayerReportCreator();
-            System.out.println(creator.getTokenOptionList());
+            creator.getTokenOptionList().forEach(tokenOption -> System.out.println(tokenOption));
             System.out.println(creator.setupPlayerInfo(player).getArticle(article));
             
         } catch (Exception ex) {
