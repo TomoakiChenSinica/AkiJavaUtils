@@ -7,15 +7,13 @@ package tw.dev.tomoaki.article;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
+import tw.dev.tomoaki.article.entity.AritcleTokenMap;
 import tw.dev.tomoaki.article.entity.ArticleTokenOption;
 import tw.dev.tomoaki.article.helper.ArticleHelper;
 import tw.dev.tomoaki.article.module.BasicTokenModule;
-import tw.dev.tomoaki.article.module.intf.ArticleEntityDataTokenRuleModule;
 import tw.dev.tomoaki.article.module.intf.ArticleTokenModule;
 //import tw.dev.tomoaki.util.DateTimeProvider;
 
@@ -25,7 +23,8 @@ import tw.dev.tomoaki.article.module.intf.ArticleTokenModule;
  */
 public abstract class ArticleCreator {
 
-    private Map<String, String> tokensReplaceMapper;
+    private AritcleTokenMap tokensReplaceMapper;
+//    private Map<String, String> tokensReplaceMapper;
     protected List<ArticleTokenModule> moduleList;
 
     public ArticleCreator() {
@@ -42,26 +41,53 @@ public abstract class ArticleCreator {
 
     protected abstract void doCustomRulesSetup();
 
+//    public void addTokenReplaceRule(String token, String word) {
+//        this.tokensReplaceMapper.put(token, word);
+//    }
+//
+//    public void addTokenReplaceRule(String token, Integer num) {
+//        String strNum = Integer.toString(num);
+//        this.tokensReplaceMapper.put(token, strNum);
+//    }
+//
+//    public void addTokenReplaceRule(String token, Long num) {
+//        String strNum = Long.toString(num);
+//        this.tokensReplaceMapper.put(token, strNum);
+//    }
     public void addTokenReplaceRule(String token, String word) {
-        this.tokensReplaceMapper.put(token, word);
+        this.tokensReplaceMapper.put(1, token, word);
     }
+    
+    public void addTokenReplaceRule(Integer desigLevel, String token, String word) {
+        this.tokensReplaceMapper.put(desigLevel, token, word);
+    }    
 
     public void addTokenReplaceRule(String token, Integer num) {
         String strNum = Integer.toString(num);
-        this.tokensReplaceMapper.put(token, strNum);
+        this.tokensReplaceMapper.put(1, token, strNum);
     }
+    
+    public void addTokenReplaceRule(Integer desigLevel, String token, Integer num) {
+        String strNum = Integer.toString(num);
+        this.tokensReplaceMapper.putdesigLevel1, token, strNum);
+    }    
 
     public void addTokenReplaceRule(String token, Long num) {
         String strNum = Long.toString(num);
-        this.tokensReplaceMapper.put(token, strNum);
-    }
+        this.tokensReplaceMapper.put(1, token, strNum);
+    }    
+    
+    public void addTokenReplaceRule(Integer desigLevel, String token, Long num) {
+        String strNum = Long.toString(num);
+        this.tokensReplaceMapper.put(desigLevel, token, strNum);
+    }        
 
     public void addTokenReplaceRules(Map<String, String> tokenReplaceMapper) {
         Set<Map.Entry<String, String>> tokensMapperEntrySet = tokenReplaceMapper.entrySet();
         for (Map.Entry<String, String> tokensMapperEntry : tokensMapperEntrySet) {
             String token = tokensMapperEntry.getKey();
             String word = tokensMapperEntry.getValue();
-            this.tokensReplaceMapper.put(token, word);
+            this.tokensReplaceMapper.put(1, token, word);
         }
     }
 
@@ -101,35 +127,16 @@ public abstract class ArticleCreator {
 //</editor-fold>
 
     private void doVariableInit() {
-        this.tokensReplaceMapper = new LinkedHashMap();
+        this.tokensReplaceMapper = new AritcleTokenMap();
         this.moduleList = new ArrayList();
     }
 
-//    private void doBaseReplaceRulesSetup() {
-//        LocalDate today = LocalDate.now();
-//        Integer thisYear = today.getYear();
-//        Integer taiwanThisYear = thisYear - 1911;
-//        this.addTokenReplaceRule(TOKEN_OLD_NOW_YEAAR, thisYear);
-//        this.addTokenReplaceRule(TOKEN_OLD_ROC_YEAR, taiwanThisYear);
-//        this.addTokenReplaceRule(TOKEN_NOW_YEAR, thisYear);
-//        this.addTokenReplaceRule(TOKEN_NOW_ROC_YEAR, taiwanThisYear);
-//    }
     private void doBaseReplaceRulesSetup() {
         BasicTokenModule basicTokenModule = new BasicTokenModule();
         basicTokenModule.addRule(this);
         this.moduleList.add(basicTokenModule);
     }
 
-//    private void doModuleListRulesSetup() {
-//        if(moduleList != null) {
-//            moduleList.forEach(module -> {
-//               if(Objects.equals(module.getClass(), ArticleEntityDataTokenRuleModule.class) ) {
-//                   ArticleEntityDataTokenRuleModule dataTokenModule = (ArticleEntityDataTokenRuleModule)module;
-//                   dataTokenModule.addRule(this, t);
-//               }
-//            });
-//        }
-//    }
     private String replaceTokens(String oriText, Map<String, String> tokensMapper) {
         String newText = oriText;
         Set<Map.Entry<String, String>> tokensMapperEntrySet = tokensMapper.entrySet();
