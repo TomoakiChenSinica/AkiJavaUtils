@@ -109,6 +109,9 @@ public abstract class ArticleCreator {
         return this.tokensReplaceMapper.getFlatTokenReplaceMap();
     }
 
+    /**
+     * 要注意，這個是尚未處理過如何對應，單純設定 token 樣式、規格，但未實作 
+     */
     public List<ArticleTokenOption> getTokenOptionList() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
         if (this.moduleList != null && this.moduleList.isEmpty() == false) {
             List<ArticleTokenOption> optionList = new ArrayList();

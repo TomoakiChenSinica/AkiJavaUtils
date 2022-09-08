@@ -17,4 +17,6 @@ public abstract class ArticleEntityDataTokenRuleModule<T> implements ArticleToke
     public abstract void addRule(ArticleCreator creator, T data);
     
     public abstract void addRule(ArticleCreator creator, List<T> dataList);
+    
+//    public List<ArticleTokenOption> 
 }

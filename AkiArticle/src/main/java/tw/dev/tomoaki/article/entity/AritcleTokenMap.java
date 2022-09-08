@@ -40,7 +40,7 @@ public class AritcleTokenMap {
     
     protected Map<String, String> getDesigLevelTokenReplaceMap(Integer desigLevel) {
         Map<String, String> desigLevelTokenReplaceMap = this.tokenReplaceMapKeyByLevelMap.get(desigLevel);
-        return (desigLevelTokenReplaceMap == null) ? new HashMap() : desigLevelTokenReplaceMap;
+        return (desigLevelTokenReplaceMap == null) ? new HashMap()/*LinkedHashMap()*/ : desigLevelTokenReplaceMap;
     }
     
     public List<Integer> getLevelList() {
