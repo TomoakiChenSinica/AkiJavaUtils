@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tw.dev.tomoaki.test1.repoty;
+package tw.dev.tomoaki.test1.report;
 
 import java.util.List;
 import tw.dev.tomoaki.article.ArticleCreator;

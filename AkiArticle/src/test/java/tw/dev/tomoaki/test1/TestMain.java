@@ -9,7 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import tw.dev.tomoaki.test1.entity.Player;
-import tw.dev.tomoaki.test1.repoty.PlayerReportCreator;
+import tw.dev.tomoaki.test1.report.PlayerReportCreator;
 
 /**
  *
