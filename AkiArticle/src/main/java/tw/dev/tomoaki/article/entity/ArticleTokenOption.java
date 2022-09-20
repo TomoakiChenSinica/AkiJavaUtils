@@ -15,7 +15,8 @@ public class ArticleTokenOption {
     private String token;
     private String summary;
     private String description;
-
+    private Integer level;
+    
     public String getName() {
         return name;
     }
@@ -47,5 +48,23 @@ public class ArticleTokenOption {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+    
+    
+
+    @Override
+    public String toString() {
+        String format = "name= %s, token= %s, summary= %s, description= %s, level= %s";
+        return String.format(format, this.name, this.token, this.summary, this.description, this.level);
+    }
+    
+   
 
 }

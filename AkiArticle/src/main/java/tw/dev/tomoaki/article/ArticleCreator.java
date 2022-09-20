@@ -5,17 +5,18 @@
  */
 package tw.dev.tomoaki.article;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+import tw.dev.tomoaki.article.entity.AritcleTokenMap;
 import tw.dev.tomoaki.article.entity.ArticleTokenOption;
+import tw.dev.tomoaki.article.exception.ArticleCreatorException;
 import tw.dev.tomoaki.article.helper.ArticleHelper;
 import tw.dev.tomoaki.article.module.BasicTokenModule;
-import tw.dev.tomoaki.article.module.intf.ArticleIndependentTokenRuleModule;
 import tw.dev.tomoaki.article.module.intf.ArticleTokenModule;
+import tw.dev.tomoaki.util.entity.extend.PairDataDiff;
 //import tw.dev.tomoaki.util.DateTimeProvider;
 
 /**
@@ -24,7 +25,8 @@ import tw.dev.tomoaki.article.module.intf.ArticleTokenModule;
  */
 public abstract class ArticleCreator {
 
-    private Map<String, String> tokensReplaceMapper;
+    private AritcleTokenMap tokensReplaceMapper;
+//    private Map<String, String> tokensReplaceMapper;
     protected List<ArticleTokenModule> moduleList;
 
     public ArticleCreator() {
@@ -39,98 +41,134 @@ public abstract class ArticleCreator {
         }
     }
 
-    protected abstract void doCustomRulesSetup();    
-    
+    protected abstract void doCustomRulesSetup();
+
     public void addTokenReplaceRule(String token, String word) {
-        this.tokensReplaceMapper.put(token, word);
+        this.tokensReplaceMapper.put(1, token, word);
+    }      
+
+    public void addTokenReplaceRule(Integer desigLevel, String token, String word) {
+        this.tokensReplaceMapper.put(desigLevel, token, word);
     }
 
+    
+    
     public void addTokenReplaceRule(String token, Integer num) {
         String strNum = Integer.toString(num);
-        this.tokensReplaceMapper.put(token, strNum);
+        this.tokensReplaceMapper.put(1, token, strNum);
     }
 
+    public void addTokenReplaceRule(Integer desigLevel, String token, Integer num) {
+        String strNum = Integer.toString(num);
+        this.tokensReplaceMapper.put(desigLevel, token, strNum);
+    }
+    
+
+    
     public void addTokenReplaceRule(String token, Long num) {
         String strNum = Long.toString(num);
-        this.tokensReplaceMapper.put(token, strNum);
+        this.tokensReplaceMapper.put(1, token, strNum);
     }
 
+    public void addTokenReplaceRule(Integer desigLevel, String token, Long num) {
+        String strNum = Long.toString(num);
+        this.tokensReplaceMapper.put(desigLevel, token, strNum);
+    }
+    
+
+    
     public void addTokenReplaceRules(Map<String, String> tokenReplaceMapper) {
         Set<Map.Entry<String, String>> tokensMapperEntrySet = tokenReplaceMapper.entrySet();
         for (Map.Entry<String, String> tokensMapperEntry : tokensMapperEntrySet) {
             String token = tokensMapperEntry.getKey();
             String word = tokensMapperEntry.getValue();
-            this.tokensReplaceMapper.put(token, word);
+            this.tokensReplaceMapper.put(1, token, word);
         }
     }
 
-    
-//<editor-fold defaultstate="collapsed" desc="外部使用的">        
     public String getArticle(String oriText) {
         this.doCustomRulesSetup();
-        String newText = this.replaceTokens(oriText, tokensReplaceMapper);
+        this.doValidateTokenImpl();
+        String newText = this.replaceTokens(oriText/*, tokensReplaceMapper*/);
         return newText;
     }
 
-    public List<String> getTokensList() {
+    public List<ArticleTokenModule> getModuleList() {
+        return this.moduleList;
+    }
+
+    /**
+     * 要注意，這個是尚未處理過如何對應，單純設定 token 樣式、規格，但未實作
+     */
+    public List<ArticleTokenOption> getTokenOptionList() {
+        try {
+            if (this.moduleList != null && this.moduleList.isEmpty() == false) {
+                List<ArticleTokenOption> optionList = new ArrayList();
+                for (ArticleTokenModule module : moduleList) {
+                    List<ArticleTokenOption> partOptionList = ArticleHelper.obtainModuleTokenList(module);
+                    optionList.addAll(partOptionList);
+                }
+                return optionList;
+            }
+        } catch (Exception ex) {
+            throw new ArticleCreatorException(ex);
+        }
+        return null;
+    }
+
+    public List<String> getOptionalTokenList() {
+        List<String> optionalTokenList = this.getTokenOptionList().stream().map(articleTokenOption -> articleTokenOption.getToken()).collect(Collectors.toList());
+        return optionalTokenList;
+    }
+
+    public List<String> getImplTokenList() {
         List<String> tokensList = new ArrayList();
-        tokensList.addAll(this.tokensReplaceMapper.keySet());
+        tokensList.addAll(this.tokensReplaceMapper.getFlatTokenList());
         return tokensList;
     }
 
     public Map<String, String> getTokenMap() {
-        return this.tokensReplaceMapper;
-    }
-    
-    public List<ArticleTokenOption> getTokenOptionList() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-        if(this.moduleList != null && this.moduleList.isEmpty() == false) {
-            List<ArticleTokenOption> optionList = new ArrayList();
-            for(ArticleTokenModule module : moduleList) {
-                List<ArticleTokenOption> partOptionList = ArticleHelper.obtainModuleTokenList(module);
-                optionList.addAll(partOptionList);
-            }
-            return optionList;
-        }
-        return null;
-    }
-    
-    public List<ArticleTokenModule> getModuleList() {
-        return this.moduleList;
-    }
-//</editor-fold>
-    
-    
-    private void doVariableInit() {
-        this.tokensReplaceMapper = new LinkedHashMap();
-        this.moduleList = new ArrayList();
+        return this.tokensReplaceMapper.getFlatTokenReplaceMap();
     }
 
-//    private void doBaseReplaceRulesSetup() {
-//        LocalDate today = LocalDate.now();
-//        Integer thisYear = today.getYear();
-//        Integer taiwanThisYear = thisYear - 1911;
-//        this.addTokenReplaceRule(TOKEN_OLD_NOW_YEAAR, thisYear);
-//        this.addTokenReplaceRule(TOKEN_OLD_ROC_YEAR, taiwanThisYear);
-//        this.addTokenReplaceRule(TOKEN_NOW_YEAR, thisYear);
-//        this.addTokenReplaceRule(TOKEN_NOW_ROC_YEAR, taiwanThisYear);
-//    }
+//</editor-fold>
+//<editor-fold defaultstate="collapsed" desc="內部初始化、設定變數">
+    private void doVariableInit() {
+        this.tokensReplaceMapper = new AritcleTokenMap();
+        this.moduleList = new ArrayList();
+    }
 
     private void doBaseReplaceRulesSetup() {
         BasicTokenModule basicTokenModule = new BasicTokenModule();
         basicTokenModule.addRule(this);
         this.moduleList.add(basicTokenModule);
     }
-    
-    private String replaceTokens(String oriText, Map<String, String> tokensMapper) {
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="內部輔助">
+    private String replaceTokens(String oriText/*, Map<String, String> tokensMapper*/) {
         String newText = oriText;
-        Set<Map.Entry<String, String>> tokensMapperEntrySet = tokensMapper.entrySet();
-        for (Map.Entry<String, String> tokensMapperEntry : tokensMapperEntrySet) {
-            String token = tokensMapperEntry.getKey();
-            String word = tokensMapperEntry.getValue();
-            if (token != null && word != null) {
-                newText = newText.replace(token, word);
+        List<Map<String, String>> tokensMapperList = this.tokensReplaceMapper.getTokenReplaceMapList();
+        for (Map<String, String> tokensMapper : tokensMapperList) {
+            Set<Map.Entry<String, String>> tokensMapperEntrySet = tokensMapper.entrySet();
+            for (Map.Entry<String, String> tokensMapperEntry : tokensMapperEntrySet) {
+                String token = tokensMapperEntry.getKey();
+                String word = tokensMapperEntry.getValue();
+                if (token != null && word != null) {
+                    newText = newText.replace(token, word);
+                }
             }
         }
         return newText;
     }
+
+    private void doValidateTokenImpl() {
+        List<String> optionalTokenList = this.getOptionalTokenList();
+        List<String> implTokenList = this.getImplTokenList();
+        PairDataDiff diff =  PairDataDiff.Factory.create(optionalTokenList, implTokenList);
+        if(diff.getLessDataList() != null && diff.getLessDataList().isEmpty() == false) {
+            System.err.println(diff.getLessDataList() + " Not Implement Yet");
+        }
+    }
+//</editor-fold>
 }

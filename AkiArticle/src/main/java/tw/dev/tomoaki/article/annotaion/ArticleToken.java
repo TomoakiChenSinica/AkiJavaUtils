@@ -16,6 +16,6 @@ import java.lang.annotation.RetentionPolicy;
 public @interface ArticleToken {
 
     String summary() default "";
-
     String description() default "";
+    int level() default 1; //java 除了一般變數型態，其他只吃 String, Class
 }
