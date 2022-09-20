@@ -6,6 +6,8 @@
 package tw.dev.tomoaki.test1.report;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import tw.dev.tomoaki.article.ArticleCreator;
 import tw.dev.tomoaki.article.annotaion.ArticleToken;
 import tw.dev.tomoaki.article.module.intf.ArticleEntityDataTokenRuleModule;
@@ -35,9 +37,17 @@ public class PlayerTokenModule extends ArticleEntityDataTokenRuleModule<Player>{
     }
 
     @Override
-    public void addRule(ArticleCreator creator, List<Player> dataList) {
-         String standardReport = "";
-         for(Player player : dataList) {
+    public void addRule(ArticleCreator creator, List<Player> dataList, Map<String, String> childArticleMap) {
+//         String standardReport = "";
+         if(childArticleMap != null) {
+             String standardReport = childArticleMap.get(TOKEN_PLAYER_INFO_LIST);
+             if(standardReport != null) {
+                 creator.addTokenReplaceRule(2, TOKEN_PLAYER_INFO_LIST, standardReport);
+             }             
+         }
+         Integer listLength = dataList.size();
+         for(Integer index = 0; index < listLength ; index++) {
+             Player player = dataList.get(index);
              
          }
     }

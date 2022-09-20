@@ -37,7 +37,7 @@ public class PlayerReportCreator extends ArticleCreator {
     
     public PlayerReportCreator setupPlayerInfo(Player player) {       
         this.playerTokenModule.addRule(this, player);
-        this.playerTokenModule.addRule(this, Arrays.asList(player));
+//        this.playerTokenModule.addRule(this, Arrays.asList(player));
         return this;
     }
     

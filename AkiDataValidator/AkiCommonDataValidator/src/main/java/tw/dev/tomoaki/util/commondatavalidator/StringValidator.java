@@ -15,4 +15,22 @@ public class StringValidator {
         return text != null && !text.isEmpty();
     }
     
+    
+    public static Boolean isHtmlEmpty(String htmlText) {
+//        if(htmlText==null)
+//            return true;
+//        
+//        String tmp = htmlText;
+//        
+//        tmp = StringEscapeUtils.unescapeHtml(tmp);
+//        
+//        tmp = tmp.replace("\r", "");
+//        tmp = tmp.replace("\n", "");
+//        
+//        tmp = tmp.replaceAll("<(\\\\){0,1}.*?>", "");
+//        tmp = tmp.replaceAll("([\\s\\t\\f\\n\\u00A0]+)", "");
+//        
+//        return tmp.isEmpty();
+        return null;
+    }
 }

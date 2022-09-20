@@ -43,28 +43,16 @@ public abstract class ArticleCreator {
 
     protected abstract void doCustomRulesSetup();
 
-//<editor-fold defaultstate="collapsed" desc="外部使用的">        
-//    public void addTokenReplaceRule(String token, String word) {
-//        this.tokensReplaceMapper.put(token, word);
-//    }
-//
-//    public void addTokenReplaceRule(String token, Integer num) {
-//        String strNum = Integer.toString(num);
-//        this.tokensReplaceMapper.put(token, strNum);
-//    }
-//
-//    public void addTokenReplaceRule(String token, Long num) {
-//        String strNum = Long.toString(num);
-//        this.tokensReplaceMapper.put(token, strNum);
-//    }
     public void addTokenReplaceRule(String token, String word) {
         this.tokensReplaceMapper.put(1, token, word);
-    }
+    }      
 
     public void addTokenReplaceRule(Integer desigLevel, String token, String word) {
         this.tokensReplaceMapper.put(desigLevel, token, word);
     }
 
+    
+    
     public void addTokenReplaceRule(String token, Integer num) {
         String strNum = Integer.toString(num);
         this.tokensReplaceMapper.put(1, token, strNum);
@@ -74,7 +62,9 @@ public abstract class ArticleCreator {
         String strNum = Integer.toString(num);
         this.tokensReplaceMapper.put(desigLevel, token, strNum);
     }
+    
 
+    
     public void addTokenReplaceRule(String token, Long num) {
         String strNum = Long.toString(num);
         this.tokensReplaceMapper.put(1, token, strNum);
@@ -84,7 +74,9 @@ public abstract class ArticleCreator {
         String strNum = Long.toString(num);
         this.tokensReplaceMapper.put(desigLevel, token, strNum);
     }
+    
 
+    
     public void addTokenReplaceRules(Map<String, String> tokenReplaceMapper) {
         Set<Map.Entry<String, String>> tokensMapperEntrySet = tokenReplaceMapper.entrySet();
         for (Map.Entry<String, String> tokensMapperEntry : tokensMapperEntrySet) {

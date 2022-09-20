@@ -50,4 +50,7 @@ public class TestMain {
         );
         return playerList;
     }
+    
+    private static void test2() {
+    }
 }

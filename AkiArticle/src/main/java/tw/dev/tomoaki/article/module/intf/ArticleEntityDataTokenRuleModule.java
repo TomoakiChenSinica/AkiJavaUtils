@@ -6,6 +6,7 @@
 package tw.dev.tomoaki.article.module.intf;
 
 import java.util.List;
+import java.util.Map;
 import tw.dev.tomoaki.article.ArticleCreator;
 
 /**
@@ -16,7 +17,6 @@ public abstract class ArticleEntityDataTokenRuleModule<T> implements ArticleToke
     
     public abstract void addRule(ArticleCreator creator, T data);
     
-    public abstract void addRule(ArticleCreator creator, List<T> dataList);
+    public abstract void addRule(ArticleCreator creator, List<T> dataList, Map<String, String> childArticleMap);
     
-//    public List<ArticleTokenOption> 
 }
