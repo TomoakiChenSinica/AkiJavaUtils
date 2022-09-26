@@ -59,7 +59,7 @@ public class RegExpProcessor {
         RegExpResult result = RegExpResult.Factory.create(matcher); 
         String replaceResult = input;
         if(result.isFind()) {
-            List<String> groupResultList = result.getGroupResults();
+            List<String> groupResultList = result.getMatchResults();
             for(String groupResult : groupResultList) {
 //                String partResult = String.format(formatPattern, groupResult);
                 String partResult = formatPattern.replace(formatReplaceToken, groupResult);

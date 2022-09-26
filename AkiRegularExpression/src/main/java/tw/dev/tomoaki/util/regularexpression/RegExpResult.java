@@ -19,10 +19,13 @@ import java.util.stream.Stream;
 public class RegExpResult {
 
     private Boolean find;
-    private List<String> groupResults;
+//    private List<String> groupResults;
+    private List<String> matchResults;
+    private List<String> captureResults;
 
     protected RegExpResult() {
-        groupResults = new ArrayList();
+        matchResults = new ArrayList();
+        captureResults = new ArrayList();
     }
 
     public static class Factory {
@@ -31,9 +34,11 @@ public class RegExpResult {
             // formatPattern
             RegExpResult result = new RegExpResult();
             while (matcher.find()) {
-                result.groupResults.add(matcher.group());
+                result.matchResults.add(matcher.group(0));
+                if(matcher.groupCount() >= 1)
+                    result.captureResults.add(matcher.group(1));
             }
-            result.find = !result.groupResults.isEmpty();
+            result.find = !result.matchResults.isEmpty();
             return result;
         }
     }
@@ -42,8 +47,12 @@ public class RegExpResult {
         return find;
     }
 
-    public List<String> getGroupResults() {
-        return groupResults;
+    public List<String> getMatchResults() {
+        return matchResults;
+    }
+
+    public List<String> getCaptureResults() {
+        return captureResults;
     }
 
 }

@@ -31,7 +31,7 @@ public class TestMain {
         RegExpProcessor regExpProcessor = RegExpProcessor.Factory.create(ArticleHelper.REGEXP_WORD_ITERATOR);
         regExpProcessor.processMatch("<div>"
                 + "#{<div>${Participant.Name}</div> <div>${Participant.AffiDepartName}</div>}[]"
-                + "</div>").getGroupResults().forEach(result -> System.out.println(result));
+                + "</div>").getMatchResults().forEach(result -> System.out.println(result));
     }
 
     private static void test1() {
