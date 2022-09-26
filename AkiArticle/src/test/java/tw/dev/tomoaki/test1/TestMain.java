@@ -5,11 +5,12 @@
  */
 package tw.dev.tomoaki.test1;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
+import tw.dev.tomoaki.article.helper.ArticleHelper;
 import tw.dev.tomoaki.test1.entity.Player;
 import tw.dev.tomoaki.test1.report.PlayerReportCreator;
+import tw.dev.tomoaki.util.regularexpression.RegExpProcessor;
 
 /**
  *
@@ -22,7 +23,15 @@ public class TestMain {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        test1();
+//        test1();
+        test0();
+    }
+    
+    private static void test0() {
+        RegExpProcessor regExpProcessor = RegExpProcessor.Factory.create(ArticleHelper.REGEXP_WORD_ITERATOR);
+        regExpProcessor.processMatch("<div>"
+                + "#{<div>${Participant.Name}</div> <div>${Participant.AffiDepartName}</div>}[]"
+                + "</div>").getGroupResults().forEach(result -> System.out.println(result));
     }
 
     private static void test1() {

@@ -21,8 +21,11 @@ import tw.dev.tomoaki.article.entity.ArticleTokenOption;
  */
 public class ArticleHelper {
 
+    private static final String RESERVED_WORD_ITERATOR = "#{%s}[]";
+    public static final String REGEXP_WORD_ITERATOR = "#\\{.*\\}\\[\\]";
+    
+    
     protected static Field[] obtainFields(Object obj) {
-//        Field[] fields = obj.getClass().getFields();
         Field[] fields = obj.getClass().getFields();
         return fields;
     }
@@ -37,7 +40,7 @@ public class ArticleHelper {
             Annotation[] annotations = field.getDeclaredAnnotations();
             for (Annotation annotation : annotations) {
                 Method[] methods = annotation.annotationType().getDeclaredMethods();
-                
+
                 ArticleTokenOption tokenOption = new ArticleTokenOption();
                 tokenOption.setName(tokenName);
                 tokenOption.setToken(token);
@@ -57,7 +60,7 @@ public class ArticleHelper {
                                 break;
                             }
                             case "level": {
-                                tokenOption.setLevel((Integer)objAnnotationAttrValue);
+                                tokenOption.setLevel((Integer) objAnnotationAttrValue);
                                 break;
                             }
                         }
@@ -69,4 +72,7 @@ public class ArticleHelper {
         return tokenList;
     }
 
+    public static String convert2IteratorPart(String oriArticlePart) {
+        return String.format(RESERVED_WORD_ITERATOR, oriArticlePart);
+    }
 }

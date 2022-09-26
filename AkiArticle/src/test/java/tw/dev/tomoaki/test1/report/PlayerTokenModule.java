@@ -37,19 +37,8 @@ public class PlayerTokenModule extends ArticleEntityDataTokenRuleModule<Player>{
     }
 
     @Override
-    public void addRule(ArticleCreator creator, List<Player> dataList, Map<String, String> childArticleMap) {
-//         String standardReport = "";
-         if(childArticleMap != null) {
-             String standardReport = childArticleMap.get(TOKEN_PLAYER_INFO_LIST);
-             if(standardReport != null) {
-                 creator.addTokenReplaceRule(2, TOKEN_PLAYER_INFO_LIST, standardReport);
-             }             
-         }
-         Integer listLength = dataList.size();
-         for(Integer index = 0; index < listLength ; index++) {
-             Player player = dataList.get(index);
-             
-         }
+    public void addRule(ArticleCreator creator, List<Player> dataList) {
+
     }
     
     public String obtainStandardReport() {
