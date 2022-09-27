@@ -53,7 +53,9 @@ public class RegExpProcessorMain {
         Matcher matcher = pattern.matcher(strTest);
         while (matcher.find()) {
             //https://www.fooish.com/regex-regular-expression/groups-lookaround.html
-            //capture
+            //https://stackoverflow.com/questions/406230/regular-expression-to-match-a-line-that-doesnt-contain-a-word
+            //stackoverflow.com/questions/17969436/java-regex-capturing-groups
+            //capture 
             // 可能要確定一下 RegExp 的 Group、Caputre、Match定義，我是蠻習慣說， Match 是指吻合， Capture 是指 () 內的 (不過在 https://regex101.com/ 我的 Capture叫group。而在js自己 是 match[1]
 
 //            System.out.println("group0= " + matcher.group(0));
