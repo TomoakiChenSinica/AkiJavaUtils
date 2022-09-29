@@ -11,6 +11,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import tw.dev.tomoaki.article.entity.ArticleTokenMap;
 import tw.dev.tomoaki.javamethod.JavaMethodHelper;
 import tw.dev.tomoaki.javamethod.entity.JavaMethodInfo;
 import tw.dev.tomoaki.article.entity.ArticleTokenOption;
@@ -22,7 +25,8 @@ import tw.dev.tomoaki.article.entity.ArticleTokenOption;
 public class ArticleHelper {
 
     private static final String RESERVED_WORD_ITERATOR = "#{%s}[]";
-    public static final String REGEXP_WORD_ITERATOR = "#\\{.*\\}\\[\\]";
+    public static final String REGEXP_WORD_MATCH_ITERATOR = "#\\{.*\\}\\[\\]";
+    public static final String REGEXP_WORD_CAPTURE_ITERATOR = "#\\{(.*)\\}\\[\\]";
     
     
     protected static Field[] obtainFields(Object obj) {
@@ -72,6 +76,22 @@ public class ArticleHelper {
         return tokenList;
     }
 
+    public static String replaceTokens(String oriText, ArticleTokenMap articleTokenNap) {
+        String newText = oriText;
+        List<Map<String, String>> tokensMapperList = articleTokenNap.getTokenReplaceMapList();
+        for (Map<String, String> tokensMapper : tokensMapperList) {
+            Set<Map.Entry<String, String>> tokensMapperEntrySet = tokensMapper.entrySet();
+            for (Map.Entry<String, String> tokensMapperEntry : tokensMapperEntrySet) {
+                String token = tokensMapperEntry.getKey();
+                String word = tokensMapperEntry.getValue();
+                if (token != null && word != null) {
+                    newText = newText.replace(token, word);
+                }
+            }
+        }
+        return newText;
+    }
+    
     public static String convert2IteratorPart(String oriArticlePart) {
         return String.format(RESERVED_WORD_ITERATOR, oriArticlePart);
     }

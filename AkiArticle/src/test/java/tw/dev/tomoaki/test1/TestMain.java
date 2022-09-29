@@ -28,19 +28,19 @@ public class TestMain {
     }
     
     private static void test0() {
-        RegExpProcessor regExpProcessor = RegExpProcessor.Factory.create(ArticleHelper.REGEXP_WORD_ITERATOR);
-        regExpProcessor.processMatch("<div>"
+        RegExpProcessor regExpProcessor = RegExpProcessor.Factory.create(ArticleHelper.REGEXP_WORD_CAPTURE_ITERATOR);
+        regExpProcessor.processMatch("<div> \r\n"
                 + "#{<div>${Participant.Name}</div> <div>${Participant.AffiDepartName}</div>}[]"
-                + "</div>").getMatchResults().forEach(result -> System.out.println(result));
+                + "</div>").getCaptureResults().forEach(result -> System.out.println(result));
     }
 
     private static void test1() {
         try {
             Player player = Player.obtain("Dustin", "Ackley", 34);
-            String article = "${Player.LastName}, ${Player.FirstName} who is ${Player.Age} olds";
+            String article = "${Common.NowYear} ${Player.LastName}, ${Player.FirstName} who is ${Player.Age} olds";
             PlayerReportCreator creator = new PlayerReportCreator();
             
-            creator.getTokenOptionList().forEach(tokenOption -> System.out.println(tokenOption));            
+//            creator.getTokenOptionList().forEach(tokenOption -> System.out.println(tokenOption));            
             
             creator = creator.setupPlayerInfo(player);
             

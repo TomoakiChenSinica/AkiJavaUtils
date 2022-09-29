@@ -6,12 +6,11 @@
 package tw.dev.tomoaki.test1.report;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import tw.dev.tomoaki.article.ArticleCreator;
 import tw.dev.tomoaki.article.annotaion.ArticleToken;
+import tw.dev.tomoaki.article.helper.ArticleHelper;
 import tw.dev.tomoaki.article.module.intf.ArticleEntityDataTokenRuleModule;
 import tw.dev.tomoaki.test1.entity.Player;
+import tw.dev.tomoaki.util.regularexpression.RegExpProcessor;
 
 /**
  *
@@ -25,24 +24,21 @@ public class PlayerTokenModule extends ArticleEntityDataTokenRuleModule<Player>{
     public String TOKEN_PLAYER_LAST_NAME = "${Player.LastName}";
     @ArticleToken(summary="球員年型")
     public String TOKEN_PLAYER_AGE = "${Player.Age}";
-
-    @ArticleToken(summary="球員清單", level=2)
-    public String TOKEN_PLAYER_INFO_LIST = "${PlayerList,Standard}";
-    
+//
+//    @ArticleToken(summary="球員清單", level=2)
+//    public String TOKEN_PLAYER_INFO_LIST = "${PlayerList,Standard}";
+//    
     @Override
-    public void addRule(ArticleCreator creator, Player player) {
-        creator.addTokenReplaceRule(TOKEN_PLAYER_FIRST_NAME, player.getFirstName());
-        creator.addTokenReplaceRule(TOKEN_PLAYER_LAST_NAME, player.getLastName());
-        creator.addTokenReplaceRule(TOKEN_PLAYER_AGE, player.getAge());
+    public void doSetupRule(Player player) {
+        this.doAddRule(TOKEN_PLAYER_FIRST_NAME, player.getFirstName());
+        this.doAddRule(TOKEN_PLAYER_LAST_NAME, player.getLastName());
+        this.doAddRule(TOKEN_PLAYER_AGE, player.getAge());
     }
 
     @Override
-    public void addRule(ArticleCreator creator, List<Player> dataList) {
-
-    }
-    
-    public String obtainStandardReport() {
-        return "${Player.FisrtName} ${Player.LastName} is ${Player.Age} years old \n";
+    public void doSetupRule(List<Player> dataList) {
+//        RegExpProcessor regExpProcessor = RegExpProcessor.Factory.create(ArticleHelper.REGEXP_WORD_CAPTURE_ITERATOR);
+        
     }
     
 }

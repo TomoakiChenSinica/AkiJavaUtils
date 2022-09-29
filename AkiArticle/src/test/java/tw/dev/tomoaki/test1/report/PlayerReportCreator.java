@@ -5,8 +5,7 @@
  */
 package tw.dev.tomoaki.test1.report;
 
-import java.util.Arrays;
-import java.util.List;
+
 import tw.dev.tomoaki.article.ArticleCreator;
 import tw.dev.tomoaki.test1.entity.Player;
 
@@ -32,11 +31,11 @@ public class PlayerReportCreator extends ArticleCreator {
     protected void doCustomRulesSetup() {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         this.playerTokenModule = new PlayerTokenModule();
-        this.moduleList = Arrays.asList(playerTokenModule);
+        this.moduleList.add(playerTokenModule);
     }
     
     public PlayerReportCreator setupPlayerInfo(Player player) {       
-        this.playerTokenModule.addRule(this, player);
+        this.playerTokenModule.doSetupRule(player);
 //        this.playerTokenModule.addRule(this, Arrays.asList(player));
         return this;
     }

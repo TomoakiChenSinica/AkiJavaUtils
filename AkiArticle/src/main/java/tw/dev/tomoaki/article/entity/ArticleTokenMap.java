@@ -18,14 +18,37 @@ import java.util.stream.Collectors;
  *
  * @author arche
  */
-public class AritcleTokenMap {
+public class ArticleTokenMap {
     
     private Integer highestLevel;
     private Map<Integer, Map<String, String>> tokenReplaceMapKeyByLevelMap;
     
-    public AritcleTokenMap() {
+    public ArticleTokenMap() {
         this.highestLevel = 0;
         this.tokenReplaceMapKeyByLevelMap = new TreeMap(Collections.reverseOrder());
+    }
+    
+    
+//<editor-fold defaultstate="collapsed" desc="寫入的相關metdhos">
+    public void put(String token, Long longWord) {
+        this.put(1, token, longWord.toString());
+    }
+    
+    public void put(Integer level, String token, Long longWord) {
+        this.put(level, token, longWord.toString());
+    }    
+    
+    public void put(String token, Integer intWord) {
+        this.put(1, token, intWord.toString());
+    }
+    
+    public void put(Integer level, String token, Integer intWord) {
+        this.put(level, token, intWord.toString());
+    }
+    
+    
+    public void put(String token, String word) {
+        this.put(1, token, word);
     }
     
     public void put(Integer level, String token, String word) {
@@ -36,8 +59,8 @@ public class AritcleTokenMap {
         if(level > this.highestLevel) {
             highestLevel = level;
         }
-    }
-    
+    }    
+//</editor-fold>        
     protected Map<String, String> getDesigLevelTokenReplaceMap(Integer desigLevel) {
         Map<String, String> desigLevelTokenReplaceMap = this.tokenReplaceMapKeyByLevelMap.get(desigLevel);
         return (desigLevelTokenReplaceMap == null) ? new HashMap()/*LinkedHashMap()*/ : desigLevelTokenReplaceMap;
@@ -54,7 +77,7 @@ public class AritcleTokenMap {
     
     public Map<String, String> getFlatTokenReplaceMap() {
         Map<String, String> resultMap = new LinkedHashMap();
-        List<Map<String, String>> mapList = this.getTokenReplaceMapList();
+        List<Map<String, String>> mapList = this.getTokenReplaceMapList(); //將各層級的 replaceMap 串成list
         if (mapList != null) {
             for (Map<String, String> map : mapList) {
                 Set<Map.Entry<String, String>> mapEntrySet = map.entrySet();
