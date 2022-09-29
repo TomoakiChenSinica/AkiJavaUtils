@@ -17,6 +17,7 @@ import tw.dev.tomoaki.article.entity.ArticleTokenMap;
 import tw.dev.tomoaki.javamethod.JavaMethodHelper;
 import tw.dev.tomoaki.javamethod.entity.JavaMethodInfo;
 import tw.dev.tomoaki.article.entity.ArticleTokenOption;
+import tw.dev.tomoaki.article.entity.IterableArticleTokenMap;
 
 /**
  *
@@ -76,7 +77,7 @@ public class ArticleHelper {
         return tokenList;
     }
 
-    public static String replaceTokens(String oriText, ArticleTokenMap articleTokenNap) {
+    public static String replaceTokens(String oriText, IterableArticleTokenMap articleTokenNap) {
         String newText = oriText;
         List<Map<String, String>> tokensMapperList = articleTokenNap.getTokenReplaceMapList();
         for (Map<String, String> tokensMapper : tokensMapperList) {

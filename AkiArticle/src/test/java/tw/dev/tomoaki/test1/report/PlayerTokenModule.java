@@ -33,6 +33,7 @@ public class PlayerTokenModule extends ArticleEntityDataTokenRuleModule<Player>{
         this.doAddRule(TOKEN_PLAYER_FIRST_NAME, player.getFirstName());
         this.doAddRule(TOKEN_PLAYER_LAST_NAME, player.getLastName());
         this.doAddRule(TOKEN_PLAYER_AGE, player.getAge());
+        this.moduleArticleTokenMap
     }
 
     @Override

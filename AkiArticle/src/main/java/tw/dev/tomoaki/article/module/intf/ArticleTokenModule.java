@@ -41,7 +41,7 @@ public abstract class ArticleTokenModule {
     
     
     protected void doAddRule(String strToken, String word) {
-        this.moduleArticleTokenMap.put(strToken, word);
+        this.moduleArticleTokenMap.put(strToken, word);  
     }
     
     protected String obtainTokenWithIndex(String strToken, Long index) {
