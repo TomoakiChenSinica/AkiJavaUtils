@@ -13,10 +13,10 @@ import tw.dev.tomoaki.article.ArticleCreator;
  *
  * @author tomoaki
  */
-public abstract class ArticleEntityDataTokenRuleModule<T> implements ArticleTokenModule {
+public abstract class ArticleEntityDataTokenRuleModule<T> extends ArticleTokenModule {
     
     
-    public abstract void addRule(ArticleCreator creator, T data);
+    public abstract void doSetupRule(T data);
     
-    public abstract void addRule(ArticleCreator creator, List<T> dataList);        
+    public abstract void doSetupRule(List<T> dataList);        
 }

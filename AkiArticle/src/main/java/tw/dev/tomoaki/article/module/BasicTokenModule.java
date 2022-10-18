@@ -37,19 +37,22 @@ public class BasicTokenModule extends ArticleIndependentTokenRuleModule {
     
     
     @Override
-    public void addRule(ArticleCreator creator) {
+    public void doSetupRule() {
 //        LocalDate today = LocalDate.now();
 //        Integer thisYear = today.getYear();
         LocalDateTime nowDateTime = LocalDateTime.now();
         Integer thisYear = nowDateTime.getYear();
         Integer taiwanThisYear = thisYear - 1911;
-        creator.addTokenReplaceRule(TOKEN_OLD_NOW_YEAAR, thisYear);
-        creator.addTokenReplaceRule(TOKEN_OLD_ROC_YEAR, taiwanThisYear);
-        creator.addTokenReplaceRule(TOKEN_NOW_YEAR, thisYear);
-        creator.addTokenReplaceRule(TOKEN_NOW_ROC_YEAR, taiwanThisYear);
-        creator.addTokenReplaceRule(TOKEN_NOW_DATE_TIME, this.obtainDateTimeString(nowDateTime));
-        creator.addTokenReplaceRule(TOKEN_NOW_DATE_TIME_WITHOUT_SECOND, this.obtainDateTimeStringWithOutSecond(nowDateTime));        
+        
+        this.doAddRule(TOKEN_OLD_NOW_YEAAR, thisYear);
+        this.doAddRule(TOKEN_OLD_ROC_YEAR, taiwanThisYear);
+        this.doAddRule(TOKEN_NOW_YEAR, thisYear);
+        this.doAddRule(TOKEN_NOW_ROC_YEAR, taiwanThisYear);
+        this.doAddRule(TOKEN_NOW_DATE_TIME, this.obtainDateTimeString(nowDateTime));
+        this.doAddRule(TOKEN_NOW_DATE_TIME_WITHOUT_SECOND, this.obtainDateTimeStringWithOutSecond(nowDateTime));        
     }
+    
+    
     
     private String obtainDateTimeString(LocalDateTime localDateTime) {
         if(localDateTime == null) {

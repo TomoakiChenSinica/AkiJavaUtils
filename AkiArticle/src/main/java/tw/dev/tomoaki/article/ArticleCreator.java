@@ -6,11 +6,14 @@
 package tw.dev.tomoaki.article;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
-import tw.dev.tomoaki.article.entity.AritcleTokenMap;
+import static javax.management.Query.value;
+import tw.dev.tomoaki.article.entity.ArticleTokenMap;
 import tw.dev.tomoaki.article.entity.ArticleTokenOption;
 import tw.dev.tomoaki.article.exception.ArticleCreatorException;
 import tw.dev.tomoaki.article.helper.ArticleHelper;
@@ -25,9 +28,7 @@ import tw.dev.tomoaki.util.entity.extend.PairDataDiff;
  */
 public abstract class ArticleCreator {
 
-    
-    
-    private AritcleTokenMap tokensReplaceMapper;
+//    private ArticleTokenMap tokensReplaceMapper;
 //    private Map<String, String> tokensReplaceMapper;
     protected List<ArticleTokenModule> moduleList;
 
@@ -45,52 +46,10 @@ public abstract class ArticleCreator {
 
     protected abstract void doCustomRulesSetup();
 
-    public void addTokenReplaceRule(String token, String word) {
-        this.tokensReplaceMapper.put(1, token, word);
-    }      
-
-    public void addTokenReplaceRule(Integer desigLevel, String token, String word) {
-        this.tokensReplaceMapper.put(desigLevel, token, word);
-    }
-
-    
-    
-    public void addTokenReplaceRule(String token, Integer num) {
-        String strNum = Integer.toString(num);
-        this.tokensReplaceMapper.put(1, token, strNum);
-    }
-
-    public void addTokenReplaceRule(Integer desigLevel, String token, Integer num) {
-        String strNum = Integer.toString(num);
-        this.tokensReplaceMapper.put(desigLevel, token, strNum);
-    }
-    
-
-    
-    public void addTokenReplaceRule(String token, Long num) {
-        String strNum = Long.toString(num);
-        this.tokensReplaceMapper.put(1, token, strNum);
-    }
-
-    public void addTokenReplaceRule(Integer desigLevel, String token, Long num) {
-        String strNum = Long.toString(num);
-        this.tokensReplaceMapper.put(desigLevel, token, strNum);
-    }
-    
-
-    
-    public void addTokenReplaceRules(Map<String, String> tokenReplaceMapper) {
-        Set<Map.Entry<String, String>> tokensMapperEntrySet = tokenReplaceMapper.entrySet();
-        for (Map.Entry<String, String> tokensMapperEntry : tokensMapperEntrySet) {
-            String token = tokensMapperEntry.getKey();
-            String word = tokensMapperEntry.getValue();
-            this.tokensReplaceMapper.put(1, token, word);
-        }
-    }
 
     public String getArticle(String oriText) {
-        this.doCustomRulesSetup();
-        this.doValidateTokenImpl();
+//        this.doCustomRulesSetup();
+        this.doValidateTokenImpl(); //有問題
         String newText = this.replaceTokens(oriText/*, tokensReplaceMapper*/);
         return newText;
     }
@@ -123,43 +82,51 @@ public abstract class ArticleCreator {
         return optionalTokenList;
     }
 
+    /**
+     * 這個 methods 以 丟List進去來說就不合理，因為同一個 ${Player.Name}，(在資料為清單狀況下)不只一種可能
+     */
     public List<String> getImplTokenList() {
         List<String> tokensList = new ArrayList();
-        tokensList.addAll(this.tokensReplaceMapper.getFlatTokenList());
+        for (ArticleTokenModule tokenModule : this.moduleList) {
+            List<String> partList = tokenModule.getModuleArticleTokenMap().getFlatTokenList();
+            tokensList.addAll(partList);
+        }
         return tokensList;
     }
 
     public Map<String, String> getTokenMap() {
-        return this.tokensReplaceMapper.getFlatTokenReplaceMap();
+        Map<String, String> resultMap = new LinkedHashMap();
+        for (ArticleTokenModule tokenModule : this.moduleList) {
+            ArticleTokenMap moduleTokenMap = tokenModule.getModuleArticleTokenMap();
+            Map<String, String> tokenMap = moduleTokenMap.getFlatTokenReplaceMap();
+            if (tokenMap != null) {
+                for (Entry<String, String> entry : tokenMap.entrySet()) {
+                    resultMap.merge(entry.getKey(), entry.getValue(), String::concat);
+                }
+            }
+        }
+        return resultMap;
     }
 
 //</editor-fold>
 //<editor-fold defaultstate="collapsed" desc="內部初始化、設定變數">
     private void doVariableInit() {
-        this.tokensReplaceMapper = new AritcleTokenMap();
+//        this.tokensReplaceMapper = new ArticleTokenMap();
         this.moduleList = new ArrayList();
     }
 
     private void doBaseReplaceRulesSetup() {
         BasicTokenModule basicTokenModule = new BasicTokenModule();
-        basicTokenModule.addRule(this);
+        basicTokenModule.doSetupRule();
         this.moduleList.add(basicTokenModule);
     }
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="內部輔助">
-    private String replaceTokens(String oriText/*, Map<String, String> tokensMapper*/) {
+    private String replaceTokens(String oriText) {
         String newText = oriText;
-        List<Map<String, String>> tokensMapperList = this.tokensReplaceMapper.getTokenReplaceMapList();
-        for (Map<String, String> tokensMapper : tokensMapperList) {
-            Set<Map.Entry<String, String>> tokensMapperEntrySet = tokensMapper.entrySet();
-            for (Map.Entry<String, String> tokensMapperEntry : tokensMapperEntrySet) {
-                String token = tokensMapperEntry.getKey();
-                String word = tokensMapperEntry.getValue();
-                if (token != null && word != null) {
-                    newText = newText.replace(token, word);
-                }
-            }
+        for (ArticleTokenModule tokenModule : this.moduleList) {
+            newText = tokenModule.replaceToken(newText);
         }
         return newText;
     }
@@ -167,9 +134,9 @@ public abstract class ArticleCreator {
     private void doValidateTokenImpl() {
         List<String> optionalTokenList = this.getOptionalTokenList();
         List<String> implTokenList = this.getImplTokenList();
-        PairDataDiff diff =  PairDataDiff.Factory.create(optionalTokenList, implTokenList);
-        if(diff.getLessDataList() != null && diff.getLessDataList().isEmpty() == false) {
-            System.err.println(diff.getLessDataList() + " Not Implement Yet");
+        PairDataDiff diff = PairDataDiff.Factory.create(optionalTokenList, implTokenList);
+        if (diff.getLessDataList() != null && diff.getLessDataList().isEmpty() == false) {
+            System.err.println("[ArticleCreator]doValidateTokenImpl(): " + diff.getLessDataList() + " Not Implement Yet");
         }
     }
 //</editor-fold>

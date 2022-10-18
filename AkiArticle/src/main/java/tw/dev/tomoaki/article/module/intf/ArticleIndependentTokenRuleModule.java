@@ -5,13 +5,15 @@
  */
 package tw.dev.tomoaki.article.module.intf;
 
-import tw.dev.tomoaki.article.ArticleCreator;
+import tw.dev.tomoaki.article.entity.ArticleTokenMap;
+import tw.dev.tomoaki.article.helper.ArticleHelper;
 
 /**
  *
  * @author tomoaki
  */
-public abstract class ArticleIndependentTokenRuleModule implements ArticleTokenModule {
+public abstract class ArticleIndependentTokenRuleModule extends ArticleTokenModule {
+    
+    public abstract void doSetupRule();
 
-    public abstract void addRule(ArticleCreator creator);
 }
