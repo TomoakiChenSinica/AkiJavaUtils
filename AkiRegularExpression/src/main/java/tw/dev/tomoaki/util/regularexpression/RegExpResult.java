@@ -21,11 +21,12 @@ public class RegExpResult {
     private Boolean find;
 //    private List<String> groupResults;
     private List<String> matchResults;
-    private List<String> captureResults;
+//    private List<String> captureResults;
+    private RegExpCaptureMap captureResultMap;
 
     protected RegExpResult() {
         matchResults = new ArrayList();
-        captureResults = new ArrayList();
+        captureResultMap = new RegExpCaptureMap();
     }
 
     public static class Factory {
@@ -35,8 +36,13 @@ public class RegExpResult {
             RegExpResult result = new RegExpResult();
             while (matcher.find()) {
                 result.matchResults.add(matcher.group(0));
-                if(matcher.groupCount() >= 1)
-                    result.captureResults.add(matcher.group(1));
+                Integer groupCount = matcher.groupCount();
+                if (groupCount >= 1) {
+                    for (Integer order = 1; order <= groupCount; order++) {
+                        String captureResult =  matcher.group(order);
+                        result.captureResultMap.put(order,captureResult);
+                    }
+                }
             }
             result.find = !result.matchResults.isEmpty();
             return result;
@@ -52,7 +58,11 @@ public class RegExpResult {
     }
 
     public List<String> getCaptureResults() {
-        return captureResults;
+        return captureResultMap.getResultList(1);
+    }
+    
+    public List<String> getCaptureResults(Integer order) {
+        return captureResultMap.getResultList(order);
     }
 
 }
