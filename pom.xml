@@ -18,6 +18,7 @@
         <module>AkiRegularExpression</module>
         <module>AkiMail</module>
         <module>AkiDateTime</module>
+        <module>AkiDateTimeFormat</module>        
         <module>AkiGoogleCalendar</module>
         <module>AkiException</module>
         <module>AkiFileUtils</module>
