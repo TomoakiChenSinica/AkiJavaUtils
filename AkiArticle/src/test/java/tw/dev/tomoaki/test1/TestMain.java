@@ -23,8 +23,8 @@ public class TestMain {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-//        test1();
-        test0();
+        test1();
+//        test0();
     }
     
     private static void test0() {
@@ -62,4 +62,4 @@ public class TestMain {
     
     private static void test2() {
     }
-}
+}  

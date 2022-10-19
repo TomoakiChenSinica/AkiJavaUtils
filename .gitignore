@@ -33,3 +33,4 @@ nb-configuration.xml
 AkiDataValidator/AkiIPValidator/target/classes/.netbeans_automatic_build
 AkiDataValidator/AkiIPValidator/target/test-classes/.netbeans_automatic_build
 /AkiDataUtils/target/
+/AkiDateTimeFormat/target/
