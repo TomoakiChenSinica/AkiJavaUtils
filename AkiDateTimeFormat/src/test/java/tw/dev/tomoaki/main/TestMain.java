@@ -4,7 +4,9 @@
  */
 package tw.dev.tomoaki.main;
 
+import java.time.LocalDate;
 import tw.dev.tomoaki.datetimeformat.DateTimeFormatParser;
+import tw.dev.tomoaki.util.datetime.DateTimeUtil;
 
 /**
  *
@@ -14,6 +16,10 @@ public class TestMain {
     
     public static void main(String[] args) {
 //        DateTimeFormatParser.parseFormat2Date(2022, "[YYYY-1]-01-01、[YYYY+1]-01-01");
-        System.out.println(DateTimeFormatParser.parseFormat2Date("[YYYY-1]-[DD+1]-01", 2022, 1)  );
+        LocalDate desigDate = DateTimeFormatParser.parseFormat2Date("[YYYY-1]-[MM+1]-01", 2022, 12);
+        System.out.println(desigDate);
+        
+//        LocalDate standardDate = DateTimeUtil.Provider.parse2Date("2022-12-01");
+//        System.out.println(standardDate.plusYears(-1));
     }
 }
