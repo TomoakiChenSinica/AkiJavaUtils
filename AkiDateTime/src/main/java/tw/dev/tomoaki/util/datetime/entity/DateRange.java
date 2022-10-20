@@ -12,6 +12,8 @@ import tw.dev.tomoaki.util.datetime.DateTimeUtil;
 /**
  *
  * @author Tomoaki Chen
+    * Java8 的 java.time 已經有 Period 幾乎一樣的功能，此則可以考慮廢除??? (X)
+    * Period 比較適用在計算隔幾天
  */
 public class DateRange {
     
@@ -60,6 +62,7 @@ public class DateRange {
         this.endDate = endDate;
     }
         
+    
     public DateRange plusWeeks(Long weeks) {        
         LocalDate newStartDate = this.startDate == null ? null : this.startDate.plusWeeks(weeks);
         LocalDate newEndDate =  this.endDate == null ? null : this.endDate.plusWeeks(weeks);
@@ -71,6 +74,13 @@ public class DateRange {
         LocalDate newEndDate = this.endDate == null ? null : this.endDate.minusWeeks(weeks);
         return DateRange.Factory.create(newStartDate, newEndDate);
     }    
+    
+    
+    public Boolean isBetween(LocalDate desigDate) {
+        //不早於startDate --> 在startDate相等或之後 && 不婉瑜endDate -->等於或早於endDate
+        return !desigDate.isBefore(startDate) && !desigDate.isAfter(endDate);
+    }
+    
 
     @Override
     public String toString() {
