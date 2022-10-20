@@ -75,10 +75,17 @@ public class DateRange {
         return DateRange.Factory.create(newStartDate, newEndDate);
     }    
     
+    public Boolean isBefore(LocalDate desigDate) {
+        return desigDate.isBefore(startDate);
+    }
     
     public Boolean isBetween(LocalDate desigDate) {
         //不早於startDate --> 在startDate相等或之後 && 不婉瑜endDate -->等於或早於endDate
         return !desigDate.isBefore(startDate) && !desigDate.isAfter(endDate);
+    }
+    
+    public Boolean isAfter(LocalDate desigDate) {
+        return desigDate.isAfter(endDate);
     }
     
 
