@@ -27,22 +27,7 @@
         <module>AkiCountryUtils</module>
         <module>AkiDataUtils</module>
     </modules>
-    <!-- 
-    不用特別加這個，直接
-   <dependencies>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>AkiSecurity</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>AkiDataValidator</artifactId>
-            <version>${project.version}</version>
-            <type>pom</type>
-        </dependency>        
-    </dependencies>
-    -->
+
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -67,4 +52,20 @@
         </repository>
         -->
     </distributionManagement>
+    
+    <name>AkiJavaUtils</name>
+    <description>The maven main core project description</description>
+    <url>http://maven.apache.org</url>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    
+    <scm>
+        <url>https://svn.apache.org/viewvc/maven</url>
+    </scm>               
 </project>
