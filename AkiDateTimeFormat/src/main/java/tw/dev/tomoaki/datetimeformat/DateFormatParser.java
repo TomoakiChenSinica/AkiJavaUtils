@@ -15,7 +15,7 @@ import tw.dev.tomoaki.util.regularexpression.RegExpResult;
  *
  * @author tomoaki
  */
-public class DateTimeFormatParser {
+public class DateFormatParser {
 //
 
 //    private static final String YEAR_BLOCK_PATTERN = "\\[(YYYY(\\+?\\-?)[0-9]*)\\]";
@@ -28,9 +28,11 @@ public class DateTimeFormatParser {
 //    private static final String DATE_KEY = "DD(\\+)?(\\-)?[0-9]*";   
     private static final String YEAR_BLOCK_PATTERN = "\\[(YYYY(\\+?\\-?)[0-9]*)\\]";
     private static final String MONTH_BLOCK_PATTERN = "\\[(MM(\\+?\\-?)[0-9]*)\\]";
+    private static final String DAY_BLOCK_PATTERN = "\\[(DD(\\+?\\-?)[0-9]*)\\]";
 
     private static final RegExpProcessor yearBlockRegExp;
     private static final RegExpProcessor monthBlockRegExp;
+    private static final RegExpProcessor dayBlockRegExp;
     
     private static Integer addendYear;
     private static Integer addendMonth;
@@ -39,6 +41,7 @@ public class DateTimeFormatParser {
     static {  //initializer
         yearBlockRegExp = RegExpProcessor.Factory.create(YEAR_BLOCK_PATTERN);
         monthBlockRegExp = RegExpProcessor.Factory.create(MONTH_BLOCK_PATTERN);
+        dayBlockRegExp = RegExpProcessor.Factory.create(DAY_BLOCK_PATTERN);
         initVariables();
     }
 
@@ -54,10 +57,15 @@ public class DateTimeFormatParser {
         String strDate = desigFormat;
         strDate = processYearPart(annualYear, strDate);
         strDate = processMonthPart(annualMonth, strDate);
+        strDate = processDayPart(annualDay, strDate);
         
         LocalDate standardDate = DateTimeUtil.Provider.parse2Date(strDate);
         standardDate = standardDate.plusYears(addendYear);
         standardDate = standardDate.plusMonths(addendMonth);
+        standardDate = standardDate.plusDays(addendDay);
+        
+        //將公共變數初始化回去
+        initVariables();
         return standardDate;
     }
 
@@ -121,6 +129,36 @@ public class DateTimeFormatParser {
     }
 //</editor-fold>
 
+
+//<editor-fold defaultstate="collapsed" desc="處理日期(Day of Month)">
+    protected static String processDayPart(Integer annualDay, String desigFormat) {
+        String strDate = desigFormat;
+        if (annualDay == null) {
+            return strDate;
+        }
+        RegExpResult dayRegExpResult = dayBlockRegExp.processMatch(desigFormat);
+        if (dayRegExpResult.isFind()) {
+            //將日期區塊先用 指定年度(annualDay)更換
+            String match = dayRegExpResult.getMatchResults().get(0);
+            strDate = strDate.replace(match, annualDay.toString());
+            
+            //紀錄下之後要加(可能是負)的日子
+            processAddendDay(dayRegExpResult);
+        }
+        return strDate;
+    }
+
+    protected static void processAddendDay(RegExpResult dayRegExpResult) {
+        String descriptionPart = dayRegExpResult.getCaptureResults().get(0); //DD+1
+        String operatorPart = dayRegExpResult.getCaptureResults(2).get(0);
+        if (StringValidator.isValueExist(operatorPart)) {
+            String[] parts = descriptionPart.split("\\" + operatorPart);
+            String strNum = parts[1];
+            addendDay = processAddend(operatorPart, strNum);
+        }
+    }
+//</editor-fold>    
+    
     protected static Integer processAddend(String operator, String strNum) {
         Integer num2 = (StringValidator.isValueExist(strNum)) ? Integer.parseInt(strNum) : 0;
         switch (operator) {
