@@ -6,9 +6,12 @@
 package tw.dev.tomoaki.cast.main;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import tw.dev.tomoaki.cast.main.entity.Batter;
 import tw.dev.tomoaki.util.cast.JavaToJson;
+import tw.dev.tomoaki.util.cast.JsonToJava;
 
 /**
  *
@@ -19,11 +22,23 @@ public class JavaToJsonMain {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws JsonProcessingException {
-        // TODO code application logic here
+    public static void main(String[] args) throws JsonProcessingException, IOException {
+        // TODO code application logic here     
+        test2();
+    }
+
+    protected static void test1() throws JsonProcessingException {
         List list1 = Arrays.asList(1, 2, 3);
         System.out.println(JavaToJson.getJsonString(list1));
-        
     }
     
+    protected static void test2() throws JsonProcessingException, IOException {
+        Batter ackley = new Batter("Dustin", "Ackley", 0.253);
+        Batter smoak = new Batter("Justin", "Smoak", 0.232);
+        List<Batter> batterList = Arrays.asList(ackley, smoak);
+//        String jsonData = JavaToJson.getJsonString(batterList);
+//        List<Map> mapList = JsonToJava.getJavaListObject(jsonData, Map.class);
+        System.out.println(JsonToJava.convertListObjectToListMap(batterList));        
+    }
+
 }
