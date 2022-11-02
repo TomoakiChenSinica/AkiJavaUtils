@@ -6,6 +6,7 @@ package tw.dev.tomoaki.main;
 
 import java.time.LocalDate;
 import tw.dev.tomoaki.datetimeformat.DateFormatParser;
+import tw.dev.tomoaki.datetimeformat.DateFormatRangeParser;
 import tw.dev.tomoaki.util.datetime.DateTimeUtil;
 
 /**
@@ -21,5 +22,10 @@ public class TestMain {
         
 //        LocalDate standardDate = DateTimeUtil.Provider.parse2Date("2022-12-01");
 //        System.out.println(standardDate.plusYears(-1));
+
+
+        LocalDate desigDate2 = DateTimeUtil.Provider.parse2Date("2022-08-01");
+        Integer annual = DateFormatRangeParser.analyzeSimpleAnnual("[YYYY]-08-01", "[YYYY+1]-07-31", desigDate2);
+        System.out.println(annual);
     }
 }
