@@ -28,10 +28,17 @@ public class PairDataDiff<T> {
      * compare 組相對於 standard 組少了哪些資料 
      */
     protected List<T> lessDataList;
-
+    
+    
+    /**
+     * compare組 和 standard組的相同之處
+     */    
+    protected List<T> overlappingDataList;
+      
     protected PairDataDiff() {
         this.moreDataList = new ArrayList();
         this.lessDataList = new ArrayList();
+        this.overlappingDataList = new ArrayList();
     }
 
     public static class Factory {
@@ -49,13 +56,14 @@ public class PairDataDiff<T> {
             diff.compareGroup = new DataExistMap(compareList);
             diff.doSetupMoreDataList();
             diff.doSetupLessDataList();
+            diff.doSetupOverlappingDataList();
             return diff;
         }
     }
     
     /**
-     * 計算compare 組相對於 standard 組多了哪些資料  
-     * --> compare 組的在 standard中會找不到
+     * 計算compare 組相對於 standard 組多了哪些資料   <br>
+     * --> compare 組的在 standard中會找不到 <br>
      */
     protected void doSetupMoreDataList() {
         List<T> dataList = compareGroup.existList();
@@ -68,8 +76,8 @@ public class PairDataDiff<T> {
     
     // 這是一種方法，原本有想到一種是需要 實作一個 equal method，讓 T 和 T 比較是否為同
     /**
-     * 計算compare 組相對於 standard 組少了哪些資料  
-     * --> standard 組的在 compare 中會找不到
+     * 計算compare 組相對於 standard 組少了哪些資料 <br>
+     * --> standard 組的在 compare 中會找不到 <br>
      */
     protected void doSetupLessDataList() {
         List<T> dataList = this.standardGroup.existList();
@@ -80,6 +88,22 @@ public class PairDataDiff<T> {
         }
     }    
 
+    
+    /**
+     * standard 在 compare 組中找的到的。 <br>
+     * 紀錄在 overlappingDataList
+     * 
+     */
+    protected void doSetupOverlappingDataList() {
+        List<T> dataList = this.standardGroup.existList();
+        for(T data : dataList) {
+            if(this.compareGroup.contains(data) == true) {
+                this.overlappingDataList.add(data);
+            }
+        }
+    }
+    
+    
     /**
      * compare組(後面那組資料清單) 比 standard組(前面那組資料清單) 多了哪些資料
      * 
@@ -96,6 +120,15 @@ public class PairDataDiff<T> {
      */    
     public List<T> getLessDataList() {
         return lessDataList;
+    }
+
+    /**
+     * compare組(後面那組資料清單) 比 standard組(前面那組資料清單) 都有的資料
+     * 
+     * @return compare組 和 standard組 都有的資料
+     */
+    public List<T> getOverlappingDataList() {
+        return overlappingDataList;
     }
     
     
