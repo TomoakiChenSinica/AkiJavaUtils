@@ -42,7 +42,7 @@ public class TextMessageFactory {
         MimeMessage message = TextMessageFactory.createEmptyMsg(smtpHost);
         message = MessageHelper.setupSender(message, fromAddr);
         message = MessageHelper.setupSubject(message, subject, DEFAULT_CHARSET);
-        message = MessageHelper.setupPlainTextContent(message, plainText, plainText);
+        message = MessageHelper.setupPlainTextContent(message, plainText, DEFAULT_CHARSET);
         message = MessageHelper.setupReceivers(message, toAddrs);
         return message;
     }

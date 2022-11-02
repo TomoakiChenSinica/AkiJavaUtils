@@ -22,11 +22,11 @@ public class TestMain {
 //        List<String> receipts = Arrays.asList(strReceipts.split(";|,"));
 //        System.out.println(receipts);
         System.out.println(MailReceiptHelper.analyzeReceiptsByCommaSplit(strReceipts));
-        File file = new File("C:\\Users\\arche\\Pictures\\貓咪老師.jpg");
-        System.out.println(file.getName());
+//        File file = new File("C:\\Users\\arche\\Pictures\\貓咪老師.jpg");
+//        System.out.println(file.getName());
         SMTPClient smtpClient = SMTPClient.Factory.create();
 //        smtpClient.sendHtmlMessage("tomoaki@iis.sinica.edu.tw", "tomoaki.nccu@gmail.com", "Testing", "Hello World");
-        smtpClient.sendPlainTextMessage("tomoaki@iis.sinica.edu.tw", "tomoaki.nccu@gmail.com", "這是我的測試", "這張圖片如何。\r\n測試中，不要擋信RRRR。Do Re Mi Fa So LAAAAAAAAAAAAAAAaa", file);
+        smtpClient.sendPlainTextMessage("tomoaki@iis.sinica.edu.tw", "tomoaki.nccu@gmail.com", "這是我的測試", "這張圖片如何。\r\n   測試中，不要擋信RRRR。Do Re Mi Fa So LAAAAAAAAAAAAAAAaa");
 
     }
 }
