@@ -28,8 +28,8 @@ public class MultiPartMessageFactory {
     private List<String> receiverList;
     private String subject;
     private String content;
-//    private List<File> attachmentList;
-    private List attachmentList;
+    private List<File> attachmentList;
+//    private List attachmentList;
 
     protected MultiPartMessageFactory() {
     }
@@ -97,12 +97,7 @@ public class MultiPartMessageFactory {
         if (this.attachmentList == null || this.attachmentList.isEmpty()) {
             msg = MessageHelper.setupHtmlContent(msg, content, DEFAULT_CONTENT_TYPE);
         } else {
-            Object objAttachment = this.attachmentList.get(0);
-            if (objAttachment instanceof File) {
-                msg = MessageHelper.setupHtmlContentWithFile(msg, content, DEFAULT_CONTENT_TYPE, attachmentList);
-            } else if (objAttachment instanceof MimeBodyPart) {
-                msg = MessageHelper.setupBodyParts(msg, attachmentList);
-            }
+            msg = MessageHelper.setupHtmlContentWithFile(msg, content, DEFAULT_CONTENT_TYPE, attachmentList);
         }
         this.doInit(); //這個是清空暫存在這裏面的 subject、content。而不是 MimeMessage裡面的
         return msg;

@@ -17,6 +17,8 @@ import tw.dev.tomoaki.aki.mail.helper.MimeBodyPartHelper;
 /**
  *
  * @author Tomoaki Chen
+ * 
+ * for 純文字 --> 好像也不對
  */
 public class MimeBodyMessageFactory {
 
