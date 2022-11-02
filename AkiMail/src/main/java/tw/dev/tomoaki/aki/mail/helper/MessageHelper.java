@@ -90,11 +90,13 @@ public class MessageHelper {
         }
         message.setContent(multipart);
         return message;
-    }
+    }        
 
     
     public static MimeMessage setupBodyParts(MimeMessage message, List<MimeBodyPart> bodyPartList) throws MessagingException {
-        Multipart multipart = new MimeMultipart();
+        Multipart multipart = new MimeMultipart();        
+//        MimeBodyPart htmlContentBodyPart = MimeBodyPartHelper.obtain4HtmlContent(htmlContent, contentType);
+//        multipart.addBodyPart(htmlContentBodyPart);               
         for(MimeBodyPart bodyPart : bodyPartList) {
             multipart.addBodyPart(bodyPart);
         }
