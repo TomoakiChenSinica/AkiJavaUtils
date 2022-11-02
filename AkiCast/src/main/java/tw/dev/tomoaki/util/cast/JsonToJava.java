@@ -12,8 +12,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.MapType;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -70,6 +72,14 @@ public class JsonToJava<T> {   //要加在這裡
         JsonFactory jsonFactory = new JsonFactory();
         JsonParser jp = jsonFactory.createParser(json);
         ObjectMapper mapper = new ObjectMapper();
+//        ObjectMapper mapper = JsonMapper.builder()
+//                .addModule(new JavaTimeModule())
+//                .build();
+        /*
+        https://stackoverflow.com/questions/27952472/serialize-deserialize-java-8-java-time-with-jackson-json-mapper
+        https://github.com/FasterXML/jackson-modules-java8/wiki#artifacts  --> jackson-datatype-jsr310
+        https://github.com/FasterXML/jackson-modules-java8/tree/2.14/datetime
+        */
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         CollectionType collectionType = mapper.getTypeFactory().constructCollectionType(List.class, objectType);
         javaListObject = mapper.readValue(jp, collectionType);
