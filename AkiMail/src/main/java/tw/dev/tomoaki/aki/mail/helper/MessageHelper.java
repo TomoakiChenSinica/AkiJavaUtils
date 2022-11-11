@@ -30,7 +30,6 @@ public class MessageHelper {
 
     public static MimeMessage setupReceivers(MimeMessage message, String... toAddrs) throws MessagingException {
         for (String toAddr : toAddrs) {
-            System.out.println(toAddr);            
             message.addRecipients(Message.RecipientType.TO, toAddr);
         }
         return message;

@@ -44,6 +44,11 @@ public class DateTimeUtil {
     private static final DateTimeFormatter DEFAULT_DATE_FORMMATTER = DateTimeUtil.Provider.obtainFormatter(DEFAULT_DATE_FORMAT);
     private static final DateTimeFormatter DEFAULT_TIME_FORMMATTER = DateTimeUtil.Provider.obtainFormatter(DEFAULT_TIME_FORMAT);
 
+//    public static Date MIN_UTIL_DATE = DateTimeUtil.Converter.convert(LocalDateTime.MIN);
+//    public static Date MAX_UTIL_DATE = DateTimeUtil.Converter.convert(LocalDateTime.MAX);
+    public static Date MIN_UTIL_DATE = new Date(Long.MIN_VALUE);
+    public static Date MAX_UTIL_DATE = new Date(Long.MAX_VALUE);
+    
     /**
      *
      */

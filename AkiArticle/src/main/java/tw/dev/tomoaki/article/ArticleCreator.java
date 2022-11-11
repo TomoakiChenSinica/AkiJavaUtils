@@ -25,11 +25,10 @@ import tw.dev.tomoaki.util.entity.extend.PairDataDiff;
  */
 public abstract class ArticleCreator {
 
-    
-    
     private AritcleTokenMap tokensReplaceMapper;
 //    private Map<String, String> tokensReplaceMapper;
     protected List<ArticleTokenModule> moduleList;
+    protected Boolean printLog = false;
 
     public ArticleCreator() {
         this.doVariableInit();
@@ -47,14 +46,12 @@ public abstract class ArticleCreator {
 
     public void addTokenReplaceRule(String token, String word) {
         this.tokensReplaceMapper.put(1, token, word);
-    }      
+    }
 
     public void addTokenReplaceRule(Integer desigLevel, String token, String word) {
         this.tokensReplaceMapper.put(desigLevel, token, word);
     }
 
-    
-    
     public void addTokenReplaceRule(String token, Integer num) {
         String strNum = Integer.toString(num);
         this.tokensReplaceMapper.put(1, token, strNum);
@@ -64,9 +61,7 @@ public abstract class ArticleCreator {
         String strNum = Integer.toString(num);
         this.tokensReplaceMapper.put(desigLevel, token, strNum);
     }
-    
 
-    
     public void addTokenReplaceRule(String token, Long num) {
         String strNum = Long.toString(num);
         this.tokensReplaceMapper.put(1, token, strNum);
@@ -76,9 +71,7 @@ public abstract class ArticleCreator {
         String strNum = Long.toString(num);
         this.tokensReplaceMapper.put(desigLevel, token, strNum);
     }
-    
 
-    
     public void addTokenReplaceRules(Map<String, String> tokenReplaceMapper) {
         Set<Map.Entry<String, String>> tokensMapperEntrySet = tokenReplaceMapper.entrySet();
         for (Map.Entry<String, String> tokensMapperEntry : tokensMapperEntrySet) {
@@ -165,12 +158,14 @@ public abstract class ArticleCreator {
     }
 
     private void doValidateTokenImpl() {
-        List<String> optionalTokenList = this.getOptionalTokenList();
-        List<String> implTokenList = this.getImplTokenList();
-        PairDataDiff diff =  PairDataDiff.Factory.create(optionalTokenList, implTokenList);
-        if(diff.getLessDataList() != null && diff.getLessDataList().isEmpty() == false) {
-            System.err.println(diff.getLessDataList() + " Not Implement Yet");
+        if (this.printLog) {
+            List<String> optionalTokenList = this.getOptionalTokenList();
+            List<String> implTokenList = this.getImplTokenList();
+            PairDataDiff diff = PairDataDiff.Factory.create(optionalTokenList, implTokenList);
+            if (diff.getLessDataList() != null && diff.getLessDataList().isEmpty() == false) {
+                System.err.println(diff.getLessDataList() + " Not Implement Yet");
+            }
         }
     }
 //</editor-fold>
-}
+    }
