@@ -53,7 +53,7 @@ public class CCSInlinerTestMain1 {
                 + "test2 \n"
                 + "</div> \n";   
         System.out.println("html= \n" + html);
-        AkiCSSInliner inliner = new AkiCSSInliner();
+        AkiCSSInliner inliner = AkiCSSInliner.Factory.create();
         ///System.out.println( JavaToJson.getJsonString(inliner.obtainRuleList(html)) );
         String newHtml = inliner.inlineStyle(html);
         System.out.println("newHtml= \n" + newHtml);
