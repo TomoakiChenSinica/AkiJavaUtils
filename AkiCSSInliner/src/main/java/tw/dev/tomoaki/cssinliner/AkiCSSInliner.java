@@ -56,26 +56,37 @@ public class AkiCSSInliner {
 //        Document doc = Jsoup.parse(html, Parser.xmlParser());
 //        Document doc = Jsoup.parseBodyFragment(html);
         List<CSSElement> cssElementList = this.obtainRuleList(doc);
-//        cssElementList.forEach(cssElement -> System.out.println(cssElement.toInlineStyle()) );
+//        cssElementList.forEach(cssElement -> {
+//            System.out.println(cssElement.getSelector());
+//            System.out.println(cssElement.toInlineStyle());            
+//        });
         for (CSSElement cssElement : cssElementList) {
             String cssSelector = cssElement.getSelector();
             String cssInlineStyle = cssElement.toInlineStyle();
             Elements elements = doc.select(cssSelector);
             elements = HtmlDocumentHelper.appendInlineStyle(elements, cssInlineStyle);
 //            elements.forEach(element -> System.out.println(element));
-            this.tryRemoveClass(elements, cssSelector);
+//            this.tryRemoveClass(elements, cssSelector);
             this.tryRemoveStyleElement(doc);
         }
+        doc = this.tryRemoveClass(doc);
         return doc.toString();
     }
-
-    protected Elements tryRemoveClass(Elements elements, String cssClassSelector) {
-        if (removeClass) {
-            String cssClassName = cssClassSelector.replace("*.", "");
-            elements = elements.removeClass(cssClassName);
+    
+    protected Document tryRemoveClass(Document doc) {
+        if(this.removeClass) {
+            doc.select("[class]").removeAttr("class");
         }
-        return elements;
+        return doc;
     }
+
+//    protected Elements tryRemoveClass(Elements elements, String cssClassSelector) {
+//        if (removeClass) {
+//            String cssClassName = cssClassSelector.replace("*.", "");
+//            elements = elements.removeClass(cssClassName);
+//        }
+//        return elements;
+//    }
 
     protected void tryRemoveStyleElement(Document doc) {
         if (removeStyleElement) {

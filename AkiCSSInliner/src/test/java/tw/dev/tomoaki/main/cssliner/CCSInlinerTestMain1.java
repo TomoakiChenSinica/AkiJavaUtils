@@ -33,10 +33,13 @@ public class CCSInlinerTestMain1 {
 //                + "<div class=\"hightlight bold\"> \n"
 //                + "test \n"
 //                + "</div> \n";
-        String html = "<style>"
-                + ".highlight { \n"
-                + " color: red; \n"
+        String html = "<style> \n"                
+                + ".frame > .container > .highlight { \n"
+                + "  color: blue; \n"
                 + "} \n"
+//                + ".highlight { \n"
+//                + " color: red; \n"
+//                + "} \n"
                 + ".bigger {\n"
                 + "  font-size:12px;"
                 + "} \n"
@@ -46,16 +49,21 @@ public class CCSInlinerTestMain1 {
                 + " font-weight: bold; \n"
                 + "} \n"
                 + "</style> \n"
+                + "<div class=\"frame\">"
+                + "<div class=\"container\">"
                 + "<div class=\"highlight bold\" style=\"font-size: 24px;\"> \n"
                 + "test \n"
                 + "</div> \n"
                 + "<div class=\"highlight bigger\"> \n"
                 + "test2 \n"
-                + "</div> \n";   
+                + "</div> \n"
+                + "</div>"
+                + "</div>";   
         System.out.println("html= \n" + html);
         AkiCSSInliner inliner = AkiCSSInliner.Factory.create();
         ///System.out.println( JavaToJson.getJsonString(inliner.obtainRuleList(html)) );
         String newHtml = inliner.inlineStyle(html);
+        System.out.println("========================================================= ");
         System.out.println("newHtml= \n" + newHtml);
     }
     
