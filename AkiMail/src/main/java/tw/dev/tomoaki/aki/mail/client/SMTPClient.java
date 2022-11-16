@@ -24,6 +24,7 @@ public class SMTPClient {
 
     private String hostName = "localhost";
     private Integer port;
+    private Boolean needParseHtml = true;
 
     private static final String DEFAULT_HOST = "localhost";
 
@@ -38,6 +39,14 @@ public class SMTPClient {
             client.doSetupMailProperty();
             return client;
         }
+        
+        public static SMTPClient create(Boolean needParseHtml) {
+            SMTPClient client = new SMTPClient();
+            client.hostName = DEFAULT_HOST;
+            client.needParseHtml = needParseHtml;
+            client.doSetupMailProperty();
+            return client;
+        }        
 
         public static SMTPClient create(String hostName) {
             SMTPClient client = new SMTPClient();
@@ -211,8 +220,10 @@ public class SMTPClient {
     }
 
     protected String processHtmlMessage(String htmlText) {
-        htmlText = htmlText.replace("\r\n", "<br/>");
-        htmlText = htmlText.replace("\n", "<br/>");
+        if(needParseHtml) {
+            htmlText = htmlText.replace("\r\n", "<br/>");
+            htmlText = htmlText.replace("\n", "<br/>");
+        }
         return htmlText;
     }
 
