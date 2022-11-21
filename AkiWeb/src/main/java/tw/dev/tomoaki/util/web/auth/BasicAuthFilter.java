@@ -31,7 +31,6 @@ import javax.servlet.http.HttpSession;
  */
 public abstract class BasicAuthFilter<T extends BasicSessionContext> implements Filter {
 
-   
     private Boolean printLog = false;
     private FilterConfig filterConfig = null;
 
@@ -43,6 +42,25 @@ public abstract class BasicAuthFilter<T extends BasicSessionContext> implements 
                 log("AuthFilter:Initializing filter");
             }
         }
+        try {
+            this.doBeforeInit();
+
+            this.doSetupGlobalVariable();
+
+            this.doAfterInit();
+        } catch(ServletException ex) {
+            throw ex;
+        } catch (Exception ex) {
+            throw new ServletException(ex);
+        }
+    }
+
+    protected abstract void doBeforeInit() throws ServletException;
+
+    protected abstract void doAfterInit() throws ServletException;
+
+    protected void doSetupGlobalVariable() {
+        this.printLog = this.getPrintLog();
     }
 
     @Override
@@ -157,7 +175,9 @@ public abstract class BasicAuthFilter<T extends BasicSessionContext> implements 
 
     protected void redirect2LoginPage(HttpServletRequest req, HttpServletResponse resp, HttpSession session) throws IOException, ServletException {
         this.saveOriUrl(req, resp, session);
-        if(printLog) System.out.format("[%s]redirect2LoginPage(HttpServletRequest, HttpServletResponse, HttpSession): loginPageUrl= %s", this.getClass().getSimpleName(), this.getLoginPageUrl());
+        if (printLog) {
+            System.out.format("[%s]redirect2LoginPage(HttpServletRequest, HttpServletResponse, HttpSession): loginPageUrl= %s", this.getClass().getSimpleName(), this.getLoginPageUrl());
+        }
         resp.sendRedirect(this.getLoginPageUrl());
     }
 
@@ -213,8 +233,12 @@ public abstract class BasicAuthFilter<T extends BasicSessionContext> implements 
 
     protected Boolean isAuthenticated(HttpServletRequest req, HttpServletResponse resp, HttpSession session) throws InstantiationException, IllegalAccessException {
         T sessionContext = T.obtainSessionContext(session, this.getSessionContextClazz());
-        if(printLog) System.out.format("[%s]isAuthenticated(): sessionContext= %s", this.getClass().getSimpleName(), sessionContext);
-        if(printLog && sessionContext != null) System.out.format("[%s]isAuthenticated(): sessionContext.getIsAuthorized= %s", this.getClass().getSimpleName(), sessionContext.getIsAuthorized());
+        if (printLog) {
+            System.out.format("[%s]isAuthenticated(): sessionContext= %s", this.getClass().getSimpleName(), sessionContext);
+        }
+        if (printLog && sessionContext != null) {
+            System.out.format("[%s]isAuthenticated(): sessionContext.getIsAuthorized= %s", this.getClass().getSimpleName(), sessionContext.getIsAuthorized());
+        }
         return sessionContext != null && sessionContext.getIsAuthorized();
     }
 
@@ -225,9 +249,10 @@ public abstract class BasicAuthFilter<T extends BasicSessionContext> implements 
     protected abstract String getLoginPageUrl();
 
     protected abstract String getDefaultPageUrl();
-    
-//    protected abstract Boolean getPrintLog();
 
+    protected abstract Boolean getPrintLog();
+
+//    protected abstract Boolean getPrintLog();
     private void sendProcessingError(Throwable t, ServletResponse response) {
         String stackTrace = getStackTrace(t);
 
