@@ -39,7 +39,7 @@ public abstract class BasicAuthFilter<T extends BasicSessionContext> implements 
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
             if (printLog) {
-                log("AuthFilter:Initializing filter");
+                System.out.format("[%s] Initializing filter", this.getClass().getSimpleName());
             }
         }
         try {
@@ -65,21 +65,23 @@ public abstract class BasicAuthFilter<T extends BasicSessionContext> implements 
 
     @Override
     public void destroy() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         try {
             if (printLog) {
-                log("AuthFilter:doFilter()");
+                System.out.format("[%s] doFilter()", this.getClass().getSimpleName());
             }
 
             doBeforeProcessing(request, response);
 
             Throwable problem = null;
             try {
-                chain.doFilter(request, response);
+                if(this.isAuthenticated(request, response)) {
+                    chain.doFilter(request, response);
+                }
             } catch (Throwable t) {
                 // If an exception is thrown somewhere down the filter chain,
                 // we still want to execute our after processing, and then
@@ -138,7 +140,7 @@ public abstract class BasicAuthFilter<T extends BasicSessionContext> implements 
 //    }
     private void doBeforeProcessing(ServletRequest request, ServletResponse response) throws IOException, ServletException, InstantiationException, IllegalAccessException {
         if (printLog) {
-            log("AuthFilter:DoBeforeProcessing");
+            System.out.format("[%s] doBeforeProcessing()", this.getClass().getSimpleName());
         }
 
         HttpServletRequest req = (HttpServletRequest) request;
@@ -161,22 +163,23 @@ public abstract class BasicAuthFilter<T extends BasicSessionContext> implements 
 //            } else {
 ////                resp.sendRedirect("/CardLogManagement/pages/cardLog/cardLogList.jsf");
 //            }
-
+            if(printLog) System.out.format("[%s] doBeforeProcessing(): isAuthenticated", this.getClass().getSimpleName());
         } else {
             this.redirect2LoginPage(req, resp, session);
+            return;
         }
     }
 
     private void doAfterProcessing(ServletRequest request, ServletResponse response) throws IOException, ServletException {
         if (printLog) {
-            log("AuthFilter:DoAfterProcessing");
+            System.out.format("[%s] DdAfterProcessing()", this.getClass().getSimpleName());            
         }
     }
 
     protected void redirect2LoginPage(HttpServletRequest req, HttpServletResponse resp, HttpSession session) throws IOException, ServletException {
         this.saveOriUrl(req, resp, session);
         if (printLog) {
-            System.out.format("[%s]redirect2LoginPage(HttpServletRequest, HttpServletResponse, HttpSession): loginPageUrl= %s", this.getClass().getSimpleName(), this.getLoginPageUrl());
+            System.out.format("[%s] redirect2LoginPage(HttpServletRequest, HttpServletResponse, HttpSession): loginPageUrl= %s", this.getClass().getSimpleName(), this.getLoginPageUrl());
         }
         resp.sendRedirect(this.getLoginPageUrl());
     }
@@ -231,6 +234,13 @@ public abstract class BasicAuthFilter<T extends BasicSessionContext> implements 
         return objOriUrl == null ? null : (String) objOriUrl;
     }
 
+    protected Boolean isAuthenticated(ServletRequest req, ServletResponse resp) throws InstantiationException, IllegalAccessException {
+        HttpServletRequest request = (HttpServletRequest)req;
+        HttpServletResponse response = (HttpServletResponse)resp;
+        HttpSession session = request.getSession();
+        return this.isAuthenticated(request, response, session);        
+    }    
+    
     protected Boolean isAuthenticated(HttpServletRequest req, HttpServletResponse resp, HttpSession session) throws InstantiationException, IllegalAccessException {
         T sessionContext = T.obtainSessionContext(session, this.getSessionContextClazz());
         if (printLog) {
