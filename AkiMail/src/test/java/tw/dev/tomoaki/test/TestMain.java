@@ -30,6 +30,6 @@ public class TestMain {
 //        smtpClient.sendHtmlMessage("tomoaki@iis.sinica.edu.tw", MailReceiptHelper.analyzeReceiptsByCommaSplit(strReceipts), "Testing HTML Content", "Hello World <br/> <span style=\"color:red;\">測試</span>", file);
 
 //        smtpClient.sendPlainTextMessage("tomoaki@iis.sinica.edu.tw", "tomoaki.nccu@gmail.com", "這是我的測試", "這張圖片如何。\r\n   測試中，不要擋信RRRR。Do Re Mi Fa So LAAAAAAAAAAAAAAAaa", file);
-        smtpClient.sendPlainTextMessage("tomoaki@iis.sinica.edu.tw", Arrays.asList("tomoaki.nccu@gmail.com"), "這是我的測試", "這張圖片如何。\r\n   測試中，不要擋信RRRR。Do Re Mi Fa So LAAAAAAAAAAAAAAAaa");
+        smtpClient.sendPlainTextMessage("tomoaki@iis.sinica.edu.tw", Arrays.asList("tomoaki.nccu@gmail.com, tomoaki.sinica@gmail.com"), "這是我的測試", "這是一篇關於披薩的文章。\r\n   測試中，不要擋信RRRR。Do Re Mi Fa So LAAAAAAAAAAAAAAAaa");
     }
 }

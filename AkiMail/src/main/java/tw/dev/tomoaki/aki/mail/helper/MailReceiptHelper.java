@@ -12,6 +12,8 @@ import java.util.List;
 /**
  *
  * @author Tomoaki Chen
+ * 
+ * @deprecated 1. 用這個拆反而會錯。 2. java mail 本身可以吃逗號分隔
  */
 public class MailReceiptHelper {
 
