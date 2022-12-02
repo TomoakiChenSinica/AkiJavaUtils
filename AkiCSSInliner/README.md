@@ -33,15 +33,27 @@
 
   ```
 
-
 # 下載方式
 ## maven
+
+### Jitpack版  [![](https://jitpack.io/v/TomoakiChenSinica/AkiJavaUtils.svg)](https://jitpack.io/#TomoakiChenSinica/AkiJavaUtils)
+
+在pom.xml分別加入以下兩段
 ```xml
 <repositories>
   <repository>
-		 <id>jitpack.io</id>
-	  <url>https://jitpack.io</url>
+	<id>jitpack.io</id>
+	<url>https://jitpack.io</url>
   </repository>
 </repositories>
+```
+
+版本號(version)可見jitpack
+```
+<dependency>
+	<groupId>com.github.TomoakiChenSinica.AkiJavaUtils</groupId>
+	<artifactId>AkiCSSInliner</artifactId>
+	<version>jitpack-2022.11.23-1</version>
+</dependency>
 ```
 
