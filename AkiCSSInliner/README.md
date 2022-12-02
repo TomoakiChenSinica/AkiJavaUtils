@@ -33,8 +33,7 @@
 
   ```
 
-# 下載方式
-## maven
+# 下載方式(maven)
 
 ### Jitpack版  [![](https://jitpack.io/v/TomoakiChenSinica/AkiJavaUtils.svg)](https://jitpack.io/#TomoakiChenSinica/AkiJavaUtils)
 
