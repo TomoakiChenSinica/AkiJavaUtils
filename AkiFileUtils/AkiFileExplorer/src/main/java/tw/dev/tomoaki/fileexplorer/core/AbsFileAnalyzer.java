@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author arche
  */
-public abstract class AbsFileAnalyzer<T extends AbsFileAnalyzeResult> {
+public abstract class AbsFileAnalyzer<T extends FileAnalyzeResult> {
     
     private Class resultClazz;
     

@@ -5,7 +5,7 @@
  */
 package tw.dev.tomoaki.fileexplorer.impl;
 
-import tw.dev.tomoaki.fileexplorer.core.AbsFileAnalyzeResult;
+import tw.dev.tomoaki.fileexplorer.core.FileAnalyzeResult;
 
 /**
  *https://www.webucator.com/article/how-to-display-the-contents-of-a-directory-in-java/

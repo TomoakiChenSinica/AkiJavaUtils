@@ -6,13 +6,13 @@ package tw.dev.tomoaki.fileexplorer.impl.filepath;
 
 import java.util.ArrayList;
 import java.util.List;
-import tw.dev.tomoaki.fileexplorer.core.AbsFileAnalyzeResult;
+import tw.dev.tomoaki.fileexplorer.core.FileAnalyzeResult;
 
 /**
  *
  * @author Tomoaki Chen
  */
-public class DirFilePath implements AbsFileAnalyzeResult {
+public class DirFilePath implements FileAnalyzeResult {
     
     private List<String> filePathList;
     
