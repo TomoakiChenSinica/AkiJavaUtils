@@ -17,8 +17,9 @@ import java.util.Map;
 /**
  *
  * @author tomoaki
+ * 
+ * If generic type T is an Object, please be aware that you should implement hashCode() or toString() in the object
  */
-//[CHN20171221]
 public class DataExistMap<T> implements Serializable {
 
     private Map<T, Boolean> dataExistMap;
