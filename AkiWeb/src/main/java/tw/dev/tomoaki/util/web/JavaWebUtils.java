@@ -7,6 +7,8 @@ package tw.dev.tomoaki.util.web;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -32,6 +34,8 @@ import javax.servlet.http.HttpServletResponse;
  * 
  */
 public class JavaWebUtils {
+    
+    public static Integer BUFFER_SIZE = 1024;
 
     public static String analyzeMimeType(ServletContext context, String fileName) {
         String mimeType = null;
@@ -50,9 +54,6 @@ public class JavaWebUtils {
         OutputStream os = response.getOutputStream();
         BufferedImage bi = ImageIO.read(new ByteArrayInputStream(fileBin));
         ImageIO.write(bi, fileContentType, os);
-//        Long endMilli = System.currentTimeMillis();
-//        Long passMilli = endMilli - startMilli;
-//        System.out.println("passMilli = " + passMilli);
     }
 
     public static void temp2(HttpServletResponse response, String fileContentType, byte[] fileBin) throws IOException {
@@ -65,42 +66,80 @@ public class JavaWebUtils {
         }
     }
     
-//    丟 inputstream 進來的版本?
-    
-    public static void displayFile(HttpServletResponse response,  String fileName ,String fileContentType, byte[] fileBin) throws IOException {
-//        response.setContentType(fileContentType + "; charset=utf-8" );         //舊方法，就算把下面 Content-Description 拿掉，只留這行也是錯，所以不是 Content-Description 的問題。
-//        System.out.println("fileContentType : " + response.getContentType());
-//        response.setCharacterEncoding("utf-8"); //2019-06-12 嘗試，無效
-//        response.setHeader("Content-Type", fileContentType + "; charset=utf-8" ); //same as setContentType
-//        System.out.println("PASS");
-//        response.setCharacterEncoding("utf-8"); //2019-06-12 嘗試，無效        
-        response.setCharacterEncoding("UTF-8");        
-        response.setHeader("Content-Disposition", fileContentType + "; charset=utf-8" );
-        response.setHeader("Content-Disposition", "inline; filename=\"" + URLEncoder.encode(fileName, "UTF-8") + "\"");  //設定下載檔案名(X) 檔案名+檔案類型 --> 這行導致強制變成下載!
-        
-        OutputStream os = response.getOutputStream();
-        //os.write(fileBin);
-        os.write(fileBin);
-        os.flush();
-        os.close();
-    }
-    
-    public static void showImage(HttpServletResponse response, String fileName, String fileContentType, byte[] fileBin) throws IOException {
+    public static void showImage(HttpServletRequest request, HttpServletResponse response, String fileName, String fileContentType, byte[] fileBin) throws IOException {
         //圖片基本上都可以直接顯示....，所以可以call
-        JavaWebUtils.displayFile(response, fileName, fileContentType, fileBin);
-    }
+        JavaWebUtils.displayFile(request, response, fileName, fileContentType, fileBin);
+    }    
+     
+    
+    public static void displayFile(HttpServletRequest request, HttpServletResponse response, File file, String downloadedFileName) throws UnsupportedEncodingException, IOException {
+        ServletContext context = request.getServletContext();
+        InputStream downloadFileInputStream = new FileInputStream(file);
+        JavaWebUtils.displayFile(response, downloadFileInputStream, downloadedFileName, context);
+    }            
+    
+    public static void displayFile(HttpServletRequest request, HttpServletResponse response,  String fileName ,String fileContentType, byte[] fileBin) throws IOException {
+//        response.setContentType(fileContentType + "; charset=utf-8" ); //舊方法，就算把下面 Content-Description 拿掉，只留這行也是錯，所以不是 Content-Description 的問題。
+//        response.setCharacterEncoding("utf-8"); //2019-06-12 嘗試，無效        
+
+
+//        response.setCharacterEncoding("UTF-8");        
+//        response.setHeader("Content-Disposition", fileContentType + "; charset=utf-8" );
+//        response.setHeader("Content-Disposition", "inline; filename=\"" + URLEncoder.encode(fileName, "UTF-8") + "\"");  //設定下載檔案名(X) 檔案名+檔案類型 --> 這行導致強制變成下載!
+//        
+//        OutputStream os = response.getOutputStream();
+//        os.write(fileBin);
+//        os.flush();
+//        os.close();
+        ServletContext context = request.getServletContext();
+        InputStream is = new ByteArrayInputStream(fileBin);  
+        JavaWebUtils.downloadFile(response, is, fileName, context);
+    }    
+    
+    public static void displayFile(HttpServletResponse response, InputStream downloadFileInputStream, String downloadedFileName, ServletContext context) throws UnsupportedEncodingException, IOException {
+        ServletOutputStream fileWriter = response.getOutputStream();
+        String mimeType = context.getMimeType(downloadedFileName);
+        if (mimeType == null) {
+            mimeType = "application/octet-stream";
+        }
+        response.setCharacterEncoding("UTF-8");        
+        response.setContentType(mimeType);   //這行是讓他變下載、而非跳轉頁面的開始
+        response.setHeader("Content-Disposition", "inline; filename=\"" + URLEncoder.encode(downloadedFileName, "UTF-8") + "\"");  //設定下載檔案名(X) 檔案名+檔案類型 --> 這行導致強制變成下載!
+//   
+
+        byte[] buff = new byte[BUFFER_SIZE];
+
+        int bytesReaded = -1;
+        while ((downloadFileInputStream != null) && ((bytesReaded = downloadFileInputStream.read(buff)) != -1)) {
+            fileWriter.write(buff, 0, bytesReaded);
+        }
+        downloadFileInputStream.close();
+        fileWriter.flush();
+        fileWriter.close();
+    }    
+    
+    
+    
     
     public static void downloadFile(HttpServletRequest request, HttpServletResponse response, byte[] fileBytes, String downloadFileName) throws IOException{
         ServletContext context = request.getServletContext();
         InputStream is = new ByteArrayInputStream(fileBytes);                
         JavaWebUtils.downloadFile(response, is, downloadFileName, context);                    
     }
+                        
+    public static void downloadFile(HttpServletRequest request, HttpServletResponse response, File file, String downloadedFileName) throws UnsupportedEncodingException, IOException {
+        ServletContext context = request.getServletContext();
+        InputStream downloadFileInputStream = new FileInputStream(file);
+        JavaWebUtils.downloadFile(response, downloadFileInputStream, downloadedFileName, context);
+    }        
+    
     
     /**
      * 進行下載。
      * 此 method 會強制出現下載框。
      * (一般狀況下，如果瀏覽器無法直接顯示的，會變出下載框)
      * 
+     * @param request Java Serv;et、Page Bean中可以拿到的 HttpServletRequest
      * @param response  Java Servlet 、PageBean 中 可以拿到的 HttpServletResponse
      * @param downloadFileInputStream 欲下載的檔案的 inputStream
      * @param downloadedFileName 下載檔案時，要預設的檔案名稱
@@ -137,7 +176,7 @@ public class JavaWebUtils {
         response.setContentLength((int) downloadFileInputStream.available());
         response.setHeader("Content-Disposition", "attachment; filename=\"" + URLEncoder.encode(downloadedFileName, "UTF-8") + "\"");  //設定下載檔案名(X) 檔案名+檔案類型 --> 這行導致強制變成下載!
 
-        byte[] buff = new byte[1024];
+        byte[] buff = new byte[BUFFER_SIZE];
 
         int bytesReaded = -1;
         while ((downloadFileInputStream != null) && ((bytesReaded = downloadFileInputStream.read(buff)) != -1)) {
