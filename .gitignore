@@ -35,3 +35,4 @@ AkiDataValidator/AkiIPValidator/target/test-classes/.netbeans_automatic_build
 /AkiDataUtils/target/
 /AkiDateTimeFormat/target/
 /AkiCSSInliner/target/
+*.class
