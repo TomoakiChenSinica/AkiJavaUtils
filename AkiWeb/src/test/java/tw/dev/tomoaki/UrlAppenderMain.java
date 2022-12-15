@@ -22,6 +22,7 @@ public class UrlAppenderMain {
         String url = appender.append("https://eform.iis.sincia.edu.tw/")
                 .append("")
                 .append("/test")
+                .append("\\123")
                 .buildUrl();
         System.out.println("url= " + url);
 

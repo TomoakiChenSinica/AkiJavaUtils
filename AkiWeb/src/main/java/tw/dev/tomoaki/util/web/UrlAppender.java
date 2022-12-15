@@ -124,8 +124,8 @@ public class UrlAppender {
     }
     
     protected String trimSlash(String path) {
-        if(this.trimHeadSlash) path = path.replaceAll("^/", "");
-        if(this.trimTailSlash) path = path.replaceAll("/$", "");
+        if(this.trimHeadSlash) path = path.replaceAll("^[\\\\|/]", "");
+        if(this.trimTailSlash) path = path.replaceAll("[\\\\|/]$", "");
         return path;
     } 
 }
