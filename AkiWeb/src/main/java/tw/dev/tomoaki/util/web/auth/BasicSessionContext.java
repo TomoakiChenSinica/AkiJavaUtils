@@ -18,7 +18,7 @@ public abstract class BasicSessionContext {
     private String remoateAddress;
     private Boolean isAuthorized = false;
     
-    public static String sessionAttrKey = "seSSionCoNtExt";     
+    public static String sessionAttrKey = "seSSionCoNtExt"; //FIXME 這個改成可以自訂
     
     public void init(HttpServletRequest request) {
         this.lastRequestUrl = this.obtainRequestUrlWithQueryParam(request);

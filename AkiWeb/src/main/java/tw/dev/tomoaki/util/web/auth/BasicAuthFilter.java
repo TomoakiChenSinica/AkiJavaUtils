@@ -172,7 +172,7 @@ public abstract class BasicAuthFilter<T extends BasicSessionContext> implements 
 
     private void doAfterProcessing(ServletRequest request, ServletResponse response) throws IOException, ServletException {
         if (printLog) {
-            System.out.format("[%s] DdAfterProcessing()", this.getClass().getSimpleName());            
+            System.out.format("[%s] doAfterProcessing()", this.getClass().getSimpleName());            
         }
     }
 
@@ -194,7 +194,11 @@ public abstract class BasicAuthFilter<T extends BasicSessionContext> implements 
             T sessionContext = T.obtainSessionContext(session, this.getSessionContextClazz());
 //            sessionContext.setLastRequestUrl(oriUrl);
             sessionContext.init(req);
+            if(this.printLog) System.out.format("[%s] saveOriUrl(): sessionContext= %s", this.getClass().getSimpleName(), sessionContext);            
+            if(this.printLog) System.out.format("[%s] saveOriUrl(): T.sessionAttrKey= %s", this.getClass().getSimpleName(), T.sessionAttrKey);
             session.setAttribute(T.sessionAttrKey, sessionContext);
+            if(this.printLog) System.out.format("[%s] saveOriUrl(): After Set Attribute To session= %s, attrKey= %s, attrValue= %s", this.getClass().getSimpleName(), session, T.sessionAttrKey, sessionContext);
+            if(this.printLog) System.out.format("[%s] saveOriUrl(): Try Get Attribute From session= %s, attrKey= %s, attrValue= %s", this.getClass().getSimpleName(), session, T.sessionAttrKey, session.getAttribute(T.sessionAttrKey));
         } catch (Exception ex) {
             throw new ServletException(ex);
         }
@@ -242,13 +246,17 @@ public abstract class BasicAuthFilter<T extends BasicSessionContext> implements 
     }    
     
     protected Boolean isAuthenticated(HttpServletRequest req, HttpServletResponse resp, HttpSession session) throws InstantiationException, IllegalAccessException {
+        if(printLog) System.out.format("[%s] isAuthenticated(): session= %s", this.getClass().getSimpleName(), session);
         T sessionContext = T.obtainSessionContext(session, this.getSessionContextClazz());
         if (printLog) {
-            System.out.format("[%s]isAuthenticated(): sessionContext= %s", this.getClass().getSimpleName(), sessionContext);
+            System.out.format("[%s isAuthenticated(): sessionContext= %s", this.getClass().getSimpleName(), sessionContext);
         }
         if (printLog && sessionContext != null) {
-            System.out.format("[%s]isAuthenticated(): sessionContext.getIsAuthorized= %s", this.getClass().getSimpleName(), sessionContext.getIsAuthorized());
+            System.out.format("[%s] isAuthenticated(): sessionContext.getIsAuthorized= %s", this.getClass().getSimpleName(), sessionContext.getIsAuthorized());
         }
+        
+        session.setAttribute(T.sessionAttrKey, sessionContext);
+        
         return sessionContext != null && sessionContext.getIsAuthorized();
     }
 
