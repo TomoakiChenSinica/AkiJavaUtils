@@ -35,32 +35,32 @@ public class JSoupTestMain1 {
                 + "</div> \n"
                 + "<div class=\"highlight bigger\"> \n"
                 + "test2 \n"
-                + "</div> \n";                
-        
+                + "</div> \n";
+
         test3(html);
     }
-    
-public static void test3(String html) {
+
+    public static void test3(String html) {
         Document htmlDoc = Jsoup.parse(html);
         Elements theElements = htmlDoc.select(".highlight");
         HtmlDocumentHelper.appendInlineStyle(theElements, "background: blue;");
-        System.out.println(htmlDoc.toString());                
-        
-    }    
-    
+        System.out.println(htmlDoc.toString());
+
+    }
+
     public static void test2(String html) {
         Document htmlDoc = Jsoup.parse(html);
         Elements theElements = htmlDoc.select(".highlight");
 //        System.out.println(theElements);
         System.out.println(theElements.attr("class"));
-        theElements.attr("id", "123");        
+        theElements.attr("id", "123");
         System.out.println(htmlDoc.toString());
     }
 
     public static void test1(String html) {
         System.out.println(HtmlDocumentHelper.obtainCssCode(html));
     }
-    
+
     public static void test0(String html) {
         Document htmlDoc = Jsoup.parse(html);
         Elements elements = htmlDoc.select("style"); //select 抓 html 誤建有可能會抓到多個，所以用 Elements

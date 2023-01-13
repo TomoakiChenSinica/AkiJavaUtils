@@ -44,6 +44,10 @@ public class AkiStringUtil {
     }    
     
     public static String parseHtmlFormat(String oriStr){
+        if(oriStr == null) {
+            return null;
+        }
+        
         String newStr = oriStr;
         newStr = newStr.replace("\r\n", "<br/>");
         newStr = newStr.replace("\r", "<br/>");
@@ -51,6 +55,10 @@ public class AkiStringUtil {
     }
     
     public static String replaceCharAt(String oriText, Integer position, String replaceText){
+        if(oriText == null) {
+            return null;
+        }
+        
         String preStr = oriText.substring(0, position); //包頭去尾
         String sufStr = oriText.substring(position + 1, oriText.length() );
         return preStr + replaceText + sufStr;

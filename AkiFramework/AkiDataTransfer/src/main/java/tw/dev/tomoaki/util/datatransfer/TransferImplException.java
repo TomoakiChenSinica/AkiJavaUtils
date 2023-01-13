@@ -9,6 +9,7 @@ package tw.dev.tomoaki.util.datatransfer;
 
 import java.util.List;
 import tw.dev.tomoaki.util.cast.ExceptionPrinter;
+import tw.dev.tomoaki.util.stringutils.AkiStringUtil;
 
 /**
  *
@@ -38,6 +39,10 @@ public class TransferImplException extends Exception{
     
     public TransferImplException(Exception ex) {
         super(ex);
+    }
+    
+    public String getMessage4HTML() {
+        return AkiStringUtil.parseHtmlFormat(this.getMessage());
     }
        
 }

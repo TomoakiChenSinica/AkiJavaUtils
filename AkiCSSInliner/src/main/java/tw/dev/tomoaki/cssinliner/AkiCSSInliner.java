@@ -64,11 +64,12 @@ public class AkiCSSInliner {
             String cssSelector = cssElement.getSelector();
             String cssInlineStyle = cssElement.toInlineStyle();
             Elements elements = doc.select(cssSelector);
-            elements = HtmlDocumentHelper.appendInlineStyle(elements, cssInlineStyle);
+            /*elements = */HtmlDocumentHelper.appendInlineStyle(elements, cssInlineStyle);
 //            elements.forEach(element -> System.out.println(element));
 //            this.tryRemoveClass(elements, cssSelector);
-            this.tryRemoveStyleElement(doc);
+//            this.tryRemoveStyleElement(doc);
         }
+        doc = this.tryRemoveStyleElement(doc);
         doc = this.tryRemoveClass(doc);
         return doc.toString();
     }
@@ -88,11 +89,12 @@ public class AkiCSSInliner {
 //        return elements;
 //    }
 
-    protected void tryRemoveStyleElement(Document doc) {
+    protected Document tryRemoveStyleElement(Document doc) {
         if (removeStyleElement) {
             Elements elements = doc.select("style");
             elements.remove();
         }
+        return doc;
     }
 
     public List<CSSElement> obtainRuleList(String html) throws IOException {
