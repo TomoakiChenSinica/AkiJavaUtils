@@ -7,6 +7,7 @@ package tw.dev.tomoaki.util.datetime;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -199,8 +200,9 @@ public class DateTimeUtil {
             return timeStamp == null ? null : timeStamp.toLocalDateTime();
         }
 
-        public static LocalDate convert2Date(Date utilDate) {
-            LocalDate ld = utilDate == null ? null : utilDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        public static LocalDate convert2Date(java.util.Date utilDate) {
+//            LocalDate ld = utilDate == null ? null : utilDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            LocalDate ld = utilDate == null ? null : Instant.ofEpochMilli(utilDate.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
             return ld;
         }        
         
@@ -270,6 +272,7 @@ public class DateTimeUtil {
         /* ============================ 2023-01-30 15:24，從DateTimeProvider新增過來 ============================ */
         
         /**
+         * 將 日期時間 轉成 日期
          * 跟以前DateTimeProvider是用字串去拆解不同，這裡應用LocalDateTime 、 LocalDate
          * 
          * @param utilDateTime 日期時間資訊，即資料中包含 年月日+時間 ，格式為 java.util.Date
