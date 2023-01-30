@@ -215,6 +215,10 @@ public class DateTimeUtil {
         
         Date --> LocalDateTime反而StakOvertflow的似乎比較簡潔(嗎)
         不過 LocalDate反而又沒有相同的 method
+        
+        2023-01-30 15:21 tomoaki.sinica 筆: 
+        覺得 Provider 可能是給 字串、數字的類型
+        
          */
         /**
          *
@@ -262,6 +266,21 @@ public class DateTimeUtil {
         public static java.sql.Timestamp convert2SqlTimestamp(LocalDateTime dateTime) {
             return dateTime == null ? null : Timestamp.valueOf(dateTime);
         }        
+        
+        /* ============================ 2023-01-30 15:24，從DateTimeProvider新增過來 ============================ */
+        
+        /**
+         * 跟以前DateTimeProvider是用字串去拆解不同，這裡應用LocalDateTime 、 LocalDate
+         * 
+         * @param utilDateTime 日期時間資訊，即資料中包含 年月日+時間 ，格式為 java.util.Date
+         * @return 日期，擷取出年月日出來
+         * 
+         */
+        public static Date parseDateTime2Date(Date utilDateTime) {
+            LocalDateTime dateTime = Converter.convert2DateTime(utilDateTime);
+            LocalDate date = dateTime.toLocalDate();
+            return Converter.convert(date);
+        }
 
     }
 
