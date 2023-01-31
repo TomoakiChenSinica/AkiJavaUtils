@@ -4,6 +4,7 @@
  */
 package tw.dev.tomoaki.datautils;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -55,4 +56,11 @@ public class DataCollectionUtils {
 //        }
 //        return dataStreamSupplier.get().limit(limitSize).collect(Collectors.toList());
 //    }
+    
+    public static <T> List<T> reverse(List<T> dataList) {
+        return dataList.stream().collect(Collectors.collectingAndThen(Collectors.toList(), data -> {
+            Collections.reverse(data); 
+            return data;
+        }));
+    }
 }
