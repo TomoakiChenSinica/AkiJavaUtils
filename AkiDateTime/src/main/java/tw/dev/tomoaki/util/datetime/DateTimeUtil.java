@@ -201,6 +201,8 @@ public class DateTimeUtil {
         }
 
         public static LocalDate convert2Date(java.util.Date utilDate) {
+            //https://www.baeldung.com/java-date-to-localdate-and-localdatetime (主要)
+            //https://stackoverflow.com/questions/21242110/convert-java-util-date-to-java-time-localdate
 //            LocalDate ld = utilDate == null ? null : utilDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             LocalDate ld = utilDate == null ? null : Instant.ofEpochMilli(utilDate.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
             return ld;

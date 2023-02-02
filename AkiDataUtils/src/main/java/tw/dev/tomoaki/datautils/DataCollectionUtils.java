@@ -58,6 +58,7 @@ public class DataCollectionUtils {
 //    }
     
     public static <T> List<T> reverse(List<T> dataList) {
+        //https://stackabuse.com/java-8-streams-collect-and-reverse-stream-into-list/
         return dataList.stream().collect(Collectors.collectingAndThen(Collectors.toList(), data -> {
             Collections.reverse(data); 
             return data;
