@@ -37,3 +37,4 @@ AkiDataValidator/AkiIPValidator/target/test-classes/.netbeans_automatic_build
 /AkiCSSInliner/target/
 *.class
 *.jar
+*.jar

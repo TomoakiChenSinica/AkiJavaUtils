@@ -5,14 +5,23 @@
  */
 package tw.dev.tomoaki.cast.main.entity;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+
 /**
  *
  * @author arche
  */
 public class Batter {
 
+    //https://github.com/FasterXML/jackson-dataformat-xml#additional-annotations
+    //https://stackoverflow.com/questions/19847094/jackson-xml-annotations-string-element-with-attribute
+    @JacksonXmlProperty(localName="FirstName") 
     private String firstName;
+        
+    @JacksonXmlProperty(localName="LastName")
     private String lastName;
+    
+    @JacksonXmlProperty(localName="AVG")
     private Double avg;
 
     public Batter() {
