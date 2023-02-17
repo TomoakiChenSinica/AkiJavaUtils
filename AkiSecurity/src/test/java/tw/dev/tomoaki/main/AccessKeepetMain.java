@@ -26,6 +26,7 @@ public class AccessKeepetMain {
 //        System.out.println(keeper.checkPassword(password, "TomoakiTesin"));
         Netflix();
         DisneyPlus();
+        KKTV();
     }
     
     public static void Netflix() throws NoSuchAlgorithmException {
@@ -39,5 +40,11 @@ public class AccessKeepetMain {
         String password = keeper.createPassword("tomoaki.outside@gmail.com", "DisneyPlus");
         System.out.println(password);
     }    
+    
+    public static void KKTV() throws NoSuchAlgorithmException {
+        AccessKeeper keeper = AccessKeeper.Factory.create();
+        String password = keeper.createPassword("tomoaki.outside@gmail.com", "KKTV");
+        System.out.println(password);    
+    }
     
 }
