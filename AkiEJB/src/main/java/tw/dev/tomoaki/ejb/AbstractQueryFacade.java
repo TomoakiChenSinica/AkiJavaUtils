@@ -12,6 +12,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Root;
 import tw.dev.tomoaki.util.commondatavalidator.ListValidator;
 
@@ -19,30 +21,14 @@ import tw.dev.tomoaki.util.commondatavalidator.ListValidator;
  *
  * @author tomoaki
  */
-public abstract class AbstractFacade_backup202302171704<T> {
+public abstract class AbstractQueryFacade<T> {
 
-    private Class<T> entityClass;
-
-    public AbstractFacade_backup202302171704(Class<T> entityClass) {
-        this.entityClass = entityClass;
-    }
+    protected Class<T> entityClass;
 
     protected abstract EntityManager getEntityManager();
 
-    public void create(T entity) {
-        getEntityManager().persist(entity);
-    }
-
-    public void edit(T entity) {
-        getEntityManager().merge(entity);
-    }
-
-    public void remove(T entity) {
-        getEntityManager().remove(getEntityManager().merge(entity));
-    }
-
-    public T find(Object id) {
-        return getEntityManager().find(entityClass, id);
+    public AbstractQueryFacade(Class<T> entityClass) {
+        this.entityClass = entityClass;
     }
 
     public List<T> findAll() {
@@ -68,7 +54,7 @@ public abstract class AbstractFacade_backup202302171704<T> {
         return ((Long) q.getSingleResult()).intValue();
     }
 
-    public List<T> findBy(String columnName, Object value) {
+    public List<T> findByEquals(String columnName, Object value) {
         EntityManager em = this.getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
@@ -79,78 +65,75 @@ public abstract class AbstractFacade_backup202302171704<T> {
         Query query = em.createQuery(cq);
         return query.getResultList();
     }
-    
-    public List<T> findBy(List<String> columnNameList, List<Object> columnValueList,  List<String> orderColNameList) {
-        if(!ListValidator.isListExist(columnNameList)) {
+
+    public List<T> findByEquals(List<String> columnNameList, List<Object> columnValueList, List<String> orderColNameList) {
+        if (!ListValidator.isListExist(columnNameList)) {
             throw new IllegalArgumentException("columnNameList= %s Is Null Or Empty");
         }
-        
-        if(!ListValidator.isListExist(columnValueList)) {
+
+        if (!ListValidator.isListExist(columnValueList)) {
             throw new IllegalArgumentException("columnNameList= %s Is Null Or Empty");
-        }        
-        
-        
-        
+        }
+
         Integer length4ColNameList = columnNameList.size();
         Integer legnth4ColValueList = columnValueList.size();
-        if(!Objects.equals(length4ColNameList, legnth4ColValueList)) {
+        if (!Objects.equals(length4ColNameList, legnth4ColValueList)) {
             throw new IllegalArgumentException("columnNameList= %s, columnValueList= %s, There Length Is Not Equal");
         }
-        
+
         List<KeyValuePair> pairList = new ArrayList();
-        for(Integer index = 0 ; index < legnth4ColValueList ; index++) {
+        for (Integer index = 0; index < legnth4ColValueList; index++) {
             String colName = columnNameList.get(index);
             Object colValue = columnValueList.get(index);
             KeyValuePair pair = new KeyValuePair(colName, colValue);
             pairList.add(pair);
         }
-        
+
         orderColNameList = ListValidator.isListExist(orderColNameList) ? orderColNameList : columnNameList;
-        return this.findBy(pairList, orderColNameList);
-        
+        return this.findByEquals(pairList, orderColNameList);
+
     }
-    
-    public List<T> findBy(List<KeyValuePair> pairList, List<String> orderColNameList) {
+
+    public List<T> findByEquals(List<KeyValuePair> pairList, List<String> orderColNameList) {
         EntityManager em = this.getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
         Root<T> root = cq.from(entityClass);
-        
-        for(KeyValuePair pair : pairList) {
+
+        List<Expression> expressionList = new ArrayList();
+        for (KeyValuePair pair : pairList) {
             String columnName = pair.getColName();
             Object value = pair.getColValue();
-            cq = cq.where(cb.equal(root.get(columnName.toLowerCase()), value));        
+            Expression expression = cb.equal(root.get(columnName.toLowerCase()), value);
+            expressionList.add(expression);
         }
-        
+
         orderColNameList = ListValidator.isListExist(orderColNameList) ? orderColNameList : pairList.stream().map(pair -> pair.getColName()).collect(Collectors.toList());
-        
-        for(String columnName : orderColNameList) {
-            cq = cq.orderBy( cb.asc(root.get(columnName.toLowerCase()) ) ) ;
-        }
+
+        List<Order> orderList = orderColNameList.stream()
+                .map(columnName -> cb.asc(root.get(columnName.toLowerCase())))
+                .collect(Collectors.toList());
+
 //        cq = cq.orderBy( cb.asc(root.get( orderColNameList.get(0).toLowerCase()) ) ) ;
-        Query query = em.createQuery(cq);
-        return query.getResultList();
-    }    
-    
-//    public List<T> search(List<Expression> expressionList, List<String> orderColNameList) {
-//        EntityManager em = this.getEntityManager();
-//        CriteriaBuilder cb = em.getCriteriaBuilder();
-//        CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
-//        Root<T> root = cq.from(entityClass);
-//        
-//        for(Expression exp : expressionList) {
-//            cq = cq.where(exp);        
-//        }
-//        
-//        orderColNameList = ListValidator.isListExist(orderColNameList) ? orderColNameList : pairList.stream().map(pair -> pair.getColName()).collect(Collectors.toList());
-//        
-//        for(String columnName : orderColNameList) {
-//            cq = cq.orderBy( cb.asc(root.get(columnName.toLowerCase()) ) ) ;
-//        }
-////        cq = cq.orderBy( cb.asc(root.get( orderColNameList.get(0).toLowerCase()) ) ) ;
+//        轉call 更底層
 //        Query query = em.createQuery(cq);
 //        return query.getResultList();
-//    }        
-    
+        return this.findBy(expressionList, orderList);
+    }
 
+    protected List<T> findBy(List<Expression> expressionList, List<Order> orderList) {
+        EntityManager em = this.getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
+
+        for (Expression exp : expressionList) {
+            cq = cq.where(exp);
+        }
+
+        cq = cq.orderBy(orderList);
+
+        Query query = em.createQuery(cq);
+        return query.getResultList();
+
+    }
 }
