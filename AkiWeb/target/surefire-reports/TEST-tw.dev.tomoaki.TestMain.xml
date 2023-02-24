@@ -2,66 +2,65 @@
 <testsuite tests="0" failures="0" name="tw.dev.tomoaki.TestMain" time="0" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
-    <property name="sun.boot.library.path" value="C:\AkiRoot\Software\Java\openlogic-openjdk-8u352-b08-windows-x64\jre\bin"/>
-    <property name="java.vm.version" value="25.352-b08"/>
-    <property name="java.vm.vendor" value="Oracle Corporation"/>
+    <property name="java.vm.version" value="11.0.17+8-adhoc..jdk11u"/>
+    <property name="sun.boot.library.path" value="C:\AkiRoot\Software\Java\openlogic-openjdk-11.0.17+8-windows-x64\bin"/>
     <property name="maven.multiModuleProjectDirectory" value="C:\AkiRoot\Programming\NetBeanProject-AkiOwnGit\AkiJavaUtils"/>
-    <property name="java.vendor.url" value="http://java.oracle.com/"/>
+    <property name="java.vm.vendor" value="OpenLogic"/>
+    <property name="java.vendor.url" value="https://openlogic.com/"/>
     <property name="path.separator" value=";"/>
     <property name="guice.disable.misplaced.annotation.check" value="true"/>
     <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
-    <property name="file.encoding.pkg" value="sun.io"/>
-    <property name="user.script" value=""/>
     <property name="user.country" value="TW"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.script" value=""/>
     <property name="sun.os.patch.level" value=""/>
-    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
     <property name="user.dir" value="C:\AkiRoot\Programming\NetBeanProject-AkiOwnGit\AkiJavaUtils"/>
-    <property name="java.runtime.version" value="1.8.0_352-352-b08"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="java.runtime.version" value="11.0.17+8-adhoc..jdk11u"/>
     <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
-    <property name="java.endorsed.dirs" value="C:\AkiRoot\Software\Java\openlogic-openjdk-8u352-b08-windows-x64\jre\lib\endorsed"/>
     <property name="os.arch" value="amd64"/>
     <property name="java.io.tmpdir" value="C:\Users\tomokai\AppData\Local\Temp\"/>
     <property name="line.separator" value="
 "/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="user.variant" value=""/>
-    <property name="os.name" value="Windows 10"/>
+    <property name="os.name" value="Windows 11"/>
     <property name="maven.ext.class.path" value="C:\Program Files\NetBeans-16\netbeans\java\maven-nblib\netbeans-eventspy.jar"/>
     <property name="classworlds.conf" value="C:\Program Files\NetBeans-16\netbeans\java\maven\bin\m2.conf"/>
     <property name="sun.jnu.encoding" value="MS950"/>
-    <property name="java.library.path" value="C:\AkiRoot\Software\Java\openlogic-openjdk-8u352-b08-windows-x64\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\PuTTY\;C:\Program Files\SlikSvn\bin;C:\Users\tomokai\AppData\Local\Microsoft\WindowsApps;C:\AkiRoot\Software\Microsoft VS Code\bin;C:\Program Files (x86)\Brackets\;C:\Users\tomokai\AppData\Local\GitHubDesktop\bin;C:\AkiRoot\Software\Java\openlogic-openjdk-8u352-b08-windows-x64\bin\;C:\Program Files\SlikSvn\bin;;."/>
+    <property name="java.library.path" value="C:\AkiRoot\Software\Java\openlogic-openjdk-11.0.17+8-windows-x64\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\PuTTY\;C:\Program Files\SlikSvn\bin;C:\Program Files\TortoiseSVN\bin;C:\AkiRoot\Software\npp.8.4.8.portable.x64;C:\AkiRoot\Software\PortableGit\bin;C:\ProgramData\chocolatey\bin;C:\Program Files\nodejs\;C:\Users\tomokai\AppData\Local\pnpm;C:\Users\tomokai\.cargo\bin;C:\AkiRoot\Software\Python\Scripts\;C:\AkiRoot\Software\Python\;C:\Users\tomokai\AppData\Local\Microsoft\WindowsApps;C:\AkiRoot\Software\Microsoft VS Code\bin;C:\Program Files (x86)\Brackets\;C:\Users\tomokai\AppData\Local\GitHubDesktop\bin;C:\AkiRoot\Software\Java\openlogic-openjdk-11.0.17+8-windows-x64\bin\;C:\Program Files\SlikSvn\bin;C:\AkiRoot\Software\S-Bat;C:\Users\tomokai\AppData\Roaming\npm;."/>
     <property name="maven.conf" value="C:\Program Files\NetBeans-16\netbeans\java\maven/conf"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="java.class.version" value="55.0"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="java.class.version" value="52.0"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="os.version" value="10.0"/>
     <property name="library.jansi.path" value="C:\Program Files\NetBeans-16\netbeans\java\maven\lib\jansi-native"/>
     <property name="user.home" value="C:\Users\tomokai"/>
     <property name="user.timezone" value="Asia/Taipei"/>
     <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob"/>
-    <property name="java.specification.version" value="1.8"/>
-    <property name="file.encoding" value="MS950"/>
-    <property name="user.name" value="tomokai"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.specification.version" value="11"/>
     <property name="java.class.path" value="C:\Program Files\NetBeans-16\netbeans\java\maven\boot\plexus-classworlds-2.6.0.jar"/>
-    <property name="java.vm.specification.version" value="1.8"/>
+    <property name="user.name" value="tomoaki"/>
+    <property name="java.vm.specification.version" value="11"/>
     <property name="sun.arch.data.model" value="64"/>
-    <property name="java.home" value="C:\AkiRoot\Software\Java\openlogic-openjdk-8u352-b08-windows-x64\jre"/>
-    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -Dmaven.ext.class.path=C:\Program Files\NetBeans-16\netbeans\java\maven-nblib\netbeans-eventspy.jar --also-make --projects AkiWeb install"/>
-    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -Dmaven.ext.class.path=C:\Program Files\NetBeans-16\netbeans\java\maven-nblib\netbeans-eventspy.jar install"/>
+    <property name="java.home" value="C:\AkiRoot\Software\Java\openlogic-openjdk-11.0.17+8-windows-x64"/>
     <property name="user.language" value="zh"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
     <property name="java.vm.info" value="mixed mode"/>
-    <property name="java.version" value="1.8.0_352-352"/>
-    <property name="java.ext.dirs" value="C:\AkiRoot\Software\Java\openlogic-openjdk-8u352-b08-windows-x64\jre\lib\ext;C:\Windows\Sun\Java\lib\ext"/>
-    <property name="sun.boot.class.path" value="C:\AkiRoot\Software\Java\openlogic-openjdk-8u352-b08-windows-x64\jre\lib\resources.jar;C:\AkiRoot\Software\Java\openlogic-openjdk-8u352-b08-windows-x64\jre\lib\rt.jar;C:\AkiRoot\Software\Java\openlogic-openjdk-8u352-b08-windows-x64\jre\lib\sunrsasign.jar;C:\AkiRoot\Software\Java\openlogic-openjdk-8u352-b08-windows-x64\jre\lib\jsse.jar;C:\AkiRoot\Software\Java\openlogic-openjdk-8u352-b08-windows-x64\jre\lib\jce.jar;C:\AkiRoot\Software\Java\openlogic-openjdk-8u352-b08-windows-x64\jre\lib\charsets.jar;C:\AkiRoot\Software\Java\openlogic-openjdk-8u352-b08-windows-x64\jre\lib\jfr.jar;C:\AkiRoot\Software\Java\openlogic-openjdk-8u352-b08-windows-x64\jre\classes"/>
-    <property name="java.vendor" value="OpenLogic-OpenJDK"/>
-    <property name="java.specification.maintenance.version" value="4"/>
+    <property name="java.version" value="11.0.17"/>
+    <property name="java.vendor" value="OpenLogic"/>
     <property name="maven.home" value="C:\Program Files\NetBeans-16\netbeans\java\maven"/>
     <property name="file.separator" value="\"/>
-    <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/"/>
+    <property name="java.version.date" value="2022-10-18"/>
+    <property name="java.vendor.url.bug" value="https://techsupport.roguewave.com/"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.vendor.version" value="OpenLogic-OpenJDK"/>
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>

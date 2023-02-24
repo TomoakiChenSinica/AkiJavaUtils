@@ -3,6 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>tw.dev.tomoaki</groupId>
     <artifactId>AkiSecurity</artifactId>
+<!--    <version>2023.02.20-1</version>-->
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <properties>
@@ -11,4 +12,37 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
     <name>AkiSecurity</name>
+    
+    <distributionManagement>
+        <!--
+        <repository>
+            <id>corp1</id>
+                  <name>Corporate Repository</name>
+                  <url>scp://repo/maven2</url>
+                  <uniqueVersion>false</uniqueVersion>
+            <layout>default</layout>
+        </repository>
+        -->
+        <!--
+        <repository>
+            <id> maven-central-https</id>
+            <name> Maven Central Https</name>
+            <url> https://repo.maven.apache.org/maven2/</url>
+        </repository>
+        -->
+        
+        <repository>
+            <id>github</id>
+            <name>GitHub OWNER Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/TomoakiChenSinica/AkiJavaUtils</url>
+        </repository>        
+        
+    </distributionManagement>
+    
+    <licenses>        
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>       
 </project>

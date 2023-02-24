@@ -30,4 +30,19 @@
     <properties>
         <exec.mainClass>tw.dev.tomoaki.akidatetimeformat.AkiDateTimeFormat</exec.mainClass>
     </properties>
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub OWNER Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/TomoakiChenSinica/AkiJavaUtils</url>
+        </repository>        
+        
+    </distributionManagement>
+    
+    <licenses>        
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>      
 </project>
