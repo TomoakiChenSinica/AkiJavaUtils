@@ -9,6 +9,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <exec.mainClass>tw.dev.tomoaki.akiejb.AkiEJB</exec.mainClass>
+        <jakartaee>8.0.0</jakartaee>        
     </properties>
     
     <dependencies>
@@ -61,6 +62,13 @@
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
+        
+        <dependency>
+            <groupId>jakarta.platform</groupId>
+            <artifactId>jakarta.jakartaee-api</artifactId>
+            <version>${jakartaee}</version>
+            <scope>provided</scope>
+        </dependency>        
     </dependencies>
     <distributionManagement>
         <repository>

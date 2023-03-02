@@ -4,21 +4,42 @@
  */
 package tw.dev.tomoaki.ejb.auth;
 
+import tw.dev.tomoaki.ejb.helper.ConstraintViolationHelper;
+import javax.validation.ConstraintViolationException;
 import tw.dev.tomoaki.ejb.AbstractQueryFacade;
 
 /**
  *
  * @author tomoaki
  */
-public abstract class AbstAuthFacade<T, AuthInfo> extends AbstractQueryFacade<T> {
-    
-    public AbstAuthFacade(Class<T> entityClass) {
+public abstract class AbstAuthFacade<ENTITY extends Transaction, AUTHINFO extends AuthInfoAbst> extends AbstractQueryFacade<ENTITY> {
+
+    public AbstAuthFacade(Class<ENTITY> entityClass) {
         super(entityClass);
     }
-    
-//    public void doCreate(T entity, AuthInfo authInfo) {
-//        
-//        this.getEntityManager().persist();
-//    }
-    
+
+    public void doCreate(ENTITY entity, AUTHINFO authInfo) {
+        try {
+            String identifier = authInfo.getIdentifier();
+            entity.setupIdentifier(identifier);
+            this.getEntityManager().persist(entity);
+        } catch (ConstraintViolationException ex) {
+            ConstraintViolationHelper.handleException(ex);
+        }
+    }
+
+    public void doEdit(ENTITY entity, AUTHINFO authInfo) {
+        try {
+            String identifier = authInfo.getIdentifier();
+            entity.setupIdentifier(identifier);
+            this.getEntityManager().persist(entity);
+        } catch (ConstraintViolationException ex) {
+            ConstraintViolationHelper.handleException(ex);
+        }
+    }
+
+    public void doRemove(ENTITY entity) {
+        getEntityManager().remove(getEntityManager().merge(entity));
+    }
+
 }

@@ -4,16 +4,16 @@
  */
 package tw.dev.tomoaki.ejb.auth;
 
-import java.util.Date;
-
 /**
  *
  * @author tomoaki
  */
-public interface AuthInfo {
+public abstract class Transaction {//implements AuthInfoIntf {
+ 
+    protected static ThreadLocal<String> IDENTIFIER = new ThreadLocal();
     
-    
-    public Date getLastModifiedDateTime();
-    
-    public String getIdentifier();
+    public void setupIdentifier(String identifier) {
+        IDENTIFIER.set(identifier);
+    }
+
 }

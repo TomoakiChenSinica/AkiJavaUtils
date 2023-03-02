@@ -4,12 +4,13 @@
  */
 package tw.dev.tomoaki.ejb.auth;
 
+import java.util.Date;
+
 /**
  *
  * @author tomoaki
  */
-public abstract class AbsAuthInfo {
-
-    public abstract String getIdentifier();
-
+public interface AuthInfoIntf {
+        
+    public String getIdentifier();
 }
