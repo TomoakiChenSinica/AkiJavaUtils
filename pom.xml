@@ -23,11 +23,11 @@
         <module>AkiGoogleCalendar</module>
         <module>AkiException</module>
         <module>AkiFileUtils</module>
-        <module>AkiEJB</module>
         <module>AkiHttp</module>
         <module>AkiCountryUtils</module>
         <module>AkiDataUtils</module>
         <module>AkiCSSInliner</module>
+        <module>AkiJPA</module>
     </modules>
     <!-- 
     不用特別加這個，直接

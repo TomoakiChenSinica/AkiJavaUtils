@@ -83,13 +83,14 @@ public abstract class AbstractTransferImpl<S, T> extends ExceptionHandler {
             if(this.pureTextErrorList == null) {
                 this.pureTextErrorList = new ArrayList();
             }
-            this.pureTextErrorList.add(DataTransferPureTextError.Factory.create(obtainTransferPureTextError(sourceData), ex));
+            this.pureTextErrorList.add(DataTransferPureTextError.Factory.create(obtainTransferDataPureText(sourceData), ex));
         } catch(UnsupportedOperationException uoe) {
             System.out.format("[%s] obtainTransferPureTextError() Is Not Implemented Yet", this.getClass().getSimpleName());
         }
     }    
     
-    protected abstract String obtainTransferPureTextError(S sourceData);        
+//    protected abstract String obtainTransferPureTextError(S sourceData);        
+    protected abstract String obtainTransferDataPureText(S sourceData);        
    
     public List<T> getNeedCreatedList() {
         return needCreatedList;

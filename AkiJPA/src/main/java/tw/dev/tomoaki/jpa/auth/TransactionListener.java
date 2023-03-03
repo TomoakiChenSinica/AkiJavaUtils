@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package tw.dev.tomoaki.ejb.auth;
+package tw.dev.tomoaki.jpa.auth;
 
-import tw.dev.tomoaki.ejb.auth.TransactionEntity;
+import tw.dev.tomoaki.jpa.auth.TransactionEntity;
 import java.util.Date;
 import java.util.UUID;
 import javax.persistence.PrePersist;

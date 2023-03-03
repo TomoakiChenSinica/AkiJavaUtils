@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package tw.dev.tomoaki.ejb;
+package tw.dev.tomoaki.jpa;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +23,8 @@ import tw.dev.tomoaki.util.commondatavalidator.ListValidator;
  */
 public abstract class AbstractQueryFacade<T> {
 
+    public static Boolean EVICT_CACHE = Boolean.TRUE;
+
     protected Class<T> entityClass;
 
     protected abstract EntityManager getEntityManager();
@@ -31,8 +33,30 @@ public abstract class AbstractQueryFacade<T> {
         this.entityClass = entityClass;
     }
 
+    public void flush() {
+        this.getEntityManager().flush();
+    }
+
+    public T find(Object id) {
+        EntityManager em =  getEntityManager();        
+        this.tryEvictCache(em, id);
+        return em.find(entityClass, id);
+    }
+
+    public List<T> findAllAscOrdered(String columnName) {
+        CriteriaBuilder cb = this.getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
+        Root<T> root = cq.from(entityClass);
+        cq.orderBy(cb.asc(root.get(columnName.toLowerCase())));
+
+        Query query = this.getEntityManager().createQuery(cq);
+        return query.getResultList();
+    }
+
     public List<T> findAll() {
-        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
+        EntityManager em =  getEntityManager();
+        this.tryEvictAllCache(em);
+        javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(entityClass));
         return getEntityManager().createQuery(cq).getResultList();
     }
@@ -58,6 +82,7 @@ public abstract class AbstractQueryFacade<T> {
         EntityManager em = this.getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
+        this.tryEvictAllCache(em);
         Root<T> root = cq.from(entityClass);
         cq = cq.where(cb.equal(root.get(columnName.toLowerCase()), value));
         cq = cq.orderBy(cb.asc(root.get(columnName.toLowerCase())));
@@ -123,6 +148,7 @@ public abstract class AbstractQueryFacade<T> {
 
     protected List<T> findBy(List<Expression> expressionList, List<Order> orderList) {
         EntityManager em = this.getEntityManager();
+        em.getEntityManagerFactory().getCache().evictAll();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
 
@@ -135,5 +161,17 @@ public abstract class AbstractQueryFacade<T> {
         Query query = em.createQuery(cq);
         return query.getResultList();
 
+    }
+    
+    private void tryEvictCache(EntityManager em, Object id) {
+        if (EVICT_CACHE) {
+            em.getEntityManagerFactory().getCache().evict(entityClass, id);
+        }
+    }    
+
+    private void tryEvictAllCache(EntityManager em) {
+        if (EVICT_CACHE) {
+            em.getEntityManagerFactory().getCache().evictAll();
+        }
     }
 }

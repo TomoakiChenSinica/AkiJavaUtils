@@ -23,5 +23,5 @@ public class DataTransferPureTextError extends DataTrasnferError<String> {
             error.errorMsg = DataTransferErrorHelper.obtainStackTrace(exception);
             return error;
         }
-    }
+    }    
 }

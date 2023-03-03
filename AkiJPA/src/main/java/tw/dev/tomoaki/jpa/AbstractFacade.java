@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package tw.dev.tomoaki.ejb;
+package tw.dev.tomoaki.jpa;
 
 import javax.persistence.EntityManager;
 
@@ -29,9 +29,4 @@ public abstract class AbstractFacade<T> extends AbstractQueryFacade<T> {
     public void remove(T entity) {
         getEntityManager().remove(getEntityManager().merge(entity));
     }
-
-    public T find(Object id) {
-        return getEntityManager().find(entityClass, id);
-    }
-
 }

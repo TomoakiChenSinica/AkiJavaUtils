@@ -46,3 +46,5 @@ AkiDataValidator/AkiCommonDataValidator/target/AkiCommonDataValidator-1.0-SNAPSH
 *.jar
 *.jar
 AkiFramework/AkiDataMiner/target/AkiDataMiner-1.0-SNAPSHOT.jar
+/AkiPersistence/target/
+/AkiJPA/target/

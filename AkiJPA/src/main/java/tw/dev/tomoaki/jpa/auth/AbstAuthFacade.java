@@ -2,11 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package tw.dev.tomoaki.ejb.auth;
+package tw.dev.tomoaki.jpa.auth;
 
-import tw.dev.tomoaki.ejb.helper.ConstraintViolationHelper;
+import tw.dev.tomoaki.jpa.helper.ConstraintViolationHelper;
 import javax.validation.ConstraintViolationException;
-import tw.dev.tomoaki.ejb.AbstractQueryFacade;
+import tw.dev.tomoaki.jpa.AbstractQueryFacade;
 
 /**
  *
@@ -32,7 +32,7 @@ public abstract class AbstAuthFacade<ENTITY extends Transaction, AUTHINFO extend
         try {
             String identifier = authInfo.getIdentifier();
             entity.setupIdentifier(identifier);
-            this.getEntityManager().persist(entity);
+            this.getEntityManager().merge(entity);
         } catch (ConstraintViolationException ex) {
             ConstraintViolationHelper.handleException(ex);
         }

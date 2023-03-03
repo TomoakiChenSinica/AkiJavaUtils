@@ -41,5 +41,12 @@ public class DataTrasnferError<T> {
     public String getErrorMsg() {
         return errorMsg;
     }
+    
+    @Override
+    public String toString() {
+        String msgFormat = "Error Occur For data: %s \n"
+                + "errorMsg:\n %s \n";
+        return String.format(msgFormat, data, errorMsg);
+    }    
 
 }

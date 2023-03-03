@@ -1,4 +1,4 @@
-package tw.dev.tomoaki.ejb;
+package tw.dev.tomoaki.jpa;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

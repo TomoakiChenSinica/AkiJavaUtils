@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tw.dev.tomoaki.ejb.helper;
+package tw.dev.tomoaki.jpa.helper;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +21,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import tw.dev.tomoaki.ejb.exception.PlainTextConstraintViolationException;
+import tw.dev.tomoaki.jpa.exception.PlainTextConstraintViolationException;
 
 /**
  *
@@ -29,28 +29,31 @@ import tw.dev.tomoaki.ejb.exception.PlainTextConstraintViolationException;
  */
 public class ConstraintViolationHelper {
 
-    private static final String MSG_FORMAT_VAIOLATION = "From Root Class[%s], Constraint Violation Occur For Entity[%s], Property[%s] %s, Detail Is %s";
-//    public static void handleException(ConstraintViolationException ex) {
-//        Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
-//        violations.stream().forEach(violation -> {
-//            System.out.format("root= %s, leaf= %s, propertyPath= %s, message= %s \n",
-//                    violation.getRootBean().getClass().getSimpleName(), violation.getLeafBean().getClass().getSimpleName(), violation.getPropertyPath().toString(),  violation.getMessage());
-//        });
-//    }
+    
+//    private static final String MSG_FORMAT_VAIOLATION = "From Root Class[%s], Constraint Violation Occur For Entity[%s], Property[%s] %s, Detail Is %s";
+    private static final String MSG_FORMAT_VAIOLATION = "From Root Class[%s], Constraint Violation Occur For Entity[%s], Property[%s] %s";
+    //    public static void handleException(ConstraintViolationException ex) {
+            //        Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
+            //        violations.stream().forEach(violation -> {
+            //            System.out.format("root= %s, leaf= %s, propertyPath= %s, message= %s \n",
+            //                    violation.getRootBean().getClass().getSimpleName(), violation.getLeafBean().getClass().getSimpleName(), violation.getPropertyPath().toString(),  violation.getMessage());
+            //        });
+            //    }
 
-    public static void handleException(ConstraintViolationException ex) {
+
+    public static <T> void handleException(ConstraintViolationException ex) {
         Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
         List<String> violationMsgList = violations.stream().map(violation -> convert2Msg(violation)).collect(Collectors.toList());
         throw PlainTextConstraintViolationException.Factory.create(violationMsgList);
     }
 
-    public static String convert2Msg(ConstraintViolation<?> violation) {
+    public static <T> String convert2Msg(ConstraintViolation<? extends T> violation) {
         String rootClassName = violation.getRootBeanClass().getSimpleName();
         String leftClassName = violation.getLeafBean().getClass().getSimpleName();
         String propertyName = violation.getPropertyPath().toString();
         String violationMsg = violation.getMessage();
-        String detail = Arrays.asList(violation.getExecutableParameters()).toString();
-        String msg = String.format(MSG_FORMAT_VAIOLATION, rootClassName, leftClassName, propertyName, violationMsg, detail);
+//        String detail = Arrays.asList(violation.getExecutableParameters()).toString();
+        String msg = String.format(MSG_FORMAT_VAIOLATION, rootClassName, leftClassName, propertyName, violationMsg);
         return msg;
     }
 }
