@@ -20,8 +20,10 @@ import javax.validation.constraints.Size;
  */
 @EntityListeners(TransactionListener.class)
 @MappedSuperclass
-public class TransactionEntity extends Transaction {//implements Serializable {
+public class TransactionEntity implements Transaction {//implements Serializable {
              
+    private static ThreadLocal<String> IDENTIFIER = new ThreadLocal();    
+    
     private static final long serialVersionUID = 1L;
     //@Id
     @Basic(optional = false)
@@ -97,6 +99,12 @@ public class TransactionEntity extends Transaction {//implements Serializable {
 //    }    
 
 //    @Override
+    
+    @Override
+    public void setupIdentifier(String identifier) {
+        IDENTIFIER.set(identifier);
+    }    
+    
     public String getIdentifier() {
         return IDENTIFIER.get();
     }

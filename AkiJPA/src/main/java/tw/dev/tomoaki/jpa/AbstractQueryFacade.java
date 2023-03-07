@@ -38,7 +38,7 @@ public abstract class AbstractQueryFacade<T> {
     }
 
     public T find(Object id) {
-        EntityManager em =  getEntityManager();        
+        EntityManager em = getEntityManager();
         this.tryEvictCache(em, id);
         return em.find(entityClass, id);
     }
@@ -54,7 +54,7 @@ public abstract class AbstractQueryFacade<T> {
     }
 
     public List<T> findAll() {
-        EntityManager em =  getEntityManager();
+        EntityManager em = getEntityManager();
         this.tryEvictAllCache(em);
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(entityClass));
@@ -78,6 +78,7 @@ public abstract class AbstractQueryFacade<T> {
         return ((Long) q.getSingleResult()).intValue();
     }
 
+//<editor-fold defaultstate="collapsed" desc="Equal系列">
     public List<T> findByEquals(String columnName, Object value) {
         EntityManager em = this.getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -146,6 +147,17 @@ public abstract class AbstractQueryFacade<T> {
         return this.findBy(expressionList, orderList);
     }
 
+    public List<T> findByEqualsAny(String columnName, List<Object> columnValueList) {
+        EntityManager em = this.getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
+        Root<T> root = cq.from(entityClass);
+
+//        Expression expression = cb.any(sbqr)
+        throw new UnsupportedOperationException("Method Not Supported Yet");
+    }
+//</editor-fold>   
+
     protected List<T> findBy(List<Expression> expressionList, List<Order> orderList) {
         EntityManager em = this.getEntityManager();
         em.getEntityManagerFactory().getCache().evictAll();
@@ -162,12 +174,12 @@ public abstract class AbstractQueryFacade<T> {
         return query.getResultList();
 
     }
-    
+
     private void tryEvictCache(EntityManager em, Object id) {
         if (EVICT_CACHE) {
             em.getEntityManagerFactory().getCache().evict(entityClass, id);
         }
-    }    
+    }
 
     private void tryEvictAllCache(EntityManager em) {
         if (EVICT_CACHE) {
