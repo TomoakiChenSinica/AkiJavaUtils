@@ -29,7 +29,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Tomoaki Chen
  */
-public abstract class BasicAuthFilter<T extends BasicSessionContext> implements Filter {
+public abstract class BasicAuthFilter<SESSION_CONTEXT extends BasicSessionContext, SESSION_CONTEXT_FACTORY extends SessionContextFactory<SESSION_CONTEXT>> implements Filter {
 
     private Boolean printLog = false;
     private FilterConfig filterConfig = null;
@@ -108,36 +108,7 @@ public abstract class BasicAuthFilter<T extends BasicSessionContext> implements 
         }
     }
 
-//    private void doBeforeProcessing(ServletRequest request, ServletResponse response) throws IOException, ServletException, InstantiationException, IllegalAccessException {
-//        if (debug) {
-//            log("AuthFilter:DoBeforeProcessing");
-//        }
-//
-//        HttpServletRequest req = (HttpServletRequest) request;
-//        HttpServletResponse resp = (HttpServletResponse) response;
-//        HttpSession session = req.getSession();
-//
-//        if (this.isAuthenticated(req, resp, session)) {
-//            if (req.getRequestURI().contains(this.getSessionAttrOriUrl())) {
-//                resp.sendRedirect(this.getDefaultPageUrl());
-//            }
-//
-//            String oriUrl = this.findOriUrl(req, resp, session);
-//            if (oriUrl != null) {
-//                session.removeAttribute(this.getSessionAttrOriUrl());
-//                if (oriUrl.contains(this.getLoginPageUrl()) && oriUrl.lastIndexOf("/") == (oriUrl.length() - 1)) {
-//                    resp.sendRedirect(this.getDefaultPageUrl());
-//                } else {
-//                    resp.sendRedirect(oriUrl);
-//                }
-//            } else {
-////                resp.sendRedirect("/CardLogManagement/pages/cardLog/cardLogList.jsf");
-//            }
-//
-//        } else {
-//            this.redirect2LoginPage(req, resp, session);
-//        }
-//    }
+
     private void doBeforeProcessing(ServletRequest request, ServletResponse response) throws IOException, ServletException, InstantiationException, IllegalAccessException {
         if (printLog) {
             System.out.format("[%s] doBeforeProcessing()", this.getClass().getSimpleName());
@@ -148,21 +119,6 @@ public abstract class BasicAuthFilter<T extends BasicSessionContext> implements 
         HttpSession session = req.getSession();
 
         if (this.isAuthenticated(req, resp, session)) {
-//            if (req.getRequestURI().contains(this.getSessionAttrOriUrl())) {
-//                resp.sendRedirect(this.getDefaultPageUrl());
-//            }
-//
-//            String oriUrl = this.findOriUrl(req, resp, session);
-//            if (oriUrl != null) {
-//                session.removeAttribute(this.getSessionAttrOriUrl());
-//                if (oriUrl.contains(this.getLoginPageUrl()) && oriUrl.lastIndexOf("/") == (oriUrl.length() - 1)) {
-//                    resp.sendRedirect(this.getDefaultPageUrl());
-//                } else {
-//                    resp.sendRedirect(oriUrl);
-//                }
-//            } else {
-////                resp.sendRedirect("/CardLogManagement/pages/cardLog/cardLogList.jsf");
-//            }
             if(printLog) System.out.format("[%s] doBeforeProcessing(): isAuthenticated", this.getClass().getSimpleName());
         } else {
             this.redirect2LoginPage(req, resp, session);
@@ -184,25 +140,51 @@ public abstract class BasicAuthFilter<T extends BasicSessionContext> implements 
         resp.sendRedirect(this.getLoginPageUrl());
     }
 
+//    private void saveOriUrl(HttpServletRequest req, HttpServletResponse resp, HttpSession session) throws ServletException {
+//        try {
+//            T sessionContext = T.obtainSessionContext(session, this.getSessionContextClazz());
+//            sessionContext.init(req);
+//            if(this.printLog) System.out.format("[%s] saveOriUrl(): sessionContext= %s", this.getClass().getSimpleName(), sessionContext);            
+//            if(this.printLog) System.out.format("[%s] saveOriUrl(): T.sessionAttrKey= %s", this.getClass().getSimpleName(), T.sessionAttrKey);
+//            session.setAttribute(T.sessionAttrKey, sessionContext);
+//            if(this.printLog) System.out.format("[%s] saveOriUrl(): After Set Attribute To session= %s, attrKey= %s, attrValue= %s", this.getClass().getSimpleName(), session, T.sessionAttrKey, sessionContext);
+//            if(this.printLog) System.out.format("[%s] saveOriUrl(): Try Get Attribute From session= %s, attrKey= %s, attrValue= %s", this.getClass().getSimpleName(), session, T.sessionAttrKey, session.getAttribute(T.sessionAttrKey));
+//        } catch (Exception ex) {
+//            throw new ServletException(ex);
+//        }
+//    }
+    
+//    打咩    
+//    private void saveOriUrl(HttpServletRequest req, HttpServletResponse resp, HttpSession session) throws ServletException {
+//        try {
+//            SessionContextFactory factory = this.obtainSessionContextFactory();
+//            T sessionContext = factory.obtainSessionContext(session, this.getSessionContextClazz(), Boolean.TRUE);
+//            sessionContext.init(req);
+//            if(this.printLog) System.out.format("[%s] saveOriUrl(): sessionContext= %s", this.getClass().getSimpleName(), sessionContext);            
+//            if(this.printLog) System.out.format("[%s] saveOriUrl(): T.sessionAttrKey= %s", this.getClass().getSimpleName(), T.sessionAttrKey);
+//            session.setAttribute(T.sessionAttrKey, sessionContext);
+//            if(this.printLog) System.out.format("[%s] saveOriUrl(): After Set Attribute To session= %s, attrKey= %s, attrValue= %s", this.getClass().getSimpleName(), session, T.sessionAttrKey, sessionContext);
+//            if(this.printLog) System.out.format("[%s] saveOriUrl(): Try Get Attribute From session= %s, attrKey= %s, attrValue= %s", this.getClass().getSimpleName(), session, T.sessionAttrKey, session.getAttribute(T.sessionAttrKey));
+//        } catch (Exception ex) {
+//            throw new ServletException(ex);
+//        }
+//    }    
     private void saveOriUrl(HttpServletRequest req, HttpServletResponse resp, HttpSession session) throws ServletException {
         try {
-//        String oriUrl = req.getRequestURL().toString();
-//        Map<String, String[]> paramMap = req.getParameterMap();
-//        String oriUrlWithQueryParam = this.obtainUrlWithQueryParam(oriUrl, paramMap);
-////        System.out.println("oriUrl = " + oriUrl + ", oriUrlWithQueryParam = " + oriUrlWithQueryParam);
-//        session.setAttribute(this.getSessionAttrOriUrl(), oriUrlWithQueryParam);
-            T sessionContext = T.obtainSessionContext(session, this.getSessionContextClazz());
-//            sessionContext.setLastRequestUrl(oriUrl);
+            SESSION_CONTEXT_FACTORY factory = this.obtainSessionContextFactory();
+            SESSION_CONTEXT sessionContext = factory.obtainSessionContext(session, this.getSessionContextClazz(), Boolean.TRUE);
             sessionContext.init(req);
             if(this.printLog) System.out.format("[%s] saveOriUrl(): sessionContext= %s", this.getClass().getSimpleName(), sessionContext);            
-            if(this.printLog) System.out.format("[%s] saveOriUrl(): T.sessionAttrKey= %s", this.getClass().getSimpleName(), T.sessionAttrKey);
-            session.setAttribute(T.sessionAttrKey, sessionContext);
-            if(this.printLog) System.out.format("[%s] saveOriUrl(): After Set Attribute To session= %s, attrKey= %s, attrValue= %s", this.getClass().getSimpleName(), session, T.sessionAttrKey, sessionContext);
-            if(this.printLog) System.out.format("[%s] saveOriUrl(): Try Get Attribute From session= %s, attrKey= %s, attrValue= %s", this.getClass().getSimpleName(), session, T.sessionAttrKey, session.getAttribute(T.sessionAttrKey));
+//            if(this.printLog) System.out.format("[%s] saveOriUrl(): T.sessionAttrKey= %s", this.getClass().getSimpleName(), T.sessionAttrKey);
+//            session.setAttribute(T.sessionAttrKey, sessionContext);
+            factory.saveSessionContext(session, sessionContext);
+//            if(this.printLog) System.out.format("[%s] saveOriUrl(): After Set Attribute To session= %s, attrKey= %s, attrValue= %s", this.getClass().getSimpleName(), session, T.sessionAttrKey, sessionContext);
+//            if(this.printLog) System.out.format("[%s] saveOriUrl(): Try Get Attribute From session= %s, attrKey= %s, attrValue= %s", this.getClass().getSimpleName(), session, T.sessionAttrKey, session.getAttribute(T.sessionAttrKey));
         } catch (Exception ex) {
             throw new ServletException(ex);
         }
-    }
+    }    
+    
 
     private String obtainUrlWithQueryParam(String url, Map<String, String[]> queryParamMap) {
         List<String> strParamPairList = null;
@@ -233,10 +215,6 @@ public abstract class BasicAuthFilter<T extends BasicSessionContext> implements 
         return url;
     }
 
-    private String findOriUrl(HttpServletRequest req, HttpServletResponse resp, HttpSession session) {
-        Object objOriUrl = session.getAttribute(this.getSessionAttrOriUrl());
-        return objOriUrl == null ? null : (String) objOriUrl;
-    }
 
     protected Boolean isAuthenticated(ServletRequest req, ServletResponse resp) throws InstantiationException, IllegalAccessException {
         HttpServletRequest request = (HttpServletRequest)req;
@@ -245,24 +223,37 @@ public abstract class BasicAuthFilter<T extends BasicSessionContext> implements 
         return this.isAuthenticated(request, response, session);        
     }    
     
+//    protected Boolean isAuthenticated(HttpServletRequest req, HttpServletResponse resp, HttpSession session) throws InstantiationException, IllegalAccessException {
+//        if(printLog) System.out.format("[%s] isAuthenticated(): session= %s", this.getClass().getSimpleName(), session);
+//        T sessionContext = T.obtainSessionContext(session, this.getSessionContextClazz());
+//        if (printLog) {
+//            System.out.format("[%s isAuthenticated(): sessionContext= %s", this.getClass().getSimpleName(), sessionContext);
+//        }
+//        if (printLog && sessionContext != null) {
+//            System.out.format("[%s] isAuthenticated(): sessionContext.getIsAuthorized= %s", this.getClass().getSimpleName(), sessionContext.getIsAuthorized());
+//        }
+//        
+//        session.setAttribute(T.sessionAttrKey, sessionContext);
+//        
+//        return sessionContext != null && sessionContext.getIsAuthorized();
+//    }
     protected Boolean isAuthenticated(HttpServletRequest req, HttpServletResponse resp, HttpSession session) throws InstantiationException, IllegalAccessException {
         if(printLog) System.out.format("[%s] isAuthenticated(): session= %s", this.getClass().getSimpleName(), session);
-        T sessionContext = T.obtainSessionContext(session, this.getSessionContextClazz());
+        SESSION_CONTEXT_FACTORY factory = this.obtainSessionContextFactory();
+        SESSION_CONTEXT sessionContext = factory.obtainSessionContext(session, this.getSessionContextClazz(), Boolean.FALSE);
         if (printLog) {
             System.out.format("[%s isAuthenticated(): sessionContext= %s", this.getClass().getSimpleName(), sessionContext);
         }
         if (printLog && sessionContext != null) {
             System.out.format("[%s] isAuthenticated(): sessionContext.getIsAuthorized= %s", this.getClass().getSimpleName(), sessionContext.getIsAuthorized());
-        }
-        
-        session.setAttribute(T.sessionAttrKey, sessionContext);
-        
+        }        
+//        session.setAttribute(T.sessionAttrKey, sessionContext); //忘了為啥當初這邊要存一遍        
         return sessionContext != null && sessionContext.getIsAuthorized();
-    }
+    }    
 
-    protected abstract Class<T> getSessionContextClazz();
+    protected abstract Class<SESSION_CONTEXT> getSessionContextClazz();
 
-    protected abstract String getSessionAttrOriUrl();
+//    protected abstract String getSessionAttrOriUrl();
 
     protected abstract String getLoginPageUrl();
 
@@ -318,4 +309,7 @@ public abstract class BasicAuthFilter<T extends BasicSessionContext> implements 
     public void log(String msg) {
         filterConfig.getServletContext().log(msg);
     }
+    
+//    protected abstract SessionContextFactory obtainSessionContextFactory();
+    protected abstract SESSION_CONTEXT_FACTORY obtainSessionContextFactory();
 }

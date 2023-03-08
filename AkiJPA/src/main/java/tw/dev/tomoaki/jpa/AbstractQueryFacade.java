@@ -5,6 +5,7 @@
 package tw.dev.tomoaki.jpa;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -130,7 +131,7 @@ public abstract class AbstractQueryFacade<T> {
         for (KeyValuePair pair : pairList) {
             String columnName = pair.getColName();
             Object value = pair.getColValue();
-            Expression expression = cb.equal(root.get(columnName.toLowerCase()), value);
+            Expression expression = cb.equal(root.get(columnName.toLowerCase()), value); //public interface Predicate extends Expression<Boolean> {
             expressionList.add(expression);
         }
 
@@ -152,11 +153,24 @@ public abstract class AbstractQueryFacade<T> {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
         Root<T> root = cq.from(entityClass);
-
+        cq.select(root).where(root.get(columnName).in(columnValueList));
 //        Expression expression = cb.any(sbqr)
         throw new UnsupportedOperationException("Method Not Supported Yet");
     }
 //</editor-fold>   
+    
+    public List<T> findIn(String columnName, List<?> columnValueList) {
+        EntityManager em = this.getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
+        Root<T> root = cq.from(entityClass);
+//        Expression expression = root.get(columnName.toLowerCase()).in(columnValueList);
+        cq = cq.where(root.get(columnName.toLowerCase()).in(columnValueList));
+        cq = cq.orderBy(cb.asc(root.get(columnName.toLowerCase())));
+        
+        Query query = em.createQuery(cq);
+        return query.getResultList();
+    }
 
     protected List<T> findBy(List<Expression> expressionList, List<Order> orderList) {
         EntityManager em = this.getEntityManager();
