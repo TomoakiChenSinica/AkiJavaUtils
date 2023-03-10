@@ -168,7 +168,7 @@ public class SMTPClient {
 
     public void sendHtmlMessage(String fromAddr, String toAddr, String subject, String htmlText, List attachmentList) throws MessagingException, IOException {
         if (attachmentList == null || attachmentList.isEmpty()) {
-            this.sendHtmlMessage(fromAddr, attachmentList, subject, htmlText);
+            this.sendHtmlMessage(fromAddr, toAddr, subject, htmlText);
         } else {
             MimeMessage msg = null;
             Object attachmentData = attachmentList.get(0);
@@ -199,7 +199,7 @@ public class SMTPClient {
 //        MimeMessage msg = multiPartMsgFactory.addAllReceiver(toAddr).setupSubject(subject).appendContent(htmlText).addAllAttachment(fileList).produceMessage();
 //        Transport.send(msg);
         if (attachmentList == null || attachmentList.isEmpty()) {
-            this.sendHtmlMessage(fromAddr, attachmentList, subject, htmlText);
+            this.sendHtmlMessage(fromAddr, toAddr, subject, htmlText);
         } else {
             MimeMessage msg = null;
             Object attachmentData = attachmentList.get(0);

@@ -39,6 +39,9 @@ public abstract class AbstractDataMiner<T, Q extends DataMinerOptionQuery> {
      * public -> protected 
      */    
     private List<T> doFilter(Q query) {
+        if(this.isDataListNull()) {
+            throw new DataMinerException("oriDataList After doSearch Is Null");
+        }
         List<T> resultList = new ArrayList(oriDataList);
         resultList = this.tryFilter(oriDataList, query);
         return resultList;

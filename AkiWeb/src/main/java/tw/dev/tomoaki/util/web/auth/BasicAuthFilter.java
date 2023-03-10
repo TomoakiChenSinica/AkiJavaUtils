@@ -44,9 +44,7 @@ public abstract class BasicAuthFilter<SESSION_CONTEXT extends BasicSessionContex
         }
         try {
             this.doBeforeInit();
-
             this.doSetupGlobalVariable();
-
             this.doAfterInit();
         } catch(ServletException ex) {
             throw ex;
@@ -126,7 +124,7 @@ public abstract class BasicAuthFilter<SESSION_CONTEXT extends BasicSessionContex
         }
     }
 
-    private void doAfterProcessing(ServletRequest request, ServletResponse response) throws IOException, ServletException {
+    protected void doAfterProcessing(ServletRequest request, ServletResponse response) throws IOException, ServletException {
         if (printLog) {
             System.out.format("[%s] doAfterProcessing()", this.getClass().getSimpleName());            
         }
@@ -242,10 +240,10 @@ public abstract class BasicAuthFilter<SESSION_CONTEXT extends BasicSessionContex
         SESSION_CONTEXT_FACTORY factory = this.obtainSessionContextFactory();
         SESSION_CONTEXT sessionContext = factory.obtainSessionContext(session, this.getSessionContextClazz(), Boolean.FALSE);
         if (printLog) {
-            System.out.format("[%s isAuthenticated(): sessionContext= %s", this.getClass().getSimpleName(), sessionContext);
+            System.out.format("[%s] isAuthenticated(): sessionContext= %s", this.getClass().getSimpleName(), sessionContext);
         }
         if (printLog && sessionContext != null) {
-            System.out.format("[%s] isAuthenticated(): sessionContext.getIsAuthorized= %s", this.getClass().getSimpleName(), sessionContext.getIsAuthorized());
+            System.out.format("[%s] isAuthenticated(): sessionContext Is Existed, sessionContext.getIsAuthorized= %s", this.getClass().getSimpleName(), sessionContext.getIsAuthorized());
         }        
 //        session.setAttribute(T.sessionAttrKey, sessionContext); //忘了為啥當初這邊要存一遍        
         return sessionContext != null && sessionContext.getIsAuthorized();
