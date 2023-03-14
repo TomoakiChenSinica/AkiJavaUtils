@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tw.dev.tomoaki.countryutils;
+package tw.dev.tomoaki.countryutils.entity;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -51,6 +51,7 @@ public class LocaleKeyByISO3CodeMap {
     /**
      * @param iso3Code 要尋找的國家的 iso3 Code 
      * @param desigLang 指定國家名稱顯示語言， Locale.Xxxxx
+     * @return iso3Code  所對應的 Locale，在指定的語系(desigLang)下，所顯示的國家名稱
      */
     public String getLocaleDisplayCountryName(String iso3Code, Locale desigLang){
         if(iso3Code == null || iso3Code.isEmpty()) {

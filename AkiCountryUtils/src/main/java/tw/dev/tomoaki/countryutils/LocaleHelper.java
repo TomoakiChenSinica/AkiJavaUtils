@@ -5,9 +5,11 @@
  */
 package tw.dev.tomoaki.countryutils;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
+import tw.dev.tomoaki.countryutils.entity.CountryInfo;
+import tw.dev.tomoaki.countryutils.entity.LocaleKeyByISO3CodeMap;
+
 
 /**
  *
@@ -15,29 +17,26 @@ import java.util.Locale;
  */
 public class LocaleHelper {
 
-    public static List<CountryInfo> obtainChCountryInfoList() {
-        List<CountryInfo> countryInfoList = new ArrayList();
-
-        Locale twLocale = Locale.TAIWAN;
-        Locale enLocale = Locale.ENGLISH;
-
-        String[] countryISOCodes = Locale.getISOCountries();
-        for (String iso2Code : countryISOCodes) {
-            Locale locale = new Locale("", iso2Code);
-            
-            String iso3Code = locale.getISO3Country();
-            String displayName;
-            String chName = locale.getDisplayCountry(twLocale);
-            String enName = locale.getDisplayCountry(enLocale);
-            displayName = chName + " / " + enName;
-
-            CountryInfo countryInfo = new CountryInfo();
-            countryInfo.setDisplayName(displayName);
-            countryInfo.setIso2Code(iso2Code);
-            countryInfo.setIso3Code(iso3Code);
-
-            countryInfoList.add(countryInfo);
+//    private static final LocaleKeyByISO3CodeMap localeKeyByISO3CodeMap = new LocaleKeyByISO3CodeMap();
+    
+    public Boolean looseEquals(Locale locale1, Locale locale2) {
+        if(locale1 == null && locale2 == null) {
+            throw new IllegalArgumentException("Both Locale Is Null");
         }
-        return countryInfoList;
+        
+        if(locale1 == null || locale2 == null) {
+            return Boolean.FALSE;
+        }
+        
+        return Objects.equals(locale1.getCountry(), locale2.getCountry()) && Objects.equals(locale1.getISO3Country(), locale2.getISO3Country());
     }
+    
+//    public static convert2CountryInfo(Locale desigLocale) {
+//    
+//    }
+    
+//    public static CountryInfo convert2CountryInfo(Locale desigLocale) {
+//        String iso3Code = desigLocale.getISO3Country();
+//        return countryInfoKeyByISOCodeMap.getByISO3Code(iso3Code);
+//    }    
 }

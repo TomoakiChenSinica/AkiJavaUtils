@@ -26,7 +26,7 @@ public abstract class SessionContextFactory<T extends BasicSessionContext> {
 
     protected abstract String obtainSessionAttrKey();
 
-    public <T extends BasicSessionContext> T obtainSessionContext(HttpServletRequest request, Class<T> clazz, Boolean newInst4Null) throws InstantiationException, IllegalAccessException {
+    public <T extends BasicSessionContext> T obtainSessionContext(HttpServletRequest request, Class<T> clazz, Boolean newInst4Null) throws InstantiationException, IllegalAccessException {       
         return this.obtainSessionContext(request.getSession(), clazz, newInst4Null);
     }
 
