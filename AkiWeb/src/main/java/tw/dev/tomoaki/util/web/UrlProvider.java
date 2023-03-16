@@ -15,109 +15,96 @@ public class UrlProvider {
 
     private HttpServletRequest request;
     private String url = "";
-    private String protocol = "";    //http or https or something else
-    private String hostName = "";    //domain name，即該server的名稱
-    private Integer port = 80;           //project 所用的 port
-
-    private String contextPath = ""; //project 目錄 (例如 bpm-web)
+    private String protocol = "";
+    private String hostName = "";  //domain name，即該server的名稱
+    private Integer port = 80;
+    private String contextPath = "";
     //private String pathName;  //頁面名稱，一般是URL
-    private String systemPath = "";
-    private String localPath = "";
+    private String pathInfo = "";
 
-    protected UrlProvider() {
-    }
-
-    protected UrlProvider(String protocol, String hostName, Integer port, String contextPath) {
-        this.protocol = protocol;
-        this.hostName = hostName;
-        this.port = port;
-        this.contextPath = contextPath;
+    protected UrlProvider(HttpServletRequest request) {
+        this.request = request;
     }
 
     public static class Factory {
 
         public static UrlProvider create(HttpServletRequest request) {
-            UrlProvider provider = new UrlProvider();
-            provider.request = request;
-            provider.doParseRequestInfo();
-            return provider;
-        }
-
-        public static UrlProvider create(String protocol, String hostName, Integer port, String contextPath) {
-            UrlProvider provider = new UrlProvider(protocol, hostName, port, contextPath);
-            return provider;
+            UrlProvider urlProvider = new UrlProvider(request);
+            urlProvider.doParseRequestInfo();
+            return urlProvider;
         }
     }
 
-//<editor-fold defaultstate="collapsed" desc="設定變數">
     protected void doParseRequestInfo() {
         this.protocol = request.getScheme();
         this.hostName = request.getServerName();
         this.port = request.getServerPort();
-        this.contextPath = request.getContextPath().replaceAll("/", "");
-    }
-
-//</editor-fold>
-    protected void setupWebRequest(HttpServletRequest request) {
-        this.request = request;
-    }
-
-    public String getLocalPath() {
-        if (localPath == null || "".equals(localPath)) {
-            localPath = UrlProvider.createLocalPath(protocol, hostName, port, contextPath);
+        if (request.getContextPath() != null) {
+            this.contextPath = request.getContextPath().replaceAll("/", "");
         }
-        return localPath;
     }
 
-    public String getProtocol() {
-        return this.protocol;
+
+    public String getURL() {
+        return null;
     }
 
-    public String getHostName() {
-        return this.hostName;
-    }
+    public String obtainSystemRootPath() {
+        String rootPath = "";
+        rootPath += this.protocol + "://";
+        rootPath += this.hostName;
+        if (this.port != 80 && this.port != 443) {
+            rootPath += ":" + this.port + "/";
+        } else {
+            rootPath += "/";
+        }
 
-    public Integer getPort() {
-        return this.port;
-    }
-
-    public String getContextPath() {
-        return this.contextPath;
+        if (this.contextPath != "") {
+            rootPath += this.contextPath + "/";
+        }
+        return rootPath;
     }
 
     public String appendUrl(String tempPathInfo) {
         String theURL = "";
-
-        theURL += this.localPath + "/";
-
-        if (tempPathInfo.charAt(0) == '/') {
-            this.systemPath = tempPathInfo.substring(1);
+        theURL += this.protocol + "://";
+        theURL += this.hostName;
+        if (this.port != 80 && this.port != 443) {
+            theURL += ":" + this.port + "/";
         } else {
-            this.systemPath = tempPathInfo;
+            theURL += "/";
         }
 
-        theURL += this.systemPath;
-//        System.out.println(theURL);
+        if (!"".equals(this.contextPath)) {
+            theURL += this.contextPath + "/";
+        }
+
+        if (tempPathInfo.charAt(0) == '/') {
+            this.pathInfo = tempPathInfo.substring(1);
+        } else {
+            this.pathInfo = tempPathInfo;
+        }
+        theURL += this.pathInfo;
+        //theURL += request.getRequestURI();
         return theURL;
     }
 
-    public static String createLocalPath(String protocol, String hostName, Integer port, String contextPath) {
-        String localPath = "";
-        localPath += protocol + "://";
-        localPath += hostName;
-        if (port == null) {//其實不太可能發生
-            localPath += "/";
-        } else if (port != 80) {
-            localPath += ":" + port + "/";
-        } else {
-            localPath += "/";
-        }
+    public static String[] urlHeaderList = {"https://", "http://"};
 
-//        if(port != 80)
-//            localPath += ":" + port + "/";
-        if (contextPath != "") {
-            localPath += contextPath;
+    public static String createConnectableUrl(String oriUrl) {
+        String connectAbleUrl = oriUrl;
+        if (checkContainsUrlHeader(oriUrl) == false) {
+            connectAbleUrl = "https://" + oriUrl;
         }
-        return localPath;
+        return connectAbleUrl;
+    }
+
+    protected static boolean checkContainsUrlHeader(String oriUrl) {
+        for (String urlHeader : urlHeaderList) {
+            if (oriUrl.contains(urlHeader)) {
+                return true; //只要符合其中一個即可
+            }
+        }
+        return false;
     }
 }
