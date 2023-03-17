@@ -22,7 +22,7 @@ import tw.dev.tomoaki.util.commondatavalidator.ListValidator;
  *
  * @author tomoaki
  */
-public abstract class AbstractQueryFacade<T> {
+public abstract class AbstractQueryColumnNameFacade<T> {
 
     public static Boolean EVICT_CACHE = Boolean.TRUE;
 
@@ -30,7 +30,7 @@ public abstract class AbstractQueryFacade<T> {
 
     protected abstract EntityManager getEntityManager();
 
-    public AbstractQueryFacade(Class<T> entityClass) {
+    public AbstractQueryColumnNameFacade(Class<T> entityClass) {
         this.entityClass = entityClass;
     }
 
@@ -44,16 +44,11 @@ public abstract class AbstractQueryFacade<T> {
         return em.find(entityClass, id);
     }
 
-    /**
-     *
-     * @param entityPropName 請注意是要使用「(Table所對應的) Entity 之 (Table Column所對應的) Property名稱 」
-     * @return 查詢結果
-     */
-    public List<T> findAllAscOrdered(String entityPropName) {
+    public List<T> findAllAscOrdered(String columnName) {
         CriteriaBuilder cb = this.getEntityManager().getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
         Root<T> root = cq.from(entityClass);
-        cq.orderBy(cb.asc(root.get(entityPropName)));
+        cq.orderBy(cb.asc(root.get(columnName.toLowerCase())));
 
         Query query = this.getEntityManager().createQuery(cq);
         return query.getResultList();
@@ -85,73 +80,56 @@ public abstract class AbstractQueryFacade<T> {
     }
 
 //<editor-fold defaultstate="collapsed" desc="Equal系列">
+    
     /*
     https://stackoverflow.com/questions/39741718/java-lang-illegalargumentexception-the-attribute-state-id-is-not-present-in-t 
     > The querying uses by default java names. If you have doubt you can setup a jpa metamodel generator and you will be able to use a typed version of the attributes instead of strings.
     
-     */
-    /**
-     *
-     * @param entityPropName 請注意是要使用「(Table所對應的) Entity 之 (Table Column所對應的) Property名稱 」
-     * @param value Table Column (即 Entity 之 Property)數值
-     * @return 查詢結果
-     */
-    public List<T> findByEquals(String entityPropName, Object value) {
+        */
+    
+    
+    public List<T> findByEquals(String columnName, Object value) {
         EntityManager em = this.getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
         this.tryEvictAllCache(em);
         Root<T> root = cq.from(entityClass);
-        cq = cq.where(cb.equal(root.get(entityPropName), value));
-        cq = cq.orderBy(cb.asc(root.get(entityPropName)));
+        cq = cq.where(cb.equal(root.get(columnName.toLowerCase()), value));
+        cq = cq.orderBy(cb.asc(root.get(columnName.toLowerCase())));
 
         Query query = em.createQuery(cq);
         return query.getResultList();
     }
 
-    
-    /**
-     *
-     * @param entityPropNameList 請注意是要使用「(Table所對應的) Entity 之 (Table Column所對應的) Property名稱 」 ，Property Name  清單
-     * @param valueList Table Column (即 Entity 之 Property)數值清單
-     * @param orderEntityPropNameList 排序方式 Property Name 清單
-     * @return 查詢結果
-     */    
-    public List<T> findByEquals(List<String> entityPropNameList, List<Object> valueList, List<String> orderEntityPropNameList) {
-        if (!ListValidator.isListExist(entityPropNameList)) {
-            throw new IllegalArgumentException("entityPropNameList= %s Is Null Or Empty");
+    public List<T> findByEquals(List<String> columnNameList, List<Object> columnValueList, List<String> orderColNameList) {
+        if (!ListValidator.isListExist(columnNameList)) {
+            throw new IllegalArgumentException("columnNameList= %s Is Null Or Empty");
         }
 
-        if (!ListValidator.isListExist(valueList)) {
-            throw new IllegalArgumentException("valueList= %s Is Null Or Empty");
+        if (!ListValidator.isListExist(columnValueList)) {
+            throw new IllegalArgumentException("columnNameList= %s Is Null Or Empty");
         }
 
-        Integer length4ColNameList = entityPropNameList.size();
-        Integer legnth4ColValueList = valueList.size();
+        Integer length4ColNameList = columnNameList.size();
+        Integer legnth4ColValueList = columnValueList.size();
         if (!Objects.equals(length4ColNameList, legnth4ColValueList)) {
-            throw new IllegalArgumentException("entityPropertyNameList= %s, valueList= %s, There Length Is Not Equal");
+            throw new IllegalArgumentException("columnNameList= %s, columnValueList= %s, There Length Is Not Equal");
         }
 
         List<KeyValuePair> pairList = new ArrayList();
         for (Integer index = 0; index < legnth4ColValueList; index++) {
-            String propName = entityPropNameList.get(index);
-            Object colValue = valueList.get(index);
-            KeyValuePair pair = new KeyValuePair(propName, colValue);
+            String colName = columnNameList.get(index);
+            Object colValue = columnValueList.get(index);
+            KeyValuePair pair = new KeyValuePair(colName, colValue);
             pairList.add(pair);
         }
 
-        orderEntityPropNameList = ListValidator.isListExist(orderEntityPropNameList) ? orderEntityPropNameList : orderEntityPropNameList;
-        return this.findByEquals(pairList, orderEntityPropNameList);
+        orderColNameList = ListValidator.isListExist(orderColNameList) ? orderColNameList : columnNameList;
+        return this.findByEquals(pairList, orderColNameList);
 
     }
 
-    /**
-     *
-     * @param pairList 資料對應組
-     * @param orderEntityPropNameList 排序方式 Property Name 清單
-     * @return 查詢結果
-     */        
-    public List<T> findByEquals(List<KeyValuePair> pairList, List<String> orderEntityPropNameList) {
+    public List<T> findByEquals(List<KeyValuePair> pairList, List<String> orderColNameList) {
         EntityManager em = this.getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
@@ -159,55 +137,45 @@ public abstract class AbstractQueryFacade<T> {
 
         List<Expression> expressionList = new ArrayList();
         for (KeyValuePair pair : pairList) {
-            String propName = pair.getColName();
+            String columnName = pair.getColName();
             Object value = pair.getColValue();
-            Expression expression = cb.equal(root.get(propName), value); //public interface Predicate extends Expression<Boolean> {
+            Expression expression = cb.equal(root.get(columnName.toLowerCase()), value); //public interface Predicate extends Expression<Boolean> {
             expressionList.add(expression);
         }
 
-        orderEntityPropNameList = ListValidator.isListExist(orderEntityPropNameList) ? orderEntityPropNameList : pairList.stream().map(pair -> pair.getColName()).collect(Collectors.toList());
+        orderColNameList = ListValidator.isListExist(orderColNameList) ? orderColNameList : pairList.stream().map(pair -> pair.getColName()).collect(Collectors.toList());
 
-        List<Order> orderList = orderEntityPropNameList.stream()
-                .map(entityPropName -> cb.asc(root.get(entityPropName)))
+        List<Order> orderList = orderColNameList.stream()
+                .map(columnName -> cb.asc(root.get(columnName.toLowerCase())))
                 .collect(Collectors.toList());
 
+//        cq = cq.orderBy( cb.asc(root.get( orderColNameList.get(0).toLowerCase()) ) ) ;
 //        轉call 更底層
 //        Query query = em.createQuery(cq);
 //        return query.getResultList();
         return this.findBy(expressionList, orderList);
     }
 
-    /**
-     *
-     * @param entityPropName 請注意是要使用「(Table所對應的) Entity 之 (Table Column所對應的) Property名稱 」
-     * @param valueList Table Column (即 Entity 之 Property)數值清單
-     * @return 查詢結果
-     */     
-    public List<T> findByEqualsAny(String entityPropName, List<Object> valueList) {
+    public List<T> findByEqualsAny(String columnName, List<Object> columnValueList) {
         EntityManager em = this.getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
         Root<T> root = cq.from(entityClass);
-        cq.select(root).where(root.get(entityPropName).in(valueList));
+        cq.select(root).where(root.get(columnName).in(columnValueList));
 //        Expression expression = cb.any(sbqr)
         throw new UnsupportedOperationException("Method Not Supported Yet");
     }
 //</editor-fold>   
-
-    /**
-     *
-     * @param entityPropName 請注意是要使用「(Table所對應的) Entity 之 (Table Column所對應的) Property名稱 」
-     * @param valueList Table Column (即 Entity 之 Property)數值清單
-     * @return 查詢結果
-     */         
-    public List<T> findIn(String entityPropName, List<?> valueList) {
+    
+    public List<T> findIn(String columnName, List<?> columnValueList) {
         EntityManager em = this.getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
         Root<T> root = cq.from(entityClass);
-        cq = cq.where(root.get(entityPropName).in(valueList));
-        cq = cq.orderBy(cb.asc(root.get(entityPropName)));
-
+//        Expression expression = root.get(columnName.toLowerCase()).in(columnValueList);
+        cq = cq.where(root.get(columnName.toLowerCase()).in(columnValueList));
+        cq = cq.orderBy(cb.asc(root.get(columnName.toLowerCase())));
+        
         Query query = em.createQuery(cq);
         return query.getResultList();
     }
