@@ -63,3 +63,7 @@ AkiEntity/target/AkiEntity-1.0-SNAPSHOT.jar
 AkiFramework/AkiDataMiner/target/AkiDataMiner-1.0-SNAPSHOT.jar
 AkiImageUtils/target/AkiImageUtils-1.0-SNAPSHOT.jar
 AkiWeb/target/AkiWeb-1.0-SNAPSHOT.jar
+/AkiDataValidator/AkiIPValidator/target/
+AkiDataValidator/AkiCommonDataValidator/target/classes/tw/dev/tomoaki/util/commondatavalidator/ListValidator$DataExistMap.class
+*.class
+*.jar
