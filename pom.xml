@@ -82,6 +82,36 @@
             <name>The Apache License, Version 2.0</name>
             <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
         </license>
-    </licenses>    
+    </licenses>  
+    
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.8.1</version>
+                <executions>
+                    <execution>
+                        <id>tw.dev.tomoaki</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>deploy-file</goal>
+                        </goals>
+                        <configuration>
+                            <file>${project.build.directory}/release-2022.03.21-1.jar</file>
+                            <repositoryId>github</repositoryId>
+                            <url>https://maven.pkg.github.com/TomoakiChenSinica/AkiJavaUtils</url>
+                            <groupId>tw.dev.tomoaki</groupId>
+                            <artifactId>AkiJavaUtils</artifactId>
+                            <version>release-2022.03.21-1</version>
+                            <packaging>jar</packaging>
+                            <generatePom>true</generatePom>
+                            <pomFile>${project.build.directory}/pom.xml</pomFile>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>        
     
 </project>

@@ -57,3 +57,9 @@ AkiWeb/target/AkiWeb-1.0-SNAPSHOT.jar
 AkiWeb/target/AkiWeb-1.0-SNAPSHOT.jar
 AkiWeb/target/surefire-reports/tw.dev.tomoaki.TestMain.txt
 AkiWeb/target/surefire-reports/tw.dev.tomoaki.TestMain.txt
+AkiDataValidator/AkiTaiwanDataValidtor/target/AkiTaiwanDataValidtor-1.0-SNAPSHOT.jar
+AkiCast/target/AkiCast-1.0-SNAPSHOT.jar
+AkiEntity/target/AkiEntity-1.0-SNAPSHOT.jar
+AkiFramework/AkiDataMiner/target/AkiDataMiner-1.0-SNAPSHOT.jar
+AkiImageUtils/target/AkiImageUtils-1.0-SNAPSHOT.jar
+AkiWeb/target/AkiWeb-1.0-SNAPSHOT.jar
