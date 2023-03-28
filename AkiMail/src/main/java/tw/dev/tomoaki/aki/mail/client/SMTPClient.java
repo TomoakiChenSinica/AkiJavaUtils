@@ -27,6 +27,7 @@ public class SMTPClient {
     private Boolean needParseHtml = true;
 
     private static final String DEFAULT_HOST = "localhost";
+    private static final Integer DEFAULT_PORT = 25;
 
     protected SMTPClient() {
     }
@@ -42,7 +43,8 @@ public class SMTPClient {
         
         public static SMTPClient create(Boolean needParseHtml) {
             SMTPClient client = new SMTPClient();
-            client.hostName = DEFAULT_HOST;
+//            client.hostName = DEFAULT_HOST;
+//            client.port = DEFAULT_PORT;
             client.needParseHtml = needParseHtml;
             client.doSetupMailProperty();
             return client;
@@ -195,9 +197,6 @@ public class SMTPClient {
     }
 
     public void sendHtmlMessage(String fromAddr, List<String> toAddr, String subject, String htmlText, List attachmentList) throws MessagingException, IOException {
-//        MultiPartMessageFactory multiPartMsgFactory = MultiPartMessageFactory.obtain(hostName, fromAddr);
-//        MimeMessage msg = multiPartMsgFactory.addAllReceiver(toAddr).setupSubject(subject).appendContent(htmlText).addAllAttachment(fileList).produceMessage();
-//        Transport.send(msg);
         if (attachmentList == null || attachmentList.isEmpty()) {
             this.sendHtmlMessage(fromAddr, toAddr, subject, htmlText);
         } else {
