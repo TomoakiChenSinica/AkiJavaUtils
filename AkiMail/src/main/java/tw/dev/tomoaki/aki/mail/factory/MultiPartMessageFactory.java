@@ -24,6 +24,7 @@ public class MultiPartMessageFactory {
     private static final String DEFAULT_CONTENT_TYPE = "text/html;charset=UTF-8";
 
     private String smtpHost;
+    private Integer port = null;
     private String sender;
     private List<String> receiverList;
     private String subject;
@@ -41,6 +42,15 @@ public class MultiPartMessageFactory {
         factory.doInit();
         return factory;
     }
+    
+    public static MultiPartMessageFactory obtain(String hostName, Integer port, String sender) {
+        MultiPartMessageFactory factory = new MultiPartMessageFactory();
+        factory.smtpHost = hostName;
+        factory.port = port;
+        factory.sender = sender;
+        factory.doInit();
+        return factory;
+    }    
 
     protected void doInit() {
         this.receiverList = new ArrayList();
@@ -90,7 +100,7 @@ public class MultiPartMessageFactory {
     }
 
     public MimeMessage produceMessage() throws MessagingException, IOException {
-        MimeMessage msg = TextMessageFactory.createEmptyMsg(smtpHost);
+        MimeMessage msg = port == null ? TextMessageFactory.createEmptyMsg(smtpHost) : TextMessageFactory.createEmptyMsg(smtpHost, port);
         msg = MessageHelper.setupSender(msg, sender);
         msg = MessageHelper.setupReceivers(msg, receiverList);
         msg = MessageHelper.setupSubject(msg, subject, DEFAULT_CHARSET);

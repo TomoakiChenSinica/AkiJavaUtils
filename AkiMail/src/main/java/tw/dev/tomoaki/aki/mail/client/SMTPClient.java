@@ -37,14 +37,15 @@ public class SMTPClient {
         public static SMTPClient create() {
             SMTPClient client = new SMTPClient();
             client.hostName = DEFAULT_HOST;
+            client.port = DEFAULT_PORT;
             client.doSetupMailProperty();
             return client;
         }
         
         public static SMTPClient create(Boolean needParseHtml) {
             SMTPClient client = new SMTPClient();
-//            client.hostName = DEFAULT_HOST;
-//            client.port = DEFAULT_PORT;
+            client.hostName = DEFAULT_HOST;
+            client.port = DEFAULT_PORT;
             client.needParseHtml = needParseHtml;
             client.doSetupMailProperty();
             return client;
@@ -53,6 +54,7 @@ public class SMTPClient {
         public static SMTPClient create(String hostName) {
             SMTPClient client = new SMTPClient();
             client.hostName = hostName;
+            client.port = DEFAULT_PORT;
             client.doSetupMailProperty();
             return client;
         }
@@ -71,28 +73,24 @@ public class SMTPClient {
     }
 
     public void sendPlainTextMessage(String fromAddr, String toAddr, String subject, String plainText) throws MessagingException {
-        MimeMessage msg = TextMessageFactory.createPlainTextMsg(hostName, fromAddr, subject, plainText, toAddr);
+        MimeMessage msg = TextMessageFactory.createPlainTextMsg(hostName, port, fromAddr, subject, plainText, toAddr);
         Transport.send(msg);
     }
 
     public void sendPlainTextMessage(String fromAddr, List<String> toAddr, String subject, String plainText) throws MessagingException {
-        MimeMessage msg = TextMessageFactory.createPlainTextMsg(hostName, fromAddr, subject, plainText, toAddr);
+        MimeMessage msg = TextMessageFactory.createPlainTextMsg(hostName, port, fromAddr, subject, plainText, toAddr);
         Transport.send(msg);
     }
 
     public void sendPlainTextMessage(String fromAddr, String toAddr, String subject, String plainText, File file) throws MessagingException, IOException {
-        MultiPartMessageFactory multiPartMsgFactory = MultiPartMessageFactory.obtain(hostName, fromAddr);
+        MultiPartMessageFactory multiPartMsgFactory = MultiPartMessageFactory.obtain(hostName, port, fromAddr);
         MimeMessage msg = multiPartMsgFactory.addReceiver(toAddr).setupSubject(subject).appendContent(plainText).addAttachment(file).produceMessage();
         Transport.send(msg);
     }
 
-//    public void sendPlainTextMessage(String fromAddr, String toAddr, String subject, String plainText, List<File> fileList) throws MessagingException, IOException {
-//        MultiPartMessageFactory multiPartMsgFactory = MultiPartMessageFactory.obtain(hostName, fromAddr);
-//        MimeMessage msg = multiPartMsgFactory.addReceiver(toAddr).setupSubject(subject).appendContent(plainText).addAllAttachment(fileList).produceMessage();
-//        Transport.send(msg); 
-//    }
+
     public void sendPlainTextMessage(String fromAddr, String toAddr, String subject, String plainText, MimeBodyPart fileBodyPart) throws MessagingException, IOException {
-        MimeBodyMessageFactory mimeBodyMessageFactory = MimeBodyMessageFactory.obtain(hostName, fromAddr);
+        MimeBodyMessageFactory mimeBodyMessageFactory = MimeBodyMessageFactory.obtain(hostName, port, fromAddr);
         MimeMessage msg = mimeBodyMessageFactory.addReceiver(toAddr).setupSubject(subject).appendMimeBody(fileBodyPart).produceMessage();
         Transport.send(msg);
     }
@@ -104,10 +102,10 @@ public class SMTPClient {
             MimeMessage msg = null;
             Object attachmentData = attachmentList.get(0);
             if (attachmentData instanceof File) {
-                MultiPartMessageFactory multiPartMsgFactory = MultiPartMessageFactory.obtain(hostName, fromAddr);
+                MultiPartMessageFactory multiPartMsgFactory = MultiPartMessageFactory.obtain(hostName, port, fromAddr);
                 msg = multiPartMsgFactory.addReceiver(toAddr).setupSubject(subject).appendContent(plainText).addAllAttachment(attachmentList).produceMessage();
             } else if (attachmentData instanceof MimeBodyPart) {
-                MimeBodyMessageFactory mimeBodyMessageFactory = MimeBodyMessageFactory.obtain(hostName, fromAddr);
+                MimeBodyMessageFactory mimeBodyMessageFactory = MimeBodyMessageFactory.obtain(hostName, port, fromAddr);
                 mimeBodyMessageFactory = mimeBodyMessageFactory.addReceiver(toAddr).setupSubject(subject).appendPlainTextBody(plainText);
                 for (Object objBodyPart : attachmentList) {
                     MimeBodyPart bodyPart = (MimeBodyPart) objBodyPart;
@@ -126,19 +124,16 @@ public class SMTPClient {
     }
 
     public void sendPlainTextMessage(String fromAddr, List<String> toAddr, String subject, String plainText, List attachmentList) throws MessagingException, IOException {
-//        MultiPartMessageFactory multiPartMsgFactory = MultiPartMessageFactory.obtain(hostName, fromAddr);
-//        MimeMessage msg = multiPartMsgFactory.addAllReceiver(toAddr).setupSubject(subject).appendContent(plainText).addAllAttachment(fileList).produceMessage();
-//        Transport.send(msg);
         if (attachmentList == null || attachmentList.isEmpty()) {
             this.sendPlainTextMessage(fromAddr, toAddr, subject, plainText);
         } else {
             MimeMessage msg = null;
             Object attachmentData = attachmentList.get(0);
             if (attachmentData instanceof File) {
-                MultiPartMessageFactory multiPartMsgFactory = MultiPartMessageFactory.obtain(hostName, fromAddr);
+                MultiPartMessageFactory multiPartMsgFactory = MultiPartMessageFactory.obtain(hostName, port, fromAddr);
                 msg = multiPartMsgFactory.addAllReceiver(toAddr).setupSubject(subject).appendContent(plainText).addAllAttachment(attachmentList).produceMessage();
             } else if (attachmentData instanceof MimeBodyPart) {
-                MimeBodyMessageFactory mimeBodyMessageFactory = MimeBodyMessageFactory.obtain(hostName, fromAddr);
+                MimeBodyMessageFactory mimeBodyMessageFactory = MimeBodyMessageFactory.obtain(hostName, port, fromAddr);
                 mimeBodyMessageFactory = mimeBodyMessageFactory.addAllReceiver(toAddr).setupSubject(subject).appendPlainTextBody(plainText);
                 for (Object objBodyPart : attachmentList) {
                     MimeBodyPart bodyPart = (MimeBodyPart) objBodyPart;
@@ -153,17 +148,17 @@ public class SMTPClient {
     
     
     public void sendHtmlMessage(String fromAddr, String toAddr, String subject, String htmlText) throws MessagingException {
-        MimeMessage msg = TextMessageFactory.createHtmlTextMsg(hostName, fromAddr, subject, processHtmlMessage(htmlText), toAddr);
+        MimeMessage msg = TextMessageFactory.createHtmlTextMsg(hostName, port, fromAddr, subject, processHtmlMessage(htmlText), toAddr);
         Transport.send(msg);
     }
 
     public void sendHtmlMessage(String fromAddr, List<String> toAddr, String subject, String htmlText) throws MessagingException {
-        MimeMessage msg = TextMessageFactory.createHtmlTextMsg(hostName, fromAddr, subject, processHtmlMessage(htmlText), toAddr);
+        MimeMessage msg = TextMessageFactory.createHtmlTextMsg(hostName, port, fromAddr, subject, processHtmlMessage(htmlText), toAddr);
         Transport.send(msg);
     }
 
     public void sendHtmlMessage(String fromAddr, String toAddr, String subject, String htmlText, File file) throws MessagingException, IOException {
-        MultiPartMessageFactory multiPartMsgFactory = MultiPartMessageFactory.obtain(hostName, fromAddr);
+        MultiPartMessageFactory multiPartMsgFactory = MultiPartMessageFactory.obtain(hostName, port, fromAddr);
         MimeMessage msg = multiPartMsgFactory.addReceiver(toAddr).setupSubject(subject).appendContent(htmlText).addAttachment(file).produceMessage();
         Transport.send(msg);
     }
@@ -175,10 +170,10 @@ public class SMTPClient {
             MimeMessage msg = null;
             Object attachmentData = attachmentList.get(0);
             if (attachmentData instanceof File) {
-                MultiPartMessageFactory multiPartMsgFactory = MultiPartMessageFactory.obtain(hostName, fromAddr);
+                MultiPartMessageFactory multiPartMsgFactory = MultiPartMessageFactory.obtain(hostName, port, fromAddr);
                 msg = multiPartMsgFactory.addReceiver(toAddr).setupSubject(subject).appendContent(htmlText).addAllAttachment(attachmentList).produceMessage();
             } else if (attachmentData instanceof MimeBodyPart) {
-                MimeBodyMessageFactory mimeBodyMessageFactory = MimeBodyMessageFactory.obtain(hostName, fromAddr);
+                MimeBodyMessageFactory mimeBodyMessageFactory = MimeBodyMessageFactory.obtain(hostName, port, fromAddr);
                 mimeBodyMessageFactory = mimeBodyMessageFactory.addReceiver(toAddr).setupSubject(subject).appendHtmlBody(htmlText);
                 for (Object objBodyPart : attachmentList) {
                     MimeBodyPart bodyPart = (MimeBodyPart) objBodyPart;
@@ -191,7 +186,7 @@ public class SMTPClient {
     }
 
     public void sendHtmlMessage(String fromAddr, List<String> toAddr, String subject, String htmlText, File file) throws MessagingException, IOException {
-        MultiPartMessageFactory multiPartMsgFactory = MultiPartMessageFactory.obtain(hostName, fromAddr);
+        MultiPartMessageFactory multiPartMsgFactory = MultiPartMessageFactory.obtain(hostName, port, fromAddr);
         MimeMessage msg = multiPartMsgFactory.addAllReceiver(toAddr).setupSubject(subject).appendContent(htmlText).addAttachment(file).produceMessage();
         Transport.send(msg);
     }
@@ -203,10 +198,10 @@ public class SMTPClient {
             MimeMessage msg = null;
             Object attachmentData = attachmentList.get(0);
             if (attachmentData instanceof File) {
-                MultiPartMessageFactory multiPartMsgFactory = MultiPartMessageFactory.obtain(hostName, fromAddr);
+                MultiPartMessageFactory multiPartMsgFactory = MultiPartMessageFactory.obtain(hostName, port, fromAddr);
                 msg = multiPartMsgFactory.addAllReceiver(toAddr).setupSubject(subject).appendContent(htmlText).addAllAttachment(attachmentList).produceMessage();
             } else if (attachmentData instanceof MimeBodyPart) {
-                MimeBodyMessageFactory mimeBodyMessageFactory = MimeBodyMessageFactory.obtain(hostName, fromAddr);
+                MimeBodyMessageFactory mimeBodyMessageFactory = MimeBodyMessageFactory.obtain(hostName, port, fromAddr);
                 mimeBodyMessageFactory = mimeBodyMessageFactory.addAllReceiver(toAddr).setupSubject(subject).appendHtmlBody(htmlText);
                 for (Object objBodyPart : attachmentList) {
                     MimeBodyPart bodyPart = (MimeBodyPart) objBodyPart;
