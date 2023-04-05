@@ -17,7 +17,7 @@ import tw.dev.tomoaki.aki.mail.helper.MimeBodyPartHelper;
 /**
  *
  * @author Tomoaki Chen
- * 
+ *
  * for 純文字 --> 好像也不對
  */
 public class MimeBodyMessageFactory {
@@ -26,12 +26,11 @@ public class MimeBodyMessageFactory {
     private static final String DEFAULT_CONTENT_TYPE = "text/html;charset=UTF-8";
 
     private String smtpHost;
+    private Integer port;
     private String sender;
     private List<String> receiverList;
     private String subject;
     private List<MimeBodyPart> mimeBodyList;
-    
-    
 
     public static MimeBodyMessageFactory obtain(String hostName, String sender) {
         MimeBodyMessageFactory factory = new MimeBodyMessageFactory();
@@ -39,14 +38,23 @@ public class MimeBodyMessageFactory {
         factory.sender = sender;
         factory.doInit();
         return factory;
-    }    
-    
+    }
+
+    public static MimeBodyMessageFactory obtain(String hostName, Integer port, String sender) {
+        MimeBodyMessageFactory factory = new MimeBodyMessageFactory();
+        factory.smtpHost = hostName;
+        factory.port = port;
+        factory.sender = sender;
+        factory.doInit();
+        return factory;
+    }
+
     protected void doInit() {
         this.receiverList = new ArrayList();
         this.subject = "";
         this.mimeBodyList = new ArrayList();
     }
-    
+
     public MimeBodyMessageFactory addReceiver(String receiver) {
         this.receiverList.add(receiver);
         return this;
@@ -60,47 +68,47 @@ public class MimeBodyMessageFactory {
     public MimeBodyMessageFactory setupSubject(String subject) {
         this.subject = subject;
         return this;
-    }    
-    
+    }
+
     public MimeBodyMessageFactory appendPlainTextBody(String plainText) throws MessagingException {
         return this.appendPlainTextBody(plainText, DEFAULT_CHARSET);
     }
-    
+
     public MimeBodyMessageFactory appendPlainTextBody(String plainText, String charSet) throws MessagingException {
         MimeBodyPart bodyPart = MimeBodyPartHelper.obtain4PlainTextContent(plainText, charSet);
         this.mimeBodyList.add(bodyPart);
         return this;
     }
-    
+
     public MimeBodyMessageFactory appendHtmlBody(String htmlContent) throws MessagingException {
         return this.appendHtmlBody(htmlContent, DEFAULT_CONTENT_TYPE);
-    }    
-    
+    }
+
     public MimeBodyMessageFactory appendHtmlBody(String htmlContent, String contentType) throws MessagingException {
         MimeBodyPart bodyPart = MimeBodyPartHelper.obtain4HtmlContent(htmlContent, contentType);
         this.mimeBodyList.add(bodyPart);
         return this;
-    }    
-    
+    }
+
     public MimeBodyMessageFactory appendFileBody(File file) throws MessagingException, IOException {
         MimeBodyPart bodyPart = MimeBodyPartHelper.obtain4File(file);
         this.mimeBodyList.add(bodyPart);
         return this;
-    }        
-    
+    }
+
     public MimeBodyMessageFactory appendMimeBody(MimeBodyPart bodyPart) {
         this.mimeBodyList.add(bodyPart);
         return this;
     }
-    
+
     public MimeMessage produceMessage() throws MessagingException, IOException {
-        MimeMessage msg = TextMessageFactory.createEmptyMsg(smtpHost);
+        MimeMessage msg = port == null ? TextMessageFactory.createEmptyMsg(smtpHost) : TextMessageFactory.createEmptyMsg(smtpHost, port);
         msg = MessageHelper.setupSender(msg, sender);
         msg = MessageHelper.setupReceivers(msg, receiverList);
         msg = MessageHelper.setupSubject(msg, subject, DEFAULT_CHARSET);
         msg = MessageHelper.setupBodyParts(msg, mimeBodyList);
         this.doInit();
         return msg;
-    }    
-    
+    }
+
 }
