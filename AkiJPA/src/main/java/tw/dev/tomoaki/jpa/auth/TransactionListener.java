@@ -4,10 +4,10 @@
  */
 package tw.dev.tomoaki.jpa.auth;
 
-import tw.dev.tomoaki.jpa.auth.TransactionEntity;
 import java.util.Date;
 import java.util.UUID;
 import javax.persistence.PrePersist;
+import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
 
 /**
@@ -28,6 +28,7 @@ public class TransactionListener<T extends TransactionEntity> {
     }
     
     @PreUpdate
+    @PreRemove
     public T beforeEdit(T entity) {
         entity.setLastModifiedDateTime(new Date());
         entity.setLastModifier(entity.getIdentifier());
