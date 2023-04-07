@@ -4,8 +4,8 @@
  */
 package tw.dev.tomoaki.jpa;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -194,6 +194,7 @@ public abstract class AbstractQueryFacade<T> {
     }
 //</editor-fold>   
 
+//<editor-fold defaultstate="collapsed" desc="IN 系列">
     /**
      *
      * @param entityPropName 請注意是要使用「(Table所對應的) Entity 之 (Table Column所對應的) Property名稱 」
@@ -210,8 +211,27 @@ public abstract class AbstractQueryFacade<T> {
 
         Query query = em.createQuery(cq);
         return query.getResultList();
-    }
+    }    
+//</editor-fold>    
+    
+//<editor-fold defaultstate="collapsed" desc="Between 或類似「範圍之內」">
+    
+    public List<T> findInDateTimeRange(String entityPropName4Since, String entityPropName4Until, LocalDateTime desigDateTime) {
+        EntityManager em = this.getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
+        Root<T> root = cq.from(entityClass);
 
+//        cq.select(root).where(prdcts)
+        throw new UnsupportedOperationException("Method Not Supported Yet");
+    }
+//</editor-fold>
+    
+    
+    
+    
+
+//<editor-fold defaultstate="collapsed" desc="核心(?)，可以給無限(?)的查詢條件及排序調建">
     protected List<T> findBy(List<Expression> expressionList, List<Order> orderList) {
         EntityManager em = this.getEntityManager();
         em.getEntityManagerFactory().getCache().evictAll();
@@ -227,8 +247,10 @@ public abstract class AbstractQueryFacade<T> {
         Query query = em.createQuery(cq);
         return query.getResultList();
 
-    }
-
+    }    
+//</editor-fold>    
+    
+//<editor-fold defaultstate="collapsed" desc="其他輔助methods">
     private void tryEvictCache(EntityManager em, Object id) {
         if (EVICT_CACHE) {
             em.getEntityManagerFactory().getCache().evict(entityClass, id);
@@ -239,5 +261,6 @@ public abstract class AbstractQueryFacade<T> {
         if (EVICT_CACHE) {
             em.getEntityManagerFactory().getCache().evictAll();
         }
-    }
+    }    
+//</editor-fold>    
 }

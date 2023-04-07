@@ -25,7 +25,7 @@ public class TestMain {
         System.out.println(MailReceiptHelper.analyzeReceiptsByCommaSplit(strReceipts));
         File file = new File("C:\\Users\\Tomoaki Chen\\Pictures\\1110000605o3307n3nr1.gif");
 //        System.out.println(file.getName());
-        SMTPClient smtpClient = SMTPClient.Factory.create("127.0.0.1", 2525);
+        SMTPClient smtpClient = SMTPClient.Factory.create("127.0.0.1");
 //        smtpClient.sendHtmlMessage("tomoaki@iis.sinica.edu.tw", "tomoaki.sinica@gmail.com", "Testing HTML Content", "Hello World <br/> <span style=\"color:red;\">測試</span>", file);
 //        smtpClient.sendHtmlMessage("tomoaki@iis.sinica.edu.tw", MailReceiptHelper.analyzeReceiptsByCommaSplit(strReceipts), "Testing HTML Content", "Hello World <br/> <span style=\"color:red;\">測試</span>", file);
 
