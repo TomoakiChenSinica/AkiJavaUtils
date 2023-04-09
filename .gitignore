@@ -1,69 +1,93 @@
-/AkiDataValidator/AkiTaiwanDataValidtor/target/*
-/AkiStringUtils/target/*
-/AkiDateTime/target/*
-/AkiArticle/target/*
-/AkiCast/target/*
-/AkiWeb/target/*
-/ImageUtils/target/*
-/AkiImageUtils/target/*
-/AkiDataValidator/AkiCommonDataValidator/target/*
-/AkiEntity/target/*
-/AkiFramework/AkiDataMiner/target/*
-/AkiRegularExpression/target/*
-/AkiMail/target/*
-/AkiGoogleCalendar/target/*
+# /AkiDataValidator/AkiTaiwanDataValidtor/target/*
+# /AkiStringUtils/target/*
+# /AkiDateTime/target/*
+# /AkiArticle/target/*
+# /AkiCast/target/*
+# /AkiWeb/target/*
+# /ImageUtils/target/*
+# /AkiImageUtils/target/*
+# /AkiDataValidator/AkiCommonDataValidator/target/*
+# /AkiEntity/target/*
+# /AkiFramework/AkiDataMiner/target/*
+# /AkiRegularExpression/target/*
+# /AkiMail/target/*
+# /AkiGoogleCalendar/target/*
+# *.class
+# *.jar
+# /AkiException/target/
+# /AkiFramework/AkiDataTransfer/target/
+# /AkiFileUtils/AkiExcel/target/
+# /AkiFileUtils/AkiArchiveFile/target/
+# /AkiFileUtils/AkiFileExplorer/target/
+# /AkiEJB/target/
+# AkiArticle/nb-configuration.xml
+# AkiFileUtils/AkiFileExplorer/nb-configuration.xml
+# AkiFramework/AkiDataMiner/nb-configuration.xml
+# AkiMail/src/test/java/tw/dev/tomoaki/test/TestMain.java
+# AkiMail/src/test/java/tw/dev/tomoaki/test/TestMain.java
+# nb-configuration.xml
+# nb-configuration.xml
+# /AkiFileUtils/AkiFileIOUtils/target/
+# /AkiCountryUtils/target/
+# /AkiHttp/target/
+# AkiDataValidator/AkiIPValidator/target/classes/.netbeans_automatic_build
+# AkiDataValidator/AkiIPValidator/target/test-classes/.netbeans_automatic_build
+# /AkiDataUtils/target/
+# /AkiDateTimeFormat/target/
+# /AkiCSSInliner/target/
+# *.class
+# *.jar
+# *.jar
+# *.jar
+# *.jar
+# *.jar
+# *.jar
+# AkiDataValidator/AkiCommonDataValidator/target/AkiCommonDataValidator-1.0-SNAPSHOT.jar
+# *.jar
+# *.jar
+# AkiFramework/AkiDataMiner/target/AkiDataMiner-1.0-SNAPSHOT.jar
+# /AkiPersistence/target/
+# /AkiJPA/target/
+# AkiWeb/target/AkiWeb-1.0-SNAPSHOT.jar
+# AkiWeb/target/surefire-reports/TEST-tw.dev.tomoaki.TestMain.xml
+# AkiWeb/target/surefire-reports/tw.dev.tomoaki.TestMain.txt
+# AkiWeb/target/AkiWeb-1.0-SNAPSHOT.jar
+# AkiFramework/AkiDataMiner/target/AkiDataMiner-1.0-SNAPSHOT.jar
+# AkiWeb/target/AkiWeb-1.0-SNAPSHOT.jar
+# AkiWeb/target/AkiWeb-1.0-SNAPSHOT.jar
+# AkiWeb/target/surefire-reports/tw.dev.tomoaki.TestMain.txt
+# AkiWeb/target/surefire-reports/tw.dev.tomoaki.TestMain.txt
+# AkiDataValidator/AkiTaiwanDataValidtor/target/AkiTaiwanDataValidtor-1.0-SNAPSHOT.jar
+# AkiCast/target/AkiCast-1.0-SNAPSHOT.jar
+# AkiEntity/target/AkiEntity-1.0-SNAPSHOT.jar
+# AkiFramework/AkiDataMiner/target/AkiDataMiner-1.0-SNAPSHOT.jar
+# AkiImageUtils/target/AkiImageUtils-1.0-SNAPSHOT.jar
+# AkiWeb/target/AkiWeb-1.0-SNAPSHOT.jar
+# /AkiDataValidator/AkiIPValidator/target/
+# AkiDataValidator/AkiCommonDataValidator/target/classes/tw/dev/tomoaki/util/commondatavalidator/ListValidator$DataExistMap.class
+# *.class
+# *.jar
+# Compiled class file
 *.class
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
 *.jar
-/AkiException/target/
-/AkiFramework/AkiDataTransfer/target/
-/AkiFileUtils/AkiExcel/target/
-/AkiFileUtils/AkiArchiveFile/target/
-/AkiFileUtils/AkiFileExplorer/target/
-/AkiEJB/target/
-AkiArticle/nb-configuration.xml
-AkiFileUtils/AkiFileExplorer/nb-configuration.xml
-AkiFramework/AkiDataMiner/nb-configuration.xml
-AkiMail/src/test/java/tw/dev/tomoaki/test/TestMain.java
-AkiMail/src/test/java/tw/dev/tomoaki/test/TestMain.java
-nb-configuration.xml
-nb-configuration.xml
-/AkiFileUtils/AkiFileIOUtils/target/
-/AkiCountryUtils/target/
-/AkiHttp/target/
-AkiDataValidator/AkiIPValidator/target/classes/.netbeans_automatic_build
-AkiDataValidator/AkiIPValidator/target/test-classes/.netbeans_automatic_build
-/AkiDataUtils/target/
-/AkiDateTimeFormat/target/
-/AkiCSSInliner/target/
-*.class
-*.jar
-*.jar
-*.jar
-*.jar
-*.jar
-*.jar
-AkiDataValidator/AkiCommonDataValidator/target/AkiCommonDataValidator-1.0-SNAPSHOT.jar
-*.jar
-*.jar
-AkiFramework/AkiDataMiner/target/AkiDataMiner-1.0-SNAPSHOT.jar
-/AkiPersistence/target/
-/AkiJPA/target/
-AkiWeb/target/AkiWeb-1.0-SNAPSHOT.jar
-AkiWeb/target/surefire-reports/TEST-tw.dev.tomoaki.TestMain.xml
-AkiWeb/target/surefire-reports/tw.dev.tomoaki.TestMain.txt
-AkiWeb/target/AkiWeb-1.0-SNAPSHOT.jar
-AkiFramework/AkiDataMiner/target/AkiDataMiner-1.0-SNAPSHOT.jar
-AkiWeb/target/AkiWeb-1.0-SNAPSHOT.jar
-AkiWeb/target/AkiWeb-1.0-SNAPSHOT.jar
-AkiWeb/target/surefire-reports/tw.dev.tomoaki.TestMain.txt
-AkiWeb/target/surefire-reports/tw.dev.tomoaki.TestMain.txt
-AkiDataValidator/AkiTaiwanDataValidtor/target/AkiTaiwanDataValidtor-1.0-SNAPSHOT.jar
-AkiCast/target/AkiCast-1.0-SNAPSHOT.jar
-AkiEntity/target/AkiEntity-1.0-SNAPSHOT.jar
-AkiFramework/AkiDataMiner/target/AkiDataMiner-1.0-SNAPSHOT.jar
-AkiImageUtils/target/AkiImageUtils-1.0-SNAPSHOT.jar
-AkiWeb/target/AkiWeb-1.0-SNAPSHOT.jar
-/AkiDataValidator/AkiIPValidator/target/
-AkiDataValidator/AkiCommonDataValidator/target/classes/tw/dev/tomoaki/util/commondatavalidator/ListValidator$DataExistMap.class
-*.class
-*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+replay_pid*

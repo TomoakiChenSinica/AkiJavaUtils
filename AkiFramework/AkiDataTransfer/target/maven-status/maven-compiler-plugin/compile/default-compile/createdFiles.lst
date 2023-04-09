@@ -1,0 +1,8 @@
+tw\dev\tomoaki\util\datatransfer\entity\DataTransferPureTextError$Factory.class
+tw\dev\tomoaki\util\datatransfer\entity\DataTrasnferError.class
+tw\dev\tomoaki\util\datatransfer\AbstractTransferImpl.class
+tw\dev\tomoaki\util\datatransfer\entity\DataTransferPureTextError.class
+tw\dev\tomoaki\util\datatransfer\entity\DataTransferErrorHelper.class
+tw\dev\tomoaki\util\datatransfer\entity\DataTrasnferError$Factory.class
+tw\dev\tomoaki\util\datatransfer\TransferImplException$Factory.class
+tw\dev\tomoaki\util\datatransfer\TransferImplException.class
