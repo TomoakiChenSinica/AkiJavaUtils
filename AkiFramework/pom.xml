@@ -8,6 +8,7 @@
     <modules>
         <module>AkiDataMiner</module>
         <module>AkiDataTransfer</module>
+        <module>AkiDataKeeper</module>
     </modules>
     <distributionManagement>
         <repository>
