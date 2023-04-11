@@ -29,17 +29,7 @@ import tw.dev.tomoaki.jpa.exception.PlainTextConstraintViolationException;
  */
 public class ConstraintViolationHelper {
 
-    
-//    private static final String MSG_FORMAT_VAIOLATION = "From Root Class[%s], Constraint Violation Occur For Entity[%s], Property[%s] %s, Detail Is %s";
     private static final String MSG_FORMAT_VAIOLATION = "From Root Class[%s], Constraint Violation Occur For Entity[%s], Property[%s] %s";
-    //    public static void handleException(ConstraintViolationException ex) {
-            //        Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
-            //        violations.stream().forEach(violation -> {
-            //            System.out.format("root= %s, leaf= %s, propertyPath= %s, message= %s \n",
-            //                    violation.getRootBean().getClass().getSimpleName(), violation.getLeafBean().getClass().getSimpleName(), violation.getPropertyPath().toString(),  violation.getMessage());
-            //        });
-            //    }
-
 
     public static <T> void handleException(ConstraintViolationException ex) {
         Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
