@@ -2,6 +2,7 @@ package tw.dev.tomoaki.main;
 
 
 
+import tw.dev.tomoaki.logger.AkiLogger;
 import tw.dev.tomoaki.logger.LogHelper;
 
 /*
@@ -19,7 +20,7 @@ public class JavaLoggerMain {
 
     public static void main(String[] args) {
 //        System.out.println("Hello World!");
-        test2();
+        test3();
     }
     
     private static void test1() {
@@ -31,5 +32,9 @@ public class JavaLoggerMain {
     
     private static void test2() {
         System.out.println(LogHelper.getCaller());
+    }
+    
+    private static void test3() {
+        AkiLogger.Factory.create();
     }
 }
