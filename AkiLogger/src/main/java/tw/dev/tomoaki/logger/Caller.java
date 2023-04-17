@@ -13,12 +13,7 @@ public class Caller {
     private String className;
     private String simpleClassName;
     private String methodName;
-//    
-//    public Caller(String className, String methodName) {
-//        this.className = className;
-//        this.methodName = methodName;
-//        
-//    }
+
 
     protected Caller() {
     }
@@ -62,7 +57,4 @@ public class Caller {
     public String toString() {
         return "Caller{" + "className= " + className + ", simpleClassName= " + simpleClassName + ", methodName= " + methodName + "}";
     }
-
-
-
 }
