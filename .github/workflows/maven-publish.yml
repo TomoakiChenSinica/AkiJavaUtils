@@ -33,3 +33,4 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.MAVEN_GITHUB_TOKEN }}
 #        GITHUB_TOKEN: ${{ github.token }}
+
