@@ -32,4 +32,5 @@ jobs:
       run: mvn --batch-mode deploy -X
       env:
         GITHUB_TOKEN: ${{ secrets.MAVEN_GITHUB_TOKEN }}
-#         GITHUB_TOKEN: ${{ github.token }}
+#        GITHUB_TOKEN: ${{ github.token }}
+
