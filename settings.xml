@@ -2,6 +2,6 @@
   <server>
     <id>github</id>
     <username>${{ github.actor }}</username>
-    <password>${{ github.GITHUB_TOKEN }}</password>
+    <password>${{ github.token }}</password>
   </server>
 </servers>
