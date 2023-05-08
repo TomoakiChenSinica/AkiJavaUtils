@@ -26,3 +26,5 @@ replay_pid*
 # Add By Tomoaki, Most target means the compiled related file
 */target/*
 */*/target/*
+
+.svn
