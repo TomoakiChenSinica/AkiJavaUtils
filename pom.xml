@@ -4,7 +4,7 @@
     <groupId>tw.dev.tomoaki</groupId>
     <artifactId>AkiJavaUtils</artifactId>
     <!--<version>2023.02.20-1</version>-->
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <packaging>pom</packaging>
     <modules>
         <module>AkiSecurity</module>

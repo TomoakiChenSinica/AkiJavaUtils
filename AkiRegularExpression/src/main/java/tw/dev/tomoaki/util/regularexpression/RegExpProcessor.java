@@ -31,6 +31,10 @@ public class RegExpProcessor {
             return regExp;
         }
         
+//        public static RegExpProcessor.Factory trimMatch() {
+//            return this;
+//        }
+        
 //        public static RegExpProcessor.Factory create() {
 //            throw new UnsupportedOperationException("Method Not Supported Yet");
 //        }
@@ -40,7 +44,7 @@ public class RegExpProcessor {
         Matcher matcher = thePattern.matcher(input);
         return matcher.find();
     }
-    
+            
     public RegExpResult processMatch(String input) {
         Matcher matcher = this.thePattern.matcher(input);
         return RegExpResult.Factory.create(matcher); 
@@ -52,7 +56,8 @@ public class RegExpProcessor {
      * 將尋找到的字，用指定的 pattern (可被包含進去)更換調 input
      * 
      * @param input 要進行尋找並更換的文字
-     * @param formatPattern
+     * @param formatPattern 替換的pattern
+     * @return 將input的字串進行替換過後的結果
      */
     public String processFormatReplace(String input, String formatPattern) {
         Matcher matcher = this.thePattern.matcher(input);
