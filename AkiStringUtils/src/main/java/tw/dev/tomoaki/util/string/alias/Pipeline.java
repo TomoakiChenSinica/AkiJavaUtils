@@ -21,4 +21,6 @@ package tw.dev.tomoaki.util.string.alias;
  */
 public interface Pipeline {
     
+    
+    
 }

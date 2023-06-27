@@ -13,12 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tw.dev.tomoaki.util.string.alias.impl;
+package tw.dev.tomoaki.util.string.alias.impl.unit;
+
+import tw.dev.tomoaki.util.string.alias.PipelineNode;
+import tw.dev.tomoaki.util.string.alias.entity.NodeResult;
 
 /**
  *
  * @author tomoaki
  */
-public class ProcessingNode {
+public class UpperCaseProcessingUnit implements PipelineNode {
+
+    public static final String code = "UpperCase";
+    
+    @Override
+    public NodeResult doProcess(String document) {
+        return NodeResult.Factory.create(document, this, document.toUpperCase());
+    }
+
+    @Override
+    public String getDescription() {
+        return "Upper Case The Document";
+    }
     
 }

@@ -13,18 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tw.dev.tomoaki.util.string.alias;
+package tw.dev.tomoaki.util.string.alias.impl.unit;
 
+import tw.dev.tomoaki.util.string.alias.PipelineNode;
 import tw.dev.tomoaki.util.string.alias.entity.NodeResult;
 
 /**
  *
  * @author tomoaki
  */
-public interface PipelineNode {
+public class TrimProcessingUnit implements PipelineNode {
+
+    @Override
+    public NodeResult doProcess(String document) {
+        return NodeResult.Factory.create(document, this, document.trim());
+    }
+
+    @Override
+    public String getDescription() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
-//    public static String code = null;
-    public NodeResult doProcess(String document);
-    
-    public String getDescription();
 }

@@ -13,18 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tw.dev.tomoaki.util.string.alias;
+package tw.dev.tomoaki.util.string.alias.impl.unit;
 
+import tw.dev.tomoaki.util.string.alias.PipelineNode;
 import tw.dev.tomoaki.util.string.alias.entity.NodeResult;
 
 /**
  *
  * @author tomoaki
  */
-public interface PipelineNode {
-    
-//    public static String code = null;
-    public NodeResult doProcess(String document);
-    
-    public String getDescription();
+public class DuplicateSpaceProcessingUnit implements PipelineNode {
+
+    private static final String REG_EXP_PATTERN = "[ ]{2,}";
+
+    @Override
+    public NodeResult doProcess(String document) {
+        return NodeResult.Factory.create(document, this, document.replaceAll(REG_EXP_PATTERN, " "));
+    }
+
+    @Override
+    public String getDescription() {
+        return "Remove The Duplcate Space";
+    }
+
 }

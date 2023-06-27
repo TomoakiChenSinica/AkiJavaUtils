@@ -13,15 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tw.dev.tomoaki.util.string.alias.impl;
-
-import tw.dev.tomoaki.util.string.alias.Pipeline;
+package tw.dev.tomoaki.util.string.alias;
 
 /**
  *
  * @author tomoaki
+ * 
+ * @deprecated 暫時不用
  */
-public class AliasProcessor implements Pipeline {
-
+public abstract class ProcessingUnit implements PipelineNode{
     
 }
