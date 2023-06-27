@@ -15,24 +15,17 @@
  */
 package tw.dev.tomoaki;
 
-import java.util.Arrays;
-import java.util.List;
-import tw.dev.tomoaki.util.string.StringSorter;
+import tw.dev.tomoaki.util.string.AkiStringUtil;
 
 /**
  *
  * @author tomoaki
  */
-public class StringOrderTestMain {
-
+public class TestMain {
+ 
     public static void main(String[] args) {
-//        List<String> strList = Stream.of("j-1", "j-2", null, null)
-//                .sorted(Comparator.nullsFirst(Comparator.naturalOrder()))
-//                .collect(toList());
-//        System.out.println(strList);
-        List<String> strList = Arrays.asList("j-1", "j-2", null, null);
-        System.out.println(StringSorter.doStandardSortDESC(strList));
-        System.out.println(StringSorter.doStandardSortASC(strList));
-        
+        String msg = "br>需檢查資訊設備，理由為: 出差人有薪資計畫為核心研究計畫: 「(3006) 資訊科學研究-行政與技術業務」\\r\\n 前往或過境特定國家(地區)需完成資安相關程序。系統會寄送相關規定，請務必依照信件辦理。";
+        System.out.println(msg);
+        System.out.println(AkiStringUtil.parseHtmlFormat(msg));
     }
 }

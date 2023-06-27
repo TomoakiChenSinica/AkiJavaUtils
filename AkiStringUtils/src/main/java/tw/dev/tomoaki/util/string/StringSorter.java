@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tw.dev.tomoaki.util.stringutils;
+package tw.dev.tomoaki.util.string;
 
 import java.util.Comparator;
 import java.util.List;
