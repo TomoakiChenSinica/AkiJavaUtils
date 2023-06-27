@@ -22,16 +22,18 @@ import tw.dev.tomoaki.util.string.alias.entity.NodeResult;
  *
  * @author tomoaki
  */
-public class UpperCaseProcessingUnit implements PipelineNode {
-    
+public class DistinctSpaceProcessingUnit implements PipelineNode {
+
+    private static final String REG_EXP_PATTERN = "[ ]{2,}";
+
     @Override
     public NodeResult doProcess(String document) {
-        return NodeResult.Factory.create(document, this, document.toUpperCase());
+        return NodeResult.Factory.create(document, this, document.replaceAll(REG_EXP_PATTERN, " "));
     }
 
     @Override
     public String getDescription() {
-        return "Upper Case The Document";
+        return "Remove The Duplcate Space";
     }
-    
+
 }

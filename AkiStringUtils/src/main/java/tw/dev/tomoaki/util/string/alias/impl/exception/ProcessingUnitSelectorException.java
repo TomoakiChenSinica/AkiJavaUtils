@@ -13,25 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tw.dev.tomoaki.util.string.alias.impl.unit;
-
-import tw.dev.tomoaki.util.string.alias.PipelineNode;
-import tw.dev.tomoaki.util.string.alias.entity.NodeResult;
+package tw.dev.tomoaki.util.string.alias.impl.exception;
 
 /**
  *
  * @author tomoaki
  */
-public class UpperCaseProcessingUnit implements PipelineNode {
+public class ProcessingUnitSelectorException extends Exception {
     
-    @Override
-    public NodeResult doProcess(String document) {
-        return NodeResult.Factory.create(document, this, document.toUpperCase());
+    public ProcessingUnitSelectorException(String msg) {
+        super(msg);
     }
-
-    @Override
-    public String getDescription() {
-        return "Upper Case The Document";
-    }
+    
+    public ProcessingUnitSelectorException(Exception ex) {
+        super(ex);
+    }    
     
 }

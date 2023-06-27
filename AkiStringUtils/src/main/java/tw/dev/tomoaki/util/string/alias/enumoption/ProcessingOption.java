@@ -15,7 +15,9 @@
  */
 package tw.dev.tomoaki.util.string.alias.enumoption;
 
-import tw.dev.tomoaki.util.string.alias.PipelineNode;
+import java.util.Objects;
+import tw.dev.tomoaki.util.string.alias.impl.unit.DistinctSpaceProcessingUnit;
+import tw.dev.tomoaki.util.string.alias.impl.unit.TrimProcessingUnit;
 import tw.dev.tomoaki.util.string.alias.impl.unit.UpperCaseProcessingUnit;
 
 /**
@@ -25,7 +27,9 @@ import tw.dev.tomoaki.util.string.alias.impl.unit.UpperCaseProcessingUnit;
 public enum ProcessingOption {
     
     
-    UPPER_CASE(UpperCaseProcessingUnit.code, "", UpperCaseProcessingUnit.class);
+    UPPER_CASE("UpperCase", "", UpperCaseProcessingUnit.class),
+    DISTINCE_SPACE("DistinctSpace", "", DistinctSpaceProcessingUnit.class),
+    TRIM("Trim", "", TrimProcessingUnit.class);
     
     private String code;
     private String description;
@@ -61,5 +65,19 @@ public enum ProcessingOption {
         this.node = node;
     }
     
-    
+    public static ProcessingOption codeOf(String desigCode) {
+        ProcessingOption desigOption = null;
+        for(ProcessingOption option : ProcessingOption.values()) {
+            if(Objects.equals(desigCode, option.getCode())) {
+                desigOption = option;
+                break;
+            }        
+        }
+        if(desigOption == null) {
+            throw new IllegalArgumentException(
+                    String.format("Cannot Found ProcessingOption[code= %s]", desigCode)
+            );
+        }        
+        return desigOption;
+    }
 }
