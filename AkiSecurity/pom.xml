@@ -30,13 +30,18 @@
             <url> https://repo.maven.apache.org/maven2/</url>
         </repository>
         -->
-        
+        <!--
         <repository>
             <id>github</id>
             <name>GitHub OWNER Apache Maven Packages</name>
             <url>https://maven.pkg.github.com/TomoakiChenSinica/AkiJavaUtils</url>
         </repository>        
-        
+        -->
+        <snapshotRepository>
+            <id>archiva-testing</id>
+            <name>Archiva Testing</name>
+            <url>http://localhost:9090/repository/testing/</url>
+        </snapshotRepository>        
     </distributionManagement>
     
     <licenses>        
@@ -46,6 +51,7 @@
         </license>
     </licenses>   
     
+    <!--
     <build>
         <plugins>
             <plugin>
@@ -74,5 +80,6 @@
                 </executions>
             </plugin>
         </plugins>
-    </build>               
+    </build>   
+    -->
 </project>

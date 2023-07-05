@@ -47,13 +47,17 @@ public class AliasProcessor implements Pipeline {
 
     public static class Factory {
 
+        public static AliasProcessor create() {
+            return Factory.create(Arrays.asList());
+        }
+
         public static AliasProcessor create(String... unitCodes) {
             List<PipelineNode> nodeList = Stream.of(unitCodes).map(unitCode -> {
                 try {
                     return ProcessingUnitSelector.get(unitCode);
-                } catch(Exception ex) {
+                } catch (Exception ex) {
                     ex.printStackTrace();
-                    return null; 
+                    return null;
                 }
             }).collect(Collectors.toList());
             return Factory.create(nodeList);
@@ -66,13 +70,15 @@ public class AliasProcessor implements Pipeline {
 //            return processor;
             return Factory.create(Arrays.asList(nodes));
         }
-        
+
         public static AliasProcessor create(List<PipelineNode> nodeList) {
             AliasProcessor processor = new AliasProcessor();
             processor.doSetupContainer();
-            processor.nodeList.addAll(nodeList);
+            if (nodeList != null && !nodeList.isEmpty()) {
+                processor.nodeList.addAll(nodeList);
+            }
             return processor;
-        }        
+        }
     }
 
     public String doProcess(String inputDocument) {
@@ -82,7 +88,6 @@ public class AliasProcessor implements Pipeline {
             this.resultStack.add(nodeResult);
             document = nodeResult.getOutputDocument(); //document 如果不使用整個 Class 的 Global變數，會卡在 lamda 和 local variable
         });
-//        return this.getOutputDocument();
         String outputDocument = document;
         document = null;
         return outputDocument;
@@ -111,5 +116,36 @@ public class AliasProcessor implements Pipeline {
         PipelineNode node = ProcessingUnitSelector.get(unitCode);
         this.nodeList.add(node);
     }
+
+    public void addAll(PipelineNode... nodes) {
+        List<PipelineNode> appendedNodeList = Arrays.asList(nodes);
+        this.nodeList.addAll(appendedNodeList);
+    }
+
+    public void addAll(ProcessingOption... options) {
+        List<PipelineNode> appendedNodeList = Stream.of(options)
+                .map(option -> {
+                    try {
+                        return ProcessingUnitSelector.get(option);
+                    } catch(Exception ex) {
+                        throw new RuntimeException(ex);
+                    }
+                })
+                .collect(Collectors.toList());
+        this.nodeList.addAll(appendedNodeList);
+    }
+    
+    public void addAll(String... codes) {
+        List<PipelineNode> appendedNodeList = Stream.of(codes)
+                .map(code -> {
+                    try {
+                        return ProcessingUnitSelector.get(code);
+                    } catch(Exception ex) {
+                        throw new RuntimeException(ex);
+                    }
+                })
+                .collect(Collectors.toList());
+        this.nodeList.addAll(appendedNodeList);
+    }    
 
 }
