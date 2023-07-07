@@ -41,10 +41,10 @@
         </repository>                
         -->
         <snapshotRepository>
-            <id>archiva-testing</id>
-            <name>Archiva Testing</name>
-            <url>http://localhost:9090/repository/testing/</url>
-        </snapshotRepository>        
+            <id>ccs-packages</id>
+            <name>CCS Packages</name>
+            <url>http://192.168.107.166:8082/repository/ccs-packages</url>
+        </snapshotRepository>    
     </distributionManagement>
     
     <licenses>        
