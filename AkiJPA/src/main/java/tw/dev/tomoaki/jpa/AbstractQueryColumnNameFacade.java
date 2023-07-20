@@ -88,18 +88,22 @@ public abstract class AbstractQueryColumnNameFacade<T> {
         */
     
     
-    public List<T> findByEquals(String columnName, Object value) {
+    public List<T> findByEquals(String columnName, Object columnValue) {
         EntityManager em = this.getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
         this.tryEvictAllCache(em);
         Root<T> root = cq.from(entityClass);
-        cq = cq.where(cb.equal(root.get(columnName.toLowerCase()), value));
+        cq = cq.where(cb.equal(root.get(columnName.toLowerCase()), columnValue));
         cq = cq.orderBy(cb.asc(root.get(columnName.toLowerCase())));
 
         Query query = em.createQuery(cq);
         return query.getResultList();
     }
+    
+    public List<T> findByEquals(List<String> columnNameList, List<Object> columnValueList) {
+        return this.findByEquals(columnNameList, columnValueList, null);
+    }    
 
     public List<T> findByEquals(List<String> columnNameList, List<Object> columnValueList, List<String> orderColNameList) {
         if (!ListValidator.isListExist(columnNameList)) {
@@ -125,11 +129,11 @@ public abstract class AbstractQueryColumnNameFacade<T> {
         }
 
         orderColNameList = ListValidator.isListExist(orderColNameList) ? orderColNameList : columnNameList;
-        return this.findByEquals(pairList, orderColNameList);
+        return this.findByEqualPairs(pairList, orderColNameList);
 
     }
 
-    public List<T> findByEquals(List<KeyValuePair> pairList, List<String> orderColNameList) {
+    public List<T> findByEqualPairs(List<KeyValuePair> pairList, List<String> orderColNameList) {
         EntityManager em = this.getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
@@ -196,6 +200,9 @@ public abstract class AbstractQueryColumnNameFacade<T> {
         return query.getResultList();
 
     }
+    
+
+    
 
     private void tryEvictCache(EntityManager em, Object id) {
         if (EVICT_CACHE) {

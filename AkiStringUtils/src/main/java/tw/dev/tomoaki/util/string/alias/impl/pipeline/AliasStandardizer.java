@@ -33,25 +33,25 @@ import tw.dev.tomoaki.util.string.alias.impl.exception.ProcessingUnitSelectorExc
  *
  * @author tomoaki
  */
-public class AliasProcessor implements Pipeline {
+public class AliasStandardizer implements Pipeline {
 
     private Deque<NodeResult> resultStack;
     private Queue<PipelineNode> nodeList;
     private String document;
 
     protected void doSetupContainer() {
-        Stack test = new Stack();
+//        Stack test = new Stack();
         this.resultStack = new LinkedList();
         this.nodeList = new LinkedList();
     }
 
     public static class Factory {
 
-        public static AliasProcessor create() {
+        public static AliasStandardizer create() {
             return Factory.create(Arrays.asList());
         }
 
-        public static AliasProcessor create(String... unitCodes) {
+        public static AliasStandardizer create(String... unitCodes) {
             List<PipelineNode> nodeList = Stream.of(unitCodes).map(unitCode -> {
                 try {
                     return ProcessingUnitSelector.get(unitCode);
@@ -63,16 +63,12 @@ public class AliasProcessor implements Pipeline {
             return Factory.create(nodeList);
         }
 
-        public static AliasProcessor create(PipelineNode... nodes) {
-//            AliasProcessor processor = new AliasProcessor();
-//            processor.doSetupContainer();
-//            processor.nodeList.addAll(Arrays.asList(nodes));
-//            return processor;
+        public static AliasStandardizer create(PipelineNode... nodes) {
             return Factory.create(Arrays.asList(nodes));
         }
 
-        public static AliasProcessor create(List<PipelineNode> nodeList) {
-            AliasProcessor processor = new AliasProcessor();
+        public static AliasStandardizer create(List<PipelineNode> nodeList) {
+            AliasStandardizer processor = new AliasStandardizer();
             processor.doSetupContainer();
             if (nodeList != null && !nodeList.isEmpty()) {
                 processor.nodeList.addAll(nodeList);

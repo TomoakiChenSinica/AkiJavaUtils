@@ -75,16 +75,22 @@ public class PreparedNativeQueryFactory {
         this.doSetupPersistanceQuery();
         return this;
     }
-    
+
     public PreparedNativeQueryFactory turnOnAutoFixList() {
         this.autoFixList = true;
         return this;
     }
-    
+
     public PreparedNativeQueryFactory turnOffAutoFixList() {
         this.autoFixList = false;
         return this;
-    }    
+    }
+
+    public PreparedNativeQueryFactory setNull() {
+        this.doValidateCanSetParam();
+        this.persistanceNativeQuery = this.persistanceNativeQuery.setParameter(index++, null);
+        return this;
+    }
 
     public PreparedNativeQueryFactory setParam(String str) {
         this.doValidateCanSetParam();
@@ -114,7 +120,9 @@ public class PreparedNativeQueryFactory {
     public PreparedNativeQueryFactory setParam(List<?> dataList) {
         this.doValidateCanSetParam();
         try {
-            if(this.autoFixList) dataList = (dataList == null) ? new ArrayList() : dataList;
+            if (this.autoFixList) {
+                dataList = (dataList == null) ? new ArrayList() : dataList;
+            }
             this.persistanceNativeQuery = PreparedNativeQueryParamHelper.setParam(persistanceNativeQuery, index++, em, dataList);
             return this;
         } catch (Exception ex) {

@@ -18,10 +18,10 @@ import tw.dev.tomoaki.util.regularexpression.RegExpResult;
 public class RegExpProcessorMain {
 
     public static void main(String[] args) {
-        test();
+//        test();
+        testUnicode();
     }
-    
-    
+
     public static void test() {
         String strPattern = "#\\{(.*)\\}\\[\\]";
         String strTest = "<div> \r\n"
@@ -30,14 +30,14 @@ public class RegExpProcessorMain {
                 + "</div>";
         System.out.println(strPattern);
         System.out.println(strTest);
-  
+
         RegExpProcessor processor = RegExpProcessor.Factory.create(strPattern);
         RegExpResult regExpResult = processor.processMatch(strTest);
 //        regExpResult.getMatchResults().forEach(result -> System.out.println(result));
 //        regExpResult.getCaptureResults().forEach(result -> System.out.println(result));
         System.out.println(regExpResult.getMatchResults());
-        System.out.println(regExpResult.getCaptureResults());        
-    }    
+        System.out.println(regExpResult.getCaptureResults());
+    }
 
     public static void testCapture() {
         String strPattern = "#\\{(.*)\\}\\[\\]";
@@ -60,7 +60,6 @@ public class RegExpProcessorMain {
 
 //            System.out.println("group0= " + matcher.group(0));
 //            System.out.println("group1= " + matcher.group(1));
-            
             System.out.println("group()= " + matcher.group());
         }
     }
@@ -82,5 +81,13 @@ public class RegExpProcessorMain {
         System.out.println(result.getMatchResults());
         System.out.println(processor.processFormatReplace(article, "<a href=\"" + RegExpProcessor.formatReplaceToken + "\" target=\"_blank\">" + RegExpProcessor.formatReplaceToken + " </a>"));
 
+    }
+
+    public static void testUnicode() {
+        String article = "我喜歡你。";
+        RegExpProcessor processor = RegExpProcessor.Factory.create("\\pP");
+        RegExpResult result = processor.processMatch(article);
+        System.out.println(result.isFind());
+        System.out.println(result.getMatchResults());
     }
 }

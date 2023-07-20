@@ -16,7 +16,7 @@
 package tw.dev.tomoaki;
 
 import tw.dev.tomoaki.util.string.alias.impl.exception.ProcessingUnitSelectorException;
-import tw.dev.tomoaki.util.string.alias.impl.pipeline.AliasProcessor;
+import tw.dev.tomoaki.util.string.alias.impl.pipeline.AliasStandardizer;
 import tw.dev.tomoaki.util.string.alias.impl.unit.DistinctSpaceProcessingUnit;
 import tw.dev.tomoaki.util.string.alias.impl.unit.TrimProcessingUnit;
 import tw.dev.tomoaki.util.string.alias.impl.unit.UpperCaseProcessingUnit;
@@ -32,7 +32,7 @@ public class AliasProcessorMain {
 //                new DistinctSpaceProcessingUnit(),
 //                new UpperCaseProcessingUnit()
 //        );
-        AliasProcessor processor = AliasProcessor.Factory.create("Trim", "DistinctSpace", "UpperCase");
+        AliasStandardizer processor = AliasStandardizer.Factory.create("Trim", "DistinctSpace", "UpperCase");
         String result = processor.doProcess("   This  is      a book ");
         System.out.println(result);
     }
