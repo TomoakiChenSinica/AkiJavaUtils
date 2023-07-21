@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import tw.dev.tomoaki.util.entity.serialize.DataKeySerializer;
 
 /**
  *
@@ -23,6 +24,8 @@ import java.util.Map;
 public class DataExistMap<T> implements Serializable {
 
     private Map<T, Boolean> dataExistMap;
+    
+    private DataKeySerializer<T> dataKeySerializer;
 
 //<editor-fold defaultstate="collapsed" desc="以下是constructor 相關">
     public DataExistMap() {
@@ -167,4 +170,21 @@ public class DataExistMap<T> implements Serializable {
     
     public void test() {
     }
+    
+    public Object trySerializeData(T data) {
+        return dataKeySerializer != null ? dataKeySerializer.doSerialize(data) : data;
+    }
+    
+    /*
+    private class ExtHashMap extends HashMap {
+
+        private DataKeySerializer<T> dataKeySerializer;
+        
+        
+        @Override
+        public Object put(Object key, Object value) {
+            return this.pu
+        }
+
+    }*/
 }
