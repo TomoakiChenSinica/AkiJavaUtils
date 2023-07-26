@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
+import static tw.dev.tomoaki.util.cast.JavaToJson.allowJavaTime;
+import tw.dev.tomoaki.util.cast.helper.ObjectMapperHelper;
 
 /**
  *
@@ -31,17 +33,28 @@ import java.util.Map;
  */
 public class JsonToJava<T> {   //要加在這裡
 
+    public static Boolean allowJavaTime = Boolean.FALSE;
+    
+    
     public static ObjectMapper obtainCleanObjectMapper() {
         ObjectMapper mapper = new ObjectMapper();
         return mapper;
     }
 
+    
+    
     public static <T> T getJavaObject(String json, Class<T> objectType) throws IOException {
+        return getJavaObject(null, json, objectType);
+    }
+    
+    public static <T> T getJavaObject(ObjectMapper desigMapper, String json, Class<T> objectType) throws IOException {
         if (json != null) {
             T javaObject;
             JsonFactory jsonFactory = new JsonFactory();
             JsonParser jp = jsonFactory.createParser(json);
-            ObjectMapper mapper = new ObjectMapper();
+//            ObjectMapper mapper = new ObjectMapper();
+            ObjectMapper mapper = ObjectMapperHelper.tryObtainObjectMapper(desigMapper, allowJavaTime);
+
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             javaObject = mapper.readValue(jp, objectType);
             return (T) javaObject;
@@ -49,43 +62,63 @@ public class JsonToJava<T> {   //要加在這裡
             return null;
         }
     }
-
+    
+    
     public static <T> T getJavaObject(InputStream is, Class<T> objectType) throws IOException {
+        return getJavaObject(null, is, objectType);
+    }    
+
+    public static <T> T getJavaObject(ObjectMapper desigMapper, InputStream is, Class<T> objectType) throws IOException {
         T javaObject;
         JsonFactory jsonFactory = new JsonFactory();
         JsonParser jp = jsonFactory.createParser(is);
-        ObjectMapper mapper = new ObjectMapper();
+//        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = ObjectMapperHelper.tryObtainObjectMapper(desigMapper, allowJavaTime);
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         javaObject = mapper.readValue(jp, objectType);
         return javaObject;
     }
+    
+    
+    
+    public static <T> List<T> getJavaListObject(String json, Class<T> objectType) throws IOException {
+        return getJavaListObject(null, json, objectType);
+    }    
 
     /**
      * type1 to get list object with jackson
      *
+     * @param desigMapper ObjectMapper 是Jackson Lib轉換JSON用的，可以加入模組。
      * @param json
      * @param objectType
      * @return
      */
-    public static <T> List<T> getJavaListObject(String json, Class<T> objectType) throws IOException {
+    public static <T> List<T> getJavaListObject(ObjectMapper desigMapper, String json, Class<T> objectType) throws IOException {
         List<T> javaListObject;
         JsonFactory jsonFactory = new JsonFactory();
         JsonParser jp = jsonFactory.createParser(json);
-        ObjectMapper mapper = new ObjectMapper();
-//        ObjectMapper mapper = JsonMapper.builder()
-//                .addModule(new JavaTimeModule())
-//                .build();
+//        ObjectMapper mapper = new ObjectMapper();
         /*
         https://stackoverflow.com/questions/27952472/serialize-deserialize-java-8-java-time-with-jackson-json-mapper
         https://github.com/FasterXML/jackson-modules-java8/wiki#artifacts  --> jackson-datatype-jsr310
         https://github.com/FasterXML/jackson-modules-java8/tree/2.14/datetime
+
+        範例
+        ObjectMapper mapper = JsonMapper.builder()
+                .addModule(new JavaTimeModule())
+                .build();
+        
         */
+        ObjectMapper mapper = ObjectMapperHelper.tryObtainObjectMapper(desigMapper, allowJavaTime);
+        
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         CollectionType collectionType = mapper.getTypeFactory().constructCollectionType(List.class, objectType);
         javaListObject = mapper.readValue(jp, collectionType);
         return javaListObject;
     }
 
+    
+    
     public static <T> T getJavaMap(String json, Class keyType, Class valueType) throws IOException {
         T javaObject;
         ObjectMapper mapper = new ObjectMapper();
@@ -93,7 +126,7 @@ public class JsonToJava<T> {   //要加在這裡
         javaObject = getJavaObject(json, javaType);
         return javaObject;
     }
-
+    
     public static <Tmap, T> Map<Tmap, T> getJavaMapObject(String json, Class<Tmap> mapKeyType, Class<T> objectType) throws IOException {
         Map<Tmap, T> javaListObject;
         JsonFactory jsonFactory = new JsonFactory();
@@ -105,6 +138,10 @@ public class JsonToJava<T> {   //要加在這裡
         return javaListObject;
     }
 
+    
+    
+    
+    
     public static Object getJavaComplexObject(String json, TypeReference typeRef) throws IOException {
         Object javaObject;
         ObjectMapper mapper = new ObjectMapper();
@@ -113,6 +150,8 @@ public class JsonToJava<T> {   //要加在這裡
         return javaObject;
     }
 
+    
+    
     private static <T> T getJavaObject(String json, JavaType javaType) throws IOException {
         T javaObject;
         ObjectMapper mapper = new ObjectMapper();
