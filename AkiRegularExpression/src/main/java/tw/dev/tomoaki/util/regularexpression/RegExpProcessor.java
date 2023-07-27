@@ -73,4 +73,9 @@ public class RegExpProcessor {
         }
         return replaceResult;
     }
+    
+    public String processCaptureReplace(String input, String regExpCaptureReplacePattern) {
+        Matcher matcher = this.thePattern.matcher(input);
+        return matcher.replaceAll(regExpCaptureReplacePattern);        
+    }    
 }

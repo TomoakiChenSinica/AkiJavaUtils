@@ -5,6 +5,7 @@
  */
 package tw.dev.tomoaki.main;
 
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import tw.dev.tomoaki.util.regularexpression.helper.RegExpCommonPattern;
@@ -19,7 +20,9 @@ public class RegExpProcessorMain {
 
     public static void main(String[] args) {
 //        test();
-        testUnicode();
+//        testUnicode();
+//        testReplace();
+        testCaptureReplace();
     }
 
     public static void test() {
@@ -89,5 +92,22 @@ public class RegExpProcessorMain {
         RegExpResult result = processor.processMatch(article);
         System.out.println(result.isFind());
         System.out.println(result.getMatchResults());
+    }   
+    
+//    public static void testPureMatcherReplace() {
+//        Pattern pattern 
+//    }
+    
+    public static void testCaptureReplace() {
+        String article = "This is a book, https://stackoverflow.com";
+        String pattern = RegExpCommonPattern.PURE_HTML_URL;
+        RegExpProcessor processor = RegExpProcessor.Factory.create(pattern);
+        RegExpResult result = processor.processMatch(article);
+        System.out.println(result.isFind());
+        System.out.println(result.getMatchResults());
+        System.out.println(processor.processCaptureReplace(article, "<a href=\"$1\">$1</a>"));
+    
     }
 }
+
+

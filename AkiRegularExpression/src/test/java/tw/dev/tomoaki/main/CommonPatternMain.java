@@ -15,13 +15,22 @@ import tw.dev.tomoaki.util.regularexpression.helper.RegExpCommonPattern;
  */
 public class CommonPatternMain {
 
+    public static void main(String[] args) {
+        test2();
+    }
+    
+    protected static void test2() {
+        System.out.println("RegExpCommonPatter.HTTP_URL= " + RegExpCommonPattern.HTTP_URL);
+    
+    }
 
-    public static void main(String []args) {
+    protected void test1() {
         String str = "This is a book, it's very funny. 這是一本書，非常的好笑!";
         RegExpProcessor regExpProcessor = RegExpProcessor.Factory.create(RegExpCommonPattern.PUNCTUATION);
         RegExpResult regExpResult = regExpProcessor.processMatch(str);
-        regExpResult.getMatchResults().forEach(result -> {System.out.println(result);});
+        regExpResult.getMatchResults().forEach(result -> {
+            System.out.println(result);
+        });
     }
-    
-    
+
 }
