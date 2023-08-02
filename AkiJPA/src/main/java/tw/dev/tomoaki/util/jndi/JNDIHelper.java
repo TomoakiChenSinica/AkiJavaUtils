@@ -12,6 +12,10 @@ import static jdk.internal.org.jline.utils.AttributedStringBuilder.append;
 /**
  *
  * @author tomoaki
+ * 
+ * Source:
+ * https://www.baeldung.com/jndi
+ * https://stackoverflow.com/questions/2324937/code-to-list-all-the-entries-in-jndi-on-remote-machine
  */
 public class JNDIHelper {
 
