@@ -21,11 +21,25 @@ import tw.dev.tomoaki.util.cast.JsonToJava;
 public class JsonToJavaMain {
     
     public static void main(String[] args) throws JsonProcessingException, IOException {
+
+    }
+
+    private static void test1() throws IOException {
+        
+    }
+
+    protected static void test1() throws IOException {
         Batter ackley = new Batter("Dustin", "Ackley", 0.253);
         Batter smoak = new Batter("Justin", "Smoak", 0.232);
         List<Batter> batterList = Arrays.asList(ackley, smoak);
 //        String jsonData = JavaToJson.getJsonString(batterList);
 //        List<Map> mapList = JsonToJava.getJavaListObject(jsonData, Map.class);
         System.out.println(JsonToJava.convertListObjectToListMap(batterList));
+    }
+    
+    protected static void test2() {
+//        String jsonData = "{""firstName"": ""Dustin""}";
+        String jsonData = "{\"firstName\": \"Dustin\"}";
+
     }
 }
