@@ -5,6 +5,15 @@
     <artifactId>AkiTaiwanDataValidtor</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
+    
+    <distributionManagement>
+        <snapshotRepository>
+            <id>archiva-testing</id>
+            <name>Archiva Testing</name>
+            <url>http://localhost:9090/repository/testing/</url>
+        </snapshotRepository>        
+    </distributionManagement>
+        
     <build>
         <plugins>
             <plugin>

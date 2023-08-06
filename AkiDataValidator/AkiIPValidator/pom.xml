@@ -9,15 +9,23 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
+    <!--
     <distributionManagement>
         <repository>
             <id>github</id>
             <name>GitHub OWNER Apache Maven Packages</name>
             <url>https://maven.pkg.github.com/TomoakiChenSinica/AkiJavaUtils</url>
-        </repository>        
-        
+        </repository>                
     </distributionManagement>
-    
+    -->
+    <distributionManagement>
+        <snapshotRepository>
+            <id>archiva-testing</id>
+            <name>Archiva Testing</name>
+            <url>http://localhost:9090/repository/testing/</url>
+        </snapshotRepository>        
+    </distributionManagement>    
+        
     <licenses>        
         <license>
             <name>The Apache License, Version 2.0</name>

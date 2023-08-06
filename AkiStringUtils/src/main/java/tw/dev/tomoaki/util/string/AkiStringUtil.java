@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tw.dev.tomoaki.util.stringutils;
+package tw.dev.tomoaki.util.string;
 
 /**
  *
@@ -49,8 +49,10 @@ public class AkiStringUtil {
         }
         
         String newStr = oriStr;
-        newStr = newStr.replace("\r\n", "<br/>");
-        newStr = newStr.replace("\r", "<br/>");
+        newStr = newStr.replace("\\r\\n", "<br/>");
+        newStr = newStr.replace("\\r", "<br/>");
+        newStr = newStr.replace("\\n", "<br/>");        
+        //以上 這組叫 Escape sequences https://en.wikipedia.org/wiki/Escape_sequences_in_C、https://www.geeksforgeeks.org/escape-sequences-in-java/
         return newStr;
     }
     

@@ -7,6 +7,7 @@ package tw.dev.tomoaki.cast.main;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import tw.dev.tomoaki.cast.main.entity.Batter;
@@ -34,11 +35,14 @@ public class JavaToJsonMain {
     
     protected static void test2() throws JsonProcessingException, IOException {
         Batter ackley = new Batter("Dustin", "Ackley", 0.253);
+        ackley.setLastModifiedDateTime(LocalDateTime.now());
         Batter smoak = new Batter("Justin", "Smoak", 0.232);
+        smoak.setLastModifiedDateTime(LocalDateTime.now());
         List<Batter> batterList = Arrays.asList(ackley, smoak);
-//        String jsonData = JavaToJson.getJsonString(batterList);
+        String jsonData = JavaToJson.getJsonString(batterList);
+        System.out.println("jsonData= " + jsonData);
 //        List<Map> mapList = JsonToJava.getJavaListObject(jsonData, Map.class);
-        System.out.println(JsonToJava.convertListObjectToListMap(batterList));        
+//        System.out.println(JsonToJava.convertListObjectToListMap(batterList));        
     }
 
 }

@@ -23,4 +23,6 @@ public class FacadeHelper {
     protected  static  <T> CriteriaQuery<T> obtainInitCriteriaQuery(CriteriaBuilder cb, Class<T> entityClass) {
         return cb.createQuery(entityClass);
     }
+    
+    //https://stackoverflow.com/questions/6276122/can-i-get-the-sql-string-from-a-jpa-query-object
 }

@@ -3,8 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>tw.dev.tomoaki</groupId>
     <artifactId>AkiSecurity</artifactId>
-<!--    <version>2023.02.20-1</version>-->
-    <version>1.0-SNAPSHOT</version>
+    <version>1.6-2023-.10</version>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -30,13 +29,25 @@
             <url> https://repo.maven.apache.org/maven2/</url>
         </repository>
         -->
-        
+        <!--
         <repository>
             <id>github</id>
             <name>GitHub OWNER Apache Maven Packages</name>
             <url>https://maven.pkg.github.com/TomoakiChenSinica/AkiJavaUtils</url>
         </repository>        
-        
+        -->
+        <!--
+        <snapshotRepository>
+            <id>archiva-testing</id>
+            <name>Archiva Testing</name>
+            <url>http://localhost:9090/repository/testing/</url>
+        </snapshotRepository>
+        -->
+        <snapshotRepository>
+            <id>ccs-packages</id>
+            <name>CCS Packages</name>
+            <url>http://192.168.107.166:8082/repository/ccs-packages</url>
+        </snapshotRepository>        
     </distributionManagement>
     
     <licenses>        
@@ -46,6 +57,7 @@
         </license>
     </licenses>   
     
+    <!--
     <build>
         <plugins>
             <plugin>
@@ -74,5 +86,6 @@
                 </executions>
             </plugin>
         </plugins>
-    </build>               
+    </build>   
+    -->
 </project>

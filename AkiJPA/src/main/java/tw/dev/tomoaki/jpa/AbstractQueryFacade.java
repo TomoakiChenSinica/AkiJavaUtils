@@ -84,7 +84,7 @@ public abstract class AbstractQueryFacade<T> {
         return ((Long) q.getSingleResult()).intValue();
     }
 
-//<editor-fold defaultstate="collapsed" desc="Equal系列">
+//<editor-fold defaultstate="collapsed" desc="findByEqual系列">
     /*
     https://stackoverflow.com/questions/39741718/java-lang-illegalargumentexception-the-attribute-state-id-is-not-present-in-t 
     > The querying uses by default java names. If you have doubt you can setup a jpa metamodel generator and you will be able to use a typed version of the attributes instead of strings.
@@ -109,6 +109,11 @@ public abstract class AbstractQueryFacade<T> {
         return query.getResultList();
     }
 
+    
+    public List<T> findByEquals(List<String> entityPropNameList, List<Object> valueList) {
+        return this.findByEquals(entityPropNameList, valueList, null);
+    }    
+    
     
     /**
      *
@@ -141,7 +146,7 @@ public abstract class AbstractQueryFacade<T> {
         }
 
         orderEntityPropNameList = ListValidator.isListExist(orderEntityPropNameList) ? orderEntityPropNameList : orderEntityPropNameList;
-        return this.findByEquals(pairList, orderEntityPropNameList);
+        return this.findByEqualPairs(pairList, orderEntityPropNameList);
 
     }
 
@@ -151,7 +156,7 @@ public abstract class AbstractQueryFacade<T> {
      * @param orderEntityPropNameList 排序方式 Property Name 清單
      * @return 查詢結果
      */        
-    public List<T> findByEquals(List<KeyValuePair> pairList, List<String> orderEntityPropNameList) {
+    public List<T> findByEqualPairs(List<KeyValuePair> pairList, List<String> orderEntityPropNameList) {
         EntityManager em = this.getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
@@ -248,6 +253,19 @@ public abstract class AbstractQueryFacade<T> {
         return query.getResultList();
 
     }    
+//</editor-fold>    
+    
+//<editor-fold defaultstate="collapsed" desc="getByEquals 系列">
+    public T getByEquals(String columnName, Object columnValue) {
+        List<T> resultList = this.findByEquals(columnName, columnValue);
+        return (resultList == null || resultList.isEmpty()) ? null : resultList.get(0);
+    }
+    
+    public T getByEquals(List<String> columnNameList, List<Object> columnValueList) {
+        List<T> resultList = this.findByEquals(columnNameList, columnValueList);
+        return (resultList == null || resultList.isEmpty()) ? null : resultList.get(0);
+        
+    }
 //</editor-fold>    
     
 //<editor-fold defaultstate="collapsed" desc="其他輔助methods">

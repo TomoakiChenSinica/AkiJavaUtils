@@ -4,7 +4,7 @@
     <groupId>tw.dev.tomoaki</groupId>
     <artifactId>AkiJavaUtils</artifactId>
     <!--<version>2023.02.20-1</version>-->
-    <version>1.0-SNAPSHOT</version>
+    <version>1.6-2023-.10</version>
     <packaging>pom</packaging>
     <modules>
         <module>AkiSecurity</module>
@@ -52,7 +52,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
-    
+      
     <distributionManagement>
         <!--
         <repository>
@@ -70,12 +70,25 @@
             <url> https://repo.maven.apache.org/maven2/</url>
         </repository>
         -->
-        
+        <!--
         <repository>
             <id>github</id>
             <name>GitHub OWNER Apache Maven Packages</name>
             <url>https://maven.pkg.github.com/TomoakiChenSinica/AkiJavaUtils</url>
         </repository>        
+        -->
+        <!--
+        <snapshotRepository>
+            <id>archiva-testing</id>
+            <name>Archiva Testing</name>
+            <url>http://localhost:9090/repository/testing/</url>
+        </snapshotRepository>
+        -->
+        <snapshotRepository>
+            <id>ccs-packages</id>
+            <name>CCS Packages</name>
+            <url>http://192.168.107.166:8082/repository/ccs-packages</url>
+        </snapshotRepository>
         
     </distributionManagement>
     
@@ -134,6 +147,13 @@
                             <phase>package</phase>
                         </execution>
                     </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <configuration>
+                        <retryFailedDeploymentCount>3</retryFailedDeploymentCount>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>

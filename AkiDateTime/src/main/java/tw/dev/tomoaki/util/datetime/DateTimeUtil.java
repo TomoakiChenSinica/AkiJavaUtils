@@ -25,7 +25,8 @@ import java.util.Locale;
  * 但看了一下新的 LocalDate、LocalTime、LocalDateTime，很多功能都自帶(比如plusDays.....) <br>
  * 有一些String 跟 Date轉換也直接更好用 (LocalDateTime.parse) <br>
  * https://www.baeldung.com/java-8-date-time-intro <br>
- * https://stackoverflow.com/questions/19431234/converting-between-java-time-localdatetime-and-java-util-date <br>
+ * https://stackoverflow.com/questions/19431234/converting-between-java-time-localdatetime-and-java-util-date
+ * <br>
  *
  * 基本上Java8 原生的 LocalDateTime、LocalDate、LocalTime 已經很完善 <br>
  * 這邊只是就個人需求稍微方便而已 <br>
@@ -49,7 +50,7 @@ public class DateTimeUtil {
 //    public static Date MAX_UTIL_DATE = DateTimeUtil.Converter.convert(LocalDateTime.MAX);
     public static Date MIN_UTIL_DATE = new Date(Long.MIN_VALUE);
     public static Date MAX_UTIL_DATE = new Date(Long.MAX_VALUE);
-    
+
     /**
      *
      */
@@ -74,7 +75,7 @@ public class DateTimeUtil {
             strDateTime = timeFormat.format(utilDateTime);
             return strDateTime;
         }
-        
+
         public static String parseDateTimeToString(LocalDateTime localDateTime) {
             DateTimeFormatter formatter = DEFAULT_DATE_TIME_FORMMATTER;
             return localDateTime.format(formatter);
@@ -94,19 +95,18 @@ public class DateTimeUtil {
             strDate = timeFormat.format(utilDate);
             return strDate;
         }
-        
+
         public static String parseDateToString(LocalDate localDate) {
             return localDate.format(DEFAULT_DATE_FORMMATTER);
         }
-        
 
         /**
          * 將日期時間字串轉成日期時間資料(entity)，<br>
          * 資料格式為 java.time.LocalDateTime <br>
-         * 
+         *
          * @param strDateTime 日期時間字串。字串格式為 yyyy-MM-dd HH:mm:ss
          * @return 日期時間資料，格式為 java.time.LocalDateTime
-         * 
+         *
          */
         public static LocalDateTime parse2DateTime(String strDateTime) {
             return strDateTime == null ? null : LocalDateTime.parse(strDateTime, DEFAULT_DATE_TIME_FORMMATTER);
@@ -124,10 +124,10 @@ public class DateTimeUtil {
         public static LocalTime parse2Time(String strTime) {
             return strTime == null ? null : LocalTime.parse(strTime, DEFAULT_TIME_FORMMATTER);
         }
-        
+
         public static LocalTime parse2Time(String strTime, String timeFormat) {
-            DateTimeFormatter formatter = Provider.obtainFormatter(timeFormat);            
-            return strTime == null ? null : LocalTime.parse(strTime, formatter);            
+            DateTimeFormatter formatter = Provider.obtainFormatter(timeFormat);
+            return strTime == null ? null : LocalTime.parse(strTime, formatter);
         }
 
         public static LocalDate obtainDayOfWeek(LocalDate theDate, Integer dayOfWeek) {
@@ -195,7 +195,7 @@ public class DateTimeUtil {
             LocalDateTime ldt = utilDateTime == null ? null : LocalDateTime.ofInstant(utilDateTime.toInstant(), ZoneId.systemDefault());
             return ldt;
         }
-        
+
         public static LocalDateTime convert2DateTime(Timestamp timeStamp) {
             return timeStamp == null ? null : timeStamp.toLocalDateTime();
         }
@@ -206,13 +206,12 @@ public class DateTimeUtil {
 //            LocalDate ld = utilDate == null ? null : utilDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             LocalDate ld = utilDate == null ? null : Instant.ofEpochMilli(utilDate.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
             return ld;
-        }        
-        
+        }
+
         public static LocalDate convert2Date(Timestamp timeStamp) {
             return timeStamp == null ? null : timeStamp.toLocalDateTime().toLocalDate();
         }
-        
-        
+
         /*
           https://www.baeldung.com/java-date-to-localdate-and-localdatetime 
         不過這邊應用在 LocalDateTime --> Date。
@@ -234,9 +233,8 @@ public class DateTimeUtil {
         public static Date convert(LocalDateTime localDateTime) {
             return localDateTime == null ? null : Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
         }
-        
-        //以上這個可以改成 convert2UtilDateTime
 
+        //以上這個可以改成 convert2UtilDateTime
         public static Date convert(LocalDate localDate) {
             return localDate == null ? null : java.sql.Date.valueOf(localDate);
         }
@@ -251,35 +249,32 @@ public class DateTimeUtil {
          * @return 將丟入的 java.util.Date轉成新的日期格式(java.time.LocalDateTime)。
          *
          */
-
-
         public static java.sql.Date covert2SqlDate(Date utilDate) {
             java.sql.Date sqlDate = utilDate == null ? null : new java.sql.Date(utilDate.getTime());
             return sqlDate;
         }
-        
+
         public static java.sql.Timestamp convert2SqlTimestamp(Date utilDate) {
-            Timestamp ts= utilDate == null ? null : new Timestamp(utilDate.getTime());  
+            Timestamp ts = utilDate == null ? null : new Timestamp(utilDate.getTime());
             return ts;
         }
-        
+
         public static java.sql.Timestamp convert2SqlTimestamp(LocalDate date) {
             return date == null ? null : Timestamp.valueOf(date.atStartOfDay());
         }
-        
+
         public static java.sql.Timestamp convert2SqlTimestamp(LocalDateTime dateTime) {
             return dateTime == null ? null : Timestamp.valueOf(dateTime);
-        }        
-        
+        }
+
         /* ============================ 2023-01-30 15:24，從DateTimeProvider新增過來 ============================ */
-        
         /**
-         * 將 日期時間 轉成 日期
-         * 跟以前DateTimeProvider是用字串去拆解不同，這裡應用LocalDateTime 、 LocalDate
-         * 
+         * 將 日期時間 轉成 日期 跟以前DateTimeProvider是用字串去拆解不同，這裡應用LocalDateTime 、
+         * LocalDate
+         *
          * @param utilDateTime 日期時間資訊，即資料中包含 年月日+時間 ，格式為 java.util.Date
          * @return 日期，擷取出年月日出來
-         * 
+         *
          */
         public static Date parseDateTime2Date(Date utilDateTime) {
             LocalDateTime dateTime = Converter.convert2DateTime(utilDateTime);
@@ -305,7 +300,8 @@ public class DateTimeUtil {
 //            
 //        }
         public static Boolean inRange(LocalDateTime theDateTime, LocalDateTime startDateTime, LocalDateTime endDateTime) {
-            return (!theDateTime.isBefore(startDateTime) && !theDateTime.isAfter(endDateTime));
+            return ((startDateTime == null || !theDateTime.isBefore(startDateTime))
+                    && (endDateTime == null || !theDateTime.isAfter(endDateTime)));
             //不在開始時間之前、不在開始時間之後-->在時間區間之間            
         }
 
