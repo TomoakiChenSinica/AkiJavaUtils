@@ -20,7 +20,9 @@ import tw.dev.tomoaki.util.cast.JsonToJava;
 public class JsonToJavaMain {
 
     public static void main(String[] args) throws JsonProcessingException, IOException {
+
     }
+
 
     private static void test1() throws IOException {
         Batter ackley = new Batter("Dustin", "Ackley", 0.253);
@@ -38,5 +40,11 @@ public class JsonToJavaMain {
                 + "  \"Sci.\": \"Science\",\n"
                 + "  \"Comput.\": \"Computer\"     \n"
                 + "}";
+    }
+    
+    protected static void test2() {
+//        String jsonData = "{""firstName"": ""Dustin""}";
+        String jsonData = "{\"firstName\": \"Dustin\"}";
+
     }
 }

@@ -3,6 +3,7 @@ package tw.dev.tomoaki.main;
 
 
 import tw.dev.tomoaki.logger.AkiLogger;
+import tw.dev.tomoaki.logger.AkiSystemLogger;
 import tw.dev.tomoaki.logger.LogHelper;
 
 /*
@@ -18,9 +19,9 @@ import tw.dev.tomoaki.logger.LogHelper;
  */
 public class JavaLoggerMain {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InstantiationException, IllegalAccessException {
 //        System.out.println("Hello World!");
-        test3();
+        test4();
     }
     
     private static void test1() {
@@ -35,6 +36,12 @@ public class JavaLoggerMain {
     }
     
     private static void test3() {
-        AkiLogger.Factory.create();
+        AkiLogger logger = AkiLogger.Factory.create();
+        logger.printLog("Hello");
+    }
+    
+    private static void test4() throws InstantiationException, IllegalAccessException {
+        AkiSystemLogger<AkiLoggerMainOutput> systemLogger = new AkiSystemLogger(AkiLoggerMainOutput.class);
+        systemLogger.printLog("Hello");
     }
 }

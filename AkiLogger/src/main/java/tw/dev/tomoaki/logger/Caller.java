@@ -23,7 +23,7 @@ public class Caller {
         public static Caller create(StackTraceElement stElement) {
             Caller caller = new Caller();
             caller.className = stElement.getClassName();
-            caller.simpleClassName = stElement.getFileName();
+            caller.simpleClassName = FileNameHelper.obtainFileNameWithoutExtension(stElement.getFileName());
             caller.methodName = stElement.getMethodName();
             return caller;
         }
