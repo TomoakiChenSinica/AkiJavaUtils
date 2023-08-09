@@ -16,12 +16,7 @@ import tw.dev.tomoaki.util.regularexpression.helper.RegExpCommonPattern;
 public class CommonPatternMain {
 
     public static void main(String[] args) {
-        test2();
-    }
-    
-    protected static void test2() {
-        System.out.println("RegExpCommonPatter.HTTP_URL= " + RegExpCommonPattern.HTTP_URL);
-    
+        test3();
     }
 
     protected void test1() {
@@ -33,4 +28,14 @@ public class CommonPatternMain {
         });
     }
 
+    protected static void test2() {
+        System.out.println("RegExpCommonPatter.HTTP_URL= " + RegExpCommonPattern.HTTP_URL);
+
+    }
+    
+    protected static void test3() {
+        RegExpProcessor regExpProcessor = RegExpProcessor.Factory.create(RegExpCommonPattern.FILE_SUFFIX);
+        System.out.println(regExpProcessor.processMatch("FullText.pdf").getMatchResults().get(0));
+        System.out.println(regExpProcessor.processMatch("FullText.txt").getMatchResults().get(0));
+    }
 }

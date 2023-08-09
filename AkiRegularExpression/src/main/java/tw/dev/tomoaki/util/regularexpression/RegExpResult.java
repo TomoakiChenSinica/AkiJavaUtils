@@ -19,13 +19,13 @@ import java.util.stream.Stream;
 public class RegExpResult {
 
     private Boolean find;
-//    private List<String> groupResults;
     private List<String> matchResults;
-//    private List<String> captureResults;
+    private List<RegExpMatchInfo> matchInfos;
     private RegExpCaptureMap captureResultMap;
 
     protected RegExpResult() {
         matchResults = new ArrayList();
+        matchInfos = new ArrayList();
         captureResultMap = new RegExpCaptureMap();
     }
 
@@ -35,14 +35,21 @@ public class RegExpResult {
             // formatPattern
             RegExpResult result = new RegExpResult();
             while (matcher.find()) {
-                result.matchResults.add(matcher.group(0));
+                String strMatch = matcher.group(0);
+                result.matchResults.add(strMatch);
+
+                RegExpMatchInfo matchInfo = new RegExpMatchInfo();
+                matchInfo.setMatch(strMatch);
+
                 Integer groupCount = matcher.groupCount();
-                if (groupCount >= 1) {
+                if (groupCount >= 1) { //後面的 Matcher.group 是屬於 Capture，一次Match可能會有多個 Capture
                     for (Integer order = 1; order <= groupCount; order++) {
-                        String captureResult =  matcher.group(order);
-                        result.captureResultMap.put(order,captureResult);
+                        String captureResult = matcher.group(order);
+                        result.captureResultMap.add(order, captureResult);
+                        matchInfo.addCapture(captureResult);
                     }
                 }
+                result.matchInfos.add(matchInfo);
             }
             result.find = !result.matchResults.isEmpty();
             return result;
@@ -60,9 +67,13 @@ public class RegExpResult {
     public List<String> getCaptureResults() {
         return captureResultMap.getResultList(1);
     }
-    
+
     public List<String> getCaptureResults(Integer order) {
         return captureResultMap.getResultList(order);
+    }
+
+    public List<RegExpMatchInfo> getMatchInfos() {
+        return matchInfos;
     }
 
 }

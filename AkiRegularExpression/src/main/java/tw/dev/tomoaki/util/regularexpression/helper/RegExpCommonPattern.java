@@ -21,8 +21,18 @@ public class RegExpCommonPattern {
 
     public static final String PURE_HTML_URL = "(https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*))";
 
-    public static final String FILE_SUFFIX = "[^\\.]*$";
+//    public static final String FILE_SUFFIX = "[^\\.]*$"; 
+//    public static final String FILE_SUFFIX = "[^.]*$"; 
+    public static final String FILE_SUFFIX = "(?<=\\.)[^.]*$"; //(?<=\.)[^.]*$
+    
+//另一版本: https://stackoverflow.com/questions/29436088/how-to-use-regex-to-get-file-extension ，不過實測好像不行(X)
+    
+//    public static final String FILE_PREFIX = "";
+    public static final String FILE_NAME_CAPTURE = "(.*)[(?=\\.)|(?<=\\.)]([^.]+)$";//"(.*)[(?=\\.)|(?<=\\.)]([^.]*)$"; https://regex101.com/r/csbsQR/1
 
+    public static final String FILE_NAME_SPLITOR = "\\.(?=[^.]*$)";  //https://regex101.com/r/MMwb8Y/1
+    
+    
     /**
      * https://www.shareintelli.com/1317/
      *

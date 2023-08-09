@@ -13,13 +13,14 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class UrlProvider {
 
+    public static String[] urlHeaderList = {"https://", "http://"};
+    
     private HttpServletRequest request;
     private String url = "";
     private String protocol = "";
     private String hostName = "";  //domain name，即該server的名稱
     private Integer port = 80;
     private String contextPath = "";
-    //private String pathName;  //頁面名稱，一般是URL
     private String pathInfo = "";
 
     protected UrlProvider(HttpServletRequest request) {
@@ -66,18 +67,18 @@ public class UrlProvider {
     }
 
     public String appendUrl(String tempPathInfo) {
-        String theURL = "";
-        theURL += this.protocol + "://";
-        theURL += this.hostName;
-        if (this.port != 80 && this.port != 443) {
-            theURL += ":" + this.port + "/";
-        } else {
-            theURL += "/";
-        }
-
-        if (!"".equals(this.contextPath)) {
-            theURL += this.contextPath + "/";
-        }
+        String theURL = this.obtainSystemRootPath();
+//        theURL += this.protocol + "://";
+//        theURL += this.hostName;
+//        if (this.port != 80 && this.port != 443) {
+//            theURL += ":" + this.port + "/";
+//        } else {
+//            theURL += "/";
+//        }
+//
+//        if (!"".equals(this.contextPath)) {
+//            theURL += this.contextPath + "/";
+//        }
 
         if (tempPathInfo.charAt(0) == '/') {
             this.pathInfo = tempPathInfo.substring(1);
@@ -89,8 +90,14 @@ public class UrlProvider {
         return theURL;
     }
 
-    public static String[] urlHeaderList = {"https://", "http://"};
+    public UrlAppender newUrlAppender() {
+        UrlAppender appender = UrlAppender.Factory.create();
+        appender.append(this.obtainSystemRootPath());
+        return appender;
+    }
+    
 
+//<editor-fold defaultstate="collapsed" desc="其他輔助method">
     public static String createConnectableUrl(String oriUrl) {
         String connectAbleUrl = oriUrl;
         if (checkContainsUrlHeader(oriUrl) == false) {
@@ -106,5 +113,7 @@ public class UrlProvider {
             }
         }
         return false;
-    }
+    }    
+//</editor-fold>
+
 }

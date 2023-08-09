@@ -5,7 +5,6 @@
  */
 package tw.dev.tomoaki.main;
 
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import tw.dev.tomoaki.util.regularexpression.helper.RegExpCommonPattern;

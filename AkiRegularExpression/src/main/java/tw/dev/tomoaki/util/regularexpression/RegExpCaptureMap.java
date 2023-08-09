@@ -15,13 +15,14 @@ import java.util.Map;
  */
 public class RegExpCaptureMap {
     
+    //清單長度，取決於 Match幾次，(Match中會有Capture)
     private Map<Integer, List<String>> captureResultKeyByOrderMap;
     
     public RegExpCaptureMap() {
         this.captureResultKeyByOrderMap = new LinkedHashMap();
     }
     
-    public void put(Integer order, String captureResult) {
+    public void add(Integer order, String captureResult) {
         List<String> resultList = this.getResultList(order);
         if(resultList == null) {
             resultList = new ArrayList();
