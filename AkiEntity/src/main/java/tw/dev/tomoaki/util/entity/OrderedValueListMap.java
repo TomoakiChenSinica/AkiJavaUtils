@@ -16,7 +16,7 @@ import java.util.Set;
  */
 //[CHN20171221] OrderedValueListMap
 public class OrderedValueListMap<Tkey1, Tvalue> implements Serializable{
-    private KeyPairMap<Tkey1, String, Tvalue> theMap = new KeyPairMap<Tkey1, String, Tvalue>();
+    private NestedMap<Tkey1, String, Tvalue> theMap = new NestedMap<Tkey1, String, Tvalue>();
         
     public void put(Tkey1 key1, String orderIndex, Tvalue value){
         theMap.put(key1, orderIndex, value);
@@ -30,7 +30,7 @@ public class OrderedValueListMap<Tkey1, Tvalue> implements Serializable{
         return theMap.getInnerMap(key1);
     }
     
-    public KeyPairMap<Tkey1, String, Tvalue> getMap(){
+    public NestedMap<Tkey1, String, Tvalue> getMap(){
         return theMap;
     }
     

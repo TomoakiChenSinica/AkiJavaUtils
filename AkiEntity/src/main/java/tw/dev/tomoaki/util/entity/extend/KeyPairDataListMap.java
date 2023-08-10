@@ -5,7 +5,7 @@
  */
 package tw.dev.tomoaki.util.entity.extend;
 
-import tw.dev.tomoaki.util.entity.KeyPairMap;
+import tw.dev.tomoaki.util.entity.NestedMap;
 
 /**
  *

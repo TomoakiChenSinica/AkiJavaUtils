@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 arche.
+ * Copyright 2023 tomoaki.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tw.dev.tomoaki.util.entity;
+package tw.dev.tomoaki.util.web;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
- * @author arche
+ * @author tomoaki
  */
-public class TestMap {
-    
+public class RequestURLAppender extends UrlAppender {
+
+//    private UrlProvider urlProvider;
+//
+//    protected RequestURLAppender() {
+//    }
+//
+//    public static class Factory {
+//
+//        public static RequestURLAppender create(HttpServletRequest request) {
+//            
+//        }
+//    }
+
 }
