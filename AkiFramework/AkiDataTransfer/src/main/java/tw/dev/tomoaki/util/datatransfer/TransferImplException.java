@@ -9,7 +9,8 @@ package tw.dev.tomoaki.util.datatransfer;
 
 import java.util.List;
 import tw.dev.tomoaki.util.cast.ExceptionPrinter;
-import tw.dev.tomoaki.util.stringutils.AkiStringUtil;
+import tw.dev.tomoaki.util.string.AkiStringUtil;
+//import tw.dev.tomoaki.util.stringutils.AkiStringUtil;
 
 /**
  *

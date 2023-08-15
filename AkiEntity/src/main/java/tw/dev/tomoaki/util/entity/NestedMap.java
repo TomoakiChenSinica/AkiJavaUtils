@@ -19,9 +19,9 @@ import java.util.Set;
  */
 public class NestedMap<Tkey1, Tkey2, Tvalue> implements KeyPairMap<Tkey1, Tkey2, Tvalue> {
 
-    private Map<Tkey1, Map<Tkey2, Tvalue>> containerMap;
-    private Boolean keepOrdered4FirstKey = false;
-    private Boolean keepOrdered4SecondKey = false;
+    protected Map<Tkey1, Map<Tkey2, Tvalue>> containerMap;
+    protected Boolean keepOrdered4FirstKey = false;
+    protected Boolean keepOrdered4SecondKey = false;
 
 //    public KeyPairMap() {
 //        containerMap = new HashMap();
@@ -63,7 +63,8 @@ public class NestedMap<Tkey1, Tkey2, Tvalue> implements KeyPairMap<Tkey1, Tkey2,
 
     }
 
-    @Override
+//<editor-fold defaultstate="collapsed" desc="實作 KeyPairMap">
+   @Override
     public void put(Tkey1 key1, Tkey2 key2, Tvalue value) {
         Map<Tkey2, Tvalue> innerMap = this.getInnerMap(key1, true);
         innerMap.put(key2, value);
@@ -86,7 +87,7 @@ public class NestedMap<Tkey1, Tkey2, Tvalue> implements KeyPairMap<Tkey1, Tkey2,
     @Override
     public Tvalue get(Tkey1 key1, Tkey2 key2) {
         Map<Tkey2, Tvalue> innerMap = this.getInnerMap(key1);
-        Tvalue value = innerMap.get(key2);
+        Tvalue value = (innerMap == null) ? null : innerMap.get(key2);
         return value;
     }
 
@@ -106,8 +107,10 @@ public class NestedMap<Tkey1, Tkey2, Tvalue> implements KeyPairMap<Tkey1, Tkey2,
     @Override
     public Integer size() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
+    }    
+//</editor-fold>
+ 
+//<editor-fold defaultstate="collapsed" desc="獨有">
     public Map<Tkey1, Map<Tkey2, Tvalue>> getAsMap() {
         return containerMap;
     }
@@ -152,6 +155,8 @@ public class NestedMap<Tkey1, Tkey2, Tvalue> implements KeyPairMap<Tkey1, Tkey2,
         }
         DataExistMap<Tkey2> key2ExistMap = new DataExistMap(tempSecondKeys);
         return key2ExistMap.existList();
-    }
+    }    
+//</editor-fold>
+
 
 }

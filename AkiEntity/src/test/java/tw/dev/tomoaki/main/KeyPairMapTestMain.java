@@ -28,7 +28,7 @@ public class KeyPairMapTestMain {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        test2();
+        test3();
     }
 
 
@@ -52,5 +52,13 @@ public class KeyPairMapTestMain {
         System.out.println(teamAllLevelsPlayerMap.getAllValueList());
         System.out.println(teamAllLevelsPlayerMap.get("Seattle Mariners", "2A"));
         
-    }    
+    }   
+    
+    protected static void test3() {
+        NestedMap<String, String, String> teamAllLevelsPlayerMap = NestedMap.Factory.create(Boolean.TRUE);
+        teamAllLevelsPlayerMap.put("Seattle Mariners", "MLB", "G.Kirby");
+        teamAllLevelsPlayerMap.put("Seattle Mariners", "2A", "E.Hancock"); //今天升上了了
+        teamAllLevelsPlayerMap.put("L.Angels", "MLB", "S.Ohtani");        
+        System.out.println(teamAllLevelsPlayerMap.getInnerMap("Seattle Mariners").values());
+    }
 }
