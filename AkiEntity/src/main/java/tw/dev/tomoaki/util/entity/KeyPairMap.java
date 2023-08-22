@@ -19,4 +19,6 @@ public interface KeyPairMap<TKey1, TKey2, TValue> {
     public Boolean isEmpty();
     
     public Integer size();
+    
+    public Boolean contains(TKey1 key1, TKey2 key2);
 }

@@ -108,6 +108,11 @@ public class NestedMap<Tkey1, Tkey2, Tvalue> implements KeyPairMap<Tkey1, Tkey2,
     public Integer size() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }    
+    
+    @Override
+    public Boolean contains(Tkey1 key1, Tkey2 key2) {
+        return (get(key1, key2) != null);
+    }
 //</editor-fold>
  
 //<editor-fold defaultstate="collapsed" desc="獨有">
