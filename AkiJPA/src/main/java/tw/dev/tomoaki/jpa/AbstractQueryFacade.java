@@ -15,6 +15,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Order;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import tw.dev.tomoaki.util.commondatavalidator.ListValidator;
 
@@ -230,6 +231,49 @@ public abstract class AbstractQueryFacade<T> {
 //        cq.select(root).where(prdcts)
         throw new UnsupportedOperationException("Method Not Supported Yet");
     }
+    
+//    public List<T> findBetweenNotNullRange(String entityPropName, Number start, Number end) {
+//        EntityManager em = this.getEntityManager();
+//        CriteriaBuilder cb = em.getCriteriaBuilder();
+//        CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
+//        Root<T> root = cq.from(entityClass);
+//        Expression expression = cb.between(root.get(entityPropName), start, end);
+//        cq = cq.select(root).where(expression);
+//        javax.persistence.Query query = getEntityManager().createQuery(cq);
+//        return query.getResultList();
+//    }
+    public List<T> findBetweenNotNullRange(String entityPropName, Integer start, Integer end) {
+        EntityManager em = this.getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
+        Root<T> root = cq.from(entityClass);
+        Expression expression = cb.between(root.get(entityPropName), start, end);
+        cq = cq.select(root).where(expression);
+        javax.persistence.Query query = getEntityManager().createQuery(cq);
+        return query.getResultList();
+    }
+    
+    public List<T> findBetweenNotNullRange(String entityPropName, Long start, Long end) {
+        EntityManager em = this.getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
+        Root<T> root = cq.from(entityClass);
+        Expression expression = cb.between(root.get(entityPropName), start, end);
+        cq = cq.select(root).where(expression);
+        javax.persistence.Query query = getEntityManager().createQuery(cq);
+        return query.getResultList();
+    }
+    
+    public List<T> findBetweenNotNullRange(String entityPropName, Double start, Double end) {
+        EntityManager em = this.getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
+        Root<T> root = cq.from(entityClass);
+        Expression expression = cb.between(root.get(entityPropName), start, end);
+        cq = cq.select(root).where(expression);
+        javax.persistence.Query query = getEntityManager().createQuery(cq);
+        return query.getResultList();
+    }        
 //</editor-fold>
     
     
