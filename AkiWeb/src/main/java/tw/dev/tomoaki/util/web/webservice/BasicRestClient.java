@@ -149,6 +149,12 @@ public abstract class BasicRestClient {
                     builder.header("Cookie", cookie);
                 }
             }
+
+//            if(MediaType.APPLICATION_JSON_TYPE.equals(requestMediaType)) {
+//                resp = builder.post(Entity.json(entity));            
+//            } else {
+//                resp = builder.post(Entity.entity(entity, requestMediaType));
+//            }
             resp = builder.post(Entity.entity(entity, requestMediaType));
             return resp;
         } catch (Exception ex) {
@@ -275,7 +281,6 @@ public abstract class BasicRestClient {
 //        }
 //    }
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="以下等同於 JavaToJson">   
 //    protected static class JavaToJson {
 //
