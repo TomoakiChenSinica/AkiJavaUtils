@@ -5,11 +5,15 @@
  */
 package tw.dev.tomoaki.util.web.webservice;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Form;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedHashMap;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import tw.dev.tomoaki.util.web.webservice.exception.WebServiceResponseException;
 //import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
@@ -112,6 +116,20 @@ public abstract class BasicRestClient {
     //</editor-fold>        
 
     //<editor-fold defaultstate="collapsed" desc="doPost()">    
+    protected <T> Response doPostForm(WebTarget target, MediaType acceptMediaType, Form form) {
+        MediaType[] acceptMediaTypes = {acceptMediaType};
+        return this.doPostForm(target, acceptMediaTypes, null, null, form);
+    }
+
+    protected <T> Response doPostForm(WebTarget target, MediaType acceptMediaType, String bearerToken, List<String> cookies, Form form) {
+        MediaType[] acceptMediaTypes = {acceptMediaType};
+        return this.doPostForm(target, acceptMediaTypes, bearerToken, cookies, form);
+    }    
+    
+    protected <T> Response doPostForm(WebTarget target, MediaType[] acceptMediaTypes, String bearerToken, List<String> cookies, Form form) {
+        return this.doPost(target, acceptMediaTypes, MediaType.APPLICATION_FORM_URLENCODED_TYPE, bearerToken, cookies, form);
+    }
+
     protected <T> Response doPost(WebTarget target, MediaType acceptMediaType, MediaType requestMediaType, T entity) {
         MediaType[] acceptMediaTypes = {acceptMediaType};
         return this.doPost(target, acceptMediaTypes, requestMediaType, null, entity);
@@ -145,10 +163,10 @@ public abstract class BasicRestClient {
 
             if (cookies != null) {
                 for (String cookie : cookies) {
-//                System.out.println("Cookie[" + cookie + "]" );
                     builder.header("Cookie", cookie);
                 }
             }
+
             resp = builder.post(Entity.entity(entity, requestMediaType));
             return resp;
         } catch (Exception ex) {
@@ -156,8 +174,49 @@ public abstract class BasicRestClient {
             throw resultEx;
         }
     }
-    //</editor-fold>            
 
+
+    /*
+    public static class FormFactory {
+  
+        private MultivaluedMap<String, Object> formParamMap;
+        
+        public FormFactory() {
+            formParamMap = new MultivaluedHashMap();
+        }
+        
+        public FormFactory add(String paramName, Object paramValue) {
+            this.formParamMap.add(paramName, paramValue);
+            return this;
+        }
+        
+//        public Response post() {
+////            Response resp = null;
+////            try {
+////                Invocation.Builder builder = target.request().accept(acceptMediaTypes);
+////                if (bearerToken != null) {
+////                    builder.header("Authorization", "Bearer " + bearerToken);
+////                }
+////
+////                if (cookies != null) {
+////                    for (String cookie : cookies) {
+////                        builder.header("Cookie", cookie);
+////                    }
+////                }
+////
+////                resp = builder.post(Entity.form(entity, requestMediaType));
+////                return resp;
+////            } catch (Exception ex) {
+////                WebServiceResponseException resultEx = (resp == null) ? WebServiceResponseException.Factory.create(target, ex) : WebServiceResponseException.Factory.create(target, resp);
+////                throw resultEx;
+////            }        
+//        }
+        public MultivaluedMap<String, Object> create() {
+            return this.formParamMap;
+        }
+    }
+     */
+    //</editor-fold>            
     //<editor-fold defaultstate="collapsed" desc="doDelete()">    
     protected <T> Response doDelete(WebTarget target, MediaType acceptMediaType, MediaType requestMediaType/*, T entity*/) {
         MediaType[] acceptMediaTypes = {acceptMediaType};
@@ -275,7 +334,6 @@ public abstract class BasicRestClient {
 //        }
 //    }
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="以下等同於 JavaToJson">   
 //    protected static class JavaToJson {
 //
