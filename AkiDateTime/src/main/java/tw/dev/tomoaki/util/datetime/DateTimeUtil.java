@@ -56,8 +56,8 @@ public class DateTimeUtil {
      */
     public static class Provider {
 
-        public static DateTimeFormatter obtainFormatter(String format) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+        public static DateTimeFormatter obtainFormatter(String strFormat) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(strFormat);
             return formatter;
         }
 
@@ -70,19 +70,63 @@ public class DateTimeUtil {
          *
          */
         public static String parseDateTimeToString(java.util.Date utilDateTime) {
-            String strDateTime = null;
+            if(utilDateTime == null) {
+                return null;
+            }
             SimpleDateFormat timeFormat = new SimpleDateFormat(DEFAULT_DATE_TIME_FORMAT);
-            strDateTime = timeFormat.format(utilDateTime);
+            String strDateTime = timeFormat.format(utilDateTime);
             return strDateTime;
         }
-
-        public static String parseDateTimeToString(LocalDateTime localDateTime) {
-            DateTimeFormatter formatter = DEFAULT_DATE_TIME_FORMMATTER;
-            return localDateTime.format(formatter);
-        }
-
+        
         /**
-         * 將比較舊的日期時 ava.util.Date 轉成 String。<br>
+         *
+         * 將 java.time.LocalDateTime 格式的 日期時間轉成 String <br>
+         * 轉出來的日期時間格式為預設格式: yyyy-MM-dd HH:mm:ss <br>
+         * 
+         * @param localDateTime 指定的日期時間，格式為 java.time.LocalDateTime
+         * @return 回傳日期時間字串，格式為預設格式: yyyy-MM-dd HH:mm:ss 
+         */
+        public static String parseDateTimeToString(LocalDateTime localDateTime) {
+            if(localDateTime == null) {
+                return null;
+            }
+            DateTimeFormatter formatter = DEFAULT_DATE_TIME_FORMMATTER;
+            return parseDateTimeToString(localDateTime, formatter);
+        }
+        
+        /**
+         *
+         * 將 java.time.LocalDateTime 格式的 日期時間轉成指定格式的 String <br>         
+         * 
+         * @param localDateTime 指定的日期時間，格式為 java.time.LocalDateTime
+         * @param strFormat 指定的格式
+         * @return 回傳日期時間字串，格式為預設格式: yyyy-MM-dd HH:mm:ss 
+         */        
+        public static String parseDateTimeToString(LocalDateTime localDateTime, String strFormat) {
+            if(localDateTime == null) {
+                return null;
+            }            
+            DateTimeFormatter formatter = obtainFormatter(strFormat);
+            return parseDateTimeToString(localDateTime, formatter);
+        }
+        
+        /**
+         *
+         * 將 java.time.LocalDateTime 格式的 日期時間轉成指定格式的 String <br>         
+         * 
+         * @param localDateTime 指定的日期時間，格式為 java.time.LocalDateTime
+         * @param dateTimeFormatter 指定的格式 Formatter，可以用 obtainFormatter() 產生
+         * @return 回傳日期時間字串，格式為預設格式: yyyy-MM-dd HH:mm:ss 
+         */          
+        public static String parseDateTimeToString(LocalDateTime localDateTime, DateTimeFormatter dateTimeFormatter) {
+            if(localDateTime == null) {
+                return null;
+            }            
+            return localDateTime.format(dateTimeFormatter);            
+        }        
+        
+        /**
+         * 將比較舊的日期 java.util.Date 轉成 String。<br>
          * 轉出來的日期格式為 yyyy-MM-dd <br>
          *
          * @param utilDate 日期時間資料，格式為 java.util.Date
@@ -90,16 +134,39 @@ public class DateTimeUtil {
          *
          */
         public static String parseDateToString(java.util.Date utilDate) {
-            String strDate = null;
-            SimpleDateFormat timeFormat = new SimpleDateFormat(DEFAULT_DATE_FORMAT);
-            strDate = timeFormat.format(utilDate);
-            return strDate;
+            if(utilDate == null) {
+                return null;
+            }
+            
+            SimpleDateFormat utilDateFormat = new SimpleDateFormat(DEFAULT_DATE_FORMAT);
+//            String strDate = timeFormat.format(utilDate);
+//            return strDate;
+            return parseDateToString(utilDate, utilDateFormat);
         }
-
+        
+        /**
+         * 將比較舊的日期 java.util.Date 轉成 String。<br>
+         * 轉出來的日期格式為 yyyy-MM-dd <br>
+         *
+         * @param utilDate 日期時間資料，格式為 java.util.Date
+         * @param utilDateFormat 格式為 SimpleDateFormat
+         * @return yyyy-MM-dd 這種日期格式的字串
+         *
+         */        
+        public static String parseDateToString(java.util.Date utilDate, SimpleDateFormat utilDateFormat) {
+            if(utilDate == null) {
+                return null;
+            }
+            String strDate = utilDateFormat.format(utilDate);
+            return strDate;            
+        }
+        
         public static String parseDateToString(LocalDate localDate) {
             return localDate.format(DEFAULT_DATE_FORMMATTER);
         }
 
+                
+        
         /**
          * 將日期時間字串轉成日期時間資料(entity)，<br>
          * 資料格式為 java.time.LocalDateTime <br>
@@ -112,14 +179,45 @@ public class DateTimeUtil {
             return strDateTime == null ? null : LocalDateTime.parse(strDateTime, DEFAULT_DATE_TIME_FORMMATTER);
         }
 
+        /**
+         * 將日期時間字串轉成日期時間資料(entity)，<br>
+         * 資料格式為 java.time.LocalDateTime <br>
+         *
+         * @param strDateTime 日期時間字串
+         * @param dateTimeFormat 指定的日期時間字串格式
+         * @return 日期時間資料，格式為 java.time.LocalDateTime
+         *
+         */        
         public static LocalDateTime parse2DateTime(String strDateTime, String dateTimeFormat) {
             DateTimeFormatter formatter = Provider.obtainFormatter(dateTimeFormat);
             return strDateTime == null ? null : LocalDateTime.parse(strDateTime, formatter);
         }
 
+        /**
+         * 將日期時間字串轉成日期資料(entity)，<br>
+         * 資料格式為 java.time.LocalDateTime <br>
+         *
+         * @param strDate 日期字串。字串格式為 yyyy-MM-dd
+         * @return 日期資料，格式為 java.time.LocalDate
+         *
+         */        
         public static LocalDate parse2Date(String strDate) {
             return strDate == null ? null : LocalDate.parse(strDate, DEFAULT_DATE_FORMMATTER);
         }
+        
+        /**
+         * 將日期時間字串轉成日期資料(entity)，<br>
+         * 資料格式為 java.time.LocalDateTime <br>
+         *
+         * @param strDate 日期字串。字串格式為 yyyy-MM-dd
+         * @param dateFormat 指定的日期字串格式
+         * @return 日期資料，格式為 java.time.LocalDate
+         *
+         */         
+        public static LocalDate parse2Date(String strDate, String dateFormat) {
+            DateTimeFormatter formatter = Provider.obtainFormatter(dateFormat);
+            return strDate == null ? null : LocalDate.parse(strDate, formatter);
+        }        
 
         public static LocalTime parse2Time(String strTime) {
             return strTime == null ? null : LocalTime.parse(strTime, DEFAULT_TIME_FORMMATTER);

@@ -15,8 +15,21 @@ public class StringValidator {
         return text != null && !text.isEmpty();
     }
     
+    public static Boolean isValueNotExist(String text) {
+        return text == null || text.isEmpty();
+    }
+    
+    public static Boolean isValueTrimExist(String text) {
+        return text != null && !text.trim().isEmpty(); /*!text.isBlank();*/
+    }
+    
+    public static Boolean isValueTrimNotExist(String text) {
+        return text == null || text.trim().isEmpty();
+    }
+    
     
     public static Boolean isHtmlEmpty(String htmlText) {
+        throw new UnsupportedOperationException("Method Not Supported Yet");
 //        if(htmlText==null)
 //            return true;
 //        
@@ -31,6 +44,6 @@ public class StringValidator {
 //        tmp = tmp.replaceAll("([\\s\\t\\f\\n\\u00A0]+)", "");
 //        
 //        return tmp.isEmpty();
-        return null;
+//        return null;
     }
 }

@@ -23,7 +23,6 @@ public class JsonToJavaMain {
 
     }
 
-
     private static void test1() throws IOException {
         Batter ackley = new Batter("Dustin", "Ackley", 0.253);
         Batter smoak = new Batter("Justin", "Smoak", 0.232);
@@ -41,8 +40,8 @@ public class JsonToJavaMain {
                 + "  \"Comput.\": \"Computer\"     \n"
                 + "}";
     }
-    
-    protected static void test2() {
+
+    protected static void test3() {
 //        String jsonData = "{""firstName"": ""Dustin""}";
         String jsonData = "{\"firstName\": \"Dustin\"}";
 

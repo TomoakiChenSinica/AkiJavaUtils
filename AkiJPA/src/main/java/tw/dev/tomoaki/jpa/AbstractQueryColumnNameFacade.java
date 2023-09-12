@@ -21,6 +21,7 @@ import tw.dev.tomoaki.util.commondatavalidator.ListValidator;
 /**
  *
  * @author tomoaki
+ * @deprecated 可能是舊的
  */
 public abstract class AbstractQueryColumnNameFacade<T> {
 

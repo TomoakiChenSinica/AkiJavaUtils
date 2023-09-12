@@ -25,10 +25,12 @@ public class LatinNameHelper {
     public static String createCommonFullName(String firstName, String lastName, String... middleNames) {
         StringBuilder builder = new StringBuilder();
         builder.append(firstName);
+        builder.append(" ");        
         if (middleNames != null) {
             for (String middleName : middleNames) {
                 if(middleName != null) {
                     builder.append(middleName);
+                    builder.append(" ");
                 }
             }
         }
