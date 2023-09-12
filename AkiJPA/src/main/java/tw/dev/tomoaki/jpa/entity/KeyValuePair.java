@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package tw.dev.tomoaki.jpa;
+package tw.dev.tomoaki.jpa.entity;
 
 /**
  *
@@ -19,7 +19,7 @@ public class KeyValuePair<T> {
     public KeyValuePair(String colName, Object colValue) {
         this.colName = colName;
         this.colValue = colValue;
-        this.valueType = colValue.getClass();
+        this.valueType = colValue == null ? null : colValue.getClass();
     }
 
     public String getColName() {
