@@ -12,6 +12,8 @@ public interface KeyPairMap<TKey1, TKey2, TValue> {
 
     public List<TValue> getAllValueList();
     
+    public List<TValue> get(TKey1 key1);
+    
     public TValue get(TKey1 key1, TKey2 key2);
 
     public void remove(TKey1 key1, TKey2 key2);

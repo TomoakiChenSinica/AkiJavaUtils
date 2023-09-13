@@ -7,6 +7,7 @@ package tw.dev.tomoaki.util.entity;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -83,6 +84,12 @@ public class NestedMap<Tkey1, Tkey2, Tvalue> implements KeyPairMap<Tkey1, Tkey2,
         }
         return allValueList;
     }
+    
+    @Override
+    public List<Tvalue> get(Tkey1 key1) {
+        Map<Tkey2, Tvalue> innerMap = getInnerMap(key1);
+        return (innerMap == null) ? null : new ArrayList(innerMap.values());
+    }    
 
     @Override
     public Tvalue get(Tkey1 key1, Tkey2 key2) {
