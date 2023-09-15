@@ -110,7 +110,7 @@ public class PreparedNativeQueryFactory {
         this.persistanceNativeQuery = this.persistanceNativeQuery.setParameter(index++, obj);
         return this;
     }
-
+    
     public PreparedNativeQueryFactory setParam(Date utilDate) {
         this.doValidateCanSetParam();
         this.persistanceNativeQuery = PreparedNativeQueryParamHelper.setParam(persistanceNativeQuery, index++, utilDate);

@@ -5,16 +5,14 @@
  */
 package tw.dev.tomoaki.util.web.webservice;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Form;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedHashMap;
-import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+import org.glassfish.jersey.media.multipart.MultiPart;
 import tw.dev.tomoaki.util.web.webservice.exception.WebServiceResponseException;
 //import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 
@@ -27,8 +25,8 @@ import tw.dev.tomoaki.util.web.webservice.exception.WebServiceResponseException;
  * @author Tomoaki Chen
  */
 public abstract class BasicRestClient {
-//<editor-fold defaultstate="collapsed" desc="一些共用的底層">
 
+//<editor-fold defaultstate="collapsed" desc="一些共用的底層">
     //<editor-fold defaultstate="collapsed" desc="doGet">
     protected Response doGet(WebTarget target, MediaType acceptMediaType) {
         MediaType[] acceptMediaTypes = {acceptMediaType};
@@ -113,9 +111,27 @@ public abstract class BasicRestClient {
             throw resultEx;
         }
     }
-    //</editor-fold>        
+    //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="doPost()">    
+    
+//    protected <T> Response doPostMultiForm(WebTarget target, MediaType[] acceptMediaTypes, List<String> cookies, String bearerToken, MultipartBody  form) {
+//        return this.doPost(target, acceptMediaTypes, MediaType.MULTIPART_FORM_DATA, bearerToken, cookies);        
+//    }
+    
+    protected <T> Response doPostMultiPartForm(WebTarget target, MediaType acceptMediaType, MultiPart multiPart) {
+        return this.doPost(target, acceptMediaType, null, null, multiPart);
+    }
+    
+    protected <T> Response doPostMultiPartForm(WebTarget target, MediaType acceptMediaType, String bearerToken, List<String> cookies, MultiPart multiPart) {
+        MediaType[] acceptMediaTypes = {acceptMediaType};
+        return this.doPost(target, acceptMediaTypes, acceptMediaType, bearerToken, cookies, multiPart);
+    }
+    
+    protected <T> Response doPostMultiPartForm(WebTarget target, MediaType[] acceptMediaTypes, String bearerToken, List<String> cookies, MultiPart multiPart) {
+        return this.doPost(target, acceptMediaTypes, MediaType.MULTIPART_FORM_DATA_TYPE, bearerToken, cookies, multiPart);
+    }
+        
     protected <T> Response doPostForm(WebTarget target, MediaType acceptMediaType, Form form) {
         MediaType[] acceptMediaTypes = {acceptMediaType};
         return this.doPostForm(target, acceptMediaTypes, null, null, form);
@@ -124,12 +140,12 @@ public abstract class BasicRestClient {
     protected <T> Response doPostForm(WebTarget target, MediaType acceptMediaType, String bearerToken, List<String> cookies, Form form) {
         MediaType[] acceptMediaTypes = {acceptMediaType};
         return this.doPostForm(target, acceptMediaTypes, bearerToken, cookies, form);
-    }    
-    
+    }
+
     protected <T> Response doPostForm(WebTarget target, MediaType[] acceptMediaTypes, String bearerToken, List<String> cookies, Form form) {
         return this.doPost(target, acceptMediaTypes, MediaType.APPLICATION_FORM_URLENCODED_TYPE, bearerToken, cookies, form);
     }
-
+    
     protected <T> Response doPost(WebTarget target, MediaType acceptMediaType, MediaType requestMediaType, T entity) {
         MediaType[] acceptMediaTypes = {acceptMediaType};
         return this.doPost(target, acceptMediaTypes, requestMediaType, null, entity);
@@ -166,7 +182,6 @@ public abstract class BasicRestClient {
                     builder.header("Cookie", cookie);
                 }
             }
-
             resp = builder.post(Entity.entity(entity, requestMediaType));
             return resp;
         } catch (Exception ex) {
@@ -216,7 +231,8 @@ public abstract class BasicRestClient {
         }
     }
      */
-    //</editor-fold>            
+    //</editor-fold>
+    
     //<editor-fold defaultstate="collapsed" desc="doDelete()">    
     protected <T> Response doDelete(WebTarget target, MediaType acceptMediaType, MediaType requestMediaType/*, T entity*/) {
         MediaType[] acceptMediaTypes = {acceptMediaType};
@@ -261,132 +277,5 @@ public abstract class BasicRestClient {
             throw resultEx;
         }
     }
-    //</editor-fold>         
-
-//    protected Client processBasicAuth(Client client, String userName, String password) {
-//        HttpAuthenticationFeature feature = HttpAuthenticationFeature.basicBuilder().credentials(userName, password).build();
-//        client.register(feature);
-////        client.register(SseFeature.class);        
-//        return client;
-//    }
-//<editor-fold defaultstate="collapsed" desc="以下等同於 JsonToJava">
-//    protected static class JsonToJava {
-//
-//        public static <T> T getJavaObject(String json, Class<T> objectType) throws IOException {
-//            if (json != null) {
-//                T javaObject;
-//                JsonFactory jsonFactory = new JsonFactory();
-//                JsonParser jp = jsonFactory.createParser(json);
-//                ObjectMapper mapper = new ObjectMapper();
-//                mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-//                javaObject = mapper.readValue(jp, objectType);
-//                return (T) javaObject;
-//            } else {
-//                return null;
-//            }
-//        }
-//
-//        public static <T> T getJavaObject(InputStream is, Class<T> objectType) throws IOException {
-//            T javaObject;
-//            JsonFactory jsonFactory = new JsonFactory();
-//            JsonParser jp = jsonFactory.createParser(is);
-//            ObjectMapper mapper = new ObjectMapper();
-//            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-//            javaObject = mapper.readValue(jp, objectType);
-//            return javaObject;
-//        }
-//
-//        /**
-//         * type1 to get list object with jackson
-//         *
-//         * @param json
-//         * @param objectType
-//         * @return
-//         */
-//        public static <T> List<T> getJavaListObject(String json, Class<T> objectType) throws IOException {
-//            List<T> javaListObject;
-//            JsonFactory jsonFactory = new JsonFactory();
-//            JsonParser jp = jsonFactory.createParser(json);
-//            ObjectMapper mapper = new ObjectMapper();
-//            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-//            CollectionType collectionType = mapper.getTypeFactory().constructCollectionType(List.class, objectType);
-//            javaListObject = mapper.readValue(jp, collectionType);
-//            return javaListObject;
-//        }
-//
-//        public static <Tmap, T> Map<Tmap, T> getJavaMapObject(String json, Class<Tmap> mapKeyType, Class<T> objectType) throws IOException {
-//            Map<Tmap, T> javaListObject;
-//            JsonFactory jsonFactory = new JsonFactory();
-//            JsonParser jp = jsonFactory.createParser(json);
-//            ObjectMapper mapper = new ObjectMapper();
-//            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-//            MapType mapType = mapper.getTypeFactory().constructMapType(Map.class, mapKeyType, objectType);
-//            javaListObject = mapper.readValue(jp, mapType);
-//            return javaListObject;
-//        }
-//
-//        public static Object getJavaComplexObject(String json, TypeReference typeRef) throws IOException {
-//            Object javaObject;
-//            ObjectMapper mapper = new ObjectMapper();
-//            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-//            javaObject = mapper.readValue(json, typeRef);
-//            return javaObject;
-//        }
-//    }
-//</editor-fold>
-//<editor-fold defaultstate="collapsed" desc="以下等同於 JavaToJson">   
-//    protected static class JavaToJson {
-//
-//        /**
-//         * 將 java object 轉成 json 字串
-//         *
-//         * @param javaObject : java 的 object <br/>
-//         * @return 回傳該object 轉成 json 後的樣子，存成字串
-//         */
-//        public static String getJsonString(Object javaObject) throws JsonProcessingException {
-//            String json = getJsonString(javaObject, true, true);
-//            return json;
-//        }
-//
-//        /**
-//         * 將 java object 轉成 json 字串
-//         *
-//         * @param javaObject : java 的 object <br/>
-//         * @param ignoreNull : 是否將 null 的忽略，不轉成json
-//         * @return 回傳該object 轉成 json 後的樣子，存成字串
-//         */
-//        public static String getJsonString(Object javaObject, Boolean objectIgnoreNull, Boolean mapIgnoreNull) throws JsonProcessingException {
-//            String json = "";
-//            ObjectMapper mapper = new ObjectMapper();
-//
-//            if (objectIgnoreNull == true) {
-//                mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-//            }
-//
-//            Boolean mapWriteNullValue = !mapIgnoreNull;
-//            mapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, mapWriteNullValue);
-////            mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
-//
-//            json = mapper.writeValueAsString(javaObject);
-//            return json;
-//        }
-//
-//        public static String getJsonString(Map javaMap) throws JsonProcessingException {
-//            String json = "";
-//            json = getJsonString(javaMap, true);
-//            return json;
-//        }
-//
-//        public static String getJsonString(Map javaMap, Boolean ignoreNull) throws JsonProcessingException {
-//            Boolean mapWriteNullValue = !ignoreNull;
-//            String json = "";
-//            ObjectMapper mapper = new ObjectMapper();
-//            mapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, mapWriteNullValue);
-//
-//            json = mapper.writeValueAsString(javaMap);
-//            return json;
-//        }
-//    }
-//</editor-fold>    
-//</editor-fold>    
+    //</editor-fold>
 }

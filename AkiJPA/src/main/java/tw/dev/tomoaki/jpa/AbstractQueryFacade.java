@@ -24,6 +24,9 @@ import tw.dev.tomoaki.util.commondatavalidator.ListValidator;
 /**
  *
  * @author tomoaki
+ * 
+ * [JPA Criteria Queries](https://www.baeldung.com/hibernate-criteria-queries)
+ * 
  */
 public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
 
@@ -420,7 +423,7 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
 
 //        for (Expression exp : expressionList) {
 //        }
-        Predicate predicate = cb.and(expressionList.toArray(Predicate[]::new));
+        Predicate predicate = cb.and(expressionList.toArray(Predicate[]::new)); //https://www.techiedelight.com/convert-list-to-array-java/ List To Array
         cq = cq.where(predicate);
         cq = cq.orderBy(orderList);
 
