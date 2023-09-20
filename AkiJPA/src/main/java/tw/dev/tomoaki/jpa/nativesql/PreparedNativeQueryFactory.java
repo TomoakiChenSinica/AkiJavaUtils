@@ -91,6 +91,13 @@ public class PreparedNativeQueryFactory {
         this.persistanceNativeQuery = this.persistanceNativeQuery.setParameter(index++, null);
         return this;
     }
+    
+    public PreparedNativeQueryFactory setNullList() {
+        this.doValidateCanSetParam();
+        List dataList = null;
+        this.setParam(dataList);
+        return this;
+    }
 
     public PreparedNativeQueryFactory setParam(String str) {
         this.doValidateCanSetParam();

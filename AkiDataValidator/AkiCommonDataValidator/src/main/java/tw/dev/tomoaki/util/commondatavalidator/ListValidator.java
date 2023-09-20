@@ -22,6 +22,10 @@ public class ListValidator {
     public static Boolean isListExist(List theList) {
         return theList != null && !theList.isEmpty();
     }
+    
+    public static Boolean isListNotExist(List theList) {
+        return theList == null || theList.isEmpty();
+    }
 
     /**
      * 判斷兩個List 是否完全相等，即資料相同，且資料順序相同。

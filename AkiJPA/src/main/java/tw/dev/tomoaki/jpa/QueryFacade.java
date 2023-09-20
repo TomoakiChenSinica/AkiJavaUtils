@@ -24,25 +24,51 @@ import java.util.List;
  */
 public interface QueryFacade<T> {
 
-    public T find(Object id);
-
-    public List<T> findAllAscOrdered(String entityPropName);
-
+//<editor-fold defaultstate="collapsed" desc="findAll系列 及 find(用 PrimaryKey) 查詢">
     public List<T> findAll();
+    
+    public List<T> findAllAscOrdered(String entityPropName);
+    
+    public List<T> findAllAscOrdered(String... entityPropNames); //有點疑惑是否要同時有
+    
+    public List<T> findAllAscOrdered(List<String> entityPropNameList);
 
+    public T find(Object id);
+    
+//</editor-fold>   
     public List<T> findRange(int[] range);
 
     public int count();
 
 //<editor-fold defaultstate="collapsed" desc="單一條件查詢系列 findByEqual、findByNotEqual、getByEqual 等等">
-     /**
+    /**
      *
      * @param entityPropName 請注意是要使用「(Table所對應的) Entity 之 (Table Column所對應的)
      * Property名稱 」
      * @param value Table Column (即 Entity 之 Property)數值
      * @return 查詢結果
      */
-    public List<T> findByEquals(String entityPropName, Object value);   
+    public List<T> findByEquals(String entityPropName, Object value);
+    
+    /**
+     *
+     * @param entityPropName 請注意是要使用「(Table所對應的) Entity 之 (Table Column所對應的)
+     * Property名稱 」
+     * @param value Table Column (即 Entity 之 Property)數值
+     * @param orderEntityPropNames 排序方式 Property Name 清單
+     * @return 查詢結果
+     */
+    public List<T> findByEquals(String entityPropName, Object value, String... orderEntityPropNames);    
+    
+    /**
+     *
+     * @param entityPropName 請注意是要使用「(Table所對應的) Entity 之 (Table Column所對應的)
+     * Property名稱 」
+     * @param value Table Column (即 Entity 之 Property)數值
+     * @param orderEntityPropNameList 排序方式 Property Name 清單
+     * @return 查詢結果
+     */
+    public List<T> findByEquals(String entityPropName, Object value, List<String> orderEntityPropNameList);   
     
     /**
      *
@@ -53,7 +79,33 @@ public interface QueryFacade<T> {
      */
     public List<T> findByNotEquals(String entityPropName, Object value);    
     
-    public T getByEquals(String columnName, Object columnValue);    
+    /**
+     *
+     * @param entityPropName 請注意是要使用「(Table所對應的) Entity 之 (Table Column所對應的)
+     * Property名稱 」
+     * @param value Table Column (即 Entity 之 Property)數值
+     * @param orderEntityPropNameList 排序方式 Property Name 清單
+     * @return 查詢結果
+     */
+    public List<T> findByNotEquals(String entityPropName, Object value, List<String> orderEntityPropNameList);
+    
+    /**
+     *
+     * @param entityPropName 請注意是要使用「(Table所對應的) Entity 之 (Table Column所對應的)
+     * Property名稱 」
+     * @param value Table Column (即 Entity 之 Property)數值
+     * @param orderEntityPropNames 排序方式 Property Name 清單
+     * @return 查詢結果
+     */
+    public List<T> findByNotEquals(String entityPropName, Object value, String... orderEntityPropNames);    
+        
+    /**
+     *
+     * @param entityPropName 請注意是要使用「(Table所對應的) Entity 之 (Table Column所對應的) Property名稱」
+     * @param value Table Column (即 Entity 之 Property)數值
+     * @return 查詢結果
+     */    
+    public T getByEquals(String entityPropName, Object value);    
 //</editor-fold>
  
 //<editor-fold defaultstate="collapsed" desc="findByAndEqual系列">    
@@ -108,12 +160,32 @@ public interface QueryFacade<T> {
 //<editor-fold defaultstate="collapsed" desc="IN 系列">
     /**
      *
-     * @param entityPropName 請注意是要使用「(Table所對應的) Entity 之 (Table Column所對應的)
-     * Property名稱 」
+     * @param entityPropName 請注意是要使用「(Table所對應的) Entity 之 (Table Column所對應的)Property名稱」
      * @param valueList Table Column (即 Entity 之 Property)數值清單
      * @return 查詢結果
+     * 
      */
     public List<T> findIn(String entityPropName, List<?> valueList);
+    
+    /**
+     *
+     * @param entityPropName 請注意是要使用「(Table所對應的) Entity 之 (Table Column所對應的)Property名稱」
+     * @param valueList Table Column (即 Entity 之 Property)數值清單
+     * @param orderEntityPropNames 排序的 PropName
+     * @return 查詢結果
+     * 
+     */    
+    public List<T> findIn(String entityPropName, List<?> valueList, String... orderEntityPropNames);
+
+    /**
+     *
+     * @param entityPropName 請注意是要使用「(Table所對應的) Entity 之 (Table Column所對應的)Property名稱」
+     * @param valueList Table Column (即 Entity 之 Property)數值清單
+     * @param orderEntityPropNameList 排序的 PropName List
+     * @return 查詢結果
+     * 
+     */        
+    public List<T> findIn(String entityPropName, List<?> valueList, List<String> orderEntityPropNameList);
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="findByAndNotEquals系列">

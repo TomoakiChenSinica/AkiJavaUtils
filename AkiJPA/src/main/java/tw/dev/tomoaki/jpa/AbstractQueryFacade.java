@@ -7,6 +7,7 @@ package tw.dev.tomoaki.jpa;
 import tw.dev.tomoaki.jpa.entity.KeyValuePair;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
@@ -19,6 +20,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import tw.dev.tomoaki.jpa.helper.KeyValuePairHelper;
 import tw.dev.tomoaki.jpa.query.criteria.helper.ExpressionHelper;
+import tw.dev.tomoaki.jpa.query.criteria.helper.OrderHelper;
 import tw.dev.tomoaki.util.commondatavalidator.ListValidator;
 
 /**
@@ -50,23 +52,7 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
         this.tryEvictCache(em, id);
         return em.find(entityClass, id);
     }
-
-    /**
-     *
-     * @param entityPropName 請注意是要使用「(Table所對應的) Entity 之 (Table Column所對應的) Property名稱 」
-     * @return 查詢結果
-     */
-    @Override
-    public List<T> findAllAscOrdered(String entityPropName) {
-        CriteriaBuilder cb = this.getEntityManager().getCriteriaBuilder();
-        CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
-        Root<T> root = cq.from(entityClass);
-        cq.orderBy(cb.asc(root.get(entityPropName)));
-
-        Query query = this.getEntityManager().createQuery(cq);
-        return query.getResultList();
-    }
-
+    
     @Override
     public List<T> findAll() {
         EntityManager em = getEntityManager();
@@ -74,7 +60,61 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(entityClass));
         return getEntityManager().createQuery(cq).getResultList();
+    }    
+
+    /**
+     *
+     * @param entityPropName 請注意是要使用「(Table所對應的) Entity 之 (Table Column所對應的)
+     * Property名稱 」
+     * @return 查詢結果
+     */
+    @Override
+    public List<T> findAllAscOrdered(String entityPropName) {
+        CriteriaBuilder cb = this.getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
+        Root<T> root = cq.from(entityClass);
+
+//        cq.orderBy(cb.asc(root.get(entityPropName)));
+        cq.orderBy(OrderHelper.createAscOrder(root, cb, entityPropName));
+        
+        Query query = this.getEntityManager().createQuery(cq);
+        return query.getResultList();
     }
+       
+    @Override
+    public List<T> findAllAscOrdered(String... entityPropNames) {
+        CriteriaBuilder cb = this.getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
+        Root<T> root = cq.from(entityClass);
+        
+        cq.orderBy(OrderHelper.createAscOrderList(root, cb, entityPropNames));
+        
+        Query query = this.getEntityManager().createQuery(cq);
+        return query.getResultList();
+    }     
+    
+    /**
+     *
+     * @param entityPropNameList 請注意是要使用「(Table所對應的) Entity 之 (Table Column所對應的) Property名稱 」
+     * @return 查詢結果
+     */
+    @Override
+    public List<T> findAllAscOrdered(List<String> entityPropNameList) {
+        CriteriaBuilder cb = this.getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
+        Root<T> root = cq.from(entityClass);
+        
+//        List<Order> orderList = entityPropNameList.stream()
+//                .map(propName -> cb.asc(root.get(propName)))
+//                .collect(Collectors.toList());
+        List<Order> orderList = OrderHelper.createAscOrderList(root, cb, entityPropNameList);
+        cq.orderBy(orderList);
+        
+        Query query = this.getEntityManager().createQuery(cq);
+        return query.getResultList();
+    }    
+    
+
 
     @Override
     public List<T> findRange(int[] range) {
@@ -104,6 +144,7 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
      */
     @Override
     public List<T> findByEquals(String entityPropName, Object value) {
+        /*
         EntityManager em = this.getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
@@ -114,21 +155,88 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
 
         Query query = em.createQuery(cq);
         return query.getResultList();
-    }
+        */
+        List<String> orderEntityPropNameList = null;
+        return this.findByEquals(entityPropName, value, orderEntityPropNameList);
+    }    
     
     @Override
-    public List<T> findByNotEquals(String entityPropName, Object value) {
+    public List<T> findByEquals(String entityPropName, Object value, String... orderEntityPropNames) {
+        /*
         EntityManager em = this.getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
         this.tryEvictAllCache(em);
         Root<T> root = cq.from(entityClass);
+        cq = cq.where(ExpressionHelper.createEqualExpression(root, cb, entityPropName, value));
+        cq = cq.orderBy(OrderHelper.createAscOrderList(root, cb, orderEntityPropNames));
+
+        Query query = em.createQuery(cq);
+        return query.getResultList();
+        */
+        return this.findByEquals(entityPropName, value, Arrays.asList(orderEntityPropNames));
+    }    
+
+    @Override
+    public List<T> findByEquals(String entityPropName, Object value, List<String> orderEntityPropNameList) {        
+        EntityManager em = this.getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
+        this.tryEvictAllCache(em);        
+        Root<T> root = cq.from(entityClass);        
+        
+        orderEntityPropNameList = (ListValidator.isListExist(orderEntityPropNameList)) ? orderEntityPropNameList : Arrays.asList(entityPropName);
+        
+        cq = cq.where(ExpressionHelper.createEqualExpression(root, cb, entityPropName, value));
+        cq = cq.orderBy(OrderHelper.createAscOrderList(root, cb, orderEntityPropNameList));
+
+        Query query = em.createQuery(cq);
+        return query.getResultList();
+
+    }       
+        
+    @Override
+    public List<T> findByNotEquals(String entityPropName, Object value) {
+        /*
+        EntityManager em = this.getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
+        this.tryEvictAllCache(em);
+        Root<T> root = cq.from(entityClass);
+        
         cq = cq.where(ExpressionHelper.createNotEqualExpression(root, cb, entityPropName, value));
         cq = cq.orderBy(cb.asc(root.get(entityPropName)));
 
         Query query = em.createQuery(cq);
-        return query.getResultList();    
+        return query.getResultList();
+        */
+        List<String> orderEntityPropNameList = null;
+        return this.findByNotEquals(entityPropName, value, orderEntityPropNameList);
     }
+    
+    @Override
+    public List<T> findByNotEquals(String entityPropName, Object value, String... orderEntityPropNames) {
+        return this.findByNotEquals(entityPropName, value, Arrays.asList(orderEntityPropNames));
+    }    
+
+    @Override
+    public List<T> findByNotEquals(String entityPropName, Object value, List<String> orderEntityPropNameList) {
+        EntityManager em = this.getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
+        this.tryEvictAllCache(em);
+        Root<T> root = cq.from(entityClass);
+        
+        orderEntityPropNameList = (ListValidator.isListExist(orderEntityPropNameList)) ? orderEntityPropNameList : Arrays.asList(entityPropName);        
+        
+        cq = cq.where(ExpressionHelper.createNotEqualExpression(root, cb, entityPropName, value));
+        cq = cq.orderBy(OrderHelper.createAscOrderList(root, cb, orderEntityPropNameList));
+
+        Query query = em.createQuery(cq);
+        return query.getResultList();  
+    }
+    
+
     
 //</editor-fold>
     
@@ -190,13 +298,14 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
      * @return 查詢結果
      */     
     public List<T> findByEqualsAny(String entityPropName, List<Object> valueList) {
+        throw new UnsupportedOperationException("Method Not Supported Yet");
+        /*
         EntityManager em = this.getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
         Root<T> root = cq.from(entityClass);
         cq.select(root).where(root.get(entityPropName).in(valueList));
-//        Expression expression = cb.any(sbqr)
-        throw new UnsupportedOperationException("Method Not Supported Yet");
+        */
     }    
 //</editor-fold>   
 
@@ -258,6 +367,7 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
      */         
     @Override
     public List<T> findIn(String entityPropName, List<?> valueList) {
+        /*
         EntityManager em = this.getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
@@ -267,7 +377,33 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
 
         Query query = em.createQuery(cq);
         return query.getResultList();
+        */
+        List<String> orderEntityPropNameList = null;
+        return this.findIn(entityPropName, valueList, orderEntityPropNameList);
     }    
+        
+    @Override
+    public List<T> findIn(String entityPropName, List<?> valueList, String... orderEntityPropNames) {
+        return this.findIn(entityPropName, valueList, Arrays.asList(orderEntityPropNames));
+    }
+    
+    
+
+    @Override
+    public List<T> findIn(String entityPropName, List<?> valueList, List<String> orderEntityPropNameList) {
+        EntityManager em = this.getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
+        Root<T> root = cq.from(entityClass);
+        
+        orderEntityPropNameList = (ListValidator.isListExist(orderEntityPropNameList)) ? orderEntityPropNameList : Arrays.asList(entityPropName);        
+        
+        cq = cq.where(root.get(entityPropName).in(valueList));
+        cq = cq.orderBy(OrderHelper.createAscOrderList(root, cb, orderEntityPropNameList));
+
+        Query query = em.createQuery(cq);
+        return query.getResultList();        
+    }
 //</editor-fold>    
     
 //<editor-fold defaultstate="collapsed" desc="Between 或類似「範圍之內」">
@@ -421,8 +557,6 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
 
-//        for (Expression exp : expressionList) {
-//        }
         Predicate predicate = cb.and(expressionList.toArray(Predicate[]::new)); //https://www.techiedelight.com/convert-list-to-array-java/ List To Array
         cq = cq.where(predicate);
         cq = cq.orderBy(orderList);
@@ -438,8 +572,6 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
 
-//        for (Expression exp : expressionList) {
-//        }
         Predicate predicate = cb.or(expressionList.toArray(Predicate[]::new));
         cq = cq.where(predicate);
         cq = cq.orderBy(orderList);
@@ -485,6 +617,6 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
     
     private List<String> obtainEntityPropNameList(List<KeyValuePair> pairList) {
         return pairList.stream().map(pair -> pair.getColName()).collect(Collectors.toList());
-    }
+    }    
 //</editor-fold>
 }
