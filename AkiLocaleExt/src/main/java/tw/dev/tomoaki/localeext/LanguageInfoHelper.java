@@ -12,6 +12,11 @@ import tw.dev.tomoaki.localeext.source.LocaleSource;
 /**
  *
  * @author tomoaki
+ * 
+ * Language Tag 清單: https://www.oracle.com/java/technologies/javase/jdk8-jre8-suported-locales.html
+ * 重電參考: https://www.baeldung.com/java-8-localization
+ * 其他參考 https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry
+ * 
  */
 public class LanguageInfoHelper {
 
