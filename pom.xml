@@ -24,11 +24,11 @@
         <module>AkiException</module>
         <module>AkiFileUtils</module>
         <module>AkiHttp</module>
-        <module>AkiCountryUtils</module>
         <module>AkiDataUtils</module>
         <module>AkiCSSInliner</module>
         <module>AkiJPA</module>
         <module>AkiLogger</module>
+        <module>AkiLocaleExt</module>
     </modules>
     <!-- 
     不用特別加這個，直接
