@@ -5,6 +5,7 @@
  */
 package tw.dev.tomoaki.countryutils.entity;
 
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -14,31 +15,37 @@ import java.util.Objects;
 public class CountryInfo {
 
     private String displayName;
+    private Locale locale;
     private String iso2Code;
     private String iso3Code;
 
+    protected CountryInfo() {
+
+    }
+
+    public static CountryInfo newInstance(String displayName, Locale locale, String iso2Code, String iso3Code) {
+        CountryInfo info = new CountryInfo();
+        info.displayName = displayName;
+        info.locale = locale;
+        info.iso2Code = iso2Code;
+        info.iso3Code = iso3Code;
+        return info;
+    }  
+    
     public String getDisplayName() {
         return displayName;
     }
 
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
+    public Locale getLocale() {
+        return locale;
     }
 
     public String getISO2Code() {
         return iso2Code;
     }
 
-    public void setISO2Code(String iso2Code) {
-        this.iso2Code = iso2Code;
-    }
-
     public String getISO3Code() {
         return iso3Code;
-    }
-
-    public void setISO3Code(String iso3Code) {
-        this.iso3Code = iso3Code;
     }
 
     @Override

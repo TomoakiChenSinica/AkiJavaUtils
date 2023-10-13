@@ -2,7 +2,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>tw.dev.tomoaki</groupId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.1-SNAPSHOT</version>
+    <description>
+        1. 新增一些 Helper 和 Helper底下 Method
+        2. 新增 LanguageInfo、及快速查詢其的 Map
+    </description>
     <artifactId>AkiCountryUtils</artifactId>
     <packaging>jar</packaging>
     <properties>
@@ -11,6 +15,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+    <!--
     <distributionManagement>
         <repository>
             <id>github</id>
@@ -19,7 +24,21 @@
         </repository>        
         
     </distributionManagement>
-    
+    -->
+    <distributionManagement>
+        <repository>
+            <id>ccs-packages</id>
+            <name>CCS Packages</name>
+            <url>http://192.168.111.101:8082/repository/ccs-packages</url>
+       
+        </repository>        
+        <snapshotRepository>
+            <id>ccs-packages</id>
+            <name>CCS Packages</name>
+            <url>http://192.168.111.101:8082/repository/ccs-packages</url>
+        </snapshotRepository>
+    </distributionManagement>
+        
     <licenses>        
         <license>
             <name>The Apache License, Version 2.0</name>

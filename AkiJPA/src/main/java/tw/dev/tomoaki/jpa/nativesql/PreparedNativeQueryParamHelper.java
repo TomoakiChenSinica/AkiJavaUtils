@@ -19,31 +19,22 @@ import javax.persistence.Query;
  */
 public class PreparedNativeQueryParamHelper {
 
-//    public static Query setParam(Query query, Integer index, LocalDate desigDate) {
-//        if(desigDate == null) {
+//    public static Query setParam(Query query, Integer index, Date desigDate) {
+//        if (desigDate == null) {
 //            throw new IllegalArgumentException("desigDate Is Null");
-//            
-//            
-//            
-//            
-//            
 //        }
-//        query.setParameter(index, desigDate.);
-//        
+//        query.setParameter(index, new Timestamp(desigDate.getTime()));
+//        return query;
 //    }
-    
     public static Query setParam(Query query, Integer index, Date desigDate) {
-        if (desigDate == null) {
-            throw new IllegalArgumentException("desigDate Is Null");
-        }
-        query.setParameter(index, new Timestamp(desigDate.getTime()));
+        query.setParameter(index, (desigDate == null) ? null : new Timestamp(desigDate.getTime()));
         return query;
     }
-    
+
     public static Query setParam(Query query, Integer index, EntityManager em, List<?> dataList) throws SQLException {
         query.setParameter(index, obtainTextSqlArray(em, dataList));
         return query;
-    }    
+    }
 
     public static Array obtainTextSqlArray(EntityManager em, List<?> dataList) throws SQLException {
         if (dataList == null) {

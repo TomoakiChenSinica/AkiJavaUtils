@@ -2,8 +2,8 @@ package tw.dev.tomoaki.countryutils;
 
 import java.util.Locale;
 import tw.dev.tomoaki.countryutils.entity.CountryInfo;
-import tw.dev.tomoaki.countryutils.entity.CountryInfoKeyByISOCodeMap;
-import tw.dev.tomoaki.countryutils.entity.LocaleKeyByISO3CodeMap;
+import tw.dev.tomoaki.countryutils.entity.dict.CountryInfoMap;
+import tw.dev.tomoaki.countryutils.entity.dict.LocaleMap;
 
 /**
  *
@@ -11,8 +11,8 @@ import tw.dev.tomoaki.countryutils.entity.LocaleKeyByISO3CodeMap;
  */
 public class LocaleCountryConverter {
 
-    private static final CountryInfoKeyByISOCodeMap countryInfoKeyByISOCodeMap = CountryInfoKeyByISOCodeMap.Factory.create(Locale.TAIWAN);
-    private static final LocaleKeyByISO3CodeMap localeKeyByISO3CodeMap = new LocaleKeyByISO3CodeMap();
+    private static final CountryInfoMap countryInfoKeyByISOCodeMap = CountryInfoMap.Factory.create(Locale.TAIWAN);
+    private static final LocaleMap localeMap = new LocaleMap();
 
     public static CountryInfo convertLocale2Country(Locale desigLocale) {
         String iso3Code = desigLocale.getISO3Country();
@@ -21,6 +21,6 @@ public class LocaleCountryConverter {
     
     public static Locale convertCountry2Locale(CountryInfo desigCountryInfo) {
         String iso3Code = desigCountryInfo.getISO3Code();
-        return localeKeyByISO3CodeMap.getLocale(iso3Code);
+        return localeMap.getLocale(iso3Code);
     }
 }

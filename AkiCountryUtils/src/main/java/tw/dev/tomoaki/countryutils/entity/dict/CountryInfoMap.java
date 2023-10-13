@@ -1,29 +1,30 @@
-package tw.dev.tomoaki.countryutils.entity;
+package tw.dev.tomoaki.countryutils.entity.dict;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import tw.dev.tomoaki.countryutils.CountryInfoHelper;
+import tw.dev.tomoaki.countryutils.entity.CountryInfo;
 
 /**
  *
  * @author tomoaki
  */
-public class CountryInfoKeyByISOCodeMap {
+public class CountryInfoMap {
 
     private Map<String, CountryInfo> countryInfoKeyByISO2CodeMap;
     private Map<String, CountryInfo> countryInfoKeyByISO3CodeMap;
 
-    protected CountryInfoKeyByISOCodeMap() {
+    protected CountryInfoMap() {
         this.countryInfoKeyByISO2CodeMap = new LinkedHashMap();
         this.countryInfoKeyByISO3CodeMap = new LinkedHashMap();
     }
 
     public static class Factory {
 
-        public static CountryInfoKeyByISOCodeMap create(Locale desigLang) {
-            CountryInfoKeyByISOCodeMap theMap = new CountryInfoKeyByISOCodeMap();
+        public static CountryInfoMap create(Locale desigLang) {
+            CountryInfoMap theMap = new CountryInfoMap();
             theMap.init(desigLang);
             return theMap;
         }

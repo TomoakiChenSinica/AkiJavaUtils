@@ -77,7 +77,7 @@ public abstract class BasicAuthFilter<SESSION_CONTEXT extends BasicSessionContex
 
             Throwable problem = null;
             try {
-                if(this.isAuthenticated(request, response)) {
+                if(this.isAuthenticated(request, response) && this.isSystemPermitted(request, response) ) {
                     chain.doFilter(request, response);
                 }
             } catch (Throwable t) {
@@ -116,12 +116,28 @@ public abstract class BasicAuthFilter<SESSION_CONTEXT extends BasicSessionContex
         HttpServletResponse resp = (HttpServletResponse) response;
         HttpSession session = req.getSession();
 
-        if (this.isAuthenticated(req, resp, session)) {
-            if(printLog) System.out.format("[%s] doBeforeProcessing(): isAuthenticated", this.getClass().getSimpleName());
-        } else {
+       /*
+        if(!this.isAuthenticated(req, resp, session)) {
             this.redirect2LoginPage(req, resp, session);
             return;
+        } else if(!this.isSystemPermitted(req, resp, session)) {
+            resp.sendRedirect(this.getSystemPermissionDeniedPageUrl());
+            return;
+        } else if (this.isAuthenticated(req, resp, session) && this.isSystemPermitted(req, resp, session)) {
+            if(printLog) System.out.format("[%s] doBeforeProcessing(): isAuthenticated", this.getClass().getSimpleName());
         }
+        */
+       
+        if (!this.isAuthenticated(req, resp, session)) {
+            this.redirect2LoginPage(req, resp, session);
+            return;
+        } else if (!this.isSystemPermitted(req, resp, session)) {
+            resp.sendRedirect(this.getSystemPermissionDeniedPageUrl());
+            return;
+        } else {
+            if (printLog) System.out.format("[%s] doBeforeProcessing(): isAuthenticated", this.getClass().getSimpleName());           
+        }
+       
     }
 
     protected void doAfterProcessing(ServletRequest request, ServletResponse response) throws IOException, ServletException {
@@ -137,36 +153,7 @@ public abstract class BasicAuthFilter<SESSION_CONTEXT extends BasicSessionContex
         }
         resp.sendRedirect(this.getLoginPageUrl());
     }
-
-//    private void saveOriUrl(HttpServletRequest req, HttpServletResponse resp, HttpSession session) throws ServletException {
-//        try {
-//            T sessionContext = T.obtainSessionContext(session, this.getSessionContextClazz());
-//            sessionContext.init(req);
-//            if(this.printLog) System.out.format("[%s] saveOriUrl(): sessionContext= %s", this.getClass().getSimpleName(), sessionContext);            
-//            if(this.printLog) System.out.format("[%s] saveOriUrl(): T.sessionAttrKey= %s", this.getClass().getSimpleName(), T.sessionAttrKey);
-//            session.setAttribute(T.sessionAttrKey, sessionContext);
-//            if(this.printLog) System.out.format("[%s] saveOriUrl(): After Set Attribute To session= %s, attrKey= %s, attrValue= %s", this.getClass().getSimpleName(), session, T.sessionAttrKey, sessionContext);
-//            if(this.printLog) System.out.format("[%s] saveOriUrl(): Try Get Attribute From session= %s, attrKey= %s, attrValue= %s", this.getClass().getSimpleName(), session, T.sessionAttrKey, session.getAttribute(T.sessionAttrKey));
-//        } catch (Exception ex) {
-//            throw new ServletException(ex);
-//        }
-//    }
-    
-//    打咩    
-//    private void saveOriUrl(HttpServletRequest req, HttpServletResponse resp, HttpSession session) throws ServletException {
-//        try {
-//            SessionContextFactory factory = this.obtainSessionContextFactory();
-//            T sessionContext = factory.obtainSessionContext(session, this.getSessionContextClazz(), Boolean.TRUE);
-//            sessionContext.init(req);
-//            if(this.printLog) System.out.format("[%s] saveOriUrl(): sessionContext= %s", this.getClass().getSimpleName(), sessionContext);            
-//            if(this.printLog) System.out.format("[%s] saveOriUrl(): T.sessionAttrKey= %s", this.getClass().getSimpleName(), T.sessionAttrKey);
-//            session.setAttribute(T.sessionAttrKey, sessionContext);
-//            if(this.printLog) System.out.format("[%s] saveOriUrl(): After Set Attribute To session= %s, attrKey= %s, attrValue= %s", this.getClass().getSimpleName(), session, T.sessionAttrKey, sessionContext);
-//            if(this.printLog) System.out.format("[%s] saveOriUrl(): Try Get Attribute From session= %s, attrKey= %s, attrValue= %s", this.getClass().getSimpleName(), session, T.sessionAttrKey, session.getAttribute(T.sessionAttrKey));
-//        } catch (Exception ex) {
-//            throw new ServletException(ex);
-//        }
-//    }    
+  
     private void saveOriUrl(HttpServletRequest req, HttpServletResponse resp, HttpSession session) throws ServletException {
         try {
             SESSION_CONTEXT_FACTORY factory = this.obtainSessionContextFactory();
@@ -221,20 +208,6 @@ public abstract class BasicAuthFilter<SESSION_CONTEXT extends BasicSessionContex
         return this.isAuthenticated(request, response, session);        
     }    
     
-//    protected Boolean isAuthenticated(HttpServletRequest req, HttpServletResponse resp, HttpSession session) throws InstantiationException, IllegalAccessException {
-//        if(printLog) System.out.format("[%s] isAuthenticated(): session= %s", this.getClass().getSimpleName(), session);
-//        T sessionContext = T.obtainSessionContext(session, this.getSessionContextClazz());
-//        if (printLog) {
-//            System.out.format("[%s isAuthenticated(): sessionContext= %s", this.getClass().getSimpleName(), sessionContext);
-//        }
-//        if (printLog && sessionContext != null) {
-//            System.out.format("[%s] isAuthenticated(): sessionContext.getIsAuthorized= %s", this.getClass().getSimpleName(), sessionContext.getIsAuthorized());
-//        }
-//        
-//        session.setAttribute(T.sessionAttrKey, sessionContext);
-//        
-//        return sessionContext != null && sessionContext.getIsAuthorized();
-//    }
     protected Boolean isAuthenticated(HttpServletRequest req, HttpServletResponse resp, HttpSession session) throws InstantiationException, IllegalAccessException {
         if(printLog) System.out.format("[%s] isAuthenticated(): session= %s", this.getClass().getSimpleName(), session);
         SESSION_CONTEXT_FACTORY factory = this.obtainSessionContextFactory();
@@ -245,21 +218,32 @@ public abstract class BasicAuthFilter<SESSION_CONTEXT extends BasicSessionContex
         if (printLog && sessionContext != null) {
             System.out.format("[%s] isAuthenticated(): sessionContext Is Existed, sessionContext.getIsAuthorized= %s", this.getClass().getSimpleName(), sessionContext.getIsAuthorized());
         }        
-//        session.setAttribute(T.sessionAttrKey, sessionContext); //忘了為啥當初這邊要存一遍        
         return sessionContext != null && sessionContext.getIsAuthorized();
     }    
+    
+    protected Boolean isSystemPermitted(ServletRequest req, ServletResponse resp) throws InstantiationException, IllegalAccessException {
+        HttpServletRequest request = (HttpServletRequest)req;
+        HttpServletResponse response = (HttpServletResponse)resp;
+        HttpSession session = request.getSession();
+        return this.isSystemPermitted(request, response, session);        
+    }        
+    
+    protected Boolean isSystemPermitted(HttpServletRequest req, HttpServletResponse resp, HttpSession session) throws InstantiationException, IllegalAccessException {
+        SESSION_CONTEXT_FACTORY factory = this.obtainSessionContextFactory();
+        SESSION_CONTEXT sessionContext = factory.obtainSessionContext(session, this.getSessionContextClazz(), Boolean.FALSE);
+        return sessionContext != null && sessionContext.getIsSystemPermitted();
+    }
 
     protected abstract Class<SESSION_CONTEXT> getSessionContextClazz();
 
-//    protected abstract String getSessionAttrOriUrl();
-
     protected abstract String getLoginPageUrl();
+    
+    protected abstract String getSystemPermissionDeniedPageUrl();
 
     protected abstract String getDefaultPageUrl();
 
     protected abstract Boolean getPrintLog();
 
-//    protected abstract Boolean getPrintLog();
     private void sendProcessingError(Throwable t, ServletResponse response) {
         String stackTrace = getStackTrace(t);
 
@@ -308,6 +292,5 @@ public abstract class BasicAuthFilter<SESSION_CONTEXT extends BasicSessionContex
         filterConfig.getServletContext().log(msg);
     }
     
-//    protected abstract SessionContextFactory obtainSessionContextFactory();
     protected abstract SESSION_CONTEXT_FACTORY obtainSessionContextFactory();
 }

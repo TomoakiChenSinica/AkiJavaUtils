@@ -17,6 +17,7 @@ public abstract class BasicSessionContext {
     private String lastRequestUrl;    
     private String remoateAddress;
     private Boolean isAuthorized = false;
+    private Boolean isSystemPermitted = false;
     
     public static String sessionAttrKey = "seSSionCoNtExt"; //FIXME 這個改成可以自訂
     
@@ -48,6 +49,14 @@ public abstract class BasicSessionContext {
     public void setIsAuthorized(Boolean isAuthorized) {
         this.isAuthorized = isAuthorized;
     }       
+
+    public Boolean getIsSystemPermitted() {
+        return isSystemPermitted;
+    }
+
+    public void setIsSystemPermitted(Boolean isSystemPermitted) {
+        this.isSystemPermitted = isSystemPermitted;
+    }
     
     protected String obtainRequestUrlWithQueryParam(HttpServletRequest request) {
         String requestUrl = request.getRequestURL().toString();

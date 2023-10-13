@@ -5,11 +5,11 @@
  */
 package tw.dev.tomoaki.countryutils;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import tw.dev.tomoaki.countryutils.entity.CountryInfo;
-import tw.dev.tomoaki.countryutils.entity.LocaleKeyByISO3CodeMap;
-
+import java.util.stream.Collectors;
 
 /**
  *
@@ -17,26 +17,53 @@ import tw.dev.tomoaki.countryutils.entity.LocaleKeyByISO3CodeMap;
  */
 public class LocaleHelper {
 
-//    private static final LocaleKeyByISO3CodeMap localeKeyByISO3CodeMap = new LocaleKeyByISO3CodeMap();
+    private static final String DEFAULT_DISPLAY_NAME_SPLIT_WORD = " / ";
     
-    public Boolean looseEquals(Locale locale1, Locale locale2) {
-        if(locale1 == null && locale2 == null) {
+    public static Boolean looseEquals(Locale locale1, Locale locale2) {
+        if (locale1 == null && locale2 == null) {
             throw new IllegalArgumentException("Both Locale Is Null");
         }
-        
-        if(locale1 == null || locale2 == null) {
+
+        if (locale1 == null || locale2 == null) {
             return Boolean.FALSE;
         }
-        
+
         return Objects.equals(locale1.getCountry(), locale2.getCountry()) && Objects.equals(locale1.getISO3Country(), locale2.getISO3Country());
     }
+
+    public static List<String> createCountryLangNameList(Locale countryLocale, Locale[] displayLangLocales) {
+        List<String> countryLangNameList = Arrays.asList(displayLangLocales).stream()
+                .filter(langLocale -> langLocale != null)
+                .map(langLocale -> countryLocale.getDisplayCountry(langLocale))
+                .collect(Collectors.toList());
+        return countryLangNameList;
+    }
     
-//    public static convert2CountryInfo(Locale desigLocale) {
-//    
-//    }
+    public static String createCountryDisplayName(Locale countryLocale, Locale... displayLangLocales) {
+        return createCountryDisplayName(countryLocale, DEFAULT_DISPLAY_NAME_SPLIT_WORD, displayLangLocales);
+    }    
+
+    public static String createCountryDisplayName(Locale countryLocale, String splitWord, Locale... displayLangLocales) {
+        List<String> countryLangNameList = createCountryLangNameList(countryLocale, displayLangLocales);
+        return countryLangNameList.stream().collect(Collectors.joining(splitWord));
+    }
+
     
-//    public static CountryInfo convert2CountryInfo(Locale desigLocale) {
-//        String iso3Code = desigLocale.getISO3Country();
-//        return countryInfoKeyByISOCodeMap.getByISO3Code(iso3Code);
-//    }    
+    
+    public static List<String> createLanguageLangNameList(Locale languageLocale, Locale[] displayLangLocales) {
+        List<String> languageLangNameList = Arrays.asList(displayLangLocales).stream()
+                .filter(langLocale -> langLocale != null)
+                .map(langLocale -> languageLocale.getDisplayLanguage(langLocale))
+                .collect(Collectors.toList());
+        return languageLangNameList;
+    }
+
+    public static String createLanguageDisplayName(Locale languageLocale, Locale... displayLangLocales) {
+        return createLanguageDisplayName(languageLocale, DEFAULT_DISPLAY_NAME_SPLIT_WORD, displayLangLocales);
+    }    
+    
+    public static String createLanguageDisplayName(Locale languageLocale, String splitWord, Locale... displayLangLocales) {
+        List<String> languageLangNameList = createLanguageLangNameList(languageLocale, displayLangLocales);
+        return languageLangNameList.stream().collect(Collectors.joining(splitWord));
+    }
 }

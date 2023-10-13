@@ -4,7 +4,7 @@ import tw.dev.tomoaki.countryutils.entity.CountryInfo;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import tw.dev.tomoaki.countryutils.entity.CountryInfoKeyByISOCodeMap;
+import tw.dev.tomoaki.countryutils.entity.dict.CountryInfoMap;
 
 /**
  *
@@ -12,8 +12,13 @@ import tw.dev.tomoaki.countryutils.entity.CountryInfoKeyByISOCodeMap;
  */
 public class CountryInfoHelper {
 
+    public static List<CountryInfo> obtainTWCountryInfoList() {
+        Locale twLocale = Locale.TAIWAN;
+        Locale enLocale = Locale.ENGLISH;
+        return obtainCountryInfoList(twLocale, enLocale);
+    }
+
 //    private static final CountryInfoKeyByISOCodeMap countryInfoKeyByISOCodeMap = CountryInfoKeyByISOCodeMap.Factory.create(Locale.TAIWAN);
-    
     public static List<CountryInfo> obtainCountryInfoList(Locale desigLocale) {
         if (desigLocale == null) {
             throw new IllegalArgumentException("desigLocale Is Null");
@@ -33,49 +38,16 @@ public class CountryInfoHelper {
             Locale locale = new Locale("", iso2Code);
 
             String iso3Code = locale.getISO3Country();
-            String displayName;
-            String displayCountryName1 = locale.getDisplayCountry(desigLocale1);
-            String displayCountryName2 = (desigLocale2 == null) ? null : locale.getDisplayCountry(desigLocale2);
-            displayName = displayCountryName2 == null ? displayCountryName1 : String.format("%s / %s", displayCountryName1, displayCountryName2);//(displayCountryName1 + " / " + displayCountryName2)
+//            String displayName;
+//            String displayCountryName1 = locale.getDisplayCountry(desigLocale1);
+//            String displayCountryName2 = (desigLocale2 == null) ? null : locale.getDisplayCountry(desigLocale2);
+//            displayName = displayCountryName2 == null ? displayCountryName1 : String.format("%s / %s", displayCountryName1, displayCountryName2);//(displayCountryName1 + " / " + displayCountryName2)
+            String displayName = LocaleHelper.createCountryDisplayName(locale, desigLocale1, desigLocale2);
 
-            CountryInfo countryInfo = new CountryInfo();
-            countryInfo.setDisplayName(displayName);
-            countryInfo.setISO2Code(iso2Code);
-            countryInfo.setISO3Code(iso3Code);
-
+            CountryInfo countryInfo = CountryInfo.newInstance(displayName, locale, iso2Code, iso3Code);
             countryInfoList.add(countryInfo);
         }
         return countryInfoList;
     }
 
-    public static List<CountryInfo> obtainTWCountryInfoList() {
-        List<CountryInfo> countryInfoList = new ArrayList();
-
-        Locale twLocale = Locale.TAIWAN;
-        Locale enLocale = Locale.ENGLISH;
-
-        String[] countryISOCodes = Locale.getISOCountries();
-        for (String iso2Code : countryISOCodes) {
-            Locale locale = new Locale("", iso2Code);
-
-            String iso3Code = locale.getISO3Country();
-            String displayName;
-            String nameTW = locale.getDisplayCountry(twLocale);
-            String nameEN = locale.getDisplayCountry(enLocale);
-            displayName = nameTW + " / " + nameEN;
-
-            CountryInfo countryInfo = new CountryInfo();
-            countryInfo.setDisplayName(displayName);
-            countryInfo.setISO2Code(iso2Code);
-            countryInfo.setISO3Code(iso3Code);
-
-            countryInfoList.add(countryInfo);
-        }
-        return countryInfoList;
-    }
-
-//    public static CountryInfo convert(Locale desigLocale) {
-//        String iso3Code = desigLocale.getISO3Country();
-//        return countryInfoKeyByISOCodeMap.getByISO3Code(iso3Code);
-//    }
 }
