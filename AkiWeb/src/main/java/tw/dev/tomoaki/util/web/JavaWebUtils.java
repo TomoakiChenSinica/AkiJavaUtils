@@ -41,6 +41,9 @@ public class JavaWebUtils {
         String mimeType = null;
         mimeType = context.getMimeType(fileName);
         if (mimeType == null) {
+            //該不該用?
+            //https://juejin.cn/post/6979224810681270309
+            //https://stackoverflow.com/questions/20508788/do-i-need-content-type-application-octet-stream-for-file-download
             mimeType = "application/octet-stream";
         }
         //這樣還是會有問題，例如 docx 等無法抓出mimetype的，此時如果用doDowmload，會設定 header 所以比較沒問題

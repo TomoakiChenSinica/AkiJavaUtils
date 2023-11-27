@@ -4,13 +4,12 @@
  */
 package tw.dev.tomoaki.jpa.auth;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -36,10 +35,14 @@ public class TransactionEntity implements Transaction {//implements Serializable
     @Column(name = "lastmodifier")
     private String lastmodifier;
     
-    @Column(name = "lastmodifieddatetime")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date lastmodifieddatetime;
+//    @Column(name = "lastmodifieddatetime")
+//    @Temporal(TemporalType.TIMESTAMP)
+//    private Date lastmodifieddatetime;
+    @Column(name = "lastmodifieddatetime")    
+    private LocalDateTime lastmodifieddatetime;
 
+    
+    
     public TransactionEntity() {
     }
 
@@ -65,11 +68,11 @@ public class TransactionEntity implements Transaction {//implements Serializable
         this.lastmodifier = lastModifier;
     }
 
-    public Date getLastModifiedDateTime() {
+    public LocalDateTime getLastModifiedDateTime() {
         return lastmodifieddatetime;
     }
 
-    public void setLastModifiedDateTime(Date lastModifiedDateTime) {
+    public void setLastModifiedDateTime(LocalDateTime lastModifiedDateTime) {
         this.lastmodifieddatetime = lastModifiedDateTime;
     }
 

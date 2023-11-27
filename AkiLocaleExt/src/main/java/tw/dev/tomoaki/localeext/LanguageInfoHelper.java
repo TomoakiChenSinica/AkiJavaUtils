@@ -6,22 +6,24 @@ import tw.dev.tomoaki.localeext.entity.LanguageInfo;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import tw.dev.tomoaki.localeext.entity.dict.LanguageInfoMap;
 import tw.dev.tomoaki.localeext.exception.LocaleSourceException;
 import tw.dev.tomoaki.localeext.source.LocaleSource;
 
 /**
  *
  * @author tomoaki
- * 
- * Language Tag 清單: https://www.oracle.com/java/technologies/javase/jdk8-jre8-suported-locales.html
- * 重電參考: https://www.baeldung.com/java-8-localization
- * 其他參考 https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry
- * 
+ *
+ * Language Tag 清單:
+ * https://www.oracle.com/java/technologies/javase/jdk8-jre8-suported-locales.html
+ * 重電參考: https://www.baeldung.com/java-8-localization 其他參考
+ * https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry
+ *
  */
 public class LanguageInfoHelper {
 
-    public static Boolean PRINT_LOG = false;    
-    
+    public static Boolean PRINT_LOG = false;
+
     public static List<LanguageInfo> obtainTWLanguageInfoList() {
         Locale twLocale = Locale.TAIWAN;
         Locale enLocale = Locale.ENGLISH;
@@ -75,7 +77,9 @@ public class LanguageInfoHelper {
                 LanguageInfo countryInfo = LanguageInfo.newInstance(languageDisplayName, locale, iso2Code, iso3Code, languageTag, countryDisplayName);
                 countryInfoList.add(countryInfo);
             } catch (java.util.MissingResourceException ex) {
-                if(PRINT_LOG) System.out.println("[CountryInfoHelper]obtainCountryInfoList(): [Warning] " + ex.getMessage());
+                if (PRINT_LOG) {
+                    System.out.println("[CountryInfoHelper]obtainCountryInfoList(): [Warning] " + ex.getMessage());
+                }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -109,4 +113,15 @@ public class LanguageInfoHelper {
 //        }
 //        return countryInfoList;
 //    }
+    private static final LanguageInfoMap languageInfoMap = LanguageInfoMap.Factory.create(Locale.getDefault());
+
+    public static LanguageInfo convertLocale2Language(Locale desigLocale) {
+        String langTag = desigLocale.toLanguageTag();
+        return convertLangTag2Language(langTag);
+    }
+    
+    public static LanguageInfo convertLangTag2Language(String langTag) {
+        return languageInfoMap.getByLanguageTag(langTag);
+    }
+
 }

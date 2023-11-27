@@ -29,6 +29,7 @@
         <module>AkiJPA</module>
         <module>AkiLogger</module>
         <module>AkiLocaleExt</module>
+        <module>AkiSSH</module>
     </modules>
     <!-- 
     不用特別加這個，直接

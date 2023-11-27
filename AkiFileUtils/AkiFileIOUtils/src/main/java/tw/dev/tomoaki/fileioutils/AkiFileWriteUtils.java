@@ -37,6 +37,16 @@ public class AkiFileWriteUtils {
             throw new AkiFileException(ex);
         }
     };
+    
+    public static void checkFileDirectory(Path filePath) throws IOException {
+        Path directoryPath = filePath.getParent();
+        if (Files.notExists(directoryPath)) {
+            Files.createDirectories(directoryPath);
+        }
+    }
+    
+    
+    
 
 //<editor-fold defaultstate="collapsed" desc="之前就寫到的，當時已知道nio為New IO">
     public static File write(InputStream sourceFileStream, String targetFilePath) throws IOException {

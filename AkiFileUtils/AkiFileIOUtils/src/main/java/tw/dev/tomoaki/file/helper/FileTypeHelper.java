@@ -13,24 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tw.dev.tomoaki.file.datafilesystem;
+package tw.dev.tomoaki.file.helper;
+
+import java.util.Arrays;
 
 /**
  *
  * @author tomoaki
- * 
- * 單純產生「檔案」相關資訊，不理會「實際路徑」
- * 
  */
-public interface FileCreator<T> {
-
-    /**
-     * 會需要存檔案時，如何依據傳進來的資料(data) 產生檔名
-     * 
-     * @param data 資料，跟此資料的關聯檔案，檔案名稱如何(根據資料)產生檔名
-     * @return 
-     * 
-     */
-    public String createFileName(T data);
-
+public class FileTypeHelper {
+    
+//    public static String guessFileTypeName(String fileName) {
+//        Stream.
+//        
+//    }        
+    public static String analyzeFileNameExt(String fileName) {
+        String[] nameArr = fileName.split("\\.");
+        Integer arrLen = nameArr.length;
+        if(arrLen == 1) {
+            String msgFmt = "No Filename Extension Find In fileName= %s";
+            throw new IllegalArgumentException(String.format(msgFmt, fileName));
+        }
+        return nameArr[arrLen - 1];
+    }
 }

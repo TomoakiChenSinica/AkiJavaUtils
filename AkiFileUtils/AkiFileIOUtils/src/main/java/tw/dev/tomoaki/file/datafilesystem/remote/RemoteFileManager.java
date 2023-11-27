@@ -13,24 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tw.dev.tomoaki.file.datafilesystem;
+package tw.dev.tomoaki.file.datafilesystem.remote;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Path;
 
 /**
  *
  * @author tomoaki
- * 
- * 單純產生「檔案」相關資訊，不理會「實際路徑」
- * 
  */
-public interface FileCreator<T> {
+public interface RemoteFileManager<T> {
+    
+    public Path obtainRemoteDestFilePath(T data);
 
-    /**
-     * 會需要存檔案時，如何依據傳進來的資料(data) 產生檔名
-     * 
-     * @param data 資料，跟此資料的關聯檔案，檔案名稱如何(根據資料)產生檔名
-     * @return 
-     * 
-     */
-    public String createFileName(T data);
+    public RemoteFile copyToRemote(T data) throws IOException;
+    
+    public RemoteFile copyFromRemote(T data) throws IOException;
 
+    public RemoteFile deleteFromRemote(T data) throws IOException;    
 }

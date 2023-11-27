@@ -4,7 +4,7 @@
  */
 package tw.dev.tomoaki.jpa.auth;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
@@ -22,7 +22,8 @@ public class TransactionListener<T extends TransactionEntity> {
         UUID uuid = UUID.randomUUID();
         String uuidAsString = uuid.toString();        
         entity.setTransactionId(uuidAsString);
-        entity.setLastModifiedDateTime(new Date());        
+//        entity.setLastModifiedDateTime(new Date());
+        entity.setLastModifiedDateTime(LocalDateTime.now());
         entity.setLastModifier(entity.getIdentifier());
         return entity;
     }
@@ -30,7 +31,8 @@ public class TransactionListener<T extends TransactionEntity> {
     @PreUpdate
     @PreRemove
     public T beforeEdit(T entity) {
-        entity.setLastModifiedDateTime(new Date());
+//        entity.setLastModifiedDateTime(new Date());
+        entity.setLastModifiedDateTime(LocalDateTime.now());
         entity.setLastModifier(entity.getIdentifier());
         return entity;
     }

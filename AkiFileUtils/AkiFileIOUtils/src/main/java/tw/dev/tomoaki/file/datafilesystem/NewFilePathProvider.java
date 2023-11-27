@@ -15,22 +15,22 @@
  */
 package tw.dev.tomoaki.file.datafilesystem;
 
+import java.nio.file.Path;
+
 /**
  *
  * @author tomoaki
- * 
- * 單純產生「檔案」相關資訊，不理會「實際路徑」
- * 
  */
-public interface FileCreator<T> {
+public interface NewFilePathProvider<T> extends FileCreator<T> {
 
     /**
-     * 會需要存檔案時，如何依據傳進來的資料(data) 產生檔名
+     * 配合 FileCreator 繼承來的 createFileName， <br>
+     * 組合出「檔案的實際路徑」。
      * 
-     * @param data 資料，跟此資料的關聯檔案，檔案名稱如何(根據資料)產生檔名
-     * @return 
-     * 
+     * @param data 資料
+     * @return 資料關聯檔案的路徑
+     *  
      */
-    public String createFileName(T data);
+    public Path obtainNewFilePath(T data);
 
 }

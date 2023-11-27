@@ -50,7 +50,6 @@ public class UrlAppender {
 //<editor-fold defaultstate="collapsed" desc="調整設定">
     public void turnOnTrimHeadSlash() {
         this.trimHeadSlash = true;
-        
     }
     
     public void turnOffTrimHeadSlash() {
@@ -59,7 +58,6 @@ public class UrlAppender {
     
     public void turnOnTrimTailSlash() {
         this.trimTailSlash = true;
-        
     }
     
     public void turnOffTrimTailSlash() {
@@ -67,6 +65,7 @@ public class UrlAppender {
     }        
 //</editor-fold>
             
+//<editor-fold defaultstate="collapsed" desc="給外部的實際 Methods">
     public UrlAppender append(String path) {
         if(path == null) {
             return this;
@@ -117,8 +116,9 @@ public class UrlAppender {
         this.initUrlPathList();
         this.initQueryParamMap();
         return url;
-    }
-    
+    }    
+//</editor-fold>
+        
     protected String trim(String path) {
         return path.trim();
     }
