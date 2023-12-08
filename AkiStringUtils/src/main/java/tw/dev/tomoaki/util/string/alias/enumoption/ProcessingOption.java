@@ -28,7 +28,7 @@ public enum ProcessingOption {
     
     
     UPPER_CASE("UpperCase", "", UpperCaseProcessingUnit.class),
-    DISTINCE_SPACE("DistinctSpace", "", DistinctSpaceProcessingUnit.class),
+    DISTINCT_SPACE("DistinctSpace", "", DistinctSpaceProcessingUnit.class),
     TRIM("Trim", "", TrimProcessingUnit.class);
     
     private String code;

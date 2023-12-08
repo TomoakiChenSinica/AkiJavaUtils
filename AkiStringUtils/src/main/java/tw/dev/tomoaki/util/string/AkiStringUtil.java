@@ -69,4 +69,12 @@ public class AkiStringUtil {
     public static Boolean strictNotEmpty(String text){
         return text != null && !text.trim().isEmpty();                   
     }
+    
+    public static String trimSafely(String str) {
+        return (str == null) ? null : str.trim();
+    }
+
+    public static String trimUnicodeIllegal(String str) {
+        return str.replaceAll("\\p{C}", ""); //詳情請看 AkiRegularExpression 的 RegExpCommonPattern 中關於 Unicode，下半段
+    }
 }

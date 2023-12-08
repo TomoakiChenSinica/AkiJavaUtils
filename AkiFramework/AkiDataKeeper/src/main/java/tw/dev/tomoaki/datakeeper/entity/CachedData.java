@@ -19,8 +19,7 @@ package tw.dev.tomoaki.datakeeper.entity;
  *
  * @author tomoaki
  */
-public interface CachedData {
-    
-    
-    
+public interface CachedData<T> {
+
+    public void add(T data);
 }

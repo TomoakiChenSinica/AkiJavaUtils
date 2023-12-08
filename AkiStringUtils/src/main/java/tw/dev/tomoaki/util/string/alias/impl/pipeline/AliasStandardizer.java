@@ -20,7 +20,6 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.Stack;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import tw.dev.tomoaki.util.string.alias.Pipeline;
@@ -77,6 +76,7 @@ public class AliasStandardizer implements Pipeline {
         }
     }
 
+    @Override
     public String doProcess(String inputDocument) {
         document = inputDocument;
         nodeList.forEach(node -> {
@@ -94,6 +94,7 @@ public class AliasStandardizer implements Pipeline {
         return firstResult.getInputDocument();
     }
 
+    @Override
     public String getOutputDocument() {
         NodeResult lastResult = resultStack.getLast();
         return lastResult.getOutputDocument();
@@ -113,6 +114,7 @@ public class AliasStandardizer implements Pipeline {
         this.nodeList.add(node);
     }
 
+    @Override
     public void addAll(PipelineNode... nodes) {
         List<PipelineNode> appendedNodeList = Arrays.asList(nodes);
         this.nodeList.addAll(appendedNodeList);

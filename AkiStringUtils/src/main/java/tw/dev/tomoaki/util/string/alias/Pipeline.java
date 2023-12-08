@@ -21,6 +21,9 @@ package tw.dev.tomoaki.util.string.alias;
  */
 public interface Pipeline {
     
+    public String doProcess(String inputDocument);
     
+    public String getOutputDocument();
     
+    public void addAll(PipelineNode... nodes);
 }

@@ -30,14 +30,6 @@ public class RegExpProcessor {
             regExp.thePattern = Pattern.compile(regExpCondition);
             return regExp;
         }
-        
-//        public static RegExpProcessor.Factory trimMatch() {
-//            return this;
-//        }
-        
-//        public static RegExpProcessor.Factory create() {
-//            throw new UnsupportedOperationException("Method Not Supported Yet");
-//        }
     }
     
     public Boolean match(String input) {
@@ -66,7 +58,6 @@ public class RegExpProcessor {
         if(result.isFind()) {
             List<String> groupResultList = result.getMatchResults();
             for(String groupResult : groupResultList) {
-//                String partResult = String.format(formatPattern, groupResult);
                 String partResult = formatPattern.replace(formatReplaceToken, groupResult);
                 replaceResult = replaceResult.replaceAll(thePattern.pattern(), partResult);
             }

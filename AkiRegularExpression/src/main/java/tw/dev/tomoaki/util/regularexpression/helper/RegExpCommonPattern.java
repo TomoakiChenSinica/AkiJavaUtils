@@ -60,6 +60,8 @@ public class RegExpCommonPattern {
     public static final String SYMBOL = "[\\p{P}|\\p{Z}}|\\p{N}}|\\p{S}]";
 
     public static final String PUNCTUATION = "[\\p{P}]";
+    
+    public static final String INVISIBLE_OR_UNUSED = "\\p{C}";
 
     public static final String ABBREV_END_WITH_DOT = "[\\w]+\\.";
     public static final List<String> ABBREV_PATTERNS = Arrays.asList(ABBREV_END_WITH_DOT);

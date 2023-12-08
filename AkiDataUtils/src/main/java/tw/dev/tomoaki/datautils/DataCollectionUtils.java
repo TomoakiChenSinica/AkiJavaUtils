@@ -55,5 +55,30 @@ public class DataCollectionUtils {
             return data;
         }));
     }
-    
+
+    public static <T> List<T> append(List<T> dataList, T data) {
+        if (data == null) {
+            return null;
+        }
+
+        if (dataList == null) {
+            return Stream.of(data).collect(Collectors.toList());
+        }
+
+        dataList.add(data);
+        return dataList;
+    }
+
+    public static <T> List<T> appendAll(List<T> dataList1, List<T> dataList2) {
+        if (dataList1 == null && dataList2 == null) {
+            return null;
+        } else if (dataList1 == null) {
+            return dataList2;
+        } else if (dataList2 == null) {
+            return dataList1;
+        }
+        dataList1.addAll(dataList2);
+        return dataList1;
+    }
+
 }
