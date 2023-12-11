@@ -32,7 +32,7 @@ import tw.dev.tomoaki.util.commondatavalidator.ListValidator;
  */
 public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
 
-    public static Boolean EVICT_CACHE = Boolean.TRUE;
+    public static Boolean EVICT_CACHE = Boolean.FALSE;
 
     protected Class<T> entityClass;
 
