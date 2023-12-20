@@ -124,7 +124,8 @@ public class DateTimeUtil {
             }            
             return localDateTime.format(dateTimeFormatter);            
         }        
-        
+
+
         /**
          * 將比較舊的日期 java.util.Date 轉成 String。<br>
          * 轉出來的日期格式為 yyyy-MM-dd <br>
@@ -143,6 +144,7 @@ public class DateTimeUtil {
 //            return strDate;
             return parseDateToString(utilDate, utilDateFormat);
         }
+        
         
         /**
          * 將比較舊的日期 java.util.Date 轉成 String。<br>
@@ -164,6 +166,11 @@ public class DateTimeUtil {
         public static String parseDateToString(LocalDate localDate) {
             return localDate.format(DEFAULT_DATE_FORMMATTER);
         }
+        
+        public static String parseDateToString(LocalDate localDate, String strDateFormat) {
+            DateTimeFormatter dateFormatter = Provider.obtainFormatter(strDateFormat);
+            return localDate.format(dateFormatter);
+        }
 
                 
         
@@ -184,12 +191,12 @@ public class DateTimeUtil {
          * 資料格式為 java.time.LocalDateTime <br>
          *
          * @param strDateTime 日期時間字串
-         * @param dateTimeFormat 指定的日期時間字串格式
+         * @param strDateTimeFormat 指定的日期時間字串格式
          * @return 日期時間資料，格式為 java.time.LocalDateTime
          *
          */        
-        public static LocalDateTime parse2DateTime(String strDateTime, String dateTimeFormat) {
-            DateTimeFormatter formatter = Provider.obtainFormatter(dateTimeFormat);
+        public static LocalDateTime parse2DateTime(String strDateTime, String strDateTimeFormat) {
+            DateTimeFormatter formatter = Provider.obtainFormatter(strDateTimeFormat);
             return strDateTime == null ? null : LocalDateTime.parse(strDateTime, formatter);
         }
 
@@ -233,9 +240,44 @@ public class DateTimeUtil {
             return theDate == null ? null : theDate.with(WeekFields.of(Locale.TAIWAN).dayOfWeek(), dayOfWeek);
         }
 
+        /**
+         * 2023-12-19 新增，需測試
+         * 
+         * 取得「現在的日期時間」，並依照預設的 yyyy-MM-dd HH:mm:ss
+         * 
+         * @return 現在的日期時間」，並依照的「yyyy-MM-dd HH:mm:ss」格式
+         * 
+         */
+        public static LocalDateTime obtainNow() {
+            LocalDateTime nowDateTime = LocalDateTime.now();
+            String strNowDateTime = Provider.parseDateTimeToString(nowDateTime);
+            return Provider.parse2DateTime(strNowDateTime);
+        }
+        
+        /**
+         * 2023-12-19 新增，需測試
+         * 
+         * 取得「現在的日期時間」，並依照的「指定格式」 
+         * 
+         * @param strDateTimeFormat 指定的 Java 日期時間格式
+         * @return 現在的日期時間」，並依照的「指定格式」 
+         * 
+         */
+        public static LocalDateTime obtainNow(String strDateTimeFormat) {
+            LocalDateTime nowDateTime = LocalDateTime.now();
+            String strNowDateTime = Provider.parseDateTimeToString(nowDateTime, strDateTimeFormat);
+            return Provider.parse2DateTime(strNowDateTime, strDateTimeFormat);
+        }        
+        
         public static LocalDate obtainToday() {
             return LocalDate.now();
         }
+        
+        public static LocalDate obtainToday(String strDateFormat) {
+            LocalDate today = LocalDate.now();
+            String strToday = Provider.parseDateToString(today, strDateFormat);
+            return Provider.parse2Date(strToday, strDateFormat);
+        }        
 
         public static LocalTime obtainFirstSecondOfDay() {
             return LocalTime.of(0, 0, 0);

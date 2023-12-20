@@ -17,7 +17,7 @@ import tw.dev.tomoaki.util.datetime.DateTimeUtil;
 public class DateTimeUtilTestMain {
 
     public static void main(String[] args) {
-        test2();
+        test3();
     }
 
     private static void test1() {
@@ -41,5 +41,11 @@ public class DateTimeUtilTestMain {
         
         LocalDate date = DateTimeUtil.Converter.convert2Date(utilDate);
         System.out.format("date= %s \n", date);
+    }
+    
+    private static void test3() {
+        LocalDateTime nowDateTime1 = LocalDateTime.now();
+        LocalDateTime nowDateTime2 = DateTimeUtil.Provider.obtainNow();
+        System.out.println(String.format("nowDateTime1= %s, nowDateTime2= %s", nowDateTime1, nowDateTime2));
     }
 }

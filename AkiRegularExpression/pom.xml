@@ -17,11 +17,17 @@
             <url>https://maven.pkg.github.com/TomoakiChenSinica/AkiJavaUtils</url>
         </repository>        
         -->
+        <repository>
+            <id>ccs-packages</id>
+            <name>CCS Packages</name>
+            <url>http://192.168.111.101:8082/repository/ccs-packages</url>
+       
+        </repository>        
         <snapshotRepository>
             <id>ccs-packages</id>
             <name>CCS Packages</name>
-            <url>http://192.168.107.166:8082/repository/ccs-packages</url>
-        </snapshotRepository>           
+            <url>http://192.168.111.101:8082/repository/ccs-packages</url>
+        </snapshotRepository>         
     </distributionManagement>
     
     <licenses>        
