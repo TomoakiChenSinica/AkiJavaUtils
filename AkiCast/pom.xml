@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>tw.dev.tomoaki</groupId>
     <artifactId>AkiCast</artifactId>
-    <version>1.1-SNAPSHOT-2023-09-06</version>
+    <version>1.1-SNAPSHOT-2023-12-21</version>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
@@ -60,7 +60,8 @@
             <id>ccs-packages</id>
             <name>CCS Packages</name>
             <url>http://192.168.111.101:8082/repository/ccs-packages</url>
-        </repository>        
+        </repository>
+        
         <snapshotRepository>
             <id>ccs-packages</id>
             <name>CCS Packages</name>

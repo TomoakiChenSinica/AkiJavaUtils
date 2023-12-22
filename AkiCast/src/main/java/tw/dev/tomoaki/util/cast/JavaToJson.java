@@ -49,7 +49,6 @@ public class JavaToJson {
      * @return 回傳該object 轉成 json 後的樣子，存成字串
      */
     public static String getJsonString(ObjectMapper desigMapper, Object javaObject, Boolean objectIgnoreNull, Boolean mapIgnoreNull) throws JsonProcessingException {
-//        ObjectMapper mapper = (desigMapper == null) ? new ObjectMapper() : desigMapper;
         ObjectMapper mapper = ObjectMapperHelper.tryObtainObjectMapper(desigMapper, allowJavaTime);
         if (objectIgnoreNull == true) {
             mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
@@ -76,8 +75,6 @@ public class JavaToJson {
 
     public static String getJsonString(ObjectMapper desigMapper, Map<?, ?> javaMap, Boolean ignoreNull) throws JsonProcessingException {
         Boolean mapWriteNullValue = !ignoreNull;
-//        ObjectMapper mapper = new ObjectMapper();
-//        ObjectMapper mapper = (desigMapper == null) ? new ObjectMapper() : desigMapper;
         ObjectMapper mapper = ObjectMapperHelper.tryObtainObjectMapper(desigMapper, allowJavaTime);
         mapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, mapWriteNullValue);
 

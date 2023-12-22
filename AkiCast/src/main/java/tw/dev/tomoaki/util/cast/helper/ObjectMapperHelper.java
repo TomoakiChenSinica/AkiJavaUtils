@@ -17,6 +17,7 @@ package tw.dev.tomoaki.util.cast.helper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import static tw.dev.tomoaki.util.cast.JavaToJson.allowJavaTime;
 
@@ -29,12 +30,42 @@ public class ObjectMapperHelper {
     public static ObjectMapper tryObtainObjectMapper(ObjectMapper userDesigMapper, Boolean allowJavaTime) {
         ObjectMapper mapper = (userDesigMapper != null) ? userDesigMapper : ((allowJavaTime) ? obtainSupportJavaTime() : new ObjectMapper());
         return mapper;
-    }    
-    
+    }
+
     public static ObjectMapper obtainSupportJavaTime() {
         return JsonMapper.builder()
                 .addModule(new JavaTimeModule())
                 .build();
-        
+
     }
+
+    
+//    public static JavaTimeModule obtainJavaLoca
+    
+//    public static <T extends ObjectMapper> T tryObtainObjectMapper(T userDesigMapper, Boolean allowJavaTime) {
+//        
+//        ObjectMapper mapper = (userDesigMapper != null) ? userDesigMapper : ((allowJavaTime) ? obtainSupportJavaTime() : new ObjectMapper());
+//        return mapper;
+//    }    
+//    
+//    public static ObjectMapper obtainSupportJavaTime() {
+//        return JsonMapper.builder()
+//                .addModule(new JavaTimeModule())
+//                .build();
+//        
+//    }    
+  
+    
+    
+//    public static XmlMapper tryObtainObjectMapper(XmlMapper userDesigMapper, Boolean allowJavaTime) {
+//        XmlMapper mapper = (userDesigMapper != null) ? userDesigMapper : ((allowJavaTime) ? obtainSupportJavaTime() : new ObjectMapper());
+//        return mapper;
+//    }
+//
+//    public static XmlMapper obtainSupportJavaTime() {
+//        return JsonMapper.builder()
+//                .addModule(new JavaTimeModule())
+//                .build();
+//
+//    }    
 }
