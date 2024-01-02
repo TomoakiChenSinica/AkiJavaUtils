@@ -7,11 +7,15 @@ package tw.dev.tomoaki.sshjext;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.security.Security;
 import java.util.Arrays;
 import net.schmizz.sshj.SSHClient;
 import net.schmizz.sshj.sftp.FileAttributes;
 import net.schmizz.sshj.sftp.SFTPClient;
 import net.schmizz.sshj.transport.TransportException;
+import net.schmizz.sshj.transport.verification.ConsoleKnownHostsVerifier;
+import net.schmizz.sshj.transport.verification.OpenSSHKnownHosts;
 import net.schmizz.sshj.userauth.UserAuthException;
 import net.schmizz.sshj.userauth.keyprovider.KeyProvider;
 import net.schmizz.sshj.xfer.FileTransfer;
@@ -23,6 +27,7 @@ import net.schmizz.sshj.xfer.FileTransfer;
 public class SSHJRemoteFileClient {
     
     protected String knownHostsFilePath;
+    protected String fingerPrint = null; //optional
     protected String remoteHostName;
     
     protected AuthType authType;    
@@ -61,16 +66,29 @@ public class SSHJRemoteFileClient {
             remoteFileClient.authType = AuthType.PASSWORD;
             return remoteFileClient;
         }
+        
+        /**
+         * @param knownHostsFilePath Client OS 上會有「Known Hosts」的檔案。其檔案位置
+         * @param fingerPrint 此 host 的 ssh fingerprint
+         * @param remoteHostName 連線的 Host Name
+         * @param authAccount 連線身分
+         * @param authPassword 連線身分的密碼
+         * 
+         * @return 
+         * 
+         */        
+        public static SSHJRemoteFileClient createAuthByPassword(String knownHostsFilePath, String fingerPrint, String remoteHostName, String authAccount, String authPassword) {
+            SSHJRemoteFileClient remoteFileClient = new SSHJRemoteFileClient();
+            remoteFileClient.knownHostsFilePath = knownHostsFilePath;
+            remoteFileClient.fingerPrint = fingerPrint;
+            remoteFileClient.remoteHostName = remoteHostName;
+            remoteFileClient.authAccount = authAccount;
+            remoteFileClient.authPassword = authPassword;
+            remoteFileClient.authType = AuthType.PASSWORD;
+            return remoteFileClient;
+        }        
 
-//        public static SSHJRemoteFileClient createAuthByPublicKey(String knownHostsFilePath, String remoteHostName, String authAccount, KeyProvider... keyProviders) {
-//            SSHJRemoteFileClient remoteFileClient = new SSHJRemoteFileClient();
-//            remoteFileClient.knownHostsFilePath = knownHostsFilePath;
-//            remoteFileClient.remoteHostName = remoteHostName;
-//            remoteFileClient.authAccount = authAccount;
-//            remoteFileClient.authPublicKeyProviders = keyProviders;
-//            remoteFileClient.authType = AuthType.PUBLIC_KEY;
-//            return remoteFileClient;
-//        }
+
         
         /**
          * @param knownHostsFilePath Client OS 上會有「Known Hosts」的檔案。其檔案位置
@@ -91,13 +109,34 @@ public class SSHJRemoteFileClient {
             return remoteFileClient;
         }
         
+        /**
+         * @param knownHostsFilePath Client OS 上會有「Known Hosts」的檔案。其檔案位置
+         * @param fingerPrint 此 host 的 ssh fingerprint
+         * @param remoteHostName 連線的 Host Name
+         * @param authAccount 連線身分
+         * @param authKeyPaths 連線身分的 Private Key 位置
+         * 
+         * @return 
+         * 
+         */
+        public static SSHJRemoteFileClient createAuthByPublicKey(String knownHostsFilePath, String fingerPrint, String remoteHostName, String authAccount, String... authKeyPaths) {
+            SSHJRemoteFileClient remoteFileClient = new SSHJRemoteFileClient();
+            remoteFileClient.knownHostsFilePath = knownHostsFilePath;
+            remoteFileClient.remoteHostName = remoteHostName;
+            remoteFileClient.authAccount = authAccount;
+            remoteFileClient.authKeyPaths = authKeyPaths;
+            remoteFileClient.authType = AuthType.PUBLIC_KEY;
+            return remoteFileClient;
+        }        
     }
     
     protected SSHClient obtainSSHClient() throws IOException {
         if (this.sshClient == null) {
             tryPrintLog("obtainSSHClient(): knownHostsFilePath= %s, remoteHostName= %s, authAccount= %s", knownHostsFilePath, remoteHostName, authAccount);
+            Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
             sshClient = new SSHClient();
-            sshClient.loadKnownHosts(new File(knownHostsFilePath));
+//            sshClient.loadKnownHosts(new File(knownHostsFilePath));
+            sshClient = processKnownHosts();
             sshClient.connect(remoteHostName);
             sshClient = processClienAuthorization();
         }
@@ -118,6 +157,36 @@ public class SSHJRemoteFileClient {
                 break;
                 
             }
+        }
+        return sshClient;
+    }
+    
+    protected SSHClient processKnownHosts() throws IOException {
+        if(this.knownHostsFilePath == null || this.knownHostsFilePath.trim().isEmpty() ) {
+            tryPrintLog("processKnownHosts(): knownHostsFilePath= %s Is Null Or Trim Empty", knownHostsFilePath);
+            return sshClient;
+        }
+        
+        Path knownHostsPath = Paths.get(this.knownHostsFilePath);
+        if(knownHostsPath == null) {
+            tryPrintLog("processKnownHosts(): Path.get() By knownHostsFilePath= %s Is Null", knownHostsFilePath);
+            return sshClient;
+        }
+        File knownHostsFile = knownHostsPath.toFile();
+        if(knownHostsFile == null || knownHostsFile.exists() == false) {
+            tryPrintLog("processKnownHosts(): The Known Hosts File At knownHostsFilePath= %s Is Not Exist", knownHostsFilePath);
+            return sshClient;
+            
+        }
+        tryPrintLog("processKnownHosts(): Can Find The Known Hosts File At knownHostsFilePath= %s", knownHostsFilePath);        
+        this.sshClient.loadKnownHosts(knownHostsFile);        
+        
+        if(this.fingerPrint != null && !this.fingerPrint.isBlank()) {
+            tryPrintLog("processKnownHosts(): Use fingerPrint= %s", fingerPrint);                    
+            this.sshClient.addHostKeyVerifier(fingerPrint);
+        } else {            
+//            this.sshClient.addHostKeyVerifier(new OpenSSHKnownHosts(knownHostsFile));
+            //this.sshClient.addHostKeyVerifier(new ConsoleKnownHostsVerifier(knownHostsFile));            
         }
         return sshClient;
     }

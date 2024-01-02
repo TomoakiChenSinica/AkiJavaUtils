@@ -18,30 +18,30 @@ import tw.dev.tomoaki.logger.LogHelper;
  * @author arche
  */
 public class JavaLoggerMain {
-
-    public static void main(String[] args) throws InstantiationException, IllegalAccessException {
-//        System.out.println("Hello World!");
-        test4();
-    }
-    
-    private static void test1() {
-        for(StackTraceElement stElement : Thread.currentThread().getStackTrace()) {
-            String className = stElement.getClassName();
-            System.out.println(String.format("className= %s", className));
-        }
-    }
-    
-    private static void test2() {
-        System.out.println(LogHelper.getCaller());
-    }
-    
-    private static void test3() {
-        AkiLogger logger = AkiLogger.Factory.create();
-        logger.printLog("Hello");
-    }
-    
-    private static void test4() throws InstantiationException, IllegalAccessException {
-        AkiSystemLogger<AkiLoggerMainOutput> systemLogger = new AkiSystemLogger(AkiLoggerMainOutput.class);
-        systemLogger.printLog("Hello");
-    }
+//
+//    public static void main(String[] args) throws InstantiationException, IllegalAccessException {
+////        System.out.println("Hello World!");
+//        test4();
+//    }
+//    
+//    private static void test1() {
+//        for(StackTraceElement stElement : Thread.currentThread().getStackTrace()) {
+//            String className = stElement.getClassName();
+//            System.out.println(String.format("className= %s", className));
+//        }
+//    }
+//    
+//    private static void test2() {
+//        System.out.println(LogHelper.getCaller());
+//    }
+//    
+//    private static void test3() {
+//        AkiLogger logger = AkiLogger.Factory.create();
+//        logger.printLog("Hello");
+//    }
+//    
+//    private static void test4() throws InstantiationException, IllegalAccessException {
+//        AkiSystemLogger<AkiLoggerMainOutput> systemLogger = new AkiSystemLogger(AkiLoggerMainOutput.class);
+//        systemLogger.printLog("Hello");
+//    }
 }

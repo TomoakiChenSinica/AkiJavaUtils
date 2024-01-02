@@ -35,19 +35,17 @@
     </properties>
     
     <distributionManagement>
+        <repository>
+            <id>ccs-packages</id>
+            <name>CCS Packages</name>
+            <url>http://192.168.111.101:8082/repository/ccs-packages</url>
+        </repository>        
         <snapshotRepository>
             <id>ccs-packages</id>
             <name>CCS Packages</name>
-            <url>http://192.168.107.166:8082/repository/ccs-packages</url>
-        </snapshotRepository>      
-        <!--
-        <snapshotRepository>
-            <id>archiva-testing</id>
-            <name>Archiva Testing</name>
-            <url>http://localhost:9090/repository/testing/</url>
+            <url>http://192.168.111.101:8082/repository/ccs-packages</url>
         </snapshotRepository>        
-        -->
-    </distributionManagement>
+    </distributionManagement>  
     
     <licenses>        
         <license>

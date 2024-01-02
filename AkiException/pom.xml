@@ -19,11 +19,16 @@
     </properties>
     <distributionManagement>
         <repository>
-            <id>github</id>
-            <name>GitHub OWNER Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/TomoakiChenSinica/AkiJavaUtils</url>
+            <id>ccs-packages</id>
+            <name>CCS Packages</name>
+            <url>http://192.168.111.101:8082/repository/ccs-packages</url>
         </repository>        
-    </distributionManagement>
+        <snapshotRepository>
+            <id>ccs-packages</id>
+            <name>CCS Packages</name>
+            <url>http://192.168.111.101:8082/repository/ccs-packages</url>
+        </snapshotRepository>        
+    </distributionManagement>  
     
     <licenses>        
         <license>

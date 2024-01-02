@@ -22,7 +22,7 @@ public class ListValidator {
     public static Boolean isListExist(List theList) {
         return theList != null && !theList.isEmpty();
     }
-    
+
     public static Boolean isListNotExist(List theList) {
         return theList == null || theList.isEmpty();
     }
@@ -97,6 +97,9 @@ public class ListValidator {
 //            return list2.contains(data1);
 //        }).collect(Collectors.toList()));
 //        list1.stream().distinct().filter(list2::contains).collect(Collectors.toList());
+        if (list1 == null || list2 == null) {
+            return false; // null 不會有 Overlap
+        }
         return !list1.stream().distinct().filter(list2::contains).collect(Collectors.toList()).isEmpty();
     }
 
@@ -112,6 +115,9 @@ public class ListValidator {
      * @return 是否有重疊
      */
     public static <T> Boolean isMatchOverlap(List<T> list1, List<T> list2) {
+        if (list1 == null || list2 == null) {
+            return false; // null 不會有 Overlap
+        }
         return !list1.stream().distinct().filter(list2::contains).collect(Collectors.toList()).isEmpty();
     }
     //忘了 isMatchOverlap 和 isEqualOverlap 的用途差別了，可能要選一個留

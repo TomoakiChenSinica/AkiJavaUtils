@@ -11,21 +11,21 @@ import tw.dev.tomoaki.logger.abst.AbstSystemOutputStream;
  * @author arche
  */
 public class AkiSystemLogger<T extends AbstSystemOutputStream> extends AkiLogger {
-
-//    public AkiSystemLogger() throws InstantiationException, IllegalAccessException {
-//        Type t = getClass().getGenericSuperclass();
-//        ParameterizedType pt = (ParameterizedType) t;
-//        Class<T> clazz = (Class) pt.getActualTypeArguments()[0];
-//        T os = clazz.newInstance();
+//
+////    public AkiSystemLogger() throws InstantiationException, IllegalAccessException {
+////        Type t = getClass().getGenericSuperclass();
+////        ParameterizedType pt = (ParameterizedType) t;
+////        Class<T> clazz = (Class) pt.getActualTypeArguments()[0];
+////        T os = clazz.newInstance();
+////        System.setOut(os);
+////        this.doSetupCaller();
+////        this.doSetupMsgPrefix();
+////    }
+//    public AkiSystemLogger(Class<T> osClazz) throws InstantiationException, IllegalAccessException {
+//        T os = osClazz.newInstance();
 //        System.setOut(os);
 //        this.doSetupCaller();
 //        this.doSetupMsgPrefix();
+//
 //    }
-    public AkiSystemLogger(Class<T> osClazz) throws InstantiationException, IllegalAccessException {
-        T os = osClazz.newInstance();
-        System.setOut(os);
-        this.doSetupCaller();
-        this.doSetupMsgPrefix();
-
-    }
 }
