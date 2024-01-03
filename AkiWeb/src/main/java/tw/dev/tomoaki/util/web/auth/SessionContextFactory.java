@@ -21,6 +21,7 @@ import javax.servlet.http.HttpSession;
 /**
  *
  * @author tomoaki
+ * @param <T> 此 Factory 要產生的 SessionContext 實作類別
  */
 public abstract class SessionContextFactory<T extends BasicSessionContext> {
 
@@ -32,11 +33,20 @@ public abstract class SessionContextFactory<T extends BasicSessionContext> {
 
     public <T extends BasicSessionContext> T obtainSessionContext(HttpSession session, Class<T> clazz, Boolean newInst4Null) throws InstantiationException, IllegalAccessException {
         Object objSessionContext = session.getAttribute(this.obtainSessionAttrKey());
-        return objSessionContext == null ? newInst4Null ? clazz.newInstance() : null : (T) objSessionContext;
+//        return (objSessionContext == null) ? newInst4Null ? clazz.newInstance() : null : (T) objSessionContext;
+        T sessionContext = (objSessionContext == null) ? newInst4Null ? clazz.newInstance() : null : (T) objSessionContext;
+        if(sessionContext != null) {
+            sessionContext.setSessionContextFactory(this);
+        }
+        return sessionContext;
     }
 
     public void saveSessionContext(HttpSession session, T sessionContext) {
         session.setAttribute(this.obtainSessionAttrKey(), sessionContext);
+    }
+    
+    public void revokeSessionContext(HttpSession session) {
+        session.removeAttribute(this.obtainSessionAttrKey());
     }
 
 }

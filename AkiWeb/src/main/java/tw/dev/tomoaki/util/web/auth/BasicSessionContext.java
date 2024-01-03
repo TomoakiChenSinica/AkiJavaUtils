@@ -19,8 +19,10 @@ public abstract class BasicSessionContext {
     private Boolean isAuthorized = false;
     private Boolean isSystemPermitted = false;
     
-    public static String sessionAttrKey = "seSSionCoNtExt"; //FIXME 這個改成可以自訂
+    private SessionContextFactory sessionContextFactory;
     
+    public static String sessionAttrKey = "seSSionCoNtExt"; //FIXME 這個改成可以自訂
+            
     public void init(HttpServletRequest request) {
         this.lastRequestUrl = this.obtainRequestUrlWithQueryParam(request);
         this.remoateAddress = request.getRemoteAddr();
@@ -57,6 +59,10 @@ public abstract class BasicSessionContext {
     public void setIsSystemPermitted(Boolean isSystemPermitted) {
         this.isSystemPermitted = isSystemPermitted;
     }
+
+    public void setSessionContextFactory(SessionContextFactory sessionContextFactory) {
+        this.sessionContextFactory = sessionContextFactory;
+    }
     
     protected String obtainRequestUrlWithQueryParam(HttpServletRequest request) {
         String requestUrl = request.getRequestURL().toString();
@@ -65,11 +71,16 @@ public abstract class BasicSessionContext {
         return requestUrlWithQueryParam;
     }
 
-
     public static <T extends BasicSessionContext> T obtainSessionContext(HttpSession session, Class<T> clazz) throws InstantiationException, IllegalAccessException {
         Object objSessionContext = session.getAttribute(sessionAttrKey);
 //        return objSessionContext == null ? new T() : (T)objSessionContext;
-        return objSessionContext == null ? clazz.newInstance() : (T)objSessionContext;
-        
+        return objSessionContext == null ? clazz.newInstance() : (T)objSessionContext;        
+    }
+    
+    public void revoke(HttpSession session) {
+        if(sessionContextFactory == null) {
+            throw new IllegalArgumentException("sessionContextFactory In This Context Is Null");
+        }
+        sessionContextFactory.revokeSessionContext(session);
     }
 }

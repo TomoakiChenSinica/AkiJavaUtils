@@ -469,6 +469,7 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
     }      
     
     /**
+     * 意思是 findBy AndNotEquals， findBy 搜尋一筆， 邏輯是 Not Equals， 用 And 連結。 <br>
      *
      * @param entityPropNameList 請注意是要使用「(Table所對應的) Entity 之 (Table Column所對應的) Property名稱 」 ，Property Name  清單
      * @param valueList Table Column (即 Entity 之 Property)數值清單
@@ -485,6 +486,8 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
     
     /**
      *
+     * 意思是 findBy AndNotEquals， findBy 搜尋一筆， 邏輯是 Not Equals， 用 And 連結。
+     * 
      * @param pairList 資料對應組
      * @param orderEntityPropNameList 排序方式 Property Name 清單
      * @return 查詢結果
