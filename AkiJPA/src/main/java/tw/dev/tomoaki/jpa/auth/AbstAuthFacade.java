@@ -41,7 +41,7 @@ public abstract class AbstAuthFacade<ENTITY extends Transaction, AUTHINFO extend
     public void doRemove(ENTITY entity, AUTHINFO authInfo) {
         try {
             String identifier = authInfo.getIdentifier();
-            System.out.println(String.format("[%s] doRemove(): enttiy= %s", this.getClass().getSimpleName(), entity));
+//            System.out.println(String.format("[%s] doRemove(): enttiy= %s", this.getClass().getSimpleName(), entity));
             entity.setupIdentifier(identifier);
             getEntityManager().remove(getEntityManager().merge(entity));
         } catch (ConstraintViolationException ex) {

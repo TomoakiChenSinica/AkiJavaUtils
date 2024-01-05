@@ -31,6 +31,7 @@
         <module>AkiLocaleExt</module>
         <module>AkiSSH</module>
         <module>AkiEnumOption</module>
+        <module>AkiReflectionKit</module>
     </modules>
     <!-- 
     不用特別加這個，直接

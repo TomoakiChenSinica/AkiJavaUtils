@@ -11,9 +11,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import tw.dev.tomoaki.javamethod.JavaMethodHelper;
-import tw.dev.tomoaki.javamethod.entity.JavaMethodInfo;
 import tw.dev.tomoaki.article.entity.ArticleTokenOption;
+import tw.dev.tomoaki.reflection.JavaMethodHelper;
+import tw.dev.tomoaki.reflection.entity.JavaMethodInfo;
 
 /**
  *
