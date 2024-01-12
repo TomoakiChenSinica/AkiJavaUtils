@@ -9,8 +9,10 @@ import com.ctc.wstx.stax.WstxOutputFactory;
 import com.fasterxml.jackson.dataformat.xml.XmlFactory;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.io.IOException;
 import javax.xml.stream.XMLInputFactory;
+import static tw.dev.tomoaki.util.cast.JavaToXml.allowJavaTime;
 
 /**
  *
@@ -19,6 +21,8 @@ import javax.xml.stream.XMLInputFactory;
 public class XmlToJava {
 
     public static Boolean NEED_WRITE_XML_DECLARATION = Boolean.FALSE;
+    public static Boolean allowJavaTime = Boolean.FALSE;
+
     
     public static XmlMapper createXmlMapper() {
         XmlMapper xmlMapper = new XmlMapper();
@@ -34,6 +38,10 @@ public class XmlToJava {
             //用configure會不會比較好? 這兩種set相通? 相等?
             XmlMapper xmlMapper = new XmlMapper(new XmlFactory(input, new WstxOutputFactory()));
             xmlMapper.configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, NEED_WRITE_XML_DECLARATION);
+            if (allowJavaTime) {
+                xmlMapper.registerModule(new JavaTimeModule());
+            }            
+            
             javaObject = xmlMapper.readValue(xmlData, objectType);
             return (T) javaObject;
         } else {

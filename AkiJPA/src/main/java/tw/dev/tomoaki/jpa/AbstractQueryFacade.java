@@ -45,6 +45,10 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
     public void flush() {
         this.getEntityManager().flush();
     }
+    
+    public void refresh(T entity) {
+        this.getEntityManager().refresh(entity);
+    }
 
     @Override
     public T find(Object id) {

@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import tw.dev.tomoaki.cast.main.entity.Batter;
+import tw.dev.tomoaki.cast.main.entity.Transaction;
 import tw.dev.tomoaki.util.cast.JavaToJson;
-import tw.dev.tomoaki.util.cast.JsonToJava;
 
 /**
  *
@@ -25,7 +25,7 @@ public class JavaToJsonMain {
      */
     public static void main(String[] args) throws JsonProcessingException, IOException {
         // TODO code application logic here     
-        test2();
+        test3();
     }
 
     protected static void test1() throws JsonProcessingException {
@@ -43,6 +43,13 @@ public class JavaToJsonMain {
         System.out.println("jsonData= " + jsonData);
 //        List<Map> mapList = JsonToJava.getJavaListObject(jsonData, Map.class);
 //        System.out.println(JsonToJava.convertListObjectToListMap(batterList));        
+    }
+    
+    protected static void test3() throws JsonProcessingException {
+        Transaction t = new Transaction();
+        t.setIssueDateTime(LocalDateTime.now());
+        JavaToJson.allowJavaTime = true;
+        System.out.println(JavaToJson.getJsonString(t));
     }
 
 }
