@@ -5,6 +5,7 @@
  */
 package tw.dev.tomoaki.util.entity;
 
+import tw.dev.tomoaki.util.entity.core.KeyPairMap;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -24,9 +25,6 @@ public class NestedMap<Tkey1, Tkey2, Tvalue> implements KeyPairMap<Tkey1, Tkey2,
     protected Boolean keepOrdered4FirstKey = false;
     protected Boolean keepOrdered4SecondKey = false;
 
-//    public KeyPairMap() {
-//        containerMap = new HashMap();
-//    }
     protected NestedMap() {
     }
 
@@ -51,6 +49,7 @@ public class NestedMap<Tkey1, Tkey2, Tvalue> implements KeyPairMap<Tkey1, Tkey2,
         }
     }
 
+//<editor-fold defaultstate="collapsed" desc="設定、初始話此 Entity 的 Methods">
     protected Map<Tkey1, Map<Tkey2, Tvalue>> obtainContainerMap() {
         return keepOrdered4FirstKey ? new LinkedHashMap() : new HashMap();
     }
@@ -62,7 +61,8 @@ public class NestedMap<Tkey1, Tkey2, Tvalue> implements KeyPairMap<Tkey1, Tkey2,
     protected Map<Tkey2, Tvalue> obtainInnerMap() {
         return keepOrdered4SecondKey ? new LinkedHashMap() : new HashMap();
 
-    }
+    }    
+//</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="實作 KeyPairMap">
    @Override

@@ -16,19 +16,9 @@ import java.util.Set;
  * @author tomoaki
  */
 public class DataRecordMap<T, R> {
-    //拉出
-    private Map<T, List<R>> theMap = new HashMap();
     
-    public void createEmptyRecord(T key) {
-        List<R> records = theMap.get(key);
-        if (records == null) {
-            records = new ArrayList();
-            theMap.put(key, records);
-        } else {
-            System.err.println("Record[" + key + "] already exist");
-        }        
-    }
-
+    private Map<T, List<R>> theMap = new HashMap();    
+    
     public void add(T key, R recordMemo) {
         List<R> records = theMap.get(key);
         if (records == null) {
@@ -36,6 +26,16 @@ public class DataRecordMap<T, R> {
         }
         records.add(recordMemo);
         theMap.put(key, records);
+    }
+
+    public void createEmptyRecord(T key) {
+        List<R> records = theMap.get(key);
+        if (records == null) {
+            records = new ArrayList();
+            theMap.put(key, records);
+        } else {
+            System.err.println("Record[" + key + "] already exist");
+        }
     }
 
     public List<R> getRecords(T key) {
@@ -49,18 +49,18 @@ public class DataRecordMap<T, R> {
     public Set<T> keySet() {
         return theMap.keySet();
     }
-    
-    public Map<T, List<R>> asMap(){
+
+    public Map<T, List<R>> asMap() {
         return this.theMap;
     }
-    
+
     /**
-     * 總共有幾種值，<br/>
-     * 也就是 key 的數量
-     * 
+     * 總共有幾種值，也就是統計 key 的數量
+     *
+     * @return 總共有幾種值，也就是統計 key 的數量
      */
-    public Integer numsOfDatas(){
+    public Integer numsOfDatas() {
         return theMap.size();
     }
-    
+
 }

@@ -15,6 +15,7 @@
  */
 package tw.dev.tomoaki.util.entity;
 
+import tw.dev.tomoaki.util.entity.core.KeyPairMap;
 import java.util.Map;
 
 /**
