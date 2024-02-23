@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 import tw.dev.tomoaki.util.regularexpression.helper.RegExpCommonPattern;
 import tw.dev.tomoaki.util.regularexpression.RegExpProcessor;
 import tw.dev.tomoaki.util.regularexpression.RegExpResult;
+import tw.dev.tomoaki.util.regularexpression.impl.StringRegExpUtil;
 
 /**
  *
@@ -21,7 +22,8 @@ public class RegExpProcessorMain {
 //        test();
 //        testUnicode();
 //        testReplace();
-        testCaptureReplace();
+//        testCaptureReplace();
+        test3();
     }
 
     public static void test() {
@@ -39,6 +41,22 @@ public class RegExpProcessorMain {
 //        regExpResult.getCaptureResults().forEach(result -> System.out.println(result));
         System.out.println(regExpResult.getMatchResults());
         System.out.println(regExpResult.getCaptureResults());
+    }
+
+    public static void test2() {
+        String strRegExp = "^(\\w)";
+        String strArticle = "this is a book";
+        RegExpProcessor processor = RegExpProcessor.Factory.create(strRegExp);
+        RegExpResult result = processor.processMatch(strArticle);
+        System.out.println(processor.match(strArticle));
+        System.out.println(result.isFind());
+        System.out.println(result.getMatchResults());
+        System.out.println(result.getCaptureResults());
+    }
+
+    public static void test3() {
+        String strArticle = "this is a book";
+        System.out.println(StringRegExpUtil.capitalize(strArticle));
     }
 
     public static void testCapture() {
@@ -81,7 +99,7 @@ public class RegExpProcessorMain {
         RegExpResult result = processor.processMatch(article);
         System.out.println(result.isFind());
         System.out.println(result.getMatchResults());
-        System.out.println(processor.processFormatReplace(article, "<a href=\"" + RegExpProcessor.formatReplaceToken + "\" target=\"_blank\">" + RegExpProcessor.formatReplaceToken + " </a>"));
+        System.out.println(processor.processFormatReplace(article, "<a href=\"" + RegExpProcessor.FORMAT_REPLACE_TOKEN + "\" target=\"_blank\">" + RegExpProcessor.FORMAT_REPLACE_TOKEN + " </a>"));
 
     }
 
@@ -91,12 +109,8 @@ public class RegExpProcessorMain {
         RegExpResult result = processor.processMatch(article);
         System.out.println(result.isFind());
         System.out.println(result.getMatchResults());
-    }   
-    
-//    public static void testPureMatcherReplace() {
-//        Pattern pattern 
-//    }
-    
+    }
+
     public static void testCaptureReplace() {
         String article = "This is a book, https://stackoverflow.com";
         String pattern = RegExpCommonPattern.PURE_HTML_URL;
@@ -105,8 +119,6 @@ public class RegExpProcessorMain {
         System.out.println(result.isFind());
         System.out.println(result.getMatchResults());
         System.out.println(processor.processCaptureReplace(article, "<a href=\"$1\">$1</a>"));
-    
+
     }
 }
-
-

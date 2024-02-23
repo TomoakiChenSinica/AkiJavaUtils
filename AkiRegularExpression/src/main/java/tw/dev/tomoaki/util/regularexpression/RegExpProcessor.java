@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 public class RegExpProcessor {
 
     private Pattern thePattern;
-    public static final String formatReplaceToken = "%s";
+    public static final String FORMAT_REPLACE_TOKEN = "%s";
 
     protected RegExpProcessor() {
     }
@@ -31,42 +31,57 @@ public class RegExpProcessor {
             return regExp;
         }
     }
-    
+
     public Boolean match(String input) {
         Matcher matcher = thePattern.matcher(input);
         return matcher.find();
     }
-            
+
     public RegExpResult processMatch(String input) {
         Matcher matcher = this.thePattern.matcher(input);
-        return RegExpResult.Factory.create(matcher); 
+        return RegExpResult.Factory.create(matcher);
     }
-    
-    
+
     /**
-     * 
+     *
      * 將尋找到的字，用指定的 pattern (可被包含進去)更換調 input
-     * 
+     *
      * @param input 要進行尋找並更換的文字
      * @param formatPattern 替換的pattern
      * @return 將input的字串進行替換過後的結果
      */
     public String processFormatReplace(String input, String formatPattern) {
         Matcher matcher = this.thePattern.matcher(input);
-        RegExpResult result = RegExpResult.Factory.create(matcher); 
+        RegExpResult result = RegExpResult.Factory.create(matcher);
         String replaceResult = input;
-        if(result.isFind()) {
+        if (result.isFind()) {
             List<String> groupResultList = result.getMatchResults();
-            for(String groupResult : groupResultList) {
-                String partResult = formatPattern.replace(formatReplaceToken, groupResult);
+            for (String groupResult : groupResultList) {
+                String partResult = formatPattern.replace(FORMAT_REPLACE_TOKEN, groupResult);
                 replaceResult = replaceResult.replaceAll(thePattern.pattern(), partResult);
             }
         }
         return replaceResult;
     }
+
+//    public String processCaptureReplace(String input, String regExpCaptureReplacePattern) {
+//        Matcher matcher = this.thePattern.matcher(input);
+//        return matcher.replaceAll(regExpCaptureReplacePattern);
+//    }
     
     public String processCaptureReplace(String input, String regExpCaptureReplacePattern) {
-        Matcher matcher = this.thePattern.matcher(input);
-        return matcher.replaceAll(regExpCaptureReplacePattern);        
+        if(!regExpCaptureReplacePattern.contains("$1")) {
+            throw new IllegalArgumentException("There is no token'$1' for capture");
+        }
+        return processReplace(input, regExpCaptureReplacePattern);
     }    
+    
+
+    public String processReplace(String input, String strReplace) {
+        Matcher matcher = this.thePattern.matcher(input);
+        return matcher.replaceAll(strReplace);
+    }    
+    
+    
+    
 }
