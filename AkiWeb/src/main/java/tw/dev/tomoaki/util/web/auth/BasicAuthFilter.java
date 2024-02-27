@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -26,10 +27,12 @@ import javax.servlet.http.HttpSession;
 /**
  *
  * @author Tomoaki Chen
+ * @param <SESSION_CONTEXT>
+ * @param <SESSION_CONTEXT_FACTORY>
  */
 public abstract class BasicAuthFilter<SESSION_CONTEXT extends BasicSessionContext, SESSION_CONTEXT_FACTORY extends SessionContextFactory<SESSION_CONTEXT>> implements Filter {
 
-    private Boolean printLog = false;
+    protected Boolean printLog = false;
     private FilterConfig filterConfig = null;
 
     @Override
@@ -70,14 +73,34 @@ public abstract class BasicAuthFilter<SESSION_CONTEXT extends BasicSessionContex
             if (printLog) {
                 System.out.format("[%s] doFilter()", this.getClass().getSimpleName());
             }
+            HttpServletRequest req = (HttpServletRequest) request;
+            HttpServletResponse resp = (HttpServletResponse) response;
+            HttpSession session = req.getSession();
+            String requestURL = req.getRequestURI();
 
             doBeforeProcessing(request, response);
 
             Throwable problem = null;
             try {
-                if (this.isAuthenticated(request, response) && this.isSystemPermitted(request, response)) {
+                /*if (this.isAuthenticated(request, response) && this.isSystemPermitted(request, response)) {
                     chain.doFilter(request, response);
-                }
+                }*/
+                if(!this.isAuthenticated(req, resp, session)) {
+                //if (!(isAuthenticated = this.isAuthenticated(req, resp, session))) {
+                    this.redirect2LoginPage(req, resp, session);
+                    return;
+                //} else if (!(isPermitted = this.isSystemPermitted(req, resp, session))) {
+                } else if (!this.isSystemPermitted(req, resp, session)) {
+                    if(this.tryRedirect2PermissionDeninedPage(req, resp, session)) return;
+                }/*else {
+                    if (printLog) {
+                        System.out.format("[%s] doBeforeProcessing(): isAuthenticated", this.getClass().getSimpleName());
+                    }
+                }*/
+                if (printLog) {
+                    System.out.format("[%s] doBeforeProcessing(): Is Authenticated, Will Go To %s", this.getClass().getSimpleName(), requestURL);
+                }                
+                chain.doFilter(request, response);                                               
             } catch (Throwable t) {
                 // If an exception is thrown somewhere down the filter chain,
                 // we still want to execute our after processing, and then
@@ -105,26 +128,33 @@ public abstract class BasicAuthFilter<SESSION_CONTEXT extends BasicSessionContex
     }
 
     private void doBeforeProcessing(ServletRequest request, ServletResponse response) throws IOException, ServletException, InstantiationException, IllegalAccessException {
-        if (printLog) {
-            System.out.format("[%s] doBeforeProcessing()", this.getClass().getSimpleName());
-        }
-
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
         HttpSession session = req.getSession();
-
-        if (!this.isAuthenticated(req, resp, session)) {
+        
+        if (printLog) {
+            String requestURI = req.getRequestURI();
+            System.out.format("[%s] doBeforeProcessing(): requestURI= %s", this.getClass().getSimpleName(), requestURI);
+        }
+        
+      
+        Boolean isAuthenticated, isPermitted, isAfterNoPermission;
+        if(!this.isAuthenticated(req, resp, session)) {
+        //if (!(isAuthenticated = this.isAuthenticated(req, resp, session))) {
             this.redirect2LoginPage(req, resp, session);
             return;
+        //} else if (!(isPermitted = this.isSystemPermitted(req, resp, session))) {
         } else if (!this.isSystemPermitted(req, resp, session)) {
             this.tryRedirect2PermissionDeninedPage(req, resp, session);
             return;
-        } else {
+        }/*else {
             if (printLog) {
                 System.out.format("[%s] doBeforeProcessing(): isAuthenticated", this.getClass().getSimpleName());
             }
+        }*/
+        if (printLog) {
+            System.out.format("[%s] doBeforeProcessing(): Is Authenticated", this.getClass().getSimpleName());
         }
-
     }
 
     protected void doAfterProcessing(ServletRequest request, ServletResponse response) throws IOException, ServletException {
@@ -133,42 +163,46 @@ public abstract class BasicAuthFilter<SESSION_CONTEXT extends BasicSessionContex
         }
     }
 
+//<editor-fold defaultstate="collapsed" desc="輔助 Methods，已實作的 Methods">
     protected void redirect2LoginPage(HttpServletRequest req, HttpServletResponse resp, HttpSession session) throws IOException, ServletException {
         this.saveOriUrl(req, resp, session);
         if (printLog) {
             System.out.format("[%s] redirect2LoginPage(HttpServletRequest, HttpServletResponse, HttpSession): loginPageUrl= %s", this.getClass().getSimpleName(), this.getLoginPageUrl());
         }
-        resp.sendRedirect(this.getLoginPageUrl());
+        String redirectURL = this.getLoginPageUrl();
+        // resp.sendRedirect();
+        trySendRedirect(req, resp, redirectURL);
     }
 
-    protected void tryRedirect2PermissionDeninedPage(HttpServletRequest req, HttpServletResponse resp, HttpSession session) throws IOException {
+    protected Boolean tryRedirect2PermissionDeninedPage(HttpServletRequest req, HttpServletResponse resp, HttpSession session) throws IOException {
         String permissionDeninedPageURL = null;
         try {
             permissionDeninedPageURL = getSystemPermissionDeniedPageUrl();
         } catch (UnsupportedOperationException ex) {
+            ex.printStackTrace();
         }
 
         String finalRedirectURL;
         if (permissionDeninedPageURL != null && !permissionDeninedPageURL.trim().isEmpty()) {
             finalRedirectURL = permissionDeninedPageURL;
         } else {
+            if (this.printLog) {
+                String msgFmt = "[%s] tryRedirect2PermissionDeninedPage(HttpServletRequest, HttpServletResponse, HttpSession): Will Try To Remove SessionContext And Redriect To Login Page.";
+                System.out.format(msgFmt);
+            }              
             finalRedirectURL = this.getLoginPageUrl();
             this.tryRemoveSessionContext(req, resp, session);
         }
-        if (printLog) {
-            String msgFmt = "[%s] tryRedirect2PermissionDeninedPage(HttpServletRequest, HttpServletResponse, HttpSession): permissionDeninedPageURL= %s, finalRedirectURL= %s";
-            System.out.format(msgFmt, this.getClass().getSimpleName(), permissionDeninedPageURL, finalRedirectURL);
-        }
-        resp.sendRedirect(finalRedirectURL);
+        return trySendRedirect(req, resp, finalRedirectURL);
     }
-    
+
     private void tryRemoveSessionContext(HttpServletRequest req, HttpServletResponse resp, HttpSession session) {
         try {
             this.removeSessionContext(req, resp, session);
-        } catch(UnsupportedOperationException ex) {
+        } catch (UnsupportedOperationException ex) {
             String msgFmt = "[%s] tryRemoveSessionContext(HttpServletRequest, HttpServletResponse, HttpSession): removeSessionContext(HttpServletRequest, HttpServletResponse, HttpSession) Not Supported, Ignore To Remove SessionContext";
-            System.out.format(msgFmt, this.getClass().getSimpleName());            
-        } catch(Exception ex) {
+            System.out.format(msgFmt, this.getClass().getSimpleName());
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -251,20 +285,6 @@ public abstract class BasicAuthFilter<SESSION_CONTEXT extends BasicSessionContex
         return sessionContext != null && sessionContext.getIsSystemPermitted();
     }
 
-    protected abstract Class<SESSION_CONTEXT> getSessionContextClazz();
-
-    protected abstract String getLoginPageUrl();
-
-    protected abstract String getSystemPermissionDeniedPageUrl();
-
-    protected abstract String getDefaultPageUrl();
-
-    protected abstract Boolean getPrintLog();
-
-    protected abstract SESSION_CONTEXT_FACTORY obtainSessionContextFactory();
-
-    protected abstract void removeSessionContext(HttpServletRequest req, HttpServletResponse resp, HttpSession session) throws IOException, ServletException;
-    
     private void sendProcessingError(Throwable t, ServletResponse response) {
         String stackTrace = getStackTrace(t);
 
@@ -312,5 +332,40 @@ public abstract class BasicAuthFilter<SESSION_CONTEXT extends BasicSessionContex
     public void log(String msg) {
         filterConfig.getServletContext().log(msg);
     }
+    
+    protected Boolean trySendRedirect(HttpServletRequest request, HttpServletResponse response, String redirectURL) throws IOException {
+        // Boolean needRedirect = false;
+        String requestURL = request.getRequestURI();
+        if(!Objects.equals(requestURL, redirectURL)) {
+            if (printLog) {
+                String msgFmt = "[%s] trySendRedirect(): requestURL= %s, redirectURL= %s, Do Redriect";
+                System.out.format(msgFmt, this.getClass().getSimpleName(), requestURL, redirectURL);
+            }            
+            response.sendRedirect(redirectURL);
+            return true;
+        }
+        if (printLog) {
+            String msgFmt = "[%s] trySendRedirect(): requestURL= %s, redirectURL= %s, Will Not Do Redriect";
+            System.out.format(msgFmt, this.getClass().getSimpleName(), requestURL, redirectURL);
+        }        
+        return false;
+    }
+//</editor-fold>
 
+    
+//<editor-fold defaultstate="collapsed" desc="輔助 Methods，待實作的 Methods">
+    protected abstract Class<SESSION_CONTEXT> getSessionContextClazz();
+
+    protected abstract String getLoginPageUrl();
+
+    protected abstract String getSystemPermissionDeniedPageUrl();
+
+    protected abstract String getDefaultPageUrl();
+
+    protected abstract Boolean getPrintLog();
+
+    protected abstract SESSION_CONTEXT_FACTORY obtainSessionContextFactory();
+
+    protected abstract void removeSessionContext(HttpServletRequest req, HttpServletResponse resp, HttpSession session) throws IOException, ServletException;
+//</editor-fold>           
 }
