@@ -5,6 +5,7 @@
 package tw.dev.tomoaki.jpa.query.nativesql;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -34,8 +35,6 @@ public class PreparedNativeQueryFactory {
         public static PreparedNativeQueryFactory obtain(EntityManager entityManager, String nativeSql, Class clazz) {
             PreparedNativeQueryFactory nativeQueryFactory = new PreparedNativeQueryFactory();
             nativeQueryFactory.em = entityManager;
-//            nativeQueryFactory.nativeSql = nativeSql;
-//            nativeQueryFactory.clazz = clazz;
             nativeQueryFactory.init(clazz, nativeSql);
             nativeQueryFactory.doSetupPersistanceQuery();
             return nativeQueryFactory;
@@ -120,6 +119,17 @@ public class PreparedNativeQueryFactory {
         } catch (Exception ex) {
             throw new PreparedNativeQueryException(ex);
         }
+    }
+    
+    public PreparedNativeQueryFactory setParam(Object[] dataArr) {
+        this.doValidateCanSetParam();
+        try {
+            if(this.autoFixList) dataArr = (dataArr == null) ? Arrays.asList().toArray() : dataArr;
+            this.persistanceNativeQuery = PreparedNativeQueryParamHelper.setParam(persistanceNativeQuery, index++, em, dataArr);
+            return this;
+        } catch (Exception ex) {
+            throw new PreparedNativeQueryException(ex);
+        }        
     }
 
     public Query produce() {

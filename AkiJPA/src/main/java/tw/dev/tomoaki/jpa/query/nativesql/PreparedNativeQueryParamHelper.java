@@ -19,6 +19,39 @@ import javax.persistence.Query;
  */
 public class PreparedNativeQueryParamHelper {
 
+    public static Query setParam(Query query, Integer index, Date desigDate) {
+        if (desigDate == null) {
+            throw new IllegalArgumentException("desigDate Is Null");
+        }
+        query.setParameter(index, new Timestamp(desigDate.getTime()));
+        return query;
+    }
+
+    public static Query setParam(Query query, Integer index, EntityManager em, List<?> dataList) throws SQLException {
+        query.setParameter(index, obtainTextSqlArray(em, dataList));
+        return query;
+    }
+
+    public static Query setParam(Query query, Integer index, EntityManager em, Object[] dataArr) throws SQLException {
+        query.setParameter(index, obtainTextSqlArray(em, dataArr));
+        return query;
+    }
+
+    public static Array obtainTextSqlArray(EntityManager em, Object[] dataArr) throws SQLException {
+        if (dataArr == null) {
+            throw new IllegalArgumentException("dataArr is Null");
+        }
+        return em.unwrap(Connection.class).createArrayOf("text", dataArr);
+    }
+
+    public static Array obtainTextSqlArray(EntityManager em, List<?> dataList) throws SQLException {
+        if (dataList == null) {
+            throw new IllegalArgumentException("dataList Is Null");
+        }
+        return em.unwrap(Connection.class).createArrayOf("text", dataList.toArray());
+    }
+
+//<editor-fold defaultstate="collapsed" desc="暫時 Comment 掉的 Code">
 //    public static Query setParam(Query query, Integer index, LocalDate desigDate) {
 //        if(desigDate == null) {
 //            throw new IllegalArgumentException("desigDate Is Null");
@@ -30,25 +63,6 @@ public class PreparedNativeQueryParamHelper {
 //        }
 //        query.setParameter(index, desigDate.);
 //        
-//    }
-    
-    public static Query setParam(Query query, Integer index, Date desigDate) {
-        if (desigDate == null) {
-            throw new IllegalArgumentException("desigDate Is Null");
-        }
-        query.setParameter(index, new Timestamp(desigDate.getTime()));
-        return query;
-    }
-    
-    public static Query setParam(Query query, Integer index, EntityManager em, List<?> dataList) throws SQLException {
-        query.setParameter(index, obtainTextSqlArray(em, dataList));
-        return query;
-    }    
-
-    public static Array obtainTextSqlArray(EntityManager em, List<?> dataList) throws SQLException {
-        if (dataList == null) {
-            throw new IllegalArgumentException("dataList Is Null");
-        }
-        return em.unwrap(Connection.class).createArrayOf("text", dataList.toArray());
-    }
+//    }    
+//</editor-fold>
 }

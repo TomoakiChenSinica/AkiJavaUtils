@@ -22,10 +22,19 @@ import tw.dev.tomoaki.util.string.AkiStringUtil;
  * @author tomoaki
  */
 public class TestMain {
- 
+
     public static void main(String[] args) {
+        test2();
+    }
+
+    protected static void test1() {
         String msg = "br>需檢查資訊設備，理由為: 出差人有薪資計畫為核心研究計畫: 「(3006) 資訊科學研究-行政與技術業務」\\r\\n 前往或過境特定國家(地區)需完成資安相關程序。系統會寄送相關規定，請務必依照信件辦理。";
         System.out.println(msg);
         System.out.println(AkiStringUtil.parseHtmlFormat(msg));
+    }
+    
+    protected static void test2() {
+        final String text1 = "helloWorld";
+        System.out.println(AkiStringUtil.capitalizeHeader(text1, 2));
     }
 }

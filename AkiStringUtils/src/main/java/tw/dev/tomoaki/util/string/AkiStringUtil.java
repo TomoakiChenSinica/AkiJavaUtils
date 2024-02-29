@@ -80,4 +80,20 @@ public class AkiStringUtil {
     public static String trimUnicodeIllegalSafely(String str) {
         return (str == null) ? null : str.replaceAll("\\p{C}", ""); //詳情請看 AkiRegularExpression 的 RegExpCommonPattern 中關於 Unicode，下半段
     }
+    
+    /*
+    public static String capitalize(String oriText, Integer start, Integer end) {
+        
+        String headLetter = fieldName.substring(0, 0);
+        String otherLetters = fieldName.substring(1);
+        return GETTER_PREFIX.concat(headLetter.toUpperCase()).concat(otherLetters);
+        
+    }
+    */
+    public static String capitalizeHeader(String oriText, Integer charCount) {
+        String headerLetter = oriText.substring(0, 0 + charCount);
+        String otherLetters = oriText.substring(charCount);       
+        return headerLetter.toUpperCase().concat(otherLetters);
+        
+    }    
 }
