@@ -6,6 +6,7 @@
 package tw.dev.tomoaki.util.datetime;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -500,5 +501,53 @@ public class DateTimeUtil {
             }
         }
     }
+    
+    
+//<editor-fold defaultstate="collapsed" desc="以下從 BPM Copy 過來">
+
+    public static class Parser {
+        public static Date doParse(String strDate, String format) throws ParseException{
+            if(strDate == null){
+                return null;
+            }
+            SimpleDateFormat timeFormat = new SimpleDateFormat(format);
+            Date theDate = timeFormat.parse(strDate);
+            return theDate;
+        }
+    }
+    
+    public static class Formatter {
+        public static final String FORMAT_DATE = "yyyy-MM-dd";
+        public static final String FORMAT_DATETIME = "yyyy-MM-dd HH:mm:ss";                
+        public static final String FORMAT_DATE_ZH = "yyyy年MM月dd日";
+        public static final String FORMAT_DATETIME_ZH = "yyyy年MM月dd日 HH時mm分ss秒";        
+        
+        public static String doFormat(Date theDate, String format){
+            if(theDate == null){
+                return null;
+            }
+            SimpleDateFormat timeFormat = new SimpleDateFormat(format);
+            String strTheDate = timeFormat.format(theDate);            
+            return strTheDate;
+        }
+        
+        public static String doFormat2Date(Date theDate){
+            return doFormat(theDate, FORMAT_DATE);
+        }        
+        
+        public static String doFormat2DateTime(Date theDate){
+            return doFormat(theDate, FORMAT_DATETIME);
+        }            
+        
+        public static String doFormat2ZhDate(Date theDate){
+            return doFormat(theDate, FORMAT_DATE_ZH);
+        }
+        
+        public static String doFormat2ZhDateTime(Date theDate){
+            return doFormat(theDate, FORMAT_DATETIME_ZH);
+        }        
+    }    
+//</editor-fold>
+    
 
 }
