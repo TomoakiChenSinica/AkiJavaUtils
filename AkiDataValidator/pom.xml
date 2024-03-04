@@ -6,9 +6,9 @@
     <artifactId>AkiDataValidator</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>AkiTaiwanDataValidtor</module>
         <module>AkiCommonDataValidator</module>
-        <module>AkiIPValidator</module>
+        <module>AkiIPValidator</module>        
+        <module>AkiTaiwanDataValidtor</module>
     </modules>
     <dependencies>
         <dependency>

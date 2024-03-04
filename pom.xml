@@ -7,6 +7,7 @@
     <version>1.6-2023-.10</version>
     <packaging>pom</packaging>
     <modules>
+        <!--
         <module>AkiSecurity</module>
         <module>AkiDataValidator</module>
         <module>AkiStringUtils</module>
@@ -32,6 +33,30 @@
         <module>AkiSSH</module>
         <module>AkiEnumOption</module>
         <module>AkiReflectionKit</module>
+        -->
+        <module>AkiCast</module>
+        <module>AkiCSSInliner</module>
+        <module>AkiDataUtils</module>
+        <module>AkiDataValidator</module>
+        <module>AkiDateTime</module>
+        <module>AkiDateTimeFormat</module>
+        <module>AkiEntity</module>
+        <module>AkiEnumOption</module>
+        <module>AkiException</module>
+        <module>AkiFileUtils</module>
+        <module>AkiFramework</module>
+        <module>AkiGoogleCalendar</module>
+        <module>AkiHttp</module>
+        <module>AkiImageUtils</module>
+        <module>AkiJPA</module>
+        <module>AkiLocaleExt</module>
+        <module>AkiLogger</module>
+        <module>AkiMail</module>
+        <module>AkiRegularExpression</module>
+        <module>AkiReflectionKit</module>
+        <module>AkiSSH</module>
+        <module>AkiStringUtils</module>
+        <module>AkiWeb</module>        
     </modules>
     <!-- 
     不用特別加這個，直接

@@ -6,8 +6,8 @@
     <artifactId>AkiFileUtils</artifactId>
     <packaging>pom</packaging>
     <modules>
+        <module>AkiArchiveFile</module>        
         <module>AkiExcel</module>
-        <module>AkiArchiveFile</module>
         <module>AkiFileExplorer</module>
         <module>AkiFileIOUtils</module>
     </modules>

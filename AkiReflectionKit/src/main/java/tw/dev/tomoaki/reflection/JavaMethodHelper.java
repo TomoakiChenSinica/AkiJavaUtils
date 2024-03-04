@@ -49,6 +49,7 @@ public class JavaMethodHelper {
 //    }
 
 //</editor-fold>
+    
     public static List<JavaMethodInfo> obtainPureMethodOnly(Object ownMethodObject, Method[] methods) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         List<JavaMethodInfo> methodInfoList;
         if (methods == null || methods.length == 0) {

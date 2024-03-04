@@ -4,7 +4,7 @@
  */
 package tw.dev.tomoaki.main.entity;
 
-import tw.dev.tomoaki.datautils.datareflection.Mergeable;
+import tw.dev.tomoaki.datautils.reflectionext.Mergeable;
 
 /**
  *
