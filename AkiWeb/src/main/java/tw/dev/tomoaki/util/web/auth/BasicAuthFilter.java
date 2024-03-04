@@ -136,25 +136,6 @@ public abstract class BasicAuthFilter<SESSION_CONTEXT extends BasicSessionContex
             String requestURI = req.getRequestURI();
             System.out.format("[%s] doBeforeProcessing(): requestURI= %s", this.getClass().getSimpleName(), requestURI);
         }
-        
-      
-        Boolean isAuthenticated, isPermitted, isAfterNoPermission;
-        if(!this.isAuthenticated(req, resp, session)) {
-        //if (!(isAuthenticated = this.isAuthenticated(req, resp, session))) {
-            this.redirect2LoginPage(req, resp, session);
-            return;
-        //} else if (!(isPermitted = this.isSystemPermitted(req, resp, session))) {
-        } else if (!this.isSystemPermitted(req, resp, session)) {
-            this.tryRedirect2PermissionDeninedPage(req, resp, session);
-            return;
-        }/*else {
-            if (printLog) {
-                System.out.format("[%s] doBeforeProcessing(): isAuthenticated", this.getClass().getSimpleName());
-            }
-        }*/
-        if (printLog) {
-            System.out.format("[%s] doBeforeProcessing(): Is Authenticated", this.getClass().getSimpleName());
-        }
     }
 
     protected void doAfterProcessing(ServletRequest request, ServletResponse response) throws IOException, ServletException {
@@ -193,7 +174,7 @@ public abstract class BasicAuthFilter<SESSION_CONTEXT extends BasicSessionContex
             finalRedirectURL = this.getLoginPageUrl();
             this.tryRemoveSessionContext(req, resp, session);
         }
-        return trySendRedirect(req, resp, finalRedirectURL);
+         return trySendRedirect(req, resp, finalRedirectURL);
     }
 
     private void tryRemoveSessionContext(HttpServletRequest req, HttpServletResponse resp, HttpSession session) {
@@ -350,6 +331,27 @@ public abstract class BasicAuthFilter<SESSION_CONTEXT extends BasicSessionContex
         }        
         return false;
     }
+    
+    
+    /*
+    protected Boolean needSendRedirect(HttpServletRequest request, String redirectURL)  {
+        // Boolean needRedirect = false;
+        String requestURL = request.getRequestURI();
+        if(!Objects.equals(requestURL, redirectURL)) {
+            if (printLog) {
+                String msgFmt = "[%s] needSendRedirect(): requestURL= %s, redirectURL= %s, Need Redriect";
+                System.out.format(msgFmt, this.getClass().getSimpleName(), requestURL, redirectURL);
+            }            
+            return true;
+        }
+        if (printLog) {
+            String msgFmt = "[%s] needSendRedirect(): requestURL= %s, redirectURL= %s, Not Need Redriect";
+            System.out.format(msgFmt, this.getClass().getSimpleName(), requestURL, redirectURL);
+        }        
+        return false;
+    }*/
+    
+    
 //</editor-fold>
 
     

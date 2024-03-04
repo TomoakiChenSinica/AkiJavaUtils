@@ -63,17 +63,16 @@ public class POJOReflector {
         if (objectValue != null) {
             setter.invoke(mergedObj, /*fieldType.cast(objectValue)*/ objectValue);
         }
-    }
-
+    }    
+    
     public static <T extends Object> Method obtainFieldGetter(Class<T> objectClass, Field objectField, Boolean includeExtension) throws NoSuchMethodException {
         String guessedMethodName = obtainFieldGuessedGetterName(objectField.getName());
         return includeExtension ? objectClass.getMethod(guessedMethodName) : objectClass.getDeclaredMethod(guessedMethodName); //後者不會包含繼承來的，資料來源: https://blog.csdn.net/GuoCong666/article/details/79131280
     }
 
-    public static <T extends Object> Method obtainFieldSetter(Class<T> objectClass, Field objectField, Boolean includeExtension/*, Class<?> paramTypes*/) throws NoSuchMethodException {
+    public static <T extends Object> Method obtainFieldSetter(Class<T> objectClass, Field objectField, Boolean includeExtension) throws NoSuchMethodException {
         Class<?> fieldType = objectField.getType();
         String guessedMethodName = obtainFieldGuessedSetterName(objectField.getName());
-//        System.out.println(String.format("[POJOReflector] obtainFieldSetter(): guessedMethodName= %s, fieldType= %s", guessedMethodName, fieldType));
         return includeExtension ? objectClass.getMethod(guessedMethodName, fieldType) : objectClass.getDeclaredMethod(guessedMethodName, fieldType); //後者不會包含繼承來的，資料來源: https://blog.csdn.net/GuoCong666/article/details/79131280
     }
 
