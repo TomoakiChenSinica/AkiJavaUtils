@@ -13,4 +13,8 @@ public interface Mergeable<T> {
     default T merge(T other) {
         return (T) POJOMerger.doLeftJoinInto(this, other);
     }
+    
+    default T rightJoin(T other) {
+        return (T) POJOMerger.doRightJoinInto(this, other);
+    }
 }

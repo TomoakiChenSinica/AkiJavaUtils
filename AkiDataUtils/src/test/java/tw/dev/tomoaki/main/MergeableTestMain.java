@@ -32,7 +32,11 @@ public class MergeableTestMain {
         POJOAnimal bird = new POJOAnimal("bird", 2l, 2l, 0.3f);
         POJOAnimal fantasy = new POJOAnimal();
         System.out.println(fantasy.merge(bird).merge(cat));
-        System.out.println(fantasy);        
+        System.out.println(fantasy);
+        
+        POJOAnimal fantasy2 = new POJOAnimal();
+        fantasy2.rightJoin(cat).rightJoin(bird);
+        System.out.println(fantasy2);
     }
-    
+
 }
