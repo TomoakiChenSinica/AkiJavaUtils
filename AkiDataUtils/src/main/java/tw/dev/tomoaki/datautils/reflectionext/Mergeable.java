@@ -11,9 +11,6 @@ package tw.dev.tomoaki.datautils.reflectionext;
 public interface Mergeable<T> {
 
     default T merge(T other) {
-        return (T) POJOReflector.merge(this, other);
-//        T result = (T) POJOReflector.merge(this, other);
-//        this = result;
-//        return result;
+        return (T) POJOMerger.doLeftJoinInto(this, other);
     }
 }

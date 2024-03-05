@@ -22,58 +22,23 @@ public class POJOReflector {
     private final static String GETTER_PREFIX = "get";
     private final static String SETTER_PREFIX = "set";
 
-    /**
-     * 將同樣 Entity 的資料進行合併，以越前面的資料為主，假設資料為 Null 會被另外的 Object 資料蓋過去。
-     *
-     * @param <T> 資料格式(Generic Type)
-     * @param majorObj
-     * @param minorObj
-     * @param otherObjs
-     * @return 合併後的資料
-     *
-     */
-    public static <T extends Object> T merge(T majorObj, T minorObj, T... otherObjs) {
+    public static <T extends Object> Object tryGetFieldValue(T object, Field objectField, Boolean includeExtension) {
         try {
-            if (majorObj == null) {
-                throw new IllegalArgumentException("majorObj Is Null");
-            }
-
-            Class objClass = majorObj.getClass();
-            T mergedObj = (T) objClass.getDeclaredConstructor().newInstance();
-            // Stream<T> objStream = Stream.concat(Stream.of(majorObj, minorObj), Stream.of(otherObjs));
-            // List<T> objList = Stream.concat(Stream.of(majorObj, minorObj), Stream.of(otherObjs)).collect(Collectors.toList());
-            List<T> objList = Stream.concat(Stream.of(majorObj, minorObj), Stream.of(otherObjs)).filter(Objects::nonNull).collect(Collectors.toList());
-
-            Field[] fields = objClass.getDeclaredFields();
-            Stream.of(fields).forEach(field -> {
-                try {
-                    Method getter = POJOReflector.obtainFieldGetter(objClass, field, Boolean.FALSE);
-                    Method setter = POJOReflector.obtainFieldSetter(objClass, field, Boolean.FALSE);
-                    Stream<T> objStream = objList.stream();
-                    mergeField(mergedObj, objStream, getter, setter, field);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            });
-            return mergedObj;
-        } catch (IllegalArgumentException | NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | InvocationTargetException ex) {
-            throw new ReflectionExtException(ex);
+            Class objectcClass = object.getClass();
+            Method getter = POJOReflector.obtainFieldGetter(objectcClass, objectField, includeExtension);
+            return getter.invoke(object);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
         }
     }
 
-    protected static <T extends Object> void mergeField(T mergedObj, Stream<T> objStream, Method getter, Method setter, Field field) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        Class<?> fieldType = field.getType();
-        Object objectValue = objStream.map(obj -> {
-            try {
-                return getter.invoke(obj);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                return null;
-            }
-        }).filter(Objects::nonNull).findFirst().orElse(null);
-
-        if (objectValue != null) {
-            setter.invoke(mergedObj, /*fieldType.cast(objectValue)*/ objectValue);
+    public static <T extends Object> Object tryGetFieldValue(T object, Field objectField, Method fieldGetter) {
+        try {
+            return fieldGetter.invoke(object);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
         }
     }
 

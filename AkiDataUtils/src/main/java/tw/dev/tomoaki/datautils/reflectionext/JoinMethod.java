@@ -13,26 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tw.dev.tomoaki.main;
-
-import tw.dev.tomoaki.main.entity.POJOAnimal;
+package tw.dev.tomoaki.datautils.reflectionext;
 
 /**
  *
  * @author tomoaki
  */
-public class MergeableTestMain {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-        POJOAnimal cat = new POJOAnimal("cat", 4l, 0.1f);
-        POJOAnimal bird = new POJOAnimal("bird", 2l, 2l, 0.3f);
-        POJOAnimal fantasy = new POJOAnimal();
-        System.out.println(fantasy.merge(bird).merge(cat));
-        System.out.println(fantasy);        
-    }
+public enum JoinMethod {
     
+    LEFT_JOIN, RIGHT_JOIN;
 }
