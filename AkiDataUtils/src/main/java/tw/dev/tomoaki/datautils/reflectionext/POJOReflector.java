@@ -23,14 +23,26 @@ public class POJOReflector {
     private final static String SETTER_PREFIX = "set";
 
     /**
-     * 以 Major 為主
+     * 將同樣 Entity 的資料進行合併，以越前面的資料為主，假設資料為 Null 會被另外的 Object 資料蓋過去。
+     *
+     * @param <T> 資料格式(Generic Type)
+     * @param majorObj
+     * @param minorObj
+     * @param otherObjs
+     * @return 合併後的資料
+     *
      */
     public static <T extends Object> T merge(T majorObj, T minorObj, T... otherObjs) {
         try {
+            if (majorObj == null) {
+                throw new IllegalArgumentException("majorObj Is Null");
+            }
+
             Class objClass = majorObj.getClass();
             T mergedObj = (T) objClass.getDeclaredConstructor().newInstance();
-//        Stream<T> objStream = Stream.concat(Stream.of(majorObj, minorObj), Stream.of(otherObjs));
-            List<T> objList = Stream.concat(Stream.of(majorObj, minorObj), Stream.of(otherObjs)).collect(Collectors.toList());
+            // Stream<T> objStream = Stream.concat(Stream.of(majorObj, minorObj), Stream.of(otherObjs));
+            // List<T> objList = Stream.concat(Stream.of(majorObj, minorObj), Stream.of(otherObjs)).collect(Collectors.toList());
+            List<T> objList = Stream.concat(Stream.of(majorObj, minorObj), Stream.of(otherObjs)).filter(Objects::nonNull).collect(Collectors.toList());
 
             Field[] fields = objClass.getDeclaredFields();
             Stream.of(fields).forEach(field -> {
@@ -63,8 +75,8 @@ public class POJOReflector {
         if (objectValue != null) {
             setter.invoke(mergedObj, /*fieldType.cast(objectValue)*/ objectValue);
         }
-    }    
-    
+    }
+
     public static <T extends Object> Method obtainFieldGetter(Class<T> objectClass, Field objectField, Boolean includeExtension) throws NoSuchMethodException {
         String guessedMethodName = obtainFieldGuessedGetterName(objectField.getName());
         return includeExtension ? objectClass.getMethod(guessedMethodName) : objectClass.getDeclaredMethod(guessedMethodName); //後者不會包含繼承來的，資料來源: https://blog.csdn.net/GuoCong666/article/details/79131280
