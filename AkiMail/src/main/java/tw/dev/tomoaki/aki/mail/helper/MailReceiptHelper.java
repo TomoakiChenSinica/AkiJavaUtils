@@ -29,8 +29,7 @@ public class MailReceiptHelper {
     public static List<String> analyzeReceiptsByCommaSplit(String strReceipt) {
         return analyzeReceipts(strReceipt, ",");
     }
-    
-    
+        
     public static List<String> analyzeReceipts(String strReceipt, String splitKeyWord) {
         List<String> splitKeyWordList = Arrays.asList(splitKeyWord);
         return analyzeReceipts(strReceipt, splitKeyWordList);

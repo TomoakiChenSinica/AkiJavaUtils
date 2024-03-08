@@ -12,7 +12,6 @@ import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.io.IOException;
 import javax.xml.stream.XMLInputFactory;
-import static tw.dev.tomoaki.util.cast.JavaToXml.allowJavaTime;
 
 /**
  *

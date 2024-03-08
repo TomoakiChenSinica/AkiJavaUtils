@@ -8,6 +8,8 @@ package tw.dev.tomoaki.aki.mail.helper;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
+import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
@@ -29,16 +31,14 @@ public class MessageHelper {
     }
 
     public static MimeMessage setupReceivers(MimeMessage message, String... toAddrs) throws MessagingException {
-        for (String toAddr : toAddrs) {
-            message.addRecipients(Message.RecipientType.TO, toAddr);
-        }
+        Address[] toMailAddresses = MailAddressHelper.tryObtainMailAddresses(toAddrs);
+        message.addRecipients(Message.RecipientType.TO, toMailAddresses);
         return message;
     }
 
     public static MimeMessage setupReceivers(MimeMessage message, List<String> toAddrs) throws MessagingException {
-        for (String toAddr : toAddrs) {
-            message.addRecipients(Message.RecipientType.TO, toAddr);
-        }
+        Address[] toMailAddresses = MailAddressHelper.tryObtainMailAddresses(toAddrs);
+        message.addRecipients(Message.RecipientType.TO, toMailAddresses);
         return message;
     }
 
@@ -57,13 +57,9 @@ public class MessageHelper {
         return message;
     }
 
-//    public static MimeMessage setupPlainTextContent(MimeMessage message)
 //  https://www.javatpoint.com/example-of-sending-attachment-with-email-using-java-mail-api  
     public static MimeMessage setupPlainTextContentWithFile(MimeMessage message, String plainTextContent, String charSet, List<File> fileList) throws MessagingException, IOException {
         Multipart multipart = new MimeMultipart();
-
-//        MimeBodyPart plainTextContentBodyPart = new MimeBodyPart();
-//        plainTextContentBodyPart.setContent(plainTextContent, contentType);
         MimeBodyPart plainTextContentBodyPart = MimeBodyPartHelper.obtain4PlainTextContent(plainTextContent, charSet);
         multipart.addBodyPart(plainTextContentBodyPart);
 
@@ -77,30 +73,23 @@ public class MessageHelper {
 
     public static MimeMessage setupHtmlContentWithFile(MimeMessage message, String htmlContent, String contentType, List<File> fileList) throws MessagingException, IOException {
         Multipart multipart = new MimeMultipart();
-
-//        MimeBodyPart plainTextContentBodyPart = new MimeBodyPart();
-//        plainTextContentBodyPart.setContent(htmlContent, contentType);
-//        multipart.addBodyPart(plainTextContentBodyPart);
         MimeBodyPart htmlContentBodyPart = MimeBodyPartHelper.obtain4HtmlContent(htmlContent, contentType);
         multipart.addBodyPart(htmlContentBodyPart);
-        
+
         for (File file : fileList) {
             MimeBodyPart attachmentBodyPart = MimeBodyPartHelper.obtain4File(file);
             multipart.addBodyPart(attachmentBodyPart);
         }
         message.setContent(multipart);
         return message;
-    }        
+    }
 
-    
     public static MimeMessage setupBodyParts(MimeMessage message, List<MimeBodyPart> bodyPartList) throws MessagingException {
-        Multipart multipart = new MimeMultipart();        
-//        MimeBodyPart htmlContentBodyPart = MimeBodyPartHelper.obtain4HtmlContent(htmlContent, contentType);
-//        multipart.addBodyPart(htmlContentBodyPart);               
-        for(MimeBodyPart bodyPart : bodyPartList) {
+        Multipart multipart = new MimeMultipart();
+        for (MimeBodyPart bodyPart : bodyPartList) {
             multipart.addBodyPart(bodyPart);
         }
         message.setContent(multipart);
-        return message;        
+        return message;
     }
 }
