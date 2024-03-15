@@ -18,6 +18,7 @@ package tw.dev.tomoaki.datakeeper.entity;
 /**
  *
  * @author tomoaki
+ * @param <T> 資料類型
  */
 public interface CachedData<T> {
 

@@ -26,13 +26,14 @@ import tw.dev.tomoaki.util.commondatavalidator.ListValidator;
 /**
  *
  * @author tomoaki
- * 
+ *
  * [JPA Criteria Queries](https://www.baeldung.com/hibernate-criteria-queries)
- * 
+ *
  */
 public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
 
     public static Boolean EVICT_CACHE = Boolean.FALSE;
+    public static Boolean PRINT_LOG = Boolean.FALSE;
 
     protected Class<T> entityClass;
 
@@ -42,10 +43,49 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
         this.entityClass = entityClass;
     }
 
+    /*public void getEntityState(T entity) {
+        return this.getEntityManager().getR
+    }*/
+    /**
+     * https://stackoverflow.com/questions/13135309/how-to-find-out-whether-an-entity-is-detached-in-jpa-hibernate
+     * 注意這只能判斷 entity 是不是 Managed，但有可能是 Detached、Transient、Removed
+     *
+     * @param entity 確認 entity 是否是 Managed 狀態
+     * @return 是否是 Managed 狀態
+     */
+    public Boolean isManaged(T entity) {
+        return this.getEntityManager().contains(entity);
+    }
+
+    public T manage(T entity) {
+        /*if (!this.isManaged(entity)) {
+            this.merge(entity);
+        }
+        return entity;*/
+        return this.isManaged(entity) ? entity : this.merge(entity);
+    }
+
+    /**
+     * 將 entity 從 Detached 轉成 Managed， 所以要注意的是 entity 如果「非 Detached 」則沒用。
+     *
+     * 從 Eclipse 官網的討論串: https://www.eclipse.org/forums/index.php/t/499393/
+     * ，有以下描述: The JPA specification requires that merge() returns the managed version of the detached object (it must be a new reference).
+     *
+     *
+     * @param entity 想要管控(manage)的資料
+     *
+     */
+    public T /*void*/ merge(T entity) {
+        return this.getEntityManager().merge(entity);
+    }
+
+    /**
+     * 將 Managed 的資料存到 DB 
+     */
     public void flush() {
         this.getEntityManager().flush();
     }
-    
+
     public void refresh(T entity) {
         this.getEntityManager().refresh(entity);
     }
@@ -56,7 +96,7 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
         this.tryEvictCache(em, id);
         return em.find(entityClass, id);
     }
-    
+
     @Override
     public List<T> findAll() {
         EntityManager em = getEntityManager();
@@ -64,7 +104,7 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(entityClass));
         return getEntityManager().createQuery(cq).getResultList();
-    }    
+    }
 
     /**
      *
@@ -80,26 +120,27 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
 
 //        cq.orderBy(cb.asc(root.get(entityPropName)));
         cq.orderBy(OrderHelper.createAscOrder(root, cb, entityPropName));
-        
+
         Query query = this.getEntityManager().createQuery(cq);
         return query.getResultList();
     }
-       
+
     @Override
     public List<T> findAllAscOrdered(String... entityPropNames) {
         CriteriaBuilder cb = this.getEntityManager().getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
         Root<T> root = cq.from(entityClass);
-        
+
         cq.orderBy(OrderHelper.createAscOrderList(root, cb, entityPropNames));
-        
+
         Query query = this.getEntityManager().createQuery(cq);
         return query.getResultList();
-    }     
-    
+    }
+
     /**
      *
-     * @param entityPropNameList 請注意是要使用「(Table所對應的) Entity 之 (Table Column所對應的) Property名稱 」
+     * @param entityPropNameList 請注意是要使用「(Table所對應的) Entity 之 (Table Column所對應的)
+     * Property名稱 」
      * @return 查詢結果
      */
     @Override
@@ -107,18 +148,16 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
         CriteriaBuilder cb = this.getEntityManager().getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
         Root<T> root = cq.from(entityClass);
-        
+
 //        List<Order> orderList = entityPropNameList.stream()
 //                .map(propName -> cb.asc(root.get(propName)))
 //                .collect(Collectors.toList());
         List<Order> orderList = OrderHelper.createAscOrderList(root, cb, entityPropNameList);
         cq.orderBy(orderList);
-        
+
         Query query = this.getEntityManager().createQuery(cq);
         return query.getResultList();
-    }    
-    
-
+    }
 
     @Override
     public List<T> findRange(int[] range) {
@@ -142,7 +181,8 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
 //<editor-fold defaultstate="collapsed" desc="findByEqual系列">
     /**
      *
-     * @param entityPropName 請注意是要使用「(Table所對應的) Entity 之 (Table Column所對應的) Property名稱 」
+     * @param entityPropName 請注意是要使用「(Table所對應的) Entity 之 (Table Column所對應的)
+     * Property名稱 」
      * @param value Table Column (即 Entity 之 Property)數值
      * @return 查詢結果
      */
@@ -159,11 +199,11 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
 
         Query query = em.createQuery(cq);
         return query.getResultList();
-        */
+         */
         List<String> orderEntityPropNameList = null;
         return this.findByEquals(entityPropName, value, orderEntityPropNameList);
-    }    
-    
+    }
+
     @Override
     public List<T> findByEquals(String entityPropName, Object value, String... orderEntityPropNames) {
         /*
@@ -177,28 +217,28 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
 
         Query query = em.createQuery(cq);
         return query.getResultList();
-        */
+         */
         return this.findByEquals(entityPropName, value, Arrays.asList(orderEntityPropNames));
-    }    
+    }
 
     @Override
-    public List<T> findByEquals(String entityPropName, Object value, List<String> orderEntityPropNameList) {        
+    public List<T> findByEquals(String entityPropName, Object value, List<String> orderEntityPropNameList) {
         EntityManager em = this.getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
-        this.tryEvictAllCache(em);        
-        Root<T> root = cq.from(entityClass);        
-        
+        this.tryEvictAllCache(em);
+        Root<T> root = cq.from(entityClass);
+
         orderEntityPropNameList = (ListValidator.isListExist(orderEntityPropNameList)) ? orderEntityPropNameList : Arrays.asList(entityPropName);
-        
+
         cq = cq.where(ExpressionHelper.createEqualExpression(root, cb, entityPropName, value));
         cq = cq.orderBy(OrderHelper.createAscOrderList(root, cb, orderEntityPropNameList));
 
         Query query = em.createQuery(cq);
         return query.getResultList();
 
-    }       
-        
+    }
+
     @Override
     public List<T> findByNotEquals(String entityPropName, Object value) {
         /*
@@ -213,15 +253,15 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
 
         Query query = em.createQuery(cq);
         return query.getResultList();
-        */
+         */
         List<String> orderEntityPropNameList = null;
         return this.findByNotEquals(entityPropName, value, orderEntityPropNameList);
     }
-    
+
     @Override
     public List<T> findByNotEquals(String entityPropName, Object value, String... orderEntityPropNames) {
         return this.findByNotEquals(entityPropName, value, Arrays.asList(orderEntityPropNames));
-    }    
+    }
 
     @Override
     public List<T> findByNotEquals(String entityPropName, Object value, List<String> orderEntityPropNameList) {
@@ -230,20 +270,17 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
         CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
         this.tryEvictAllCache(em);
         Root<T> root = cq.from(entityClass);
-        
-        orderEntityPropNameList = (ListValidator.isListExist(orderEntityPropNameList)) ? orderEntityPropNameList : Arrays.asList(entityPropName);        
-        
+
+        orderEntityPropNameList = (ListValidator.isListExist(orderEntityPropNameList)) ? orderEntityPropNameList : Arrays.asList(entityPropName);
+
         cq = cq.where(ExpressionHelper.createNotEqualExpression(root, cb, entityPropName, value));
         cq = cq.orderBy(OrderHelper.createAscOrderList(root, cb, orderEntityPropNameList));
 
         Query query = em.createQuery(cq);
-        return query.getResultList();  
+        return query.getResultList();
     }
-    
 
-    
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="findByAndEqual系列">
     /*
     https://stackoverflow.com/questions/39741718/java-lang-illegalargumentexception-the-attribute-state-id-is-not-present-in-t 
@@ -252,15 +289,16 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
     @Override
     public List<T> findByAndEquals(List<String> entityPropNameList, List<Object> valueList) {
         return this.findByAndEquals(entityPropNameList, valueList, null);
-    }    
-    
+    }
+
     /**
      *
-     * @param entityPropNameList 請注意是要使用「(Table所對應的) Entity 之 (Table Column所對應的) Property名稱 」 ，Property Name  清單
+     * @param entityPropNameList 請注意是要使用「(Table所對應的) Entity 之 (Table Column所對應的)
+     * Property名稱 」 ，Property Name 清單
      * @param valueList Table Column (即 Entity 之 Property)數值清單
      * @param orderEntityPropNameList 排序方式 Property Name 清單
      * @return 查詢結果
-     */    
+     */
     @Override
     public List<T> findByAndEquals(List<String> entityPropNameList, List<Object> valueList, List<String> orderEntityPropNameList) {
         List<KeyValuePair> pairList = KeyValuePairHelper.obtainKeyValuePairList(entityPropNameList, valueList);
@@ -274,14 +312,13 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
      * @param pairList 資料對應組
      * @param orderEntityPropNameList 排序方式 Property Name 清單
      * @return 查詢結果
-     */        
+     */
     @Override
     public List<T> findByAndEqualPairs(List<KeyValuePair> pairList, List<String> orderEntityPropNameList) {
         EntityManager em = this.getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
         Root<T> root = cq.from(entityClass);
-
 
         List<Expression> expressionList = ExpressionHelper.createEqualExpressionList(root, cb, pairList);
 
@@ -297,10 +334,11 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
 
     /**
      *
-     * @param entityPropName 請注意是要使用「(Table所對應的) Entity 之 (Table Column所對應的) Property名稱 」
+     * @param entityPropName 請注意是要使用「(Table所對應的) Entity 之 (Table Column所對應的)
+     * Property名稱 」
      * @param valueList Table Column (即 Entity 之 Property)數值清單
      * @return 查詢結果
-     */     
+     */
     public List<T> findByEqualsAny(String entityPropName, List<Object> valueList) {
         throw new UnsupportedOperationException("Method Not Supported Yet");
         /*
@@ -309,8 +347,8 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
         CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
         Root<T> root = cq.from(entityClass);
         cq.select(root).where(root.get(entityPropName).in(valueList));
-        */
-    }    
+         */
+    }
 //</editor-fold>   
 
 //<editor-fold defaultstate="collapsed" desc="findByOrEqual系列">    
@@ -347,7 +385,6 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
         CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
         Root<T> root = cq.from(entityClass);
 
-
         List<Expression> expressionList = ExpressionHelper.createEqualExpressionList(root, cb, pairList);
 
         orderEntityPropNameList = ListValidator.isListExist(orderEntityPropNameList) ? orderEntityPropNameList : obtainEntityPropNameList(pairList);//pairList.stream().map(pair -> pair.getColName()).collect(Collectors.toList());
@@ -357,18 +394,19 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
                 .collect(Collectors.toList());
 
         // 轉call 更底層
-        return this.findByOr(expressionList, orderList);    
+        return this.findByOr(expressionList, orderList);
     }
 //    public List<T> findBy
 //</editor-fold>        
-    
+
 //<editor-fold defaultstate="collapsed" desc="IN 系列">
     /**
      *
-     * @param entityPropName 請注意是要使用「(Table所對應的) Entity 之 (Table Column所對應的) Property名稱 」
+     * @param entityPropName 請注意是要使用「(Table所對應的) Entity 之 (Table Column所對應的)
+     * Property名稱 」
      * @param valueList Table Column (即 Entity 之 Property)數值清單
      * @return 查詢結果
-     */         
+     */
     @Override
     public List<T> findIn(String entityPropName, List<?> valueList) {
         /*
@@ -381,17 +419,15 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
 
         Query query = em.createQuery(cq);
         return query.getResultList();
-        */
+         */
         List<String> orderEntityPropNameList = null;
         return this.findIn(entityPropName, valueList, orderEntityPropNameList);
-    }    
-        
+    }
+
     @Override
     public List<T> findIn(String entityPropName, List<?> valueList, String... orderEntityPropNames) {
         return this.findIn(entityPropName, valueList, Arrays.asList(orderEntityPropNames));
     }
-    
-    
 
     @Override
     public List<T> findIn(String entityPropName, List<?> valueList, List<String> orderEntityPropNameList) {
@@ -399,19 +435,18 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
         Root<T> root = cq.from(entityClass);
-        
-        orderEntityPropNameList = (ListValidator.isListExist(orderEntityPropNameList)) ? orderEntityPropNameList : Arrays.asList(entityPropName);        
-        
+
+        orderEntityPropNameList = (ListValidator.isListExist(orderEntityPropNameList)) ? orderEntityPropNameList : Arrays.asList(entityPropName);
+
         cq = cq.where(root.get(entityPropName).in(valueList));
         cq = cq.orderBy(OrderHelper.createAscOrderList(root, cb, orderEntityPropNameList));
 
         Query query = em.createQuery(cq);
-        return query.getResultList();        
+        return query.getResultList();
     }
 //</editor-fold>    
-    
+
 //<editor-fold defaultstate="collapsed" desc="Between 或類似「範圍之內」">
-    
     public List<T> findInDateTimeRange(String entityPropName4Since, String entityPropName4Until, LocalDateTime desigDateTime) {
         EntityManager em = this.getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -421,7 +456,7 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
 //        cq.select(root).where(prdcts)
         throw new UnsupportedOperationException("Method Not Supported Yet");
     }
-    
+
 //    public List<T> findBetweenNotNullRange(String entityPropName, Number start, Number end) {
 //        EntityManager em = this.getEntityManager();
 //        CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -442,7 +477,7 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
         javax.persistence.Query query = getEntityManager().createQuery(cq);
         return query.getResultList();
     }
-    
+
     public List<T> findBetweenNotNullRange(String entityPropName, Long start, Long end) {
         EntityManager em = this.getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -453,7 +488,7 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
         javax.persistence.Query query = getEntityManager().createQuery(cq);
         return query.getResultList();
     }
-    
+
     public List<T> findBetweenNotNullRange(String entityPropName, Double start, Double end) {
         EntityManager em = this.getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -463,23 +498,24 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
         cq = cq.select(root).where(expression);
         javax.persistence.Query query = getEntityManager().createQuery(cq);
         return query.getResultList();
-    }        
+    }
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="findByAndNotEqual系列">
     @Override
     public List<T> findByAndNotEquals(List<String> entityPropNameList, List<Object> valueList) {
         return this.findByAndNotEquals(entityPropNameList, valueList, null);
-    }      
-    
+    }
+
     /**
      * 意思是 findBy AndNotEquals， findBy 搜尋一筆， 邏輯是 Not Equals， 用 And 連結。 <br>
      *
-     * @param entityPropNameList 請注意是要使用「(Table所對應的) Entity 之 (Table Column所對應的) Property名稱 」 ，Property Name  清單
+     * @param entityPropNameList 請注意是要使用「(Table所對應的) Entity 之 (Table Column所對應的)
+     * Property名稱 」 ，Property Name 清單
      * @param valueList Table Column (即 Entity 之 Property)數值清單
      * @param orderEntityPropNameList 排序方式 Property Name 清單
      * @return 查詢結果
-     */    
+     */
     @Override
     public List<T> findByAndNotEquals(List<String> entityPropNameList, List<Object> valueList, List<String> orderEntityPropNameList) {
         List<KeyValuePair> pairList = KeyValuePairHelper.obtainKeyValuePairList(entityPropNameList, valueList);
@@ -487,22 +523,22 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
         return this.findByAndNotEqualPairs(pairList, orderEntityPropNameList);
 
     }
-    
+
     /**
      *
      * 意思是 findBy AndNotEquals， findBy 搜尋一筆， 邏輯是 Not Equals， 用 And 連結。
-     * 
+     *
      * @param pairList 資料對應組
      * @param orderEntityPropNameList 排序方式 Property Name 清單
      * @return 查詢結果
-     */        
+     */
     @Override
     public List<T> findByAndNotEqualPairs(List<KeyValuePair> pairList, List<String> orderEntityPropNameList) {
         EntityManager em = this.getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
         Root<T> root = cq.from(entityClass);
-        
+
         List<Expression> expressionList = new ArrayList();
         for (KeyValuePair pair : pairList) {
             String propName = pair.getColName();
@@ -519,21 +555,20 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
 
 //        轉call 更底層
         return this.findByAnd(expressionList, orderList);
-    }        
+    }
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="findByOrNotEquals系列">
-    
     @Override
     public List<T> findByOrNotEquals(List<String> entityPropNameList, List<Object> valueList) {
         return this.findByOrNotEquals(entityPropNameList, valueList, null);
-     }
-    
+    }
+
     @Override
     public List<T> findByOrNotEquals(List<String> entityPropNameList, List<Object> valueList, List<String> orderEntityPropNameList) {
         List<KeyValuePair> pairList = KeyValuePairHelper.obtainKeyValuePairList(entityPropNameList, valueList);
         orderEntityPropNameList = ListValidator.isListExist(orderEntityPropNameList) ? orderEntityPropNameList : obtainEntityPropNameList(pairList);//orderEntityPropNameList;
-        return this.findByOrNotEqualPairs(pairList, orderEntityPropNameList); 
+        return this.findByOrNotEqualPairs(pairList, orderEntityPropNameList);
     }
 
     @Override
@@ -542,7 +577,6 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
         Root<T> root = cq.from(entityClass);
-
 
         List<Expression> expressionList = ExpressionHelper.createNotEqualExpressionList(root, cb, pairList);
 
@@ -553,14 +587,15 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
                 .collect(Collectors.toList());
 
         // 轉call 更底層
-        return this.findByOr(expressionList, orderList);    
+        return this.findByOr(expressionList, orderList);
     }
 //</editor-fold>
-    
+
 //<editor-fold defaultstate="collapsed" desc="核心(?)，可以給無限(?)的查詢條件及排序調建">
     protected List<T> findByAnd(List<Expression> expressionList, List<Order> orderList) {
         EntityManager em = this.getEntityManager();
-        em.getEntityManagerFactory().getCache().evictAll();
+        // em.getEntityManagerFactory().getCache().evictAll();
+        this.tryEvictAllCache(em);
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
 
@@ -571,11 +606,12 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
         Query query = em.createQuery(cq);
         return query.getResultList();
 
-    }    
-    
+    }
+
     protected List<T> findByOr(List<Expression> expressionList, List<Order> orderList) {
         EntityManager em = this.getEntityManager();
-        em.getEntityManagerFactory().getCache().evictAll();
+        // em.getEntityManagerFactory().getCache().evictAll();
+        this.tryEvictAllCache(em);
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
 
@@ -586,44 +622,65 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
         Query query = em.createQuery(cq);
         return query.getResultList();
 
-    }       
+    }
 //</editor-fold>    
-    
+
 //<editor-fold defaultstate="collapsed" desc="getByEquals 系列">
     @Override
     public T getByEquals(String columnName, Object columnValue) {
         List<T> resultList = this.findByEquals(columnName, columnValue);
         return (resultList == null || resultList.isEmpty()) ? null : resultList.get(0);
     }
-    
+
     @Override
     public T getByAndEquals(List<String> columnNameList, List<Object> columnValueList) {
         List<T> resultList = this.findByAndEquals(columnNameList, columnValueList);
         return (resultList == null || resultList.isEmpty()) ? null : resultList.get(0);
     }
-    
+
     @Override
     public T getByOrEquals(List<String> columnNameList, List<Object> columnValueList) {
         List<T> resultList = this.findByOrEquals(columnNameList, columnValueList);
-        return (resultList == null || resultList.isEmpty()) ? null : resultList.get(0);        
+        return (resultList == null || resultList.isEmpty()) ? null : resultList.get(0);
     }
 //</editor-fold>    
-    
+
 //<editor-fold defaultstate="collapsed" desc="其他輔助methods">
+    /**
+     *
+     * 執行 JPA evict，此方法會讓 Entity 由 Managed 轉為 Detached
+     */
     private void tryEvictCache(EntityManager em, Object id) {
+        TryPrintLog("tryEvictCache(): EVICT_CACHE= %s", EVICT_CACHE);
         if (EVICT_CACHE) {
             em.getEntityManagerFactory().getCache().evict(entityClass, id);
         }
     }
 
+    /**
+     *
+     * 執行 JPA evict，此方法會讓 Entity 由 Managed 轉為 Detached
+     */
     private void tryEvictAllCache(EntityManager em) {
+        TryPrintLog("tryEvictAllCache(): EVICT_CACHE= %s", EVICT_CACHE);
         if (EVICT_CACHE) {
             em.getEntityManagerFactory().getCache().evictAll();
         }
-    }    
-    
+    }
+
     private List<String> obtainEntityPropNameList(List<KeyValuePair> pairList) {
         return pairList.stream().map(pair -> pair.getColName()).collect(Collectors.toList());
-    }    
+    }
 //</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="其他輔助 Methods，Log 類">
+    protected void TryPrintLog(String appendMsgFmt, Object... params) {
+        if (PRINT_LOG) {
+            String appendMsg = String.format(appendMsgFmt, params);
+            String msgFmt = "[%s]%s";
+            System.out.format(msgFmt, this.getClass().getSimpleName(), appendMsg);
+        }
+    }
+//</editor-fold>
+
 }

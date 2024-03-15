@@ -16,12 +16,12 @@ import tw.dev.tomoaki.util.commondatavalidator.StringValidator;
  *
  * @author tomoaki
  */
-public class PreparedNativeQueryFactory {
+public class PreparedNativeQueryFactory<T> {
 
     private EntityManager em;
 
     private String nativeSql;
-    private Class clazz;
+    private Class<T> entityClazz;
     private Boolean autoFixList = true;
 
     private Query persistanceNativeQuery;
@@ -32,10 +32,10 @@ public class PreparedNativeQueryFactory {
 
     public static class Factory {
 
-        public static PreparedNativeQueryFactory obtain(EntityManager entityManager, String nativeSql, Class clazz) {
+        public static PreparedNativeQueryFactory obtain(EntityManager entityManager, String nativeSql, Class entityClazz) {
             PreparedNativeQueryFactory nativeQueryFactory = new PreparedNativeQueryFactory();
             nativeQueryFactory.em = entityManager;
-            nativeQueryFactory.init(clazz, nativeSql);
+            nativeQueryFactory.init(entityClazz, nativeSql);
             nativeQueryFactory.doSetupPersistanceQuery();
             return nativeQueryFactory;
         }
@@ -48,7 +48,7 @@ public class PreparedNativeQueryFactory {
     }
 
     protected void doSetupPersistanceQuery() {
-        this.persistanceNativeQuery = this.em.createNativeQuery(nativeSql, clazz);
+        this.persistanceNativeQuery = this.em.createNativeQuery(nativeSql, entityClazz);
     }
 
     protected void doInitIndex() {
@@ -57,18 +57,18 @@ public class PreparedNativeQueryFactory {
 
     protected void doCleanUp() {
         this.nativeSql = null;
-        this.clazz = null;
+        this.entityClazz = null;
 //        this.persistanceNativeQuery = null;
         this.index = null;
     }
 
-    public PreparedNativeQueryFactory init(Class clazz, String nativeSql) {
+    public PreparedNativeQueryFactory init(Class entityClazz, String nativeSql) {
         if (this.isFactoryReady()) {
             String msgFmt = "PreparedNativeQueryFactory Has Already Init, Please Run produce";
             throw new IllegalArgumentException(String.format(msgFmt));
         }
 
-        this.clazz = clazz;
+        this.entityClazz = entityClazz;
         this.nativeSql = nativeSql;
         this.doInitIndex();
         this.doSetupPersistanceQuery();
@@ -136,9 +136,13 @@ public class PreparedNativeQueryFactory {
         doCleanUp();
         return this.persistanceNativeQuery;
     }
+    
+//    public List
 
+    
+//<editor-fold defaultstate="collapsed" desc="輔助 Methods">
     protected Boolean isFactoryReady() {
-        return StringValidator.isValueExist(nativeSql) && clazz != null;
+        return StringValidator.isValueExist(nativeSql) && entityClazz != null;
     }
 
     protected void doValidateCanSetParam() {
@@ -147,4 +151,6 @@ public class PreparedNativeQueryFactory {
             throw new IllegalArgumentException(String.format(msgFmt));
         }
     }
+    
+//</editor-fold>    
 }
