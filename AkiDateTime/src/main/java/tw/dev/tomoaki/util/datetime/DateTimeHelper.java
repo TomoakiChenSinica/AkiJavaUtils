@@ -5,6 +5,7 @@
 package tw.dev.tomoaki.util.datetime;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,6 +31,16 @@ public class DateTimeHelper {
         return matcher.matches();
     }
 
+    // 暫時放這裡，檢查格式
+    public static Boolean isTextValidate(String strDateTime, String formatPattern) {
+        try {
+            DateTimeUtil.Provider.parse2Date(strDateTime, formatPattern);
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+
     public static Boolean isAfterEq(LocalDateTime standardDateTime, LocalDateTime compareDatetime) {
         return standardDateTime.isAfter(compareDatetime) || standardDateTime.equals(compareDatetime);
     }
@@ -37,5 +48,5 @@ public class DateTimeHelper {
     public static Boolean isBeforeEq(LocalDateTime standardDateTime, LocalDateTime compareDatetime) {
         return standardDateTime.isBefore(compareDatetime) || standardDateTime.equals(compareDatetime);
     }
-     
+
 }

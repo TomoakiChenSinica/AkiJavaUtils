@@ -25,7 +25,6 @@ public class PureJavaLocaleTestMain {
         testPrintLocale();
     }
 
-
     private static void testLength() {
         Locale[] localeList = Locale.getAvailableLocales();
         String[] isoCountryList = Locale.getISOCountries();
@@ -76,30 +75,30 @@ public class PureJavaLocaleTestMain {
             System.out.println("=============================");
         }
     }
-    
+
     private static void testLang() {
         Locale zhTWLocale = Locale.forLanguageTag("zh_TW");
         System.out.println(zhTWLocale.getDisplayName());
         System.out.println(zhTWLocale.getDisplayName(Locale.ENGLISH));
         System.out.println(zhTWLocale.getISO3Language());
         System.out.println(zhTWLocale.getISO3Country());
-        
+
         Locale enUSLocale = Locale.forLanguageTag("en-US");
         System.out.println(enUSLocale.getDisplayName());
         System.out.println(enUSLocale.getDisplayName(Locale.ENGLISH));
         System.out.println(enUSLocale.getISO3Language());
-        System.out.println(enUSLocale.getISO3Country()); 
-        
-        System.out.println("Locale.forLanguageTag(\"TWN\")= " + Locale.forLanguageTag("TWN"));                       
+        System.out.println(enUSLocale.getISO3Country());
+
+        System.out.println("Locale.forLanguageTag(\"TWN\")= " + Locale.forLanguageTag("TWN"));
     }
-    
+
     private static void testList() {
         String[] countryISOCodes = Locale.getISOCountries();
         for (String iso2Code : countryISOCodes) {
             Locale locale = new Locale("", iso2Code); //塞的 lang 僅影響 「DisplayLanguage」
             LocalePrinter.doPrint(locale);
             System.out.println("============================");
-        }    
+        }
     }
-        
+
 }

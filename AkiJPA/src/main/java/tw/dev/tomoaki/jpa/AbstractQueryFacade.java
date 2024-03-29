@@ -43,6 +43,18 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
         this.entityClass = entityClass;
     }
 
+    public void clear() {
+        this.getEntityManager().clear();
+    }
+
+    public void evictAllCache() {
+        this.getEntityManager().getEntityManagerFactory().getCache().evictAll();
+    }
+
+    public void evictAllCache(Object id) {
+        this.getEntityManager().getEntityManagerFactory().getCache().evict(entityClass, id);
+    }
+
     /*public void getEntityState(T entity) {
         return this.getEntityManager().getR
     }*/
@@ -58,10 +70,6 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
     }
 
     public T manage(T entity) {
-        /*if (!this.isManaged(entity)) {
-            this.merge(entity);
-        }
-        return entity;*/
         return this.isManaged(entity) ? entity : this.merge(entity);
     }
 
@@ -69,7 +77,8 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
      * 將 entity 從 Detached 轉成 Managed， 所以要注意的是 entity 如果「非 Detached 」則沒用。
      *
      * 從 Eclipse 官網的討論串: https://www.eclipse.org/forums/index.php/t/499393/
-     * ，有以下描述: The JPA specification requires that merge() returns the managed version of the detached object (it must be a new reference).
+     * ，有以下描述: The JPA specification requires that merge() returns the managed
+     * version of the detached object (it must be a new reference).
      *
      *
      * @param entity 想要管控(manage)的資料
@@ -80,7 +89,7 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
     }
 
     /**
-     * 將 Managed 的資料存到 DB 
+     * 將 Managed 的資料存到 DB
      */
     public void flush() {
         this.getEntityManager().flush();
@@ -591,7 +600,7 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
     }
 //</editor-fold>
 
-//<editor-fold defaultstate="collapsed" desc="核心(?)，可以給無限(?)的查詢條件及排序調建">
+//<editor-fold defaultstate="collapsed" desc="核心(?)，可以給無限(?)的查詢條件及排序條件">
     protected List<T> findByAnd(List<Expression> expressionList, List<Order> orderList) {
         EntityManager em = this.getEntityManager();
         // em.getEntityManagerFactory().getCache().evictAll();
@@ -651,8 +660,9 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
      * 執行 JPA evict，此方法會讓 Entity 由 Managed 轉為 Detached
      */
     private void tryEvictCache(EntityManager em, Object id) {
-        TryPrintLog("tryEvictCache(): EVICT_CACHE= %s", EVICT_CACHE);
+        tryPrintLog("tryEvictCache(): EVICT_CACHE= %s", EVICT_CACHE);
         if (EVICT_CACHE) {
+            tryPrintLog("tryEvictCache(): Will Evict Cache With id= %s", id);
             em.getEntityManagerFactory().getCache().evict(entityClass, id);
         }
     }
@@ -662,8 +672,9 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
      * 執行 JPA evict，此方法會讓 Entity 由 Managed 轉為 Detached
      */
     private void tryEvictAllCache(EntityManager em) {
-        TryPrintLog("tryEvictAllCache(): EVICT_CACHE= %s", EVICT_CACHE);
+        tryPrintLog("tryEvictAllCache(): EVICT_CACHE= %s", EVICT_CACHE);
         if (EVICT_CACHE) {
+            tryPrintLog("tryEvictAllCache(): Will Evict All Cache");
             em.getEntityManagerFactory().getCache().evictAll();
         }
     }
@@ -674,7 +685,7 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="其他輔助 Methods，Log 類">
-    protected void TryPrintLog(String appendMsgFmt, Object... params) {
+    protected void tryPrintLog(String appendMsgFmt, Object... params) {
         if (PRINT_LOG) {
             String appendMsg = String.format(appendMsgFmt, params);
             String msgFmt = "[%s]%s";

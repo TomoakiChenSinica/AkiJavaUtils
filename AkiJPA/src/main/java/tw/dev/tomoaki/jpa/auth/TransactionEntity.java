@@ -23,23 +23,18 @@ public class TransactionEntity implements Transaction {//implements Serializable
              
     private static ThreadLocal<String> IDENTIFIER = new ThreadLocal();    
     
-    private static final long serialVersionUID = 1L;
-    //@Id
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "transactionid")
-    private String transactionid;
+    private String transactionId;
     
     @Size(max = 2147483647)
     @Column(name = "lastmodifier")
-    private String lastmodifier;
+    private String lastModifier;
     
-//    @Column(name = "lastmodifieddatetime")
-//    @Temporal(TemporalType.TIMESTAMP)
-//    private Date lastmodifieddatetime;
     @Column(name = "lastmodifieddatetime")    
-    private LocalDateTime lastmodifieddatetime;
+    private LocalDateTime lastModifiedDateTime;
 
     
     
@@ -47,33 +42,33 @@ public class TransactionEntity implements Transaction {//implements Serializable
     }
 
     public TransactionEntity(String transactionId) {
-        this.transactionid = transactionId;
+        this.transactionId = transactionId;
     }
 
 
     public String getTransactionId() {
-        return transactionid;
+        return transactionId;
     }
 
     public void setTransactionId(String transactionId) {
-        this.transactionid = transactionId;
+        this.transactionId = transactionId;
     }
 
 
     public String getLastModifier() {
-        return lastmodifier;
+        return lastModifier;
     }
 
     public void setLastModifier(String lastModifier) {
-        this.lastmodifier = lastModifier;
+        this.lastModifier = lastModifier;
     }
 
     public LocalDateTime getLastModifiedDateTime() {
-        return lastmodifieddatetime;
+        return lastModifiedDateTime;
     }
 
     public void setLastModifiedDateTime(LocalDateTime lastModifiedDateTime) {
-        this.lastmodifieddatetime = lastModifiedDateTime;
+        this.lastModifiedDateTime = lastModifiedDateTime;
     }
 
 //    @Override

@@ -16,8 +16,6 @@ public abstract class AbstractFacade<T> extends AbstractQueryFacade<T> {
         super(entityClass);
     }
 
-    protected abstract EntityManager getEntityManager();
-
     public void create(T entity) {
         getEntityManager().persist(entity);
     }
