@@ -19,13 +19,15 @@ import javax.persistence.Query;
  */
 public class PreparedNativeQueryParamHelper {
 
-    public static Query setParam(Query query, Integer index, Date desigDate) {
-        if (desigDate == null) {
-            throw new IllegalArgumentException("desigDate Is Null");
-        }
-        query.setParameter(index, new Timestamp(desigDate.getTime()));
-        return query;
-    }
+//    public static Query setParam(Query query, Integer index, Date desigDate) {
+//        /* 這樣會導致可以為 Null 的狀況反而寫不進
+//        if (desigDate == null) {
+//            throw new IllegalArgumentException("desigDate Is Null");
+//        }*/
+//        
+//        query.setParameter(index, new Timestamp(desigDate.getTime()));
+//        return query;
+//    }
 
     public static Query setParam(Query query, Integer index, EntityManager em, List<?> dataList) throws SQLException {
         query.setParameter(index, obtainTextSqlArray(em, dataList));
@@ -50,19 +52,4 @@ public class PreparedNativeQueryParamHelper {
         }
         return em.unwrap(Connection.class).createArrayOf("text", dataList.toArray());
     }
-
-//<editor-fold defaultstate="collapsed" desc="暫時 Comment 掉的 Code">
-//    public static Query setParam(Query query, Integer index, LocalDate desigDate) {
-//        if(desigDate == null) {
-//            throw new IllegalArgumentException("desigDate Is Null");
-//            
-//            
-//            
-//            
-//            
-//        }
-//        query.setParameter(index, desigDate.);
-//        
-//    }    
-//</editor-fold>
 }

@@ -4,6 +4,7 @@
  */
 package tw.dev.tomoaki.jpa.query.nativesql;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -22,6 +23,7 @@ public class PreparedNativeQueryFactory<T> {
 
     private String nativeSql;
     private Class<T> entityClazz;
+    private Boolean noExpectedType = false;
     private Boolean autoFixList = true;
 
     private Query persistanceNativeQuery;
@@ -48,7 +50,7 @@ public class PreparedNativeQueryFactory<T> {
     }
 
     protected void doSetupPersistanceQuery() {
-        this.persistanceNativeQuery = this.em.createNativeQuery(nativeSql, entityClazz);
+        this.persistanceNativeQuery = (entityClazz == null) ? this.em.createNativeQuery(nativeSql) : this.em.createNativeQuery(nativeSql, entityClazz);
     }
 
     protected void doInitIndex() {
@@ -60,6 +62,12 @@ public class PreparedNativeQueryFactory<T> {
         this.entityClazz = null;
 //        this.persistanceNativeQuery = null;
         this.index = null;
+        this.noExpectedType = false;
+    }
+    
+    public PreparedNativeQueryFactory init(String nativeSql) {
+        this.noExpectedType = true;
+        return this.init(null, nativeSql);
     }
 
     public PreparedNativeQueryFactory init(Class entityClazz, String nativeSql) {
@@ -85,6 +93,19 @@ public class PreparedNativeQueryFactory<T> {
         return this;
     }    
 
+    public PreparedNativeQueryFactory setNull() {
+        this.doValidateCanSetParam();
+        this.persistanceNativeQuery = this.persistanceNativeQuery.setParameter(index++, null);
+        return this;
+    }
+    
+    public PreparedNativeQueryFactory setNullList() {
+        this.doValidateCanSetParam();
+        List dataList = null;
+        this.setParam(dataList);
+        return this;
+    }    
+    
     public PreparedNativeQueryFactory setParam(String str) {
         this.doValidateCanSetParam();
         this.persistanceNativeQuery = this.persistanceNativeQuery.setParameter(index++, str);
@@ -106,7 +127,14 @@ public class PreparedNativeQueryFactory<T> {
 
     public PreparedNativeQueryFactory setParam(Date utilDate) {
         this.doValidateCanSetParam();
-        this.persistanceNativeQuery = PreparedNativeQueryParamHelper.setParam(persistanceNativeQuery, index++, utilDate);
+        Timestamp sqlTimeStamp = (utilDate != null) ? new Timestamp(utilDate.getTime()) : null;
+        this.persistanceNativeQuery = persistanceNativeQuery.setParameter(index++, sqlTimeStamp);
+        return this;
+    }
+
+    public PreparedNativeQueryFactory setParam(Timestamp sqlTimeStamp) {
+        this.doValidateCanSetParam();
+        this.persistanceNativeQuery = persistanceNativeQuery.setParameter(index++, sqlTimeStamp); // PreparedNativeQueryParamHelper.setParam(persistanceNativeQuery, index++, utilDate);
         return this;
     }
 
@@ -142,15 +170,14 @@ public class PreparedNativeQueryFactory<T> {
     
 //<editor-fold defaultstate="collapsed" desc="輔助 Methods">
     protected Boolean isFactoryReady() {
-        return StringValidator.isValueExist(nativeSql) && entityClazz != null;
+        return StringValidator.isValueExist(nativeSql) && (noExpectedType || entityClazz != null);
     }
 
     protected void doValidateCanSetParam() {
         if (!isFactoryReady()) {
-            String msgFmt = "PreparedNativeQueryFactory Is Not Init Yet, Please Run init(Class, String) First";
+            String msgFmt = "PreparedNativeQueryFactory Is Not Init Yet, Please Run init(Class, String) or init(String) First";
             throw new IllegalArgumentException(String.format(msgFmt));
         }
-    }
-    
+    }    
 //</editor-fold>    
 }
