@@ -97,7 +97,7 @@ public class TransactionEntity implements Transaction {//implements Serializable
 //    }    
 
 //    @Override
-    
+     
     @Override
     public void setupIdentifier(String identifier) {
         IDENTIFIER.set(identifier);
