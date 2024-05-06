@@ -56,7 +56,7 @@ public class DataCollectionUtils {
         }));
     }
 
-    public static <T> List<T> append(List<T> dataList, T data) {
+    /*public static <T> List<T> append(List<T> dataList, T data) {
         if (data == null) {
             return null;
         }
@@ -67,9 +67,26 @@ public class DataCollectionUtils {
 
         dataList.add(data);
         return dataList;
-    }
+    }*/
+    
+    public static <T> List<T> append(List<T> dataList, T data) {
+        if (dataList == null && data == null) {
+            return null;
+        }
 
-    public static <T> List<T> appendAll(List<T> dataList1, List<T> dataList2) {
+        if (dataList == null) {
+            return Stream.of(data).collect(Collectors.toList());
+        }
+
+        if (data == null) {
+            return dataList;
+        }
+
+        dataList.add(data);
+        return dataList;
+    } 
+
+    /*public static <T> List<T> appendAll(List<T> dataList1, List<T> dataList2) {
         if (dataList1 == null && dataList2 == null) {
             return null;
         } else if (dataList1 == null) {
@@ -79,6 +96,22 @@ public class DataCollectionUtils {
         }
         dataList1.addAll(dataList2);
         return dataList1;
+    }*/
+    public static <T> List<T> appendAll(List<T> dataList1, List<T> dataList2) {
+        if (dataList1 == null && dataList2 == null) {
+            return null;
+        } 
+        
+        if (dataList1 == null) {
+            return dataList2;
+        } 
+        
+        if (dataList2 == null) {
+            return dataList1;
+        }
+        
+        dataList1.addAll(dataList2);
+        return dataList1;
     }
-
+    
 }
