@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>tw.dev.tomoaki</groupId>
     <artifactId>AkiWeb</artifactId>
-    <version>2.2.1-SNAPSHOT</version>    
+    <version>2.3-SNAPSHOT</version>    
     <description>
         1.1版，加上 System Permission Denined
         1.1.1 版，修正改善 System Permission Denined 機制
@@ -12,6 +12,7 @@
         2.0 版，因為直接邏輯順序改變，乾脆跳到這版號
         
         2.2 版，調整 JavaWebUtils。 Method params 有調整順序
+        2.3 版。 JavaWebUtils --> AkiWebUtils
     </description>
     <packaging>jar</packaging>
     <build>

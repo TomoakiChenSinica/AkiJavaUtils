@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  *
  */
-public class JavaWebUtils {
+public class AkiWebUtils {
 
     public static Integer BUFFER_SIZE = 1024;
 
@@ -73,7 +73,7 @@ public class JavaWebUtils {
     public static void displayFile(HttpServletRequest request, HttpServletResponse response, String downloadedFileName, File file) throws IOException {
         ServletContext context = request.getServletContext();
         InputStream downloadFileInputStream = new FileInputStream(file);
-        JavaWebUtils.displayFile(context, response, downloadedFileName, downloadFileInputStream);
+        AkiWebUtils.displayFile(context, response, downloadedFileName, downloadFileInputStream);
     }
 
     /**
@@ -90,7 +90,7 @@ public class JavaWebUtils {
     public static void displayFile(HttpServletRequest request, HttpServletResponse response, String downloadedFileName, byte[] fileBytes) throws IOException {
         ServletContext context = request.getServletContext();
         InputStream is = new ByteArrayInputStream(fileBytes);
-        JavaWebUtils.displayFile(context, response, downloadedFileName, is);
+        AkiWebUtils.displayFile(context, response, downloadedFileName, is);
     }
 
     /**
@@ -106,7 +106,7 @@ public class JavaWebUtils {
      */
     public static void displayFile(HttpServletRequest request, HttpServletResponse response, String downloadedFileName, InputStream downloadedFileInputStream) throws IOException {
         ServletContext context = request.getServletContext();
-        JavaWebUtils.displayFile(context, response, downloadedFileName, downloadedFileInputStream);        
+        AkiWebUtils.displayFile(context, response, downloadedFileName, downloadedFileInputStream);        
     }    
     
     /**
@@ -160,7 +160,7 @@ public class JavaWebUtils {
     public static void downloadFile(HttpServletRequest request, HttpServletResponse response, String downloadedFileName, byte[] fileBytes) throws IOException {
         ServletContext context = request.getServletContext();
         InputStream is = new ByteArrayInputStream(fileBytes);
-        JavaWebUtils.downloadFile(context, response, downloadedFileName, is);
+        AkiWebUtils.downloadFile(context, response, downloadedFileName, is);
     }
 
     /**
@@ -176,7 +176,7 @@ public class JavaWebUtils {
     public static void downloadFile(HttpServletRequest request, HttpServletResponse response, String downloadedFileName, File file) throws IOException {
         ServletContext context = request.getServletContext();
         InputStream downloadFileInputStream = new FileInputStream(file);
-        JavaWebUtils.downloadFile(context, response, downloadedFileName, downloadFileInputStream);
+        AkiWebUtils.downloadFile(context, response, downloadedFileName, downloadFileInputStream);
     }
 
     /**
@@ -191,7 +191,7 @@ public class JavaWebUtils {
      */
     public static void downloadFile(HttpServletRequest request, HttpServletResponse response, String downloadedFileName, InputStream downloadFileInputStream) throws IOException {
         ServletContext context = request.getServletContext();
-        JavaWebUtils.downloadFile(context, response, downloadedFileName, downloadFileInputStream);
+        AkiWebUtils.downloadFile(context, response, downloadedFileName, downloadFileInputStream);
     }
 
     /**
