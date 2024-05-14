@@ -15,6 +15,7 @@
  */
 package tw.dev.tomoaki.main;
 
+import java.util.List;
 import tw.dev.tomoaki.util.entity.core.KeyPairMap;
 import tw.dev.tomoaki.util.entity.NestedMap;
 
@@ -28,37 +29,50 @@ public class KeyPairMapTestMain {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        test3();
+        test4();
     }
-
 
     protected static void test1() {
         KeyPairMap<String, String, String> teamAllLevelsPlayerMap = NestedMap.Factory.create();
         teamAllLevelsPlayerMap.put("Seattle Mariners", "MLB", "G.Kirby");
         teamAllLevelsPlayerMap.put("Seattle Mariners", "2A", "E.Hancock"); //今天升上了了
         teamAllLevelsPlayerMap.put("L.Angels", "MLB", "S.Ohtani");
-        
+
         System.out.println(teamAllLevelsPlayerMap.getAllValueList());
         System.out.println(teamAllLevelsPlayerMap.get("Seattle Mariners", "2A"));
-        
+
     }
-    
+
     protected static void test2() {
         KeyPairMap<String, String, String> teamAllLevelsPlayerMap = NestedMap.Factory.create(Boolean.TRUE);
         teamAllLevelsPlayerMap.put("Seattle Mariners", "MLB", "G.Kirby");
         teamAllLevelsPlayerMap.put("Seattle Mariners", "2A", "E.Hancock"); //今天升上了了
         teamAllLevelsPlayerMap.put("L.Angels", "MLB", "S.Ohtani");
-        
+
         System.out.println(teamAllLevelsPlayerMap.getAllValueList());
         System.out.println(teamAllLevelsPlayerMap.get("Seattle Mariners", "2A"));
-        
-    }   
-    
+
+    }
+
     protected static void test3() {
         NestedMap<String, String, String> teamAllLevelsPlayerMap = NestedMap.Factory.create(Boolean.TRUE);
         teamAllLevelsPlayerMap.put("Seattle Mariners", "MLB", "G.Kirby");
         teamAllLevelsPlayerMap.put("Seattle Mariners", "2A", "E.Hancock"); //今天升上了了
-        teamAllLevelsPlayerMap.put("L.Angels", "MLB", "S.Ohtani");        
+        teamAllLevelsPlayerMap.put("L.Angels", "MLB", "S.Ohtani");
         System.out.println(teamAllLevelsPlayerMap.getInnerMap("Seattle Mariners").values());
+    }
+
+    protected static void test4() {
+        NestedMap<String, String, String> teamAllLevelsPlayerMap = NestedMap.Factory.create(Boolean.TRUE);
+        teamAllLevelsPlayerMap.put("Seattle Mariners", "MLB", "G.Kirby");
+        teamAllLevelsPlayerMap.put("Seattle Mariners", "MLB", "E.Hancock"); //今天升上了了
+        teamAllLevelsPlayerMap.put("L.Angels", "MLB", "S.Ohtani");
+        System.out.println(teamAllLevelsPlayerMap.getInnerMap("Seattle Mariners").values());
+        System.out.println(teamAllLevelsPlayerMap.get("Seattle Mariners", "MLB"));        
+    }
+
+    protected static void test5() {
+        NestedMap<String, String, List<String>> teamAllLevelsPlayerMap = NestedMap.Factory.create(Boolean.TRUE);
+
     }
 }

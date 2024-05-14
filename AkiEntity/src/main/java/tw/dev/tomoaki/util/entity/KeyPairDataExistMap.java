@@ -6,11 +6,12 @@
 package tw.dev.tomoaki.util.entity;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  *
  * @author tomoaki
+ * @param <Tkey1> 雙索引鍵(1)
+ * @param <Tkey2> 雙索引鍵(2)
  */
 public class KeyPairDataExistMap<Tkey1, Tkey2> {
 

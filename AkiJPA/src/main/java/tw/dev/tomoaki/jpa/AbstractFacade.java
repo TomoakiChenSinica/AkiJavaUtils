@@ -4,7 +4,7 @@
  */
 package tw.dev.tomoaki.jpa;
 
-import javax.persistence.EntityManager;
+import tw.dev.tomoaki.jpa.helper.JPAEntityHelper;
 
 /**
  *

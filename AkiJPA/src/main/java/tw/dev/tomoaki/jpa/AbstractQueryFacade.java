@@ -18,6 +18,7 @@ import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import tw.dev.tomoaki.jpa.helper.JPAEntityHelper;
 import tw.dev.tomoaki.jpa.helper.KeyValuePairHelper;
 import tw.dev.tomoaki.jpa.query.criteria.helper.ExpressionHelper;
 import tw.dev.tomoaki.jpa.query.criteria.helper.OrderHelper;
@@ -28,6 +29,7 @@ import tw.dev.tomoaki.util.commondatavalidator.ListValidator;
  * @author tomoaki
  *
  * [JPA Criteria Queries](https://www.baeldung.com/hibernate-criteria-queries)
+ * @param <T>
  *
  */
 public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
@@ -682,6 +684,10 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
     private List<String> obtainEntityPropNameList(List<KeyValuePair> pairList) {
         return pairList.stream().map(pair -> pair.getColName()).collect(Collectors.toList());
     }
+    
+    public Boolean isDataUpdate(T entity) {
+        return JPAEntityHelper.isDataUpdate(this.getEntityManager(), entity);
+    }    
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="其他輔助 Methods，Log 類">

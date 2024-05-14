@@ -9,6 +9,7 @@ package tw.dev.tomoaki.util.datatransfer;
 
 import java.util.ArrayList;
 import java.util.List;
+import tw.dev.tomoaki.datautils.DataCollectionUtils;
 import tw.dev.tomoaki.util.datatransfer.entity.DataTrasnferError;
 import tw.dev.tomoaki.util.datatransfer.entity.DataTransferPureTextError;
 import tw.dev.tomoaki.util.exception.ExceptionHandler;
@@ -27,7 +28,7 @@ public abstract class AbstractTransferImpl<S, T> extends ExceptionHandler {
     protected List<T> notNeedEditedList;
     protected List<T> needRemovedList;    
     protected List<T> resultList;
-//    protected List<DataTrasnferError<T>> errorList;
+    // protected List<DataTrasnferError<T>> errorList;
     protected List<DataTrasnferError<S>> errorList;
     protected List<DataTransferPureTextError> pureTextErrorList;
     
@@ -88,10 +89,10 @@ public abstract class AbstractTransferImpl<S, T> extends ExceptionHandler {
             System.out.format("[%s] obtainTransferPureTextError() Is Not Implemented Yet", this.getClass().getSimpleName());
         }
     }    
-    
-//    protected abstract String obtainTransferPureTextError(S sourceData);        
+        
     protected abstract String obtainTransferDataPureText(S sourceData);        
    
+    
     public List<T> getNeedCreatedList() {
         return needCreatedList;
     }
@@ -119,4 +120,14 @@ public abstract class AbstractTransferImpl<S, T> extends ExceptionHandler {
     public List<DataTransferPureTextError> getPureTextErrorList() {
         return pureTextErrorList;
     }
+    
+
+    public Integer getTransferedDataCount() {
+        var transferList = DataCollectionUtils.appendAll(DataCollectionUtils.appendAll(this.getNeedCreatedList(), this.getNeedEditedList()), this.getNeedRemovedList());
+        return (transferList != null) ? transferList.size() : 0;
+    }
+    
+    public Boolean hasTransferedData() {
+        return this.getTransferedDataCount() > 0;
+    }    
 }

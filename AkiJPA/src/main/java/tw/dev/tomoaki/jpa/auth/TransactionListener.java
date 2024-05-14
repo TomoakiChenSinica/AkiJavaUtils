@@ -13,27 +13,47 @@ import javax.persistence.PreUpdate;
 /**
  *
  * @author tomoaki
+ * @param <T>
  */
 public class TransactionListener<T extends TransactionEntity> {
-    
-    
+
+    /*@Inject
+    private EntityManager em;*/
+ /*@PersistenceContext(unitName = "AcademicResearchMgmt-ejbPU")
+    private EntityManager em;*/
     @PrePersist
     public T beforeCreate(T entity) {
         UUID uuid = UUID.randomUUID();
-        String uuidAsString = uuid.toString();        
+        String uuidAsString = uuid.toString();
         entity.setTransactionId(uuidAsString);
-//        entity.setLastModifiedDateTime(new Date());
         entity.setLastModifiedDateTime(LocalDateTime.now());
         entity.setLastModifier(entity.getIdentifier());
         return entity;
     }
-    
+
     @PreUpdate
     @PreRemove
     public T beforeEdit(T entity) {
-//        entity.setLastModifiedDateTime(new Date());
         entity.setLastModifiedDateTime(LocalDateTime.now());
         entity.setLastModifier(entity.getIdentifier());
         return entity;
     }
+
+    /*@PreUpdate
+    @PreRemove
+    public T beforeEdit(T entity) {
+        Boolean isSelfModified = this.validateIsSelfModified(entity);
+        isSelfModified = (isSelfModified != null) ? isSelfModified : true;
+        System.out.println(String.format("beforeEdit(): entity= %s, isSelfModified= %s", entity, isSelfModified));
+        if (isSelfModified) {
+            entity.setLastModifiedDateTime(LocalDateTime.now());
+            entity.setLastModifier(entity.getIdentifier());
+        }
+        return entity;
+    }
+
+    protected Boolean validateIsSelfModified(T entity) {
+        System.out.println(String.format("validateIsSelfModified(): entity= %s, entity.isSelfModified= %s", entity, entity.getIsSelfModified()));
+        return entity.getIsSelfModified();
+    }*/
 }

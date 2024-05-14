@@ -5,39 +5,41 @@
  */
 package tw.dev.tomoaki.util.string;
 
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 /**
  *
  * @author tomoaki
  */
 public class AkiStringUtil {
 
-    public static String shortStr(String oriStr, Integer keepLength) {
+    public static String shorten(String oriStr, Integer keepLength) {
         Integer oriStrLength = oriStr.length();
         if (keepLength >= oriStrLength) {
             return oriStr;
         }
 
-        Integer prefixLength = keepLength / 2;
-        Integer suffixLength = keepLength - prefixLength;
+        Integer prefixKeepLength = keepLength / 2;
+        Integer suffixKeepLength = keepLength - prefixKeepLength;
 
-        String prefix = oriStr.substring(0, prefixLength);
-        String suffix = oriStr.substring(oriStrLength - suffixLength, oriStrLength);
+        String prefix = oriStr.substring(0, prefixKeepLength);
+        String suffix = oriStr.substring(oriStrLength - suffixKeepLength, oriStrLength);
         return prefix + "..." + suffix;
 
     }
 
-    public static String shortStr(String oriStr, Integer prefixLength, Integer suffixLength) {
-        return shortStr(oriStr, prefixLength, suffixLength, "‧‧‧");
+    public static String shorten(String oriStr, Integer prefixKeepLength, Integer suffixKeepLength) {
+        return shorten(oriStr, prefixKeepLength, suffixKeepLength, "...");
     }
 
-    public static String shortStr(String oriStr, Integer prefixLength, Integer suffixLength, String omitSymbol) {
+    public static String shorten(String oriStr, Integer prefixKeepLength, Integer suffixKeepLength, String omitSymbol) {
         Integer oriStrLength = oriStr.length();
-        if (prefixLength + suffixLength >= oriStrLength) {
+        if (prefixKeepLength + suffixKeepLength >= oriStrLength) {
             return oriStr;
         } else {
-            String prefix = oriStr.substring(0, prefixLength);
-            String suffix = oriStr.substring(oriStrLength - suffixLength, oriStrLength);
-//            return prefix + "‧‧‧" + suffix;            
+            String prefix = oriStr.substring(0, prefixKeepLength);
+            String suffix = oriStr.substring(oriStrLength - suffixKeepLength, oriStrLength);
             return prefix + omitSymbol + suffix;
         }
     }
@@ -65,7 +67,7 @@ public class AkiStringUtil {
         return preStr + replaceText + sufStr;
     }
 
-    public static Boolean strictNotEmpty(String text) {
+    public static Boolean notEmptyStrictly(String text) {
         return text != null && !text.trim().isEmpty();
     }
 
@@ -80,20 +82,19 @@ public class AkiStringUtil {
     public static String trimUnicodeIllegalSafely(String str) {
         return (str == null) ? null : str.replaceAll("\\p{C}", ""); //詳情請看 AkiRegularExpression 的 RegExpCommonPattern 中關於 Unicode，下半段
     }
-    
-    /*
-    public static String capitalize(String oriText, Integer start, Integer end) {
-        
-        String headLetter = fieldName.substring(0, 0);
-        String otherLetters = fieldName.substring(1);
-        return GETTER_PREFIX.concat(headLetter.toUpperCase()).concat(otherLetters);
-        
-    }
-    */
+
     public static String capitalizeHeader(String oriText, Integer charCount) {
         String headerLetter = oriText.substring(0, 0 + charCount);
-        String otherLetters = oriText.substring(charCount);       
+        String otherLetters = oriText.substring(charCount);
         return headerLetter.toUpperCase().concat(otherLetters);
-        
-    }    
+
+    }
+
+    public static String concatSafely(String replaceNullText, String... texts) {
+        return Stream.of(texts).map(text -> text == null ? replaceNullText : text).collect(Collectors.joining());
+    }
+
+    public static String concatWithSafely(String replaceNullText, String concatWithText, String... texts) {
+        return Stream.of(texts).map(text -> text == null ? replaceNullText : text).collect(Collectors.joining(concatWithText));
+    }
 }

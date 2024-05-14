@@ -10,6 +10,7 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -19,32 +20,32 @@ import javax.validation.constraints.Size;
  */
 @EntityListeners(TransactionListener.class)
 @MappedSuperclass
-public class TransactionEntity implements Transaction {//implements Serializable {
-             
-    private static ThreadLocal<String> IDENTIFIER = new ThreadLocal();    
-    
+public class TransactionEntity implements Transaction {
+
+    private static ThreadLocal<String> IDENTIFIER = new ThreadLocal();
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "transactionid")
     private String transactionId;
-    
+
     @Size(max = 2147483647)
     @Column(name = "lastmodifier")
     private String lastModifier;
-    
-    @Column(name = "lastmodifieddatetime")    
-    private LocalDateTime lastModifiedDateTime;
 
+    @Column(name = "lastmodifieddatetime")
+    private LocalDateTime lastModifiedDateTime;
     
-    
+    /*@Transient
+    private Boolean isSelfModified = true;*/
+
     public TransactionEntity() {
     }
 
     public TransactionEntity(String transactionId) {
         this.transactionId = transactionId;
     }
-
 
     public String getTransactionId() {
         return transactionId;
@@ -53,7 +54,6 @@ public class TransactionEntity implements Transaction {//implements Serializable
     public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
     }
-
 
     public String getLastModifier() {
         return lastModifier;
@@ -71,38 +71,19 @@ public class TransactionEntity implements Transaction {//implements Serializable
         this.lastModifiedDateTime = lastModifiedDateTime;
     }
 
-//    @Override
-//    public int hashCode() {
-//        int hash = 0;
-//        hash += (dataactionid != null ? dataactionid.hashCode() : 0);
-//        return hash;
-//    }
-//
-//    @Override
-//    public boolean equals(Object object) {
-//        // TODO: Warning - this method won't work in the case the id fields are not set
-//        if (!(object instanceof DataAction)) {
-//            return false;
-//        }
-//        DataAction other = (DataAction) object;
-//        if ((this.dataactionid == null && other.dataactionid != null) || (this.dataactionid != null && !this.dataactionid.equals(other.dataactionid))) {
-//            return false;
-//        }
-//        return true;
-//    }
-//
-//    @Override
-//    public String toString() {
-//        return "tw.edu.sinica.iis.acadres.ejb.entity.core.DataAction[ dataactionid=" + dataactionid + " ]";
-//    }    
-
-//    @Override
-     
+    /*public Boolean getIsSelfModified() {
+        return isSelfModified;
+    }
+    
+    public void setIsSelfModified(Boolean isSelfModified) {
+        this.isSelfModified = isSelfModified;
+    }*/
+    
     @Override
     public void setupIdentifier(String identifier) {
         IDENTIFIER.set(identifier);
-    }    
-    
+    }
+
     public String getIdentifier() {
         return IDENTIFIER.get();
     }

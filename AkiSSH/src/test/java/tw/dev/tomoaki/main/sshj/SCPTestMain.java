@@ -46,8 +46,7 @@ public class SCPTestMain {
         sshClient.loadKnownHosts(new File(knowHostsFilePath));
         sshClient.connect(remoteHostName);
         sshClient.authPassword(remoteAuthAccount, remoteAuthPassword);
-
-//        String remoteFilePath = createRemoteServerFilePath(sshClient.getTransport(), userAccount, remoteFileName);//Path.of(remoteDirPath, userAccount, remoteFileName).toString();
+        
         Transport transport = sshClient.getTransport();
         String remoteUserDirPath = SSHJHelper.createStrRemoteServerFilePath(transport, remoteDirPath, userAccount);
         String remoteUserFilePath = SSHJHelper.createStrRemoteServerFilePath(transport, remoteUserDirPath, remoteFileName);
@@ -82,10 +81,9 @@ public class SCPTestMain {
         sshClient.connect(remoteHostName);
         sshClient.authPassword(remoteAuthAccount, remoteAuthPassword);
 
-//        System.out.println(String.format("Server identity= %s", sshClient.getTransport().getServerVersion()));
+        // System.out.println(String.format("Server identity= %s", sshClient.getTransport().getServerVersion()));
         Transport transport = sshClient.getTransport();
-        String remoteFilePath = SSHJHelper.createStrRemoteServerFilePath(transport, remoteDirPath, userAccount, remoteFileName);//createRemoteServerFilePath(sshClient.getTransport(), userAccount, remoteFileName);//Path.of(remoteDirPath, userAccount, remoteFileName).toString();
-//        String remoteFilePath = String.format("%s/%s/%s", remoteDirPath, userAccount, remoteFileName);
+        String remoteFilePath = SSHJHelper.createStrRemoteServerFilePath(transport, remoteDirPath, userAccount, remoteFileName);
         System.out.println("remoteFilePath= " + remoteFilePath);
 
         try {

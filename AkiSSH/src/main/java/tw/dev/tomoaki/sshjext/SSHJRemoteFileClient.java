@@ -133,14 +133,13 @@ public class SSHJRemoteFileClient {
     protected SSHClient obtainSSHClient() throws IOException {
         if (this.sshClient == null) {
             tryPrintLog("obtainSSHClient(): knownHostsFilePath= %s, remoteHostName= %s, authAccount= %s", knownHostsFilePath, remoteHostName, authAccount);
-            Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+            // Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+            Security.insertProviderAt(new org.bouncycastle.jce.provider.BouncyCastleProvider(), 1);
             sshClient = new SSHClient();
-//            sshClient.loadKnownHosts(new File(knownHostsFilePath));
             sshClient = processKnownHosts();
             sshClient.connect(remoteHostName);
             sshClient = processClienAuthorization();
         }
-//        SSHJHelper.checkSSHConnected(sshClient);
         return sshClient;
     }
     
@@ -185,8 +184,8 @@ public class SSHJRemoteFileClient {
             tryPrintLog("processKnownHosts(): Use fingerPrint= %s", fingerPrint);                    
             this.sshClient.addHostKeyVerifier(fingerPrint);
         } else {            
-//            this.sshClient.addHostKeyVerifier(new OpenSSHKnownHosts(knownHostsFile));
-            //this.sshClient.addHostKeyVerifier(new ConsoleKnownHostsVerifier(knownHostsFile));            
+            // this.sshClient.addHostKeyVerifier(new OpenSSHKnownHosts(knownHostsFile));
+            // this.sshClient.addHostKeyVerifier(new ConsoleKnownHostsVerifier(knownHostsFile));            
         }
         return sshClient;
     }

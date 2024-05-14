@@ -56,19 +56,6 @@ public class DataCollectionUtils {
         }));
     }
 
-    /*public static <T> List<T> append(List<T> dataList, T data) {
-        if (data == null) {
-            return null;
-        }
-
-        if (dataList == null) {
-            return Stream.of(data).collect(Collectors.toList());
-        }
-
-        dataList.add(data);
-        return dataList;
-    }*/
-    
     public static <T> List<T> append(List<T> dataList, T data) {
         if (dataList == null && data == null) {
             return null;
@@ -84,34 +71,67 @@ public class DataCollectionUtils {
 
         dataList.add(data);
         return dataList;
-    } 
+    }
 
-    /*public static <T> List<T> appendAll(List<T> dataList1, List<T> dataList2) {
-        if (dataList1 == null && dataList2 == null) {
-            return null;
-        } else if (dataList1 == null) {
-            return dataList2;
-        } else if (dataList2 == null) {
-            return dataList1;
-        }
-        dataList1.addAll(dataList2);
-        return dataList1;
-    }*/
     public static <T> List<T> appendAll(List<T> dataList1, List<T> dataList2) {
         if (dataList1 == null && dataList2 == null) {
             return null;
-        } 
-        
+        }
+
         if (dataList1 == null) {
             return dataList2;
-        } 
-        
+        }
+
         if (dataList2 == null) {
             return dataList1;
         }
-        
+
         dataList1.addAll(dataList2);
         return dataList1;
     }
     
+    public static <T> Stream<T> append(Stream<T> dataStream, T data) {
+        if (dataStream == null && data == null) {
+            return null;
+        }
+
+        if (dataStream == null) {
+            return Stream.of(data);
+        }
+
+        if (data == null) {
+            return dataStream;
+        }
+
+        return Stream.concat(dataStream, Stream.of(data));
+
+    }
+
+    public static <T> Stream<T> appendAll(Stream<T> dataStream1, Stream<T> dataStream2) {
+        if (dataStream1 == null && dataStream2 == null) {
+            return null;
+        }
+
+        if (dataStream1 == null) {
+            return dataStream2;
+        }
+
+        if (dataStream2 == null) {
+            return dataStream1;
+        }
+        return Stream.concat(dataStream1, dataStream2);
+    }    
+    
+
+    /*public static List swap(List dataList, int fromIndex, int toIndex) {
+        Object desigData = dataList.get(fromIndex);
+        dataList.remove(fromIndex);
+        dataList.add(toIndex, desigData);   
+    }*/
+    public static <T> List<T> swap(List<T> dataList, int fromIndex, int toIndex) {        
+        T desigData = dataList.get(fromIndex);
+        dataList.remove(fromIndex); // https://stackoverflow.com/questions/21795376/java-how-to-remove-an-integer-item-in-an-arraylist
+        dataList.add(toIndex, desigData);
+        return dataList;
+    }
 }

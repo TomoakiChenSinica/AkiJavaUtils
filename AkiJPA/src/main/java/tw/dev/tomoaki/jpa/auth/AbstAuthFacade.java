@@ -11,8 +11,11 @@ import tw.dev.tomoaki.jpa.AbstractQueryFacade;
 /**
  *
  * @author tomoaki
+ * @param <ENTITY>
+ * @param <AUTHINFO>
  */
-public abstract class AbstAuthFacade<ENTITY extends Transaction, AUTHINFO extends AuthInfoAbst> extends AbstractQueryFacade<ENTITY> {
+//public abstract class AbstAuthFacade<ENTITY extends Transaction, AUTHINFO extends AuthInfoAbst> extends AbstractQueryFacade<ENTITY> {
+public abstract class AbstAuthFacade<ENTITY extends TransactionEntity, AUTHINFO extends AuthInfoAbst> extends AbstractQueryFacade<ENTITY> {    
 
     public AbstAuthFacade(Class<ENTITY> entityClass) {
         super(entityClass);
@@ -21,7 +24,7 @@ public abstract class AbstAuthFacade<ENTITY extends Transaction, AUTHINFO extend
     public void doCreate(ENTITY entity, AUTHINFO authInfo) {
         try {
             String identifier = authInfo.getIdentifier();
-            entity.setupIdentifier(identifier);
+            entity.setupIdentifier(identifier);                        
             this.getEntityManager().persist(entity);
         } catch (ConstraintViolationException ex) {
             ConstraintViolationHelper.handleException(ex);
@@ -32,6 +35,7 @@ public abstract class AbstAuthFacade<ENTITY extends Transaction, AUTHINFO extend
         try {
             String identifier = authInfo.getIdentifier();
             entity.setupIdentifier(identifier);
+            // System.out.println(String.format("[%s] doEdit(): Before EntityManager.merge(), entity= %s, entity.isSelfModified= %s", this.getClass().getSimpleName(), entity, entity.getIsSelfModified()));
             this.getEntityManager().merge(entity);
         } catch (ConstraintViolationException ex) {
             ConstraintViolationHelper.handleException(ex);
@@ -41,7 +45,6 @@ public abstract class AbstAuthFacade<ENTITY extends Transaction, AUTHINFO extend
     public void doRemove(ENTITY entity, AUTHINFO authInfo) {
         try {
             String identifier = authInfo.getIdentifier();
-//            System.out.println(String.format("[%s] doRemove(): enttiy= %s", this.getClass().getSimpleName(), entity));
             entity.setupIdentifier(identifier);
             getEntityManager().remove(getEntityManager().merge(entity));
         } catch (ConstraintViolationException ex) {

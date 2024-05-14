@@ -8,19 +8,9 @@ package tw.dev.tomoaki.jpa.auth;
  *
  * @author tomoaki
  */
-public interface Transaction {//implements AuthInfoIntf {
- 
+public interface Transaction {
+
     //https://stackoverflow.com/questions/2430756/why-are-interface-variables-static-and-final-by-default
-    
     public void setupIdentifier(String identifier);
 
 }
-//public abstract class Transaction {//implements AuthInfoIntf {
-// 
-//    protected static ThreadLocal<String> IDENTIFIER = new ThreadLocal();
-//    
-//    public void setupIdentifier(String identifier) {
-//        IDENTIFIER.set(identifier);
-//    }
-//
-//}

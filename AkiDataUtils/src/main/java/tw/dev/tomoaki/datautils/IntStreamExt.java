@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 tomoaki.
+ * Copyright 2024 tomoaki.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,16 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package tw.dev.tomoaki.ssh;
+package tw.dev.tomoaki.datautils;
 
 /**
  *
  * @author tomoaki
  */
-public class AkiSSH {
-
-    public static void main(String[] args) {
-        System.out.println("Hello World!");
-    }
+public class IntStreamExt {
+    
+    // https://stackoverflow.com/questions/24010109/how-can-i-reverse-a-java-8-stream-and-generate-a-decrementing-intstream-of-value
 }
