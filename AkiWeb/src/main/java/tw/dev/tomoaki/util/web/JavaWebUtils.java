@@ -93,7 +93,7 @@ public class JavaWebUtils {
 //        OutputStream os = response.getOutputStream();
 //        os.write(fileBin);
 //        os.flush();
-//        os.close();
+//        os.close(); 
         ServletContext context = request.getServletContext();
         InputStream is = new ByteArrayInputStream(fileBin);  
         JavaWebUtils.downloadFile(response, is, fileName, context);

@@ -6,6 +6,7 @@
 package tw.dev.tomoaki.util.web.webservice;
 
 import java.util.List;
+import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
@@ -278,4 +279,11 @@ public abstract class BasicRestClient {
         }
     }
     //</editor-fold>
+
+//    public Client newClientInstance(String url) {
+//        return RestClientFactory.configureClient(url);
+//    }
+    public Client obtainNewClientInstance(String url) {
+        return RestClientFactory.configureClient(url);
+    }    
 }
