@@ -12,6 +12,7 @@ import java.nio.file.Path;
 /**
  *
  * @author tomoaki
+ * @param <T>
  *
  */
 public interface FileManager<T> {
