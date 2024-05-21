@@ -13,24 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tw.dev.tomoaki.file.datafilesystem;
+package tw.dev.tomoaki.datafilesystem.core;
 
-import java.nio.file.Path;
+import java.io.File;
 
 /**
  *
  * @author tomoaki
  */
-public interface NewFilePathProvider<T> extends FileCreator<T> {
-
-    /**
-     * 配合 FileCreator 繼承來的 createFileName， <br>
-     * 組合出「檔案的實際路徑」。
-     * 
-     * @param data 資料
-     * @return 資料關聯檔案的路徑
-     *  
-     */
-    public Path obtainNewFilePath(T data);
-
+public interface DataFileCopier<TARGET_DATA, SOURCE_DATA> {
+    
+    public File copy(TARGET_DATA targetData, SOURCE_DATA sourceData);
+    
 }

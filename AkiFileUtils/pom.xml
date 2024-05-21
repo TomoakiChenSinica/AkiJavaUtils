@@ -10,6 +10,7 @@
         <module>AkiExcel</module>
         <module>AkiFileExplorer</module>
         <module>AkiFileIOUtils</module>
+        <module>AkiDataFileSystem</module>
     </modules>
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>

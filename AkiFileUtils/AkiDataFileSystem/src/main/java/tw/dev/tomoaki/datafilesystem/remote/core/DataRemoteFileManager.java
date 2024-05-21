@@ -13,23 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tw.dev.tomoaki.file.datafilesystem.remote;
+package tw.dev.tomoaki.datafilesystem.core;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
+import tw.dev.tomoaki.datafilesystem.remote.DataRemoteFile;
 
 /**
  *
  * @author tomoaki
  */
-public interface RemoteFileManager<T> {
+public interface DataRemoteFileManager<T> {
     
     public Path obtainRemoteDestFilePath(T data);
 
-    public RemoteFile copyToRemote(T data) throws IOException;
+    public DataRemoteFile copyToRemote(T data) throws IOException;
     
-    public RemoteFile copyFromRemote(T data) throws IOException;
+    public DataRemoteFile copyFromRemote(T data) throws IOException;
 
-    public RemoteFile deleteFromRemote(T data) throws IOException;    
+    public DataRemoteFile deleteFromRemote(T data) throws IOException;    
 }

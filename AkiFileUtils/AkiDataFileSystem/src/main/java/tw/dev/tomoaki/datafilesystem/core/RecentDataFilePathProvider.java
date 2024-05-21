@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
  */
-package tw.dev.tomoaki.file.datafilesystem;
+package tw.dev.tomoaki.datafilesystem.core;
 
 import java.nio.file.Path;
 
@@ -10,7 +10,7 @@ import java.nio.file.Path;
  *
  * @author tomoaki
  */
-public interface RecentFilePathProvider<T> {
+public interface RecentDataFilePathProvider<T> {
 
     /**
      * 取得與 data 資料有關的「現有」檔案

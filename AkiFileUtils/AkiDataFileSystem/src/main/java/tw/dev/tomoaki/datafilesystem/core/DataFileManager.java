@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package tw.dev.tomoaki.file.datafilesystem;
+package tw.dev.tomoaki.datafilesystem.core;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +15,7 @@ import java.nio.file.Path;
  * @param <T>
  *
  */
-public interface FileManager<T> {
+public interface DataFileManager<T> {
 
     public Path obtainSaveFilePath(T data, Boolean overwriteRecentFile);
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tw.dev.tomoaki.file.datafilesystem.remote;
+package tw.dev.tomoaki.datafilesystem.remote;
 
 import java.nio.file.Path;
 
@@ -21,17 +21,17 @@ import java.nio.file.Path;
  *
  * @author tomoaki
  */
-public class RemoteFile {
+public class DataRemoteFile {
 
     private Path filePath;
 
-    protected RemoteFile() {
+    protected DataRemoteFile() {
     }
 
     public static class Factory {
 
-        public static RemoteFile create(Path filePath) {
-            RemoteFile remoteFile = new RemoteFile();
+        public static DataRemoteFile create(Path filePath) {
+            DataRemoteFile remoteFile = new DataRemoteFile();
             remoteFile.filePath = filePath;
             return remoteFile;
         }
