@@ -20,6 +20,7 @@ import java.nio.file.Path;
 /**
  *
  * @author tomoaki
+ * @param <T>
  */
 public interface NewDataFilePathProvider<T> extends DataFileCreator<T> {
 

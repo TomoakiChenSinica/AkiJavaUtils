@@ -57,7 +57,7 @@ public class MessageHelper {
         return message;
     }
 
-//  https://www.javatpoint.com/example-of-sending-attachment-with-email-using-java-mail-api  
+    // https://www.javatpoint.com/example-of-sending-attachment-with-email-using-java-mail-api  
     public static MimeMessage setupPlainTextContentWithFile(MimeMessage message, String plainTextContent, String charSet, List<File> fileList) throws MessagingException, IOException {
         Multipart multipart = new MimeMultipart();
         MimeBodyPart plainTextContentBodyPart = MimeBodyPartHelper.obtain4PlainTextContent(plainTextContent, charSet);

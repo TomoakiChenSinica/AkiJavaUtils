@@ -20,6 +20,7 @@ package tw.dev.tomoaki.datafilesystem.core;
  * @author tomoaki
  * 
  * 單純產生「檔案」相關資訊，不理會「實際路徑」
+ * @param <T>
  * 
  */
 public interface DataFileCreator<T> {

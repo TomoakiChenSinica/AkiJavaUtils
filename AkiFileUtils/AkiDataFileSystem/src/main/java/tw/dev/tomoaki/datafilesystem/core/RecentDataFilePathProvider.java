@@ -9,6 +9,7 @@ import java.nio.file.Path;
 /**
  *
  * @author tomoaki
+ * @param <T>
  */
 public interface RecentDataFilePathProvider<T> {
 

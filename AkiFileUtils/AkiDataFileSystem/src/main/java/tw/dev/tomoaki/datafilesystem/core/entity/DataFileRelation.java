@@ -7,8 +7,9 @@ package tw.dev.tomoaki.datafilesystem.core.entity;
 /**
  *
  * @author tomoaki
+ * @param <DATA>
  */
-public interface DataFileRelation {
+public interface DataFileRelation<DATA> {
 
     public String getFileDisplayName();
 

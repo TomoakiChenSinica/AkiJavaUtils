@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package tw.dev.tomoaki.datafilesystem.core;
+package tw.dev.tomoaki.datafilesystem.bundle;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,7 +19,7 @@ import tw.dev.tomoaki.datafilesystem.core.helper.DataFileRelationHelper;
  * @param <DATA>
  * @param <DATA_FILE>
  */
-public abstract class DataRelatedFilePathProvider<DATA, DATA_FILE extends DataFileRelation> implements RecentDataFilePathProvider<DATA>, NewDataFilePathProvider<DATA> {
+public abstract class DataRelatedFilePathProvider<DATA, DATA_FILE extends DataFileRelation<DATA>> implements RecentDataFilePathProvider<DATA>, NewDataFilePathProvider<DATA> {
 
     protected abstract String getFileRoot();
 

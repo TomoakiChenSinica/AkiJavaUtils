@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package tw.dev.tomoaki.datatime;
+package tw.dev.tomoaki.util.datetime;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -29,6 +29,10 @@ public class LocalYearMonth implements ChronoLocalYearMonth, Comparable<LocalYea
     }
 
     public static LocalYearMonth of(int year, int month) {
+        // if(year == default || month == default)  
+        if(year == 0 || month == 0) {
+            return null;
+        }
         YEAR.checkValidValue(year);
         MONTH_OF_YEAR.checkValidValue(month);
         return new LocalYearMonth(year, month);
@@ -137,7 +141,6 @@ public class LocalYearMonth implements ChronoLocalYearMonth, Comparable<LocalYea
         if (this.isAfter(other)) {
             return 1;
         }
-
         return 0;
     }
 }
