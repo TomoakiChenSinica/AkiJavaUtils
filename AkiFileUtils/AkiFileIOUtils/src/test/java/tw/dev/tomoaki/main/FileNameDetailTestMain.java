@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 tomoaki.
+ * Copyright 2024 tomoaki.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tw.dev.tomoaki.datafilesystem.core;
+package tw.dev.tomoaki.main;
 
-import java.io.File;
+import tw.dev.tomoaki.file.entity.FileNameDetail;
 
 /**
  *
  * @author tomoaki
- * @param <TARGET_DATA>
- * @param <SOURCE_DATA>
  */
-public interface DataFileCopier<TARGET_DATA, SOURCE_DATA> {
+public class FileNameDetailTestMain {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+       test1(); 
+    }
     
-    public File copy(TARGET_DATA targetData, SOURCE_DATA sourceData);
+    private static void test1() {
+        System.out.println(FileNameDetail.Factory.create("", "htaccess"));
+        System.out.println(FileNameDetail.Factory.create("", "htaccess"));
+        System.out.println(FileNameDetail.Factory.create(null, "htaccess"));
+    }
     
 }

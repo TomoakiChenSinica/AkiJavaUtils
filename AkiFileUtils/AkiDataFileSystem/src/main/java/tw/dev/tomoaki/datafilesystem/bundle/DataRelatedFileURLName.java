@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 tomoaki.
+ * Copyright 2024 tomoaki.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tw.dev.tomoaki.datafilesystem.core;
+package tw.dev.tomoaki.datafilesystem.bundle;
 
-import java.io.File;
+import tw.dev.tomoaki.datafilesystem.core.entity.DataFileRelation;
+import tw.dev.tomoaki.file.entity.FileNameDetail;
 
 /**
  *
  * @author tomoaki
- * @param <TARGET_DATA>
- * @param <SOURCE_DATA>
+ * @param <DATA_FILE>
+ * 
  */
-public interface DataFileCopier<TARGET_DATA, SOURCE_DATA> {
+public abstract class DataRelatedFileURLName<DATA_FILE extends DataFileRelation> extends FileNameDetail { 
     
-    public File copy(TARGET_DATA targetData, SOURCE_DATA sourceData);
-    
+    public abstract String obtainDataRelatedFilePrefix(DATA_FILE dataFile);
+
+    public abstract String obtainDataRelatedFileSuffix(DATA_FILE dataFile);
+
 }

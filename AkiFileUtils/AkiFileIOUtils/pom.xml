@@ -11,14 +11,6 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <exec.mainClass>tw.dev.tomoaki.akifileioutils.AkiFileIOUtils</exec.mainClass>
     </properties>
-    <dependencies>
-        <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.11.0</version>
-        </dependency>
-    </dependencies>
     
     <distributionManagement>
         <repository>
@@ -33,6 +25,31 @@
             <url>http://192.168.111.101:8082/repository/ccs-packages</url>
         </snapshotRepository>
     </distributionManagement>
+    
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.11.0</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>tw.dev.tomoaki</groupId>
+            <artifactId>AkiRegularExpression</artifactId>
+            <version>1.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        
+        <!--
+        <dependency>
+            <groupId>tw.dev.tomoaki</groupId>
+            <artifactId>AkiStringUtils</artifactId>
+            <version>1.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        -->
+    </dependencies>    
     
     <licenses>        
         <license>
