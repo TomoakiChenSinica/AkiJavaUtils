@@ -1,32 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <name>AkiDateTimeCloze</name>
+        
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>tw.dev.tomoaki</groupId>
-        <artifactId>AkiJavaUtils</artifactId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
-    <groupId>tw.dev.tomoaki.akidatetimeformat</groupId>
+    <groupId>tw.dev.tomoaki</groupId>
     <artifactId>AkiDateTimeCloze</artifactId>
+    <version>0.1.1-SNAPSHOT</version>    
     <packaging>jar</packaging>
-    <dependencies>
-        <dependency>
-            <groupId>tw.dev.tomoaki</groupId>
-            <artifactId>AkiDateTime</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>tw.dev.tomoaki</groupId>
-            <artifactId>AkiRegularExpression</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>tw.dev.tomoaki</groupId>
-            <artifactId>AkiDataValidator</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <type>pom</type>
-        </dependency>
-    </dependencies>
+
     <properties>
         <exec.mainClass>tw.dev.tomoaki.akidatetimeformat.AkiDateTimeFormat</exec.mainClass>
     </properties>
@@ -52,12 +33,31 @@
         </snapshotRepository>           
     </distributionManagement>
     
-    
     <licenses>        
         <license>
             <name>The Apache License, Version 2.0</name>
             <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
         </license>
     </licenses>
-    <name>AkiDateTimeCloze</name>
+    
+    <dependencies>
+        <dependency>
+            <groupId>tw.dev.tomoaki</groupId>
+            <artifactId>AkiDateTime</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>tw.dev.tomoaki</groupId>
+            <artifactId>AkiRegularExpression</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>tw.dev.tomoaki</groupId>
+            <artifactId>AkiDataValidator</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>pom</type>
+        </dependency>
+    </dependencies>    
 </project>

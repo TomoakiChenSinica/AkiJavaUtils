@@ -8,16 +8,16 @@ package tw.dev.tomoaki.datetimecloze.exception;
  *
  * @author Tomoaki Chen
  */
-public class DateTimeFormatParserException extends RuntimeException {
+public class ClozeFormatException extends RuntimeException {
     
-    public DateTimeFormatParserException() {
+    public ClozeFormatException() {
     }
     
-    public DateTimeFormatParserException(String msg) {
+    public ClozeFormatException(String msg) {
         super(msg);
     }
     
-    public DateTimeFormatParserException(Exception ex) {
+    public ClozeFormatException(Exception ex) {
         super(ex);
     }
     

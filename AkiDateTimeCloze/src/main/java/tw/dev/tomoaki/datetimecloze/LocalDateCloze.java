@@ -5,7 +5,7 @@
 package tw.dev.tomoaki.datetimecloze;
 
 import java.time.LocalDate;
-import tw.dev.tomoaki.datetimecloze.exception.DateTimeFormatParserException;
+import tw.dev.tomoaki.datetimecloze.exception.ClozeFormatException;
 import tw.dev.tomoaki.util.commondatavalidator.StringValidator;
 import tw.dev.tomoaki.util.datetime.DateTimeUtil;
 import tw.dev.tomoaki.util.regularexpression.RegExpProcessor;
@@ -14,8 +14,11 @@ import tw.dev.tomoaki.util.regularexpression.RegExpResult;
 /**
  *
  * @author tomoaki
+ * 
+ * [FIXME202406110916] processXxxxPart 系列， isFind() 是 false 的時候看是不是要印訊息? (在有傳入該位置的數值，但那欄沒開放填空)
  */
 public class LocalDateCloze {
+
     private static final String YEAR_BLOCK_PATTERN = "\\[(YYYY(\\+?\\-?)[0-9]*)\\]";
     private static final String MONTH_BLOCK_PATTERN = "\\[(MM(\\+?\\-?)[0-9]*)\\]";
     private static final String DAY_BLOCK_PATTERN = "\\[(DD(\\+?\\-?)[0-9]*)\\]";
@@ -23,7 +26,7 @@ public class LocalDateCloze {
     private static final RegExpProcessor yearBlockRegExp;
     private static final RegExpProcessor monthBlockRegExp;
     private static final RegExpProcessor dayBlockRegExp;
-    
+
     private static Integer addendYear;
     private static Integer addendMonth;
     private static Integer addendDay;
@@ -43,23 +46,23 @@ public class LocalDateCloze {
         return fillWith(clozeFormat, annualYear, monthOfAnnual, null);
     }
 
-     public static LocalDate fillWith(String clozeFormat, Integer annualYear, Integer monthOfAnnual, Integer dayOfMonth) {
+    public static LocalDate fillWith(String clozeFormat, Integer annualYear, Integer monthOfAnnual, Integer dayOfMonth) {
         String strDate = clozeFormat;
         strDate = processYearPart(annualYear, strDate);
         strDate = processMonthPart(monthOfAnnual, strDate);
         strDate = processDayPart(dayOfMonth, strDate);
-        
+
         LocalDate standardDate = DateTimeUtil.Provider.parse2Date(strDate);
         standardDate = standardDate.plusYears(addendYear);
         standardDate = standardDate.plusMonths(addendMonth);
         standardDate = standardDate.plusDays(addendDay);
-        
+
         //將公共變數初始化回去
         initVariables();
         return standardDate;
     }
 
-//<editor-fold defaultstate="collapsed" desc="處理年份">
+//<editor-fold defaultstate="collapsed" desc="內部輔助 Methods - 處理年份">
     protected static String processYearPart(Integer annualYear, String clozeFormat) {
         String strDate = clozeFormat;
         if (annualYear == null) {
@@ -70,7 +73,7 @@ public class LocalDateCloze {
             //將年分區塊先用 指定年度(annualYear)更換
             String match = yearRegExpResult.getMatchResults().get(0);
             strDate = strDate.replace(match, annualYear.toString());
-            
+
             //紀錄下之後要加(可能是負)的年份
             processAddendYear(yearRegExpResult);
         }
@@ -88,7 +91,7 @@ public class LocalDateCloze {
     }
 //</editor-fold>
 
-//<editor-fold defaultstate="collapsed" desc="處理月份">
+//<editor-fold defaultstate="collapsed" desc="內部輔助 Methods - 處理月份">
     protected static String processMonthPart(Integer monthOfAnnual, String clozeFormat) {
         String strDate = clozeFormat;
         if (monthOfAnnual == null) {
@@ -103,7 +106,7 @@ public class LocalDateCloze {
             strDate = strDate.replace(match, strMonth);
             //紀錄下之後要加(可能是負)的月份
             processAddendMonth(monthRegExpResult);
-            
+
         }
         return strDate;
     }
@@ -119,7 +122,7 @@ public class LocalDateCloze {
     }
 //</editor-fold>
 
-//<editor-fold defaultstate="collapsed" desc="處理日期(Day of Month)">
+//<editor-fold defaultstate="collapsed" desc="內部輔助 Methods - 處理日期(Day of Month)">
     protected static String processDayPart(Integer dayOfMonth, String clozeFormat) {
         String strDate = clozeFormat;
         if (dayOfMonth == null) {
@@ -130,7 +133,7 @@ public class LocalDateCloze {
             //將日期區塊先用 指定年度(dayOfMonth)更換
             String match = dayRegExpResult.getMatchResults().get(0);
             strDate = strDate.replace(match, dayOfMonth.toString());
-            
+
             //紀錄下之後要加(可能是負)的日子
             processAddendDay(dayRegExpResult);
         }
@@ -146,8 +149,7 @@ public class LocalDateCloze {
             addendDay = processAddend(operatorPart, strNum);
         }
     }
-//</editor-fold>    
-    
+
     protected static Integer processAddend(String operator, String strNum) {
         Integer num2 = (StringValidator.isValueExist(strNum)) ? Integer.valueOf(strNum) : 0;
         switch (operator) {
@@ -159,16 +161,16 @@ public class LocalDateCloze {
             }
             default: {
                 String msg = String.format("Operrator= %s Not Exist", operator);
-                throw new DateTimeFormatParserException(msg);
+                throw new ClozeFormatException(msg);
             }
         }
     }
-
+//</editor-fold>
+    
     protected static void initVariables() {
         addendYear = 0;
         addendMonth = 0;
         addendDay = 0;
     }
-
 
 }

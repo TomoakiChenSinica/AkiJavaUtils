@@ -6,8 +6,11 @@ package tw.dev.tomoaki.main;
 
 import java.time.LocalDate;
 import tw.dev.tomoaki.datetimecloze.LocalDateCloze;
-import tw.dev.tomoaki.datetimecloze.DateFormatRangeParser;
+import tw.dev.tomoaki.datetimecloze.ClozeFormatRangeAnalyzer;
+import tw.dev.tomoaki.datetimecloze.ClozeFormatRangeHelper;
+import tw.dev.tomoaki.datetimecloze.entity.ClozeFormatRange;
 import tw.dev.tomoaki.util.datetime.DateTimeUtil;
+import tw.dev.tomoaki.util.datetime.entity.DateRange;
 
 /**
  *
@@ -16,7 +19,7 @@ import tw.dev.tomoaki.util.datetime.DateTimeUtil;
 public class TestMain {
 
     public static void main(String[] args) {
-        test1_2();
+        test3();
     }
 
     protected static void test1() {
@@ -25,18 +28,25 @@ public class TestMain {
         LocalDate desigDate = LocalDateCloze.fillWith("[YYYY+1]-[MM]-[DD]", 2020, 2, 29);
         System.out.println(desigDate);
     }
-    
+
     protected static void test1_2() {
         // LocalDate desigDate = LocalDateCloze.fillWith("[YYYY+1]-12-31", 2020, 2, 29);
         LocalDate desigDate = LocalDateCloze.fillWith("[YYYY+1]-12-31", 2020);
         System.out.println(desigDate);
-    }    
+    }
 
     protected static void test2() {
         // LocalDate standardDate = DateTimeUtil.Provider.parse2Date("2022-12-01");
         // System.out.println(standardDate.plusYears(-1));
         LocalDate desigDate2 = DateTimeUtil.Provider.parse2Date("2022-08-01");
-        Integer annual = DateFormatRangeParser.analyzeSimpleAnnual("[YYYY]-08-01", "[YYYY+1]-07-31", desigDate2);
+        Integer annual = ClozeFormatRangeAnalyzer.analyzeSimpleAnnual("[YYYY]-08-01", "[YYYY+1]-07-31", desigDate2);
         System.out.println(annual);
+    }
+
+    protected static void test3() {
+        LocalDate today = LocalDate.now();
+        ClozeFormatRange formatRange = ClozeFormatRange.Factory.create("[YYYY]-[MM]-07", "[YYYY]-[MM+1]-06");
+        DateRange dateRange = ClozeFormatRangeHelper.doCovert(formatRange, today.getYear(), today.getMonthValue(), today.getDayOfMonth());
+        System.out.println(dateRange);
     }
 }
