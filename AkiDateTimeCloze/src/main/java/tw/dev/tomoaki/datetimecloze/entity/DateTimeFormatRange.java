@@ -1,4 +1,4 @@
-package tw.dev.tomoaki.datetimeformat.entity;
+package tw.dev.tomoaki.datetimecloze.entity;
 
 /*
  * To change this license header, choose License Headers in Project Properties.

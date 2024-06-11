@@ -53,7 +53,10 @@ public class DateTimeUtil {
     public static Date MAX_UTIL_DATE = new Date(Long.MAX_VALUE);
 
     /**
-     *
+     * 
+     * 此一系列在 LocalDateTIme、LocalDate、LocalTime 後， <br>
+     * 比較的功能是對 LocalXxxx.parse 更進一步包裝， <br>
+     * DateTimeFormatter 可以透過傳入 String format 協助轉換 (雖然也不難就是...)
      */
     public static class Provider {
 
@@ -235,7 +238,10 @@ public class DateTimeUtil {
             DateTimeFormatter formatter = Provider.obtainFormatter(timeFormat);
             return strTime == null ? null : LocalTime.parse(strTime, formatter);
         }
-
+        
+//        public static LocalYearMonth parse2YearMonth(String strYearMonth, String yearMonthFormat) {
+//        } 
+               
         public static LocalDate obtainDayOfWeek(LocalDate theDate, Integer dayOfWeek) {
             //要檢查 dayOfWeek 1 ~ 7
             return theDate == null ? null : theDate.with(WeekFields.of(Locale.TAIWAN).dayOfWeek(), dayOfWeek);
@@ -327,7 +333,7 @@ public class DateTimeUtil {
         public static Integer otainNowYear() {
             LocalDate today = DateTimeUtil.Provider.obtainToday();
             return today.getYear();
-        }
+        }               
     }
 
     public static class Converter {

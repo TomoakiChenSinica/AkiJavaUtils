@@ -2,10 +2,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tw.dev.tomoaki.datetimeformat;
+package tw.dev.tomoaki.datetimecloze;
 
 import java.time.LocalDate;
-import tw.dev.tomoaki.datetimeformat.exception.DateTimeFormatParserException;
+import tw.dev.tomoaki.datetimecloze.exception.DateTimeFormatParserException;
 import tw.dev.tomoaki.util.commondatavalidator.StringValidator;
 import tw.dev.tomoaki.util.datetime.DateTimeUtil;
 import tw.dev.tomoaki.util.regularexpression.RegExpProcessor;
@@ -15,17 +15,7 @@ import tw.dev.tomoaki.util.regularexpression.RegExpResult;
  *
  * @author tomoaki
  */
-public class DateFormatParser {
-//
-
-//    private static final String YEAR_BLOCK_PATTERN = "\\[(YYYY(\\+?\\-?)[0-9]*)\\]";
-//    private static final String YEAR_KEY = "YYYY(\\+)?(\\-)?[0-9]*";
-//    //貞緯擴充
-//    private static final String MONTH_BLOCK_KEY = "\\[MM(\\+)?(\\-)?[0-9]*\\]";
-//    private static final String MONTH_KEY = "MM(\\+)?(\\-)?[0-9]*";
-//
-//    private static final String DATE_BLOCK_KEY = "\\[DD(\\+)?(\\-)?[0-9]*\\]";
-//    private static final String DATE_KEY = "DD(\\+)?(\\-)?[0-9]*";   
+public class LocalDateCloze {
     private static final String YEAR_BLOCK_PATTERN = "\\[(YYYY(\\+?\\-?)[0-9]*)\\]";
     private static final String MONTH_BLOCK_PATTERN = "\\[(MM(\\+?\\-?)[0-9]*)\\]";
     private static final String DAY_BLOCK_PATTERN = "\\[(DD(\\+?\\-?)[0-9]*)\\]";
@@ -45,19 +35,19 @@ public class DateFormatParser {
         initVariables();
     }
 
-    public static LocalDate parseFormat2Date(String desigFormat, Integer annualYear) {
-        return parseFormat2Date(desigFormat, annualYear, null, null);
+    public static LocalDate fillWith(String clozeFormat, Integer annualYear) {
+        return fillWith(clozeFormat, annualYear, null, null);
     }
 
-    public static LocalDate parseFormat2Date(String desigFormat, Integer annualYear, Integer annualMonth) {
-        return parseFormat2Date(desigFormat, annualYear, annualMonth, null);
+    public static LocalDate fillWith(String clozeFormat, Integer annualYear, Integer monthOfAnnual) {
+        return fillWith(clozeFormat, annualYear, monthOfAnnual, null);
     }
 
-    public static LocalDate parseFormat2Date(String desigFormat, Integer annualYear, Integer annualMonth, Integer annualDay) {
-        String strDate = desigFormat;
+     public static LocalDate fillWith(String clozeFormat, Integer annualYear, Integer monthOfAnnual, Integer dayOfMonth) {
+        String strDate = clozeFormat;
         strDate = processYearPart(annualYear, strDate);
-        strDate = processMonthPart(annualMonth, strDate);
-        strDate = processDayPart(annualDay, strDate);
+        strDate = processMonthPart(monthOfAnnual, strDate);
+        strDate = processDayPart(dayOfMonth, strDate);
         
         LocalDate standardDate = DateTimeUtil.Provider.parse2Date(strDate);
         standardDate = standardDate.plusYears(addendYear);
@@ -70,12 +60,12 @@ public class DateFormatParser {
     }
 
 //<editor-fold defaultstate="collapsed" desc="處理年份">
-    protected static String processYearPart(Integer annualYear, String desigFormat) {
-        String strDate = desigFormat;
+    protected static String processYearPart(Integer annualYear, String clozeFormat) {
+        String strDate = clozeFormat;
         if (annualYear == null) {
             return strDate;
         }
-        RegExpResult yearRegExpResult = yearBlockRegExp.processMatch(desigFormat);
+        RegExpResult yearRegExpResult = yearBlockRegExp.processMatch(clozeFormat);
         if (yearRegExpResult.isFind()) {
             //將年分區塊先用 指定年度(annualYear)更換
             String match = yearRegExpResult.getMatchResults().get(0);
@@ -99,17 +89,17 @@ public class DateFormatParser {
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="處理月份">
-    protected static String processMonthPart(Integer annualMonth, String desigFormat) {
-        String strDate = desigFormat;
-        if (annualMonth == null) {
+    protected static String processMonthPart(Integer monthOfAnnual, String clozeFormat) {
+        String strDate = clozeFormat;
+        if (monthOfAnnual == null) {
             return strDate;
         }
 
-        RegExpResult monthRegExpResult = monthBlockRegExp.processMatch(desigFormat);
+        RegExpResult monthRegExpResult = monthBlockRegExp.processMatch(clozeFormat);
         if (monthRegExpResult.isFind()) {
-            //將月份區塊先用 指定年度(annualMonth)更換
+            //將月份區塊先用 指定年度(monthOfAnnual)更換
             String match = monthRegExpResult.getMatchResults().get(0);
-            String strMonth = (annualMonth >= 10) ? annualMonth.toString() : "0" + annualMonth.toString(); //補0上去
+            String strMonth = (monthOfAnnual >= 10) ? monthOfAnnual.toString() : "0" + monthOfAnnual.toString(); //補0上去
             strDate = strDate.replace(match, strMonth);
             //紀錄下之後要加(可能是負)的月份
             processAddendMonth(monthRegExpResult);
@@ -129,18 +119,17 @@ public class DateFormatParser {
     }
 //</editor-fold>
 
-
 //<editor-fold defaultstate="collapsed" desc="處理日期(Day of Month)">
-    protected static String processDayPart(Integer annualDay, String desigFormat) {
-        String strDate = desigFormat;
-        if (annualDay == null) {
+    protected static String processDayPart(Integer dayOfMonth, String clozeFormat) {
+        String strDate = clozeFormat;
+        if (dayOfMonth == null) {
             return strDate;
         }
-        RegExpResult dayRegExpResult = dayBlockRegExp.processMatch(desigFormat);
+        RegExpResult dayRegExpResult = dayBlockRegExp.processMatch(clozeFormat);
         if (dayRegExpResult.isFind()) {
-            //將日期區塊先用 指定年度(annualDay)更換
+            //將日期區塊先用 指定年度(dayOfMonth)更換
             String match = dayRegExpResult.getMatchResults().get(0);
-            strDate = strDate.replace(match, annualDay.toString());
+            strDate = strDate.replace(match, dayOfMonth.toString());
             
             //紀錄下之後要加(可能是負)的日子
             processAddendDay(dayRegExpResult);
@@ -160,7 +149,7 @@ public class DateFormatParser {
 //</editor-fold>    
     
     protected static Integer processAddend(String operator, String strNum) {
-        Integer num2 = (StringValidator.isValueExist(strNum)) ? Integer.parseInt(strNum) : 0;
+        Integer num2 = (StringValidator.isValueExist(strNum)) ? Integer.valueOf(strNum) : 0;
         switch (operator) {
             case "+": {
                 return num2;

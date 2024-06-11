@@ -7,7 +7,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <groupId>tw.dev.tomoaki.akidatetimeformat</groupId>
-    <artifactId>AkiDateTimeFormat</artifactId>
+    <artifactId>AkiDateTimeCloze</artifactId>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
@@ -58,5 +58,6 @@
             <name>The Apache License, Version 2.0</name>
             <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
         </license>
-    </licenses>      
+    </licenses>
+    <name>AkiDateTimeCloze</name>
 </project>

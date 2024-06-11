@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import static java.time.temporal.ChronoField.YEAR;
 import static java.time.temporal.ChronoField.MONTH_OF_YEAR;
+import java.time.temporal.TemporalAccessor;
 import java.util.Objects;
 
 /**
@@ -54,7 +55,20 @@ public class LocalYearMonth implements ChronoLocalYearMonth, Comparable<LocalYea
         final LocalDate date = LocalDate.now();
         return from(date);
     }
+    /*
+    Temporal TemporalAccessor TemporalQuery
+    https://zq99299.github.io/java-tutorial/datetime/iso/Temporal.html#chronofield-%E5%92%8C-isofields
+    */
 
+    /*public static LocalYearMonth from(TemporalAccessor temporal) {
+    
+    public static LocalYearMonth parse(CharSequence text, DateTimeFormatter formatter) {
+        Objects.requireNonNull(formatter, "formatter");
+        return formatter.parse(text, LocalYearMonth::from);    
+    }*/
+
+    // -----------------------------------------------------------------------------------
+    
     public int getYear() {
         return year;
     }
@@ -74,18 +88,16 @@ public class LocalYearMonth implements ChronoLocalYearMonth, Comparable<LocalYea
 
     public String format(DateTimeFormatter formatter) {
         Objects.requireNonNull(formatter, "formatter");
-        // LocalDate date = LocalDate.of(year, (int) month, 1);
         LocalDate date = this.atDay(1);
         return date.format(formatter);
     }
 
-    public LocalYearMonth plusYears(/*int plusedYear*/int yearsToAdd) {
+    public LocalYearMonth plusYears(int yearsToAdd) {
         int newYear = this.year + yearsToAdd;
         return LocalYearMonth.of(newYear, month);
     }
 
     public LocalYearMonth plusMonths(int monthsToAdd) {
-        // LocalDate resultDate = LocalDate.of(year, month, 1).plusMonths(monthsToAdd);
         LocalDate resultDate = this.atDay(1).plusMonths(monthsToAdd);
         return LocalYearMonth.from(resultDate);
     }
@@ -96,7 +108,6 @@ public class LocalYearMonth implements ChronoLocalYearMonth, Comparable<LocalYea
     }
 
     public LocalYearMonth minusMonths(int monthsToSubstract) {
-        // LocalDate resultDate = LocalDate.of(year, month, 1).minusMonths(monthsToSubstract);
         LocalDate resultDate = this.atDay(1).minusMonths(monthsToSubstract);
         return LocalYearMonth.from(resultDate);
     }

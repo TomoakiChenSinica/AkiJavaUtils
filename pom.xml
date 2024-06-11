@@ -39,7 +39,6 @@
         <module>AkiDataUtils</module>
         <module>AkiDataValidator</module>
         <module>AkiDateTime</module>
-        <module>AkiDateTimeFormat</module>
         <module>AkiEntity</module>
         <module>AkiEnumOption</module>
         <module>AkiException</module>
@@ -56,7 +55,8 @@
         <module>AkiReflectionKit</module>
         <module>AkiSSH</module>
         <module>AkiStringUtils</module>
-        <module>AkiWeb</module>        
+        <module>AkiWeb</module>
+        <module>AkiDateTimeCloze</module>
     </modules>
     <!-- 
     不用特別加這個，直接

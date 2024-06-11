@@ -24,7 +24,9 @@ import tw.dev.tomoaki.util.regularexpression.impl.result.FileNameRegExpResult;
 /**
  *
  * @author tomoaki
+ * @deprecated 設計起來怪怪的，先砍掉
  */
+@Deprecated
 public class FileNameDetail {
 
     private String prefix;
@@ -33,17 +35,6 @@ public class FileNameDetail {
     protected FileNameDetail() {
     }
 
-    /*public static FileNameDetail of(String displayName) {
-        FileNameRegExpResult fileNameResult = FileNameRegExpUtil.process(displayName);
-        return of(fo)
-    }    
-    
-    public static FileNameDetail of(String prefix, String suffix) {
-        FileNameDetail nameDetail = new FileNameDetail();
-        nameDetail.prefix = prefix;
-        nameDetail.suffix = suffix;
-        return nameDetail;
-    }*/
     public static class Factory {
 
         public static FileNameDetail create(String fileDisplayName) {
@@ -79,12 +70,7 @@ public class FileNameDetail {
         return toDisplayName();
     }
 
-    /* inner 這樣寫抱錯
-    private class LocalStringValidator {
-        public static Boolean isExist(String str) {
-            return (str != null) && !str.isEmpty();
-        }
-    }*/
+    /* inner class，如果寫成 "private class LocalStringValidator" 會報錯 */
     private static class LocalStringValidator {
 
         public static Boolean isExist(String str) {
