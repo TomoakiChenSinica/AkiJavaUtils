@@ -14,9 +14,14 @@ import tw.dev.tomoaki.util.regularexpression.RegExpResult;
 /**
  *
  * @author tomoaki
+ *
+ * [FIXME202406110916] processXxxxPart 系列， isFind() 是 false 的時候看是不是要印訊息?
+ * (在有傳入該位置的數值，但那欄沒開放填空)
  * 
- * [FIXME202406110916] processXxxxPart 系列， isFind() 是 false 的時候看是不是要印訊息? (在有傳入該位置的數值，但那欄沒開放填空)
+ * 
+ * @deprecated 
  */
+@Deprecated 
 public class LocalDateCloze {
 
     private static final String YEAR_BLOCK_PATTERN = "\\[(YYYY(\\+?\\-?)[0-9]*)\\]";
@@ -166,11 +171,83 @@ public class LocalDateCloze {
         }
     }
 //</editor-fold>
-    
+
+//<editor-fold defaultstate="collapsed" desc="初始化一些數值">
     protected static void initVariables() {
         addendYear = 0;
         addendMonth = 0;
         addendDay = 0;
     }
+//</editor-fold>
 
+    @Deprecated 
+    public static class ClozeFormatHelper {
+
+        public static Boolean validateYearFillable(String clozeFormat) {  // public class ClozeFormatHelper {
+            RegExpResult yearRegExpResult = yearBlockRegExp.processMatch(clozeFormat);
+            return yearRegExpResult.isFind();
+        }
+
+        public static Boolean validateMonthFillable(String clozeFormat) {
+            RegExpResult yearRegExpResult = monthBlockRegExp.processMatch(clozeFormat);
+            return yearRegExpResult.isFind();
+        }
+
+        public static Boolean validateDayOfMonthFillable(String clozeFormat) {
+            RegExpResult yearRegExpResult = dayBlockRegExp.processMatch(clozeFormat);
+            return yearRegExpResult.isFind();
+        }
+
+        protected static Integer processAddendYear(RegExpResult yearRegExpResult) {
+            Integer addendYear = 0;
+            String descriptionPart = yearRegExpResult.getCaptureResults().get(0); //YYYY+1
+            String operatorPart = yearRegExpResult.getCaptureResults(2).get(0);
+            if (StringValidator.isValueExist(operatorPart)) {
+                String[] parts = descriptionPart.split("\\" + operatorPart);
+                String strNum = parts[1];
+                addendYear = processAddend(operatorPart, strNum);
+            }
+            return addendYear;
+        }
+
+        protected static Integer processAddendMonth(RegExpResult monthRegExpResult) {
+            Integer addendMonth = 0;
+            String descriptionPart = monthRegExpResult.getCaptureResults().get(0); //DD+1
+            String operatorPart = monthRegExpResult.getCaptureResults(2).get(0);
+            if (StringValidator.isValueExist(operatorPart)) {
+                String[] parts = descriptionPart.split("\\" + operatorPart);
+                String strNum = parts[1];
+                addendMonth = processAddend(operatorPart, strNum);
+            }
+            return addendMonth;
+        }
+
+        protected static Integer processAddendDay(RegExpResult dayRegExpResult) {
+            Integer addendDay = 0;
+            String descriptionPart = dayRegExpResult.getCaptureResults().get(0); //DD+1
+            String operatorPart = dayRegExpResult.getCaptureResults(2).get(0);
+            if (StringValidator.isValueExist(operatorPart)) {
+                String[] parts = descriptionPart.split("\\" + operatorPart);
+                String strNum = parts[1];
+                addendDay = processAddend(operatorPart, strNum);
+            }
+            return addendDay;
+        }
+
+        public static Integer processAddend(String operator, String strNum) {
+            Integer num2 = (StringValidator.isValueExist(strNum)) ? Integer.valueOf(strNum) : 0;
+            switch (operator) {
+                case "+": {
+                    return num2;
+                }
+                case "-": {
+                    return -num2;
+                }
+                default: {
+                    String msg = String.format("Operrator= %s Not Exist", operator);
+                    throw new ClozeFormatException(msg);
+                }
+            }
+        }
+    }
 }

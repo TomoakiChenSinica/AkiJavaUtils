@@ -5,12 +5,15 @@
 package tw.dev.tomoaki.main;
 
 import java.time.LocalDate;
-import tw.dev.tomoaki.datetimecloze.LocalDateCloze;
-import tw.dev.tomoaki.datetimecloze.ClozeFormatRangeAnalyzer;
-import tw.dev.tomoaki.datetimecloze.ClozeFormatRangeHelper;
-import tw.dev.tomoaki.datetimecloze.entity.ClozeFormatRange;
+import tw.dev.tomoaki.datetimecloze.bundle.LocalDateCloze;
+
 import tw.dev.tomoaki.util.datetime.DateTimeUtil;
 import tw.dev.tomoaki.util.datetime.entity.DateRange;
+
+//import tw.dev.tomoaki.datetimecloze.bundle.LocalDateCloze;
+import tw.dev.tomoaki.datetimecloze.util.ClozeFormatRangeAnalyzer;
+import tw.dev.tomoaki.datetimecloze.util.ClozeFormatRangeHelper;
+import tw.dev.tomoaki.datetimecloze.entity.ClozeFormatRange;
 
 /**
  *
@@ -19,7 +22,8 @@ import tw.dev.tomoaki.util.datetime.entity.DateRange;
 public class TestMain {
 
     public static void main(String[] args) {
-        test3();
+        test1();
+        test1_2();
     }
 
     protected static void test1() {

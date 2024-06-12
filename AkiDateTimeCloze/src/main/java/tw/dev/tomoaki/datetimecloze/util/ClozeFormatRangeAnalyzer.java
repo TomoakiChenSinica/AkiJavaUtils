@@ -2,10 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package tw.dev.tomoaki.datetimecloze;
+package tw.dev.tomoaki.datetimecloze.util;
 
 import java.time.LocalDate;
 import java.util.Date;
+import tw.dev.tomoaki.datetimecloze.bundle.LocalDateCloze;
 import tw.dev.tomoaki.datetimecloze.entity.ClozeFormatRange;
 import tw.dev.tomoaki.util.datetime.DateTimeUtil;
 
