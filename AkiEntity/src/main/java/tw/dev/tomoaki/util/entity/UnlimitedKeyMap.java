@@ -13,6 +13,8 @@ import java.util.stream.Stream;
 /**
  *
  * @author tomoaki
+ * @param <K>
+ * @param <V>
  */
 public class UnlimitedKeyMap<K extends Object, V> {
 

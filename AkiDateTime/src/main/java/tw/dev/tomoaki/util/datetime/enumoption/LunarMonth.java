@@ -15,6 +15,8 @@
  */
 package tw.dev.tomoaki.util.datetime.enumoption;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.time.Month;
 import java.time.format.TextStyle;
 import java.util.Locale;
@@ -26,16 +28,29 @@ import java.util.Objects;
  */
 public enum LunarMonth {
 
+    @JsonProperty("JANUARY")
     JANUARY(java.time.Month.JANUARY),
+    @JsonProperty("FEBRUARY")
     FEBRUARY(java.time.Month.FEBRUARY),
+    @JsonProperty("MARCH")
     MARCH(java.time.Month.MARCH),
+    @JsonProperty("APRIL")
     APRIL(java.time.Month.APRIL),
+    @JsonProperty("MAY")
     MAY(java.time.Month.MAY),
+    @JsonProperty("JUNE")
     JUNE(java.time.Month.JUNE),
+    @JsonProperty("JULY")
     JULY(java.time.Month.JULY),
+    @JsonProperty("AUGUST")
     AUGUST(java.time.Month.AUGUST),
+    @JsonProperty("SEPTEMBER")
     SEPTEMBER(java.time.Month.SEPTEMBER),
+    @JsonProperty("OCTOBER")
+    OCTOBER(java.time.Month.OCTOBER),
+    @JsonProperty("NOVEMBER")
     NOVEMBER(java.time.Month.NOVEMBER),
+    @JsonProperty("DECEMBER")
     DECEMBER(java.time.Month.DECEMBER);
 
     private java.time.Month enumMonth;
@@ -65,6 +80,7 @@ public enum LunarMonth {
         this.enumMonth = enumMonth;
     }
 
+//    @JsonValue
     public Integer getMonthValue() {
         return monthValue;
     }
@@ -104,35 +120,35 @@ public enum LunarMonth {
     public void setDisplayShortNameEN(String displayShortNameEN) {
         this.displayShortNameEN = displayShortNameEN;
     }
-    
+
     public static LunarMonth of(Month desigTimeMonth) {
         LunarMonth desigLunarMonth = null;
-        for(LunarMonth lunarMonth : LunarMonth.values()) {
-            if(Objects.equals(lunarMonth.getEnumMonth(), desigTimeMonth)) {
+        for (LunarMonth lunarMonth : LunarMonth.values()) {
+            if (Objects.equals(lunarMonth.getEnumMonth(), desigTimeMonth)) {
                 desigLunarMonth = lunarMonth;
                 break;
             }
         }
-        
-        if(desigLunarMonth == null) {
-            throw new IllegalArgumentException("Cannot Found LunarMonth[desigTimeMonth= %s]");
+
+        if (desigLunarMonth == null) {
+            throw new IllegalArgumentException(String.format("Cannot Found LunarMonth[desigTimeMonth= %s]", desigTimeMonth));
         }
         return desigLunarMonth;
     }
-    
+
     public static LunarMonth of(Integer desigMonth) {
         LunarMonth desigLunarMonth = null;
-        for(LunarMonth lunarMonth : LunarMonth.values()) {
-            if(Objects.equals(lunarMonth.getMonthValue(), desigMonth)) {
+        for (LunarMonth lunarMonth : LunarMonth.values()) {
+            if (Objects.equals(lunarMonth.getMonthValue(), desigMonth)) {
                 desigLunarMonth = lunarMonth;
                 break;
             }
         }
-        
-        if(desigLunarMonth == null) {
-            throw new IllegalArgumentException("Cannot Found LunarMonth[desigMonth= %s]");
+
+        if (desigLunarMonth == null) {
+            throw new IllegalArgumentException(String.format("Cannot Found LunarMonth[desigMonth= %s]", desigMonth));
         }
         return desigLunarMonth;
-    }    
+    }
 
 }

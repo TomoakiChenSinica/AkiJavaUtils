@@ -66,8 +66,7 @@ public class LocalYearMonth implements ChronoLocalYearMonth, Comparable<LocalYea
         Objects.requireNonNull(formatter, "formatter");
         return formatter.parse(text, LocalYearMonth::from);    
     }*/
-
-    // -----------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
     
     public int getYear() {
         return year;

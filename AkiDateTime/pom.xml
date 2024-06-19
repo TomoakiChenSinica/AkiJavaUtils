@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>tw.dev.tomoaki</groupId>
     <artifactId>AkiDateTime</artifactId>
-    <version>1.3.0-SNAPSHOT-202406061526</version>
+    <version>1.4.6-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -63,4 +63,13 @@
             <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
         </license>
     </licenses>      
+    
+    <dependencies>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>2.17.1</version>
+            <scope>provided</scope>            
+        </dependency>
+    </dependencies>
 </project>

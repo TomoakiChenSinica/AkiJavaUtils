@@ -13,21 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tw.dev.tomoaki.datetimecloze.entity;
+package tw.dev.tomoaki.util.datetime.util;
 
-import tw.dev.tomoaki.util.datetime.entity.DateRange;
+import tw.dev.tomoaki.util.datetime.LocalYearMonth;
 
 /**
  *
  * @author tomoaki
  */
-public class DateRangeBundle {
+public class LocalYearMonthHelper {
 
-    private DateRange previousPeriod;
-    private DateRange currentPeriod;
-    private DateRange nextPeriod;
-    
-    public static class Factory {
-    
+    public static LocalYearMonth parseStandardFormat(String strYearMonth) {
+        String[] arr = strYearMonth.split("-");
+        String year = arr[0];
+        String month = arr[1];
+        return LocalYearMonth.of(Integer.parseInt(year), Integer.parseInt(month));
     }
 }
