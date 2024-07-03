@@ -79,7 +79,8 @@ public class ClozeFormatHelper {
     }
 
 //</editor-fold>
-//<editor-fold defaultstate="collapsed" desc="這裡是做判斷">
+
+//<editor-fold defaultstate="collapsed" desc="這裡是做「判斷是否符合(某)條件」">
     public static Boolean validateYearFillable(String clozeFormat) {  // public class ClozeFormatHelper {
         RegExpResult yearRegExpResult = yearPartRegExp.processMatch(clozeFormat);
         return yearRegExpResult.isFind();

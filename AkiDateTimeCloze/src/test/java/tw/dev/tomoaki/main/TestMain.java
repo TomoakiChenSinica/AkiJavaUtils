@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 import tw.dev.tomoaki.datetimecloze.bundle.LocalDateCloze;
 
 import tw.dev.tomoaki.util.datetime.DateTimeUtil;
-import tw.dev.tomoaki.util.datetime.entity.DateRange;
+import tw.dev.tomoaki.util.datetime.entity.range.DateRange;
 
 //import tw.dev.tomoaki.datetimecloze.bundle.LocalDateCloze;
 import tw.dev.tomoaki.datetimecloze.util.ClozeFormatRangeAnalyzer;
@@ -48,10 +48,11 @@ public class TestMain {
     }
 
     protected static void test3() {
+        /* doCovert 改名 doStraightCovert，因其邏輯不建議「直接使用」，所以已改成 protected
         LocalDate today = LocalDate.now();
         ClozeFormatRange formatRange = ClozeFormatRange.Factory.create("[YYYY]-[MM]-07", "[YYYY]-[MM+1]-06");
         DateRange dateRange = ClozeFormatRangeHelper.doCovert(formatRange, today.getYear(), today.getMonthValue(), today.getDayOfMonth());
-        System.out.println(dateRange);
+        System.out.println(dateRange);*/
     }
 
     protected static void test4() {

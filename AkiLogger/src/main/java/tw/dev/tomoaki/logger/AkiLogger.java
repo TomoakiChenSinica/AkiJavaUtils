@@ -17,8 +17,7 @@ public class AkiLogger extends LogHelper {
     private static final String MSG_FMT_PREFIX_WITH_CALLER_NAME_AND_METHOD = "[%s] %s(): %s";
 
     protected AkiLogger() {
-
-//        this.caller = AkiLogger.getCaller();
+        // this.caller = AkiLogger.getCaller();
     }
 
     public static class Factory {

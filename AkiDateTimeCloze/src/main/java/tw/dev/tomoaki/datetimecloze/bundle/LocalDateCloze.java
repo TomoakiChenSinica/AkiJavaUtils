@@ -45,7 +45,7 @@ public class LocalDateCloze {
         return standardDate;
     }
 
-//<editor-fold defaultstate="collapsed" desc="內部輔助 Methods - 處理各部分">
+//<editor-fold defaultstate="collapsed" desc="內部輔助 Methods - 處理各「部分」，部分指的是年、月、日">
     protected static String processYearPart(String strDate, DateCloze cloze, Integer annualYear) {
         if (annualYear == null) {
             return strDate;
@@ -85,4 +85,5 @@ public class LocalDateCloze {
         return strDate;
     }
 //</editor-fold>
+
 }

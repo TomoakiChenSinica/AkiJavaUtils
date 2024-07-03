@@ -13,20 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tw.dev.tomoaki.util.datetime.util;
-
-import tw.dev.tomoaki.util.datetime.entity.LocalYearMonth;
+package tw.dev.tomoaki.datafilesystem.core.entity;
 
 /**
  *
  * @author tomoaki
  */
-public class LocalYearMonthHelper {
+public interface DataFile {
 
-    public static LocalYearMonth parseStandardFormat(String strYearMonth) {
-        String[] arr = strYearMonth.split("-");
-        String year = arr[0];
-        String month = arr[1];
-        return LocalYearMonth.of(Integer.parseInt(year), Integer.parseInt(month));
-    }
+    public String getFileDisplayName();
+
+    public String getFileRealName();
 }

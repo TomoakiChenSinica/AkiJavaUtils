@@ -15,9 +15,10 @@ import java.util.List;
  */
 public class KeyPairDataExistMap<Tkey1, Tkey2> {
 
-    private NestedMap<Tkey1, Tkey2, Boolean> dataExistMap = new NestedMap<Tkey1, Tkey2, Boolean>();
+    private NestedMap<Tkey1, Tkey2, Boolean> dataExistMap; // = new NestedMap<Tkey1, Tkey2, Boolean>();
 
     public KeyPairDataExistMap() {
+        dataExistMap = NestedMap.Factory.create();
     }
 
     public static class Factory {

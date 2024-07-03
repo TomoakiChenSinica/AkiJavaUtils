@@ -25,13 +25,6 @@ public final class DateCloze {
 
     private String format;
 
-//    private Boolean isYearFillable;
-//    private Boolean isMonthFillable;
-//    private Boolean isDayOfMonthFillable;
-//
-//    private Integer addendYears = 0;
-//    private Integer addendMonths = 0;
-//    private Integer addendDays = 0;
     private ClozeYearPart clozeYearPart;
     private ClozeMonthPart clozeMonthPart;
     private ClozeDayOfMonthPart clozeDayOfMonthPart;

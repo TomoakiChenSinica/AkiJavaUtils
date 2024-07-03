@@ -15,7 +15,7 @@
  */
 package tw.dev.tomoaki.datetimecloze.entity;
 
-import tw.dev.tomoaki.util.datetime.entity.DateRange;
+import tw.dev.tomoaki.util.datetime.entity.range.DateRange;
 
 /**
  *

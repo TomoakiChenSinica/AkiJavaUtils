@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import tw.dev.tomoaki.util.datetime.entity.DateRange;
+import tw.dev.tomoaki.util.datetime.entity.range.DateRange;
 import tw.dev.tomoaki.util.datetime.util.NanoMathHelper;
 
 /**

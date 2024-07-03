@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tw.dev.tomoaki.util.datetime.entity;
+package tw.dev.tomoaki.util.datetime.entity.range;
 
 import java.time.LocalTime;
 

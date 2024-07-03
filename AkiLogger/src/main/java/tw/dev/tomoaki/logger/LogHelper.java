@@ -16,9 +16,8 @@ public class LogHelper {
 
     private static final String SELF_CLASS_NAME = LogHelper.class.getName();
     private static final String THREAD_CLASS_NAME = Thread.class.getName();
-
-//    private static Map<String, Boolean> EXCLUDE_CLASS_NAME_EXIST_MAP;
-    private static DataExistMap<String> EXCLUDE_CLASS_NAME_EXIST_MAP;
+    
+    private static final DataExistMap<String> EXCLUDE_CLASS_NAME_EXIST_MAP; // private static Map<String, Boolean> EXCLUDE_CLASS_NAME_EXIST_MAP;
 
     static {
         EXCLUDE_CLASS_NAME_EXIST_MAP = new DataExistMap();
@@ -38,8 +37,6 @@ public class LogHelper {
 
     protected static Boolean isExcluded(StackTraceElement stElement) {
         String stClassName = stElement.getClassName();
-//        Boolean isExcluded = EXCLUDE_CLASS_NAME_EXIST_MAP.get(stClassName);
-//        return isExcluded == null ? Boolean.FALSE : isExcluded;
         Boolean isExcluded = EXCLUDE_CLASS_NAME_EXIST_MAP.contains(stClassName);
         return isExcluded;
     }
@@ -57,8 +54,6 @@ public class LogHelper {
         return Caller.Factory.create(stackTraceElement);
     }
 
-//    public static Caller getCaller(Object caller) {
-//    }
     protected static void addExcluded(Object object) {
         EXCLUDE_CLASS_NAME_EXIST_MAP.add(object.getClass().getName());
     }
