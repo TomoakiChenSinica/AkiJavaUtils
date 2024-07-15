@@ -22,14 +22,32 @@ import java.util.stream.Stream;
  */
 public class DataCollectionUtils {
 
+    /**
+     * 協助取得 List 的最後一筆資料 
+     * 
+     * @param <T> 資料類型
+     * @param dataList 資料清單(集合)，格式為 List
+     * @return 清單中的最後一筆資料
+     * 
+     */
     public static <T> T lastOf(List<T> dataList) {
         return lastOf(dataList.stream());
     }
 
+    /**
+     * 協助取得 Stream 的最後一筆資料 
+     * 
+     * @param <T> 資料類型
+     * @param dataStream 資料 Stream
+     * @return 清單中的最後一筆資料
+     * 
+     */    
     public static <T> T lastOf(Stream<T> dataStream) {
         return dataStream.reduce((first, second) -> second).orElse(null);
     }
 
+    // --------------------------------------------------------------------------------------------------------
+    
     public static <T> List<T> skipLast(List<T> dataList, Long desigSkipLastSize) {
         /**
          * https://www.baeldung.com/java-stream-operated-upon-or-closed-exception
@@ -55,7 +73,9 @@ public class DataCollectionUtils {
             return data;
         }));
     }
-
+    
+    // --------------------------------------------------------------------------------------------------------
+    
     public static <T> List<T> append(List<T> dataList, T data) {
         if (dataList == null && data == null) {
             return null;
@@ -122,12 +142,15 @@ public class DataCollectionUtils {
         return Stream.concat(dataStream1, dataStream2);
     }    
     
-
-    /*public static List swap(List dataList, int fromIndex, int toIndex) {
-        Object desigData = dataList.get(fromIndex);
-        dataList.remove(fromIndex);
-        dataList.add(toIndex, desigData);   
-    }*/
+    // --------------------------------------------------------------------------------------------------------
+    
+//    public static <T> List<T> leftJoin(List<T> dataList1, List<T> dataList2) {
+//        
+//    }
+    
+    
+    // --------------------------------------------------------------------------------------------------------
+    
     public static <T> List<T> swap(List<T> dataList, int fromIndex, int toIndex) {        
         T desigData = dataList.get(fromIndex);
         dataList.remove(fromIndex); // https://stackoverflow.com/questions/21795376/java-how-to-remove-an-integer-item-in-an-arraylist

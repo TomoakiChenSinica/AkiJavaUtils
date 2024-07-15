@@ -136,6 +136,11 @@ public class LocalYearMonth implements ChronoLocalYearMonth, Comparable<LocalYea
         LocalDate otherDate = otherYearMonth.atDay(1);
         return selfDate.isEqual(otherDate);
     }
+    
+    @Override
+    public boolean equals(Object otherYearMonth) {
+        return isEqual((ChronoLocalYearMonth) otherYearMonth);
+    }
 
     @Override
     public String toString() {

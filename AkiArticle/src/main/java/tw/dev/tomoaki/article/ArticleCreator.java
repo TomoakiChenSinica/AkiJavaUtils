@@ -26,7 +26,6 @@ import tw.dev.tomoaki.util.entity.extend.PairDataDiff;
 public abstract class ArticleCreator {
 
     private AritcleTokenMap tokensReplaceMapper;
-//    private Map<String, String> tokensReplaceMapper;
     protected List<ArticleTokenModule> moduleList;
     protected Boolean printLog = false;
 

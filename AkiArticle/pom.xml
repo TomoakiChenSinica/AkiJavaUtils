@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>tw.dev.tomoaki</groupId>
     <artifactId>AkiArticle</artifactId>
-    <version>1.1-SNAPSHOT</version>    
+    <version>1.2-SNAPSHOT</version>    
     <packaging>jar</packaging>
     <build>
         <plugins>
@@ -29,7 +29,7 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>AkiEntity</artifactId>
-            <version>${project.version}</version>
+            <version>[2.2.2-SNAPSHOT,)</version>
         </dependency>
         
         <dependency>
