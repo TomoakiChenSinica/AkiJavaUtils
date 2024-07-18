@@ -20,6 +20,7 @@ import java.lang.reflect.Field;
 import java.util.stream.Stream;
 import tw.dev.tomoaki.main.annotation.SpecialMethod;
 import tw.dev.tomoaki.main.entity.Animal;
+import tw.dev.tomoaki.main.entity.MethodModule;
 import tw.dev.tomoaki.main.entity.Params;
 import tw.dev.tomoaki.reflection.JavaMethodHelper;
 
@@ -32,8 +33,9 @@ public class ReflectionTestMain {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        testMethod1();
+    public static void main(String[] args) throws NoSuchMethodException, ClassNotFoundException {
+        // testMethod1();
+        test4();
     }
 
     protected static void test1() {
@@ -90,13 +92,18 @@ public class ReflectionTestMain {
     protected static void testMethod1() {
         Animal dog = new Animal();
         dog.setName("dog");
-        JavaMethodHelper.obtainMethodListByAnnotation(Animal.class, SpecialMethod.class).forEach(method -> {
+        JavaMethodHelper.obtainMethodListIsAnnotatedWith(Animal.class, SpecialMethod.class).forEach(method -> {
             try {
                 method.invoke(dog);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         });
+    }
+    
+    protected static void test4() throws NoSuchMethodException, ClassNotFoundException {
+        MethodModule module = new MethodModule();
+        module.test1();
     }
     
 //<editor-fold defaultstate="collapsed" desc="Old Code">

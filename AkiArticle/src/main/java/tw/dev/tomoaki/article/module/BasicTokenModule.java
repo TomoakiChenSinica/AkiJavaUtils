@@ -22,6 +22,9 @@ public class BasicTokenModule extends ArticleIndependentTokenRuleModule {
     public final static String TOKEN_OLD_NOW_YEAAR = "${NowYear}";
     @ArticleToken(summary = "當下的台灣民國年份", description = "當下的台灣民國年份，此為舊token，不建議使用")
     public final static String TOKEN_OLD_ROC_YEAR = "${rocYear}";
+    
+    // ---------------------------------------------------------------------------------------------------------
+    
     @ArticleToken(summary = "當下的西元年份", description = "當下的西元年份")
     public final static String TOKEN_NOW_YEAR = "${Common.NowYear}";
     @ArticleToken(summary = "當下的台灣民國年份", description = "當下的台灣民國年份")
@@ -38,8 +41,6 @@ public class BasicTokenModule extends ArticleIndependentTokenRuleModule {
     
     @Override
     public void addRule(ArticleCreator creator) {
-//        LocalDate today = LocalDate.now();
-//        Integer thisYear = today.getYear();
         LocalDateTime nowDateTime = LocalDateTime.now();
         Integer thisYear = nowDateTime.getYear();
         Integer taiwanThisYear = thisYear - 1911;

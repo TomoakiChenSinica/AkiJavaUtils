@@ -13,30 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tw.dev.tomoaki.main;
+package tw.dev.tomoaki.cast.main.entity;
 
-import tw.dev.tomoaki.util.datetime.entity.LocalYearMonth;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import java.util.Date;
 
 /**
  *
  * @author tomoaki
  */
-public class LocalYearMonthTestMain {
+public class TestRest {
+    
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone="Asia/Taipei")
+    private Date desigDate;
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-        test1();
+    public Date getDesigDate() {
+        return desigDate;
     }
 
-    private static void test1() {
-//        final var yearMonth1 = LocalYearMonth.of(2024, 10);
-//        System.out.println(yearMonth1.plusMonths(3));
-
-//        final var yearMonth2 = LocalYearMonth.of(2024, 10);
-//        System.out.println(yearMonth1.plusMonths(2));
+    public void setDesigDate(Date desigDate) {
+        this.desigDate = desigDate;
     }
-
+    
+    
 }

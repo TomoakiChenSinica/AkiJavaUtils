@@ -93,6 +93,8 @@ public abstract class ArticleCreator {
 
     /**
      * 要注意，這個是尚未處理過如何對應，單純設定 token 樣式、規格，但未實作
+     * 
+     * @return ArticleTokenOption 清單
      */
     public List<ArticleTokenOption> getTokenOptionList() {
         try {
@@ -126,6 +128,7 @@ public abstract class ArticleCreator {
     }
 
 //</editor-fold>
+
 //<editor-fold defaultstate="collapsed" desc="內部初始化、設定變數">
     private void doVariableInit() {
         this.tokensReplaceMapper = new AritcleTokenMap();
@@ -167,4 +170,4 @@ public abstract class ArticleCreator {
         }
     }
 //</editor-fold>
-    }
+}

@@ -7,12 +7,16 @@ package tw.dev.tomoaki.cast.main;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
 import tw.dev.tomoaki.cast.main.entity.Batter;
+import tw.dev.tomoaki.cast.main.entity.TestRest;
 import tw.dev.tomoaki.cast.main.entity.Transaction;
 import tw.dev.tomoaki.util.cast.JavaToJson;
+import tw.dev.tomoaki.util.datetime.DateTimeUtil;
 
 /**
  *
@@ -25,7 +29,8 @@ public class JavaToJsonMain {
      */
     public static void main(String[] args) throws JsonProcessingException, IOException {
         // TODO code application logic here     
-        test3();
+        // test3();
+        test4();
     }
 
     protected static void test1() throws JsonProcessingException {
@@ -50,6 +55,13 @@ public class JavaToJsonMain {
         t.setIssueDateTime(LocalDateTime.now());
         JavaToJson.allowJavaTime = true;
         System.out.println(JavaToJson.getJsonString(t));
+    }
+    
+    protected static void test4() throws JsonProcessingException {
+        TestRest rest = new TestRest();
+        rest.setDesigDate(DateTimeUtil.Converter.convert(LocalDate.of(1957, 9, 30)));
+        String jsonData = JavaToJson.getJsonString(rest);
+        System.out.println(jsonData);
     }
 
 }

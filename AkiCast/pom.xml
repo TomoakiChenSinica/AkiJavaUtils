@@ -8,8 +8,8 @@
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <jackson.version>[2.14.3.2,)</jackson.version>
         <!--<jackson.jsonSchema.version>[2.14.2.2,2.15)</jackson.jsonSchema.version>-->
     </properties>    
@@ -49,6 +49,12 @@
             <scope>provided</scope>            
         </dependency>    
     
+        <dependency>
+            <groupId>tw.dev.tomoaki</groupId>
+            <artifactId>AkiDateTime</artifactId>
+            <version>1.5.1-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
     
     </dependencies>
 

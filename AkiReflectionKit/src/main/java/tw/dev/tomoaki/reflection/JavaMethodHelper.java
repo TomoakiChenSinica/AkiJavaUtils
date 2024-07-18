@@ -20,16 +20,42 @@ import java.util.stream.Stream;
  * @author Tomoaki Chen
  */
 public class JavaMethodHelper {
+    
+    
+    public static Method obtainCurrentMethod() throws NoSuchMethodException, ClassNotFoundException {
+        StackTraceElement element = StackTraceHelper.getCallerStackTraceElement(); // StackTraceHelper.getCurrentStackTraceElement();
+        // Class<?> currentClass = element.getClass();
+        String currentClassName = element.getClassName();
+        Class<?> currentClass = Class.forName(currentClassName);
+        String methodName = element.getMethodName();
+        System.out.println("currentClassName= " + currentClassName +  ", currentClass= " + currentClassName + ", methodName= " + methodName);
+        return currentClass.getMethod(methodName);
+    }
+    
 
-//<editor-fold defaultstate="collapsed" desc="尋找 Methods 系列">
-    public static List<Method> obtainMethodListByAnnotation(Class<?> clazzType) {
+//<editor-fold defaultstate="collapsed" desc="尋找 Methods 系列，與 Annotation 相關">
+    
+    /**
+     * 找到有被任意 Annotation 註譯的 Methods
+     * 
+     * @param clazzType 指定的類別，會檢查此類別中的 methods
+     * @return Method 清單，格式為 Method 的 List
+     */
+    public static List<Method> obtainMethodListIsAnnotated(Class<?> clazzType) {
         return Stream.of(clazzType.getMethods()).filter(method -> {
             Annotation[] annotations = method.getAnnotations();
             return annotations.length > 0;
         }).collect(Collectors.toList());
     }
 
-    public static List<Method> obtainMethodListByAnnotation(Class<?> clazzType, Class<?> desigAnnotationType) {
+    /**
+     * 找到有被指定 Annotation 註譯的 Methods
+     * 
+     * @param clazzType 指定的類別，會檢查此類別中的 methods
+     * @param desigAnnotationType 指定 Annotation 類型
+     * @return Method 清單，格式為 Method 的 List
+     */    
+    public static List<Method> obtainMethodListIsAnnotatedWith(Class<?> clazzType, Class<?> desigAnnotationType) {
         return Stream.of(clazzType.getMethods()).filter(method -> {
             Annotation[] annotations = method.getAnnotations();
             Long matchedAnnotationCount = Stream.of(annotations).map(Annotation::annotationType)
@@ -38,6 +64,7 @@ public class JavaMethodHelper {
             return matchedAnnotationCount > 0;
         }).collect(Collectors.toList());
     }
+    
 //    public static <T extends Annotation> List<Method> obtainMethodListByAnnotation(Class<?> clazzType, Class<T> desigAnnotationType) {
 //        return Stream.of(clazzType.getMethods()).filter(method -> {
 //            Annotation[] annotations = method.getAnnotations();
@@ -72,4 +99,8 @@ public class JavaMethodHelper {
         }
         return methodInfoList;
     }
+    
+    
+    
+    // --------------------------------------------------------------------------------------------------    
 }

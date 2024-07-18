@@ -15,28 +15,25 @@
  */
 package tw.dev.tomoaki.main;
 
-import tw.dev.tomoaki.util.datetime.entity.LocalYearMonth;
+import tw.dev.tomoaki.reflection.StackTraceHelper;
 
 /**
  *
  * @author tomoaki
  */
-public class LocalYearMonthTestMain {
+public class StackTraceHelperTestMain {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
         test1();
     }
 
-    private static void test1() {
-//        final var yearMonth1 = LocalYearMonth.of(2024, 10);
-//        System.out.println(yearMonth1.plusMonths(3));
-
-//        final var yearMonth2 = LocalYearMonth.of(2024, 10);
-//        System.out.println(yearMonth1.plusMonths(2));
+    public static void test1() {
+//        StackTraceHelper.test1();
+        System.out.println(StackTraceHelper.getCallerStackTraceElement());
+        System.out.println(StackTraceHelper.getCurrentStackTraceElement());
     }
 
 }

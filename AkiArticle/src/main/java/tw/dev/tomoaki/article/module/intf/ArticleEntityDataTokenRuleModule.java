@@ -6,15 +6,15 @@
 package tw.dev.tomoaki.article.module.intf;
 
 import java.util.List;
-import java.util.Map;
 import tw.dev.tomoaki.article.ArticleCreator;
 
 /**
  *
  * @author tomoaki
+ * @param <T> 指定的資料型態
+ * 
  */
 public abstract class ArticleEntityDataTokenRuleModule<T> implements ArticleTokenModule {
-    
     
     public abstract void addRule(ArticleCreator creator, T data);
     

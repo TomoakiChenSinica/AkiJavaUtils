@@ -13,30 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tw.dev.tomoaki.main;
+package tw.dev.tomoaki.main.annotation;
 
-import tw.dev.tomoaki.util.datetime.entity.LocalYearMonth;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  *
  * @author tomoaki
  */
-public class LocalYearMonthTestMain {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-        test1();
-    }
-
-    private static void test1() {
-//        final var yearMonth1 = LocalYearMonth.of(2024, 10);
-//        System.out.println(yearMonth1.plusMonths(3));
-
-//        final var yearMonth2 = LocalYearMonth.of(2024, 10);
-//        System.out.println(yearMonth1.plusMonths(2));
-    }
-
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface MethodAnnotation {
+    
+    String code() default "";    
 }
