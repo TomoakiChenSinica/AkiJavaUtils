@@ -16,10 +16,9 @@
 package tw.dev.tomoaki.main.entity;
 
 import java.lang.reflect.Method;
-import java.util.Objects;
-import java.util.stream.Stream;
 import tw.dev.tomoaki.main.annotation.MethodAnnotation;
-import tw.dev.tomoaki.reflection.JavaMethodHelper;
+import tw.dev.tomoaki.reflection.AnnotationHelper;
+import tw.dev.tomoaki.reflection.MethodHelper;
 
 /**
  *
@@ -31,13 +30,35 @@ public class MethodModule {
     public void test1() throws NoSuchMethodException, ClassNotFoundException {
         // Method currMethod = this.getClass().getEnclosingMethod();
         // System.out.println(currMethod);
-        
-        Method selfMethod = JavaMethodHelper.obtainCurrentMethod();
-//        System.out.println("selfMethod= " + selfMethod);
+
+        Method selfMethod = MethodHelper.obtainCurrentMethod();
         MethodAnnotation[] annotations = selfMethod.getAnnotationsByType(MethodAnnotation.class);
-        // Stream.of(annotations).filter(Objects::nonNull).forEach(System.out::println);
-        if(annotations != null && annotations.length > 0) {
+        if (annotations != null && annotations.length > 0) {
             System.out.println(annotations[0].code());
         }
+    }
+
+    @MethodAnnotation(code = "This is a pen")
+    public void test2() throws NoSuchMethodException, ClassNotFoundException {
+        MethodAnnotation anno = AnnotationHelper.getAnnotationOnCurrentMethod(MethodAnnotation.class);
+        if (anno != null) {
+            System.out.println(anno.code());
+        }
+    }
+
+    @MethodAnnotation(code = "This is a penceil")
+    public void test3() throws NoSuchMethodException, ClassNotFoundException {
+        test3_1();
+    }
+
+    // public void test3_1() throws NoSuchMethodException, ClassNotFoundException {
+    protected void test3_1() throws NoSuchMethodException, ClassNotFoundException {
+        MethodAnnotation annOnCurrent = AnnotationHelper.getAnnotationOnCurrentMethod(MethodAnnotation.class);
+        if (annOnCurrent != null) {
+            System.out.println("annOnCurrent= " + annOnCurrent.code());
+        }
+
+        Method callerMethod = MethodHelper.obtainCallertMethod();
+        System.out.println("callerMethod = " + callerMethod.getName());
     }
 }

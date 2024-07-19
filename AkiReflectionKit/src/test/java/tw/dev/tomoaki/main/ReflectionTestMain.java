@@ -22,7 +22,8 @@ import tw.dev.tomoaki.main.annotation.SpecialMethod;
 import tw.dev.tomoaki.main.entity.Animal;
 import tw.dev.tomoaki.main.entity.MethodModule;
 import tw.dev.tomoaki.main.entity.Params;
-import tw.dev.tomoaki.reflection.JavaMethodHelper;
+import tw.dev.tomoaki.main.entity.TestingEntity;
+import tw.dev.tomoaki.reflection.MethodHelper;
 
 /**
  *
@@ -35,7 +36,7 @@ public class ReflectionTestMain {
      */
     public static void main(String[] args) throws NoSuchMethodException, ClassNotFoundException {
         // testMethod1();
-        test4();
+        // test4();
     }
 
     protected static void test1() {
@@ -92,7 +93,7 @@ public class ReflectionTestMain {
     protected static void testMethod1() {
         Animal dog = new Animal();
         dog.setName("dog");
-        JavaMethodHelper.obtainMethodListIsAnnotatedWith(Animal.class, SpecialMethod.class).forEach(method -> {
+        MethodHelper.obtainMethodListIsAnnotatedWith(Animal.class, SpecialMethod.class).forEach(method -> {
             try {
                 method.invoke(dog);
             } catch (Exception ex) {
@@ -104,8 +105,15 @@ public class ReflectionTestMain {
     protected static void test4() throws NoSuchMethodException, ClassNotFoundException {
         MethodModule module = new MethodModule();
         module.test1();
+        module.test2();
+        module.test3();
     }
     
+    protected static void test5() {
+        TestingEntity testing = new TestingEntity();
+        testing.test1();
+        testing.test2();
+    }
 //<editor-fold defaultstate="collapsed" desc="Old Code">
     /*
         protected static void testField2() {

@@ -19,21 +19,40 @@ import java.util.stream.Stream;
  *
  * @author Tomoaki Chen
  */
-public class JavaMethodHelper {
+public class MethodHelper {
+
     
-    
-    public static Method obtainCurrentMethod() throws NoSuchMethodException, ClassNotFoundException {
-        StackTraceElement element = StackTraceHelper.getCallerStackTraceElement(); // StackTraceHelper.getCurrentStackTraceElement();
-        // Class<?> currentClass = element.getClass();
+    public static Method obtainCallertMethod() throws NoSuchMethodException, ClassNotFoundException {
+        //因為右多一層 Method 轉 call ，所以又要多加 1
+        return obtainCallertMethod(0 + 1);
+    }
+
+    public static Method obtainCallertMethod(int addonOffset) throws NoSuchMethodException, ClassNotFoundException {
+        StackTraceElement element = StackTraceHelper.getCallerStackTraceElement(1 + addonOffset);
         String currentClassName = element.getClassName();
         Class<?> currentClass = Class.forName(currentClassName);
         String methodName = element.getMethodName();
-        System.out.println("currentClassName= " + currentClassName +  ", currentClass= " + currentClassName + ", methodName= " + methodName);
-        return currentClass.getMethod(methodName);
+        return currentClass.getDeclaredMethod(methodName);
+    }
+    
+    
+    
+    public static Method obtainCurrentMethod() throws NoSuchMethodException, ClassNotFoundException {
+        //因為右多一層 Method 轉 call ，所以又要多加 1
+        return obtainCurrentMethod(0 + 1); 
+    }
+    
+    public static Method obtainCurrentMethod(int addonOffset) throws NoSuchMethodException, ClassNotFoundException {
+        StackTraceElement element = StackTraceHelper.getCurrentStackTraceElement(1 + addonOffset); // 要撇開調自身這個 Method (obtainCurrentMethod)
+        String currentClassName = element.getClassName();
+        Class<?> currentClass = Class.forName(currentClassName);
+        String methodName = element.getMethodName();
+        // return currentClass.getMethod(methodName); // 這只能拿到 public Method
+        return currentClass.getDeclaredMethod(methodName);
     }
     
 
-//<editor-fold defaultstate="collapsed" desc="尋找 Methods 系列，與 Annotation 相關">
+//<editor-fold defaultstate="collapsed" desc="尋找 Methods 系列。有被 Annotation 標註的">
     
     /**
      * 找到有被任意 Annotation 註譯的 Methods

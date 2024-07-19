@@ -13,13 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tw.dev.tomoaki.reflection;
+package tw.dev.tomoaki.main.entity;
+
+import tw.dev.tomoaki.reflection.StackTraceHelper;
 
 /**
  *
  * @author tomoaki
  */
-public class JavaAnnotationHelper {
+public class TestingEntity {
     
+    public void test1() {
+        System.out.println("stack trace for test1(): ");
+        StackTraceHelper.printStackTrace();
+    }
     
+    public void test2() {
+        System.out.println("stack trace for test2(): ");
+        StackTraceHelper.printStackTrace();
+        test2_1();
+    }
+    
+    protected void test2_1() {
+    // protected void test2_1() {
+        System.out.println("stack trace for test2_1(): ");
+        StackTraceHelper.printStackTrace();
+    }    
 }
