@@ -64,7 +64,7 @@ public class AkiCSSInliner {
             String cssSelector = cssElement.getSelector();
             String cssInlineStyle = cssElement.toInlineStyle();
             Elements elements = doc.select(cssSelector);
-            /*elements = */HtmlDocumentHelper.appendInlineStyle(elements, cssInlineStyle);
+            HtmlDocumentHelper.appendInlineStyle(elements, cssInlineStyle);
 //            elements.forEach(element -> System.out.println(element));
 //            this.tryRemoveClass(elements, cssSelector);
 //            this.tryRemoveStyleElement(doc);

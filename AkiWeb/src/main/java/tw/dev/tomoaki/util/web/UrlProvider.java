@@ -15,7 +15,7 @@ public class UrlProvider {
 
     public static String[] urlHeaderList = {"https://", "http://"};
     
-    private HttpServletRequest request;
+    private HttpServletRequest initRequest;
     private String url = "";
     private String protocol = "";
     private String hostName = "";  //domain name，即該server的名稱
@@ -24,31 +24,27 @@ public class UrlProvider {
     private String pathInfo = "";
 
     protected UrlProvider(HttpServletRequest request) {
-        this.request = request;
+        this.initRequest = request;
     }
 
     public static class Factory {
 
-        public static UrlProvider create(HttpServletRequest request) {
-            UrlProvider urlProvider = new UrlProvider(request);
+        public static UrlProvider create(HttpServletRequest initRequest) {
+            UrlProvider urlProvider = new UrlProvider(initRequest);
             urlProvider.doParseRequestInfo();
             return urlProvider;
         }
     }
 
     protected void doParseRequestInfo() {
-        this.protocol = request.getScheme();
-        this.hostName = request.getServerName();
-        this.port = request.getServerPort();
-        if (request.getContextPath() != null) {
-            this.contextPath = request.getContextPath().replaceAll("/", "");
+        this.protocol = initRequest.getScheme();
+        this.hostName = initRequest.getServerName();
+        this.port = initRequest.getServerPort();
+        if (initRequest.getContextPath() != null) {
+            this.contextPath = initRequest.getContextPath().replaceAll("/", "");
         }
     }
 
-
-    public String getURL() {
-        return null;
-    }
 
     public String obtainSystemRootPath() {
         String rootPath = "";
@@ -60,26 +56,18 @@ public class UrlProvider {
             rootPath += "/";
         }
 
-        if (this.contextPath != "") {
+        if (!"".equals(this.contextPath)) {
             rootPath += this.contextPath + "/";
         }
         return rootPath;
     }
 
+//    public String getURL() {
+//        return null;
+//    }
+    
     public String appendUrl(String tempPathInfo) {
         String theURL = this.obtainSystemRootPath();
-//        theURL += this.protocol + "://";
-//        theURL += this.hostName;
-//        if (this.port != 80 && this.port != 443) {
-//            theURL += ":" + this.port + "/";
-//        } else {
-//            theURL += "/";
-//        }
-//
-//        if (!"".equals(this.contextPath)) {
-//            theURL += this.contextPath + "/";
-//        }
-
         if (tempPathInfo.charAt(0) == '/') {
             this.pathInfo = tempPathInfo.substring(1);
         } else {

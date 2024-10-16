@@ -16,7 +16,6 @@
 package tw.dev.tomoaki.util.datetime.enumoption;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
 import java.time.Month;
 import java.time.format.TextStyle;
 import java.util.Locale;
