@@ -36,10 +36,9 @@ public class PlayerTokenModule extends ArticleEntityDataTokenRuleModule<Player>{
         creator.addTokenReplaceRule(TOKEN_PLAYER_AGE, player.getAge());
     }
 
-    @Override
-    public void addRule(ArticleCreator creator, List<Player> dataList) {
-
-    }
+//    @Override
+//    public void addRule(ArticleCreator creator, List<Player> dataList) {
+//    }
     
     public String obtainStandardReport() {
         return "${Player.FisrtName} ${Player.LastName} is ${Player.Age} years old \n";

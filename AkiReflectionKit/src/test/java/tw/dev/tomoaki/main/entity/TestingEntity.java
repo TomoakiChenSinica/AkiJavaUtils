@@ -22,21 +22,20 @@ import tw.dev.tomoaki.reflection.StackTraceHelper;
  * @author tomoaki
  */
 public class TestingEntity {
-    
+
     public void test1() {
-        System.out.println("stack trace for test1(): ");
-        StackTraceHelper.printStackTrace();
+        /*System.out.println("stack trace for test1(): ");
+        StackTraceHelper.printStackTrace();*/
     }
-    
+
     public void test2() {
-        System.out.println("stack trace for test2(): ");
-        StackTraceHelper.printStackTrace();
+        /*System.out.println("stack trace for test2(): ");
+        StackTraceHelper.printStackTrace();*/
         test2_1();
     }
-    
-    protected void test2_1() {
-    // protected void test2_1() {
-        System.out.println("stack trace for test2_1(): ");
-        StackTraceHelper.printStackTrace();
-    }    
+
+    protected void test2_1() { // public void test2_1() {        
+        /*System.out.println("stack trace for test2_1(): ");
+        StackTraceHelper.printStackTrace();*/
+    }
 }

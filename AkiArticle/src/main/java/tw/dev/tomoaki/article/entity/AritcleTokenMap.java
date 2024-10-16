@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class AritcleTokenMap {
     
     private Integer highestLevel;
-    private Map<Integer, Map<String, String>> tokenReplaceMapKeyByLevelMap;
+    private Map<Integer, Map<String, String>> tokenReplaceMapKeyByLevelMap; // [FIXME202407261425} 看要不要改成 DataRecordExistMap 取得內層的 Map<String, String>
     
     public AritcleTokenMap() {
         this.highestLevel = 0;
@@ -44,7 +44,7 @@ public class AritcleTokenMap {
     }
     
     public List<Integer> getLevelList() {
-        //https://www.baeldung.com/java-stream-ordering tre set 會排序
+        //https://www.baeldung.com/java-stream-ordering tree set 會排序
         return tokenReplaceMapKeyByLevelMap.keySet().stream().collect(Collectors.toList());
     }
     
@@ -68,7 +68,7 @@ public class AritcleTokenMap {
         return resultMap;
     }
     
-    public List<String>getFlatTokenList() {
+    public List<String> getFlatTokenList() {
         return this.getFlatTokenReplaceMap().keySet().stream().collect(Collectors.toList());
     }
     

@@ -22,33 +22,33 @@ import java.util.stream.Stream;
 public class MethodHelper {
 
     
-    public static Method obtainCallertMethod() throws NoSuchMethodException, ClassNotFoundException {
+    public static Method obtainCallertMethod(Class<?>... args) throws NoSuchMethodException, ClassNotFoundException {
         //因為右多一層 Method 轉 call ，所以又要多加 1
-        return obtainCallertMethod(0 + 1);
+        return obtainCallertMethod(0 + 1, args);
     }
 
-    public static Method obtainCallertMethod(int addonOffset) throws NoSuchMethodException, ClassNotFoundException {
+    public static Method obtainCallertMethod(int addonOffset, Class<?>... args) throws NoSuchMethodException, ClassNotFoundException {
         StackTraceElement element = StackTraceHelper.getCallerStackTraceElement(1 + addonOffset);
         String currentClassName = element.getClassName();
         Class<?> currentClass = Class.forName(currentClassName);
         String methodName = element.getMethodName();
-        return currentClass.getDeclaredMethod(methodName);
+        return currentClass.getDeclaredMethod(methodName, args); // 這樣會被當成 Method 不帶任何參數，可能會有問題
     }
     
     
     
-    public static Method obtainCurrentMethod() throws NoSuchMethodException, ClassNotFoundException {
+    public static Method obtainCurrentMethod(Class<?>... args) throws NoSuchMethodException, ClassNotFoundException {
         //因為右多一層 Method 轉 call ，所以又要多加 1
-        return obtainCurrentMethod(0 + 1); 
+        return obtainCurrentMethod(0 + 1, args); 
     }
     
-    public static Method obtainCurrentMethod(int addonOffset) throws NoSuchMethodException, ClassNotFoundException {
+    public static Method obtainCurrentMethod(int addonOffset, Class<?>... args) throws NoSuchMethodException, ClassNotFoundException {
         StackTraceElement element = StackTraceHelper.getCurrentStackTraceElement(1 + addonOffset); // 要撇開調自身這個 Method (obtainCurrentMethod)
         String currentClassName = element.getClassName();
         Class<?> currentClass = Class.forName(currentClassName);
         String methodName = element.getMethodName();
         // return currentClass.getMethod(methodName); // 這只能拿到 public Method
-        return currentClass.getDeclaredMethod(methodName);
+        return currentClass.getDeclaredMethod(methodName, args);
     }
     
 
@@ -117,9 +117,6 @@ public class MethodHelper {
             }
         }
         return methodInfoList;
-    }
-    
-    
-    
+    }          
     // --------------------------------------------------------------------------------------------------    
 }

@@ -3,7 +3,13 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>tw.dev.tomoaki</groupId>
     <artifactId>AkiArticle</artifactId>
-    <version>1.2-SNAPSHOT</version>    
+    <version>1.3.0-SNAPSHOT</version>
+    <description>
+        1.3.0:
+            1. ArticleEntityDataTokenRuleModule 刪除 void addRule(ArticleCreator creator, List dataList)
+            2. ArticleCreator 加入 addModule Methods
+        
+    </description>
     <packaging>jar</packaging>
     <build>
         <plugins>
@@ -41,7 +47,8 @@
         <dependency>
             <groupId>tw.dev.tomoaki</groupId>
             <artifactId>AkiReflectionKit</artifactId>
-            <version>[0.1.0-SNAPSHOT,)</version>
+            <!-- <version>[0.1.0-SNAPSHOT,)</version> -->
+            <version>[0.3.8,)</version>
         </dependency>        
     </dependencies>
     <properties>

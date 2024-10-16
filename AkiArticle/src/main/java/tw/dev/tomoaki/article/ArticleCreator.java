@@ -10,11 +10,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import static sun.jvm.hotspot.HelloWorld.e;
 import tw.dev.tomoaki.article.entity.AritcleTokenMap;
 import tw.dev.tomoaki.article.entity.ArticleTokenOption;
 import tw.dev.tomoaki.article.exception.ArticleCreatorException;
 import tw.dev.tomoaki.article.helper.ArticleHelper;
 import tw.dev.tomoaki.article.module.BasicTokenModule;
+import tw.dev.tomoaki.article.module.intf.ArticleEntityDataTokenRuleModule;
 import tw.dev.tomoaki.article.module.intf.ArticleTokenModule;
 import tw.dev.tomoaki.util.entity.extend.PairDataDiff;
 //import tw.dev.tomoaki.util.DateTimeProvider;
@@ -42,6 +44,12 @@ public abstract class ArticleCreator {
     }
 
     protected abstract void doCustomRulesSetup();
+
+    // ------------------------------------------------------------------------------
+    public void addModule(ArticleEntityDataTokenRuleModule entityTokenModule) {
+        this.moduleList.add(entityTokenModule);
+    }
+    // ------------------------------------------------------------------------------
 
     public void addTokenReplaceRule(String token, String word) {
         this.tokensReplaceMapper.put(1, token, word);
@@ -93,7 +101,7 @@ public abstract class ArticleCreator {
 
     /**
      * 要注意，這個是尚未處理過如何對應，單純設定 token 樣式、規格，但未實作
-     * 
+     *
      * @return ArticleTokenOption 清單
      */
     public List<ArticleTokenOption> getTokenOptionList() {
@@ -128,7 +136,6 @@ public abstract class ArticleCreator {
     }
 
 //</editor-fold>
-
 //<editor-fold defaultstate="collapsed" desc="內部初始化、設定變數">
     private void doVariableInit() {
         this.tokensReplaceMapper = new AritcleTokenMap();
@@ -143,7 +150,7 @@ public abstract class ArticleCreator {
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="內部輔助">
-    private String replaceTokens(String oriText/*, Map<String, String> tokensMapper*/) {
+    private String replaceTokens(String oriText /*, Map<String, String> tokensMapper*/) {
         String newText = oriText;
         List<Map<String, String>> tokensMapperList = this.tokensReplaceMapper.getTokenReplaceMapList();
         for (Map<String, String> tokensMapper : tokensMapperList) {
@@ -169,5 +176,11 @@ public abstract class ArticleCreator {
             }
         }
     }
+
+    private String expandInterator(String oriText) {
+        // 藉此將類迴圈展開 <article:forEach>
+        return oriText;
+    }
 //</editor-fold>
+
 }

@@ -15,15 +15,31 @@
  */
 package tw.dev.tomoaki.article.module.data;
 
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 /**
  *
  * @author tomoaki
  */
 public interface ArticleData {
-    
+
     public String getHeaderContent();
-    
+
     public String getMainContent();
-    
+
     public String getFooterContent();
+
+    default public String obtainBlockedText() {
+        return Stream.of(getHeaderContent(), getMainContent(), getFooterContent()).filter(Objects::nonNull).collect(Collectors.joining("\r\n"));
+    }
+
+    default public String obtainInlineText() {
+        return this.obtainInlineText("");
+    }
+
+    default public String obtainInlineText(String splitor) {
+        return Stream.of(getHeaderContent(), getMainContent(), getFooterContent()).filter(Objects::nonNull).collect(Collectors.joining(splitor));
+    }
 }

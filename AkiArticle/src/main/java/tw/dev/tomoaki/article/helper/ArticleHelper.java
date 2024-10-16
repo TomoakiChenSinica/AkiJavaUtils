@@ -11,9 +11,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import tw.dev.tomoaki.article.entity.ArticleTokenOption;
-import tw.dev.tomoaki.reflection.JavaMethodHelper;
+import tw.dev.tomoaki.reflection.MethodHelper;
 import tw.dev.tomoaki.reflection.entity.JavaMethodInfo;
+import tw.dev.tomoaki.article.entity.ArticleTokenOption;
 
 /**
  *
@@ -44,7 +44,7 @@ public class ArticleHelper {
                 ArticleTokenOption tokenOption = new ArticleTokenOption();
                 tokenOption.setName(tokenName);
                 tokenOption.setToken(token);
-                List<JavaMethodInfo> infoList = JavaMethodHelper.obtainPureMethodOnly(annotation, methods);
+                List<JavaMethodInfo> infoList = MethodHelper.obtainPureMethodOnly(annotation, methods);
                 if (infoList != null) {
                     for (JavaMethodInfo info : infoList) {
                         String annotationAttrName = info.getMethodName();
