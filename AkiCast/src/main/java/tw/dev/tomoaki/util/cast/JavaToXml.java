@@ -28,10 +28,12 @@ public class JavaToXml {
         return mapper;
     }
 
+    /*
     public static <T> String getXmlString(T obj) throws JsonProcessingException {
-        XmlMapper xmlMapper = XmlMapper.builder()
-                .defaultUseWrapper(false)
-                .build();
+        // XmlMapper xmlMapper = XmlMapper.builder()
+        //        .defaultUseWrapper(false)
+        //        .build();
+        XmlMapper xmlMapper = new XmlMapper();
         if (allowJavaTime) {
             xmlMapper.registerModule(new JavaTimeModule());
         }
@@ -42,5 +44,5 @@ public class JavaToXml {
         xmlMapper.configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, needWriteXMLDeclaration); //https://xmlwriter.net/xml_guide/xml_declaration.shtml
         String xml = xmlMapper.writeValueAsString(obj);
         return xml;
-    }
+    }*/
 }

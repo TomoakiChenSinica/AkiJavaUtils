@@ -19,9 +19,8 @@ import tw.dev.tomoaki.util.cast.XmlToJava;
  */
 public class JavaToXmlMain {
 
-    /**
-     * @param args the command line arguments
-     */
+    /*
+
     public static void main(String[] args) throws JsonProcessingException, IOException {
         test2();
     }
@@ -46,6 +45,5 @@ public class JavaToXmlMain {
         player.setSpecialPoint(99999);
         String xmlData4Player = JavaToXml.getXmlString(player);
         System.out.format("player= %s \n", xmlData4Player);        
-    }
-    
+    }*/
 }

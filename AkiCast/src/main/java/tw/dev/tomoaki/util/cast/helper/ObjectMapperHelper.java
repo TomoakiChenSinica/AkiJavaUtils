@@ -16,7 +16,7 @@
 package tw.dev.tomoaki.util.cast.helper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
+//import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import static tw.dev.tomoaki.util.cast.JavaToJson.allowJavaTime;
@@ -32,12 +32,17 @@ public class ObjectMapperHelper {
         return mapper;
     }
 
+//    public static ObjectMapper obtainSupportJavaTime() {
+//        return JsonMapper.builder()
+//                .addModule(new JavaTimeModule())
+//                .build();
+//
+//    }
     public static ObjectMapper obtainSupportJavaTime() {
-        return JsonMapper.builder()
-                .addModule(new JavaTimeModule())
-                .build();
-
-    }
+        ObjectMapper mapper = new ObjectMapper();        
+        mapper.registerModule(new JavaTimeModule());
+        return mapper;
+    }    
 
     
 //    public static JavaTimeModule obtainJavaLoca
