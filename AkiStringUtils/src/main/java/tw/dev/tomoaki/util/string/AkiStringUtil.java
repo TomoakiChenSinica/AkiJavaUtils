@@ -5,6 +5,7 @@
  */
 package tw.dev.tomoaki.util.string;
 
+import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -96,5 +97,47 @@ public class AkiStringUtil {
 
     public static String concatWithSafely(String replaceNullText, String concatWithText, String... texts) {
         return Stream.of(texts).map(text -> text == null ? replaceNullText : text).collect(Collectors.joining(concatWithText));
+    }
+
+    // ---------------------------------------------------------------------------------------------------------------
+    /**
+     * 參考:
+     * https://stackoverflow.com/questions/1235179/simple-way-to-repeat-a-string
+     * 最高分、和第二高分的答案都不錯，但第一高分實作怪怪的，換成用第二高分的
+     *
+     * Java11 直接有 String.repeat
+     *
+     * @param repeatedChar
+     * @param repeatTimes
+     */
+    public static String repeat(Character repeatedChar, int repeatTimes) {
+        // return new String(new char[repeatTimes]).repeat() // Java 11
+        // return new String(new char[repeatTimes]).replace("\0", repeatedChar);
+        // return String.join("", Collections.nCopies(repeatTimes, repeatedChar.toString()).toArray(String[]::new));
+        if (repeatedChar == null) {
+            throw new IllegalArgumentException("repeatedChar is null");
+        }
+
+        if (repeatTimes <= 0) {
+            return "";
+        }
+
+        return Collections.nCopies(repeatTimes, repeatedChar.toString()).stream().collect(Collectors.joining());
+    }
+
+    // ---------------------------------------------------------------------------------------------------------------
+    public static String imputation(Number number, Integer minDigits, Character imputationWith) {
+        String strNumber = number.toString();
+        Integer oriDigits = strNumber.length();
+        Integer lessDigits = minDigits - oriDigits;
+
+        if (lessDigits > 0) {
+            return AkiStringUtil.repeat(imputationWith, lessDigits).concat(strNumber);
+        } else if (lessDigits == 0) {
+            return strNumber;
+        } else {
+            // 
+            return strNumber;
+        }
     }
 }

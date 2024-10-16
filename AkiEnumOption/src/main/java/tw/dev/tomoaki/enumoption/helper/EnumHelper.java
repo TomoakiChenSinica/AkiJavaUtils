@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Objects;
 import tw.dev.tomoaki.enumoption.AliasedEnum;
 import tw.dev.tomoaki.enumoption.CodedEnum;
-import tw.dev.tomoaki.enumoption.EnumAlias;
 import tw.dev.tomoaki.util.commondatavalidator.ListValidator;
 
 /**
@@ -42,82 +41,30 @@ public class EnumHelper {
         }
         return desigIntroEnum;
     }
-    
-    /*
-    public static <T extends EnumAlias> T aliasOf(String desigAlias, Class<T> enumClazz) {
-        if (enumClazz.isEnum()) {
-            return aliasOf(desigAlias, enumClazz.getEnumConstants(), enumClazz);
-        }
-        throw new IllegalArgumentException(String.format("Class[%s] Is Not An Enum", enumClazz.getSimpleName()));
-    }    
-    
-    public static <T extends EnumAlias> T aliasOf(String desigAlias, T[] enumAliases, Class<T> enumClazz) {
-        //enumClazz.getEnumConstants()
-        T desigEnumAlias = null;
-        for (T enumAlias : enumAliases) {
-            if (Objects.equals(enumAlias.getAlias(), desigAlias)) {
-                desigEnumAlias = enumAlias;
-                break;
-            }
-        }
 
-        if (desigEnumAlias == null) {
-            String msgFmt = "Cannot Found %s[alias= %s]";
-            throw new IllegalArgumentException(String.format(msgFmt, enumClazz.getSimpleName(), desigAlias));
-        }
-        return desigEnumAlias;
-    }
-    */
-    
     public static <T extends AliasedEnum> T aliasOf(String desigAlias, Class<T> enumClazz) {
         if (enumClazz.isEnum()) {
             return aliasOf(desigAlias, enumClazz.getEnumConstants(), enumClazz);
         }
         throw new IllegalArgumentException(String.format("Class[%s] Is Not An Enum", enumClazz.getSimpleName()));
-    }        
-    
+    }
+
     public static <T extends AliasedEnum> T aliasOf(String desigAlias, T[] aliasedEnums, Class<T> enumClazz) {
         Map<String, T> aliasedEnumKeyByAliasMap = new HashMap();
-        for(T aliasedEnum : aliasedEnums) {
+        for (T aliasedEnum : aliasedEnums) {
             List<String> aliases = aliasedEnum.getAliases();
-            if(ListValidator.isListExist(aliases)) {
-                for(String alias : aliases) {
+            if (ListValidator.isListExist(aliases)) {
+                for (String alias : aliases) {
                     aliasedEnumKeyByAliasMap.put(alias, aliasedEnum);
                 }
             }
         }
         T desigAliasedEnum = aliasedEnumKeyByAliasMap.get(desigAlias);
-        
+
         if (desigAliasedEnum == null) {
             String msgFmt = "Cannot Found %s[alias= %s]";
             throw new IllegalArgumentException(String.format(msgFmt, enumClazz.getSimpleName(), desigAlias));
         }
         return desigAliasedEnum;
-    }        
-    
-    /*
-    public static <T extends AliasedEnum> T aliasOf(String desigAlias, T[] aliasedEnums, Class<T> enumClazz) {
-        //enumClazz.getEnumConstants()
-//        T desigEnumAlias = null;
-//        for (T aliasedEnum : aliasedEnumList) {
-//            if (Objects.equals(aliasedEnum.getAlias(), desigAlias)) {
-//                desigEnumAlias = aliasedEnum;
-//                break;
-//            }
-//        }
-        Map<String, T> aliasedEnumKeyByAliasMap = new HashMap();
-        Arrays.asList(aliasedEnums).stream()
-                .map(aliasedEnum -> aliasedEnum.getAliases())
-                .filter(aliases -> ListValidator.isListExist(aliases))
-                .flatMap(aliases -> aliases.stream())
-                .collect(Collectors.toMap(alias -> alias , valueMapper))
-                
-
-        if (desigEnumAlias == null) {
-            String msgFmt = "Cannot Found %s[alias= %s]";
-            throw new IllegalArgumentException(String.format(msgFmt, enumClazz.getSimpleName(), desigAlias));
-        }
-        return desigEnumAlias;
-    }    
-    */
+    }
 }

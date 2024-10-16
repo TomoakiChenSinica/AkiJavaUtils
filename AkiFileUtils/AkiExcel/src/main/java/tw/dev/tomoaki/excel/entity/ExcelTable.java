@@ -15,14 +15,7 @@
  * 目前預計會新增隨著插入一列(row)，使table增大功能
  */
 package tw.dev.tomoaki.excel.entity;
-
-//import tw.dev.tomoaki.function.DateTimeProvider;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import java.util.List;
-import java.util.Map;
-import tw.dev.tomoaki.util.cast.JavaToJson;
-import tw.dev.tomoaki.util.cast.JsonToJava;
+import tw.dev.tomoaki.excel.exception.ExcelTableOperationException;
 
 /**
  *
@@ -102,9 +95,7 @@ public class ExcelTable {
     }
     
 //</editor-fold>
-    
-    
-    
+            
 //<editor-fold defaultstate="collapsed" desc="取得變數的 methods">
     public void countNowPosition() {
         nowRow = totalData / tableCol;
@@ -159,8 +150,8 @@ public class ExcelTable {
     
 //</editor-fold>
 
-
-
+//<editor-fold defaultstate="collapsed" desc="外部呼叫，做事情的 Methods">
+    
     /**
      * 照順序的將Cell一個一個加進去，加到哪一Row、Col由 nowRow、nowCol紀錄
      *
@@ -230,22 +221,20 @@ public class ExcelTable {
         for (int colIndex = 0; colIndex < tableCol; colIndex++) {
             this.insertCell(titleData[colIndex]);
         }
-    }
+    }                    
+//</editor-fold>
 
-    
-    
-    
-    
-    
-    public boolean checkInsert(Integer theRow, Integer theCol) {
+
+    protected boolean checkInsert(Integer theRow, Integer theCol) {
         if (theRow >= this.tableRow || theCol >= this.tableCol) {
             return false;
         } else {
             return true;
         }
-    }
-
-    public boolean checkInsert() {
+    }    
+    
+    
+    protected boolean checkInsert() {
         if (this.totalData >= this.maxData) {//大於等於就錯(好像怪怪的
             return false;
         } else {

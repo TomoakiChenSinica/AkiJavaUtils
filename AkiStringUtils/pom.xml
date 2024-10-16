@@ -3,7 +3,10 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>tw.dev.tomoaki</groupId>
     <artifactId>AkiStringUtils</artifactId>
-    <version>1.1-SNAPSHOT</version>   
+    <version>1.2-SNAPSHOT</version>
+    <description>
+        1.2 AkiStringUtil 新增 imputation()、repeat()
+    </description>
     <packaging>jar</packaging>
    
     <properties>

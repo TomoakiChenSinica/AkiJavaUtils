@@ -8,6 +8,7 @@ package tw.dev.tomoaki.localeext;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.MissingResourceException;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -29,6 +30,26 @@ public class LocaleHelper {
         }
 
         return Objects.equals(locale1.getCountry(), locale2.getCountry()) && Objects.equals(locale1.getISO3Country(), locale2.getISO3Country());
+    }
+    
+    
+    /**
+     * 參考自 https://stackoverflow.com/questions/3684747/how-to-validate-a-locale-in-java
+     * 
+     * @param desigLocale 指定的，想檢查的 Locale 資料
+     * @return 指定的 Locale 是否是「實際存在」的
+     */
+    public static Boolean isExist(Locale desigLocale) {
+        try {
+            desigLocale.toLanguageTag();
+            String iso3Lang = desigLocale.getISO3Language();
+            String iso3Country = desigLocale.getISO3Country();
+            // System.out.println(String.format("locale.getISO3Language()= %s, locale.getISO3Country()= %s", locale.getISO3Language(), locale.getISO3Country()));            
+            return iso3Lang != null && iso3Country != null && !iso3Lang.trim().isBlank() && !iso3Country.trim().isBlank();
+        } catch (MissingResourceException ex) {
+            // System.out.println("locale.toLanguageTag()= " + locale.toLanguageTag());
+            return false;
+        }        
     }
 
     public static List<String> createCountryLangNameList(Locale countryLocale, Locale[] displayLangLocales) {
