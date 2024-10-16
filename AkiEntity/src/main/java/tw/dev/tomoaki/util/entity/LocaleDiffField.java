@@ -28,7 +28,7 @@ public class LocaleDiffField<VALUE> extends HashMap<String, VALUE> {
 
     public VALUE get(Locale locale) {
         // System.out.println("get(Locale)");
-        return this.get(locale.toLanguageTag());
+        return this.get(locale.toLanguageTag());   
     }
 }
 
