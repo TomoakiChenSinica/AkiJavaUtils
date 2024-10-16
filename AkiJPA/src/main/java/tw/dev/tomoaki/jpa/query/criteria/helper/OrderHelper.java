@@ -16,10 +16,7 @@ public class OrderHelper {
     public static List<Order> createAscOrderList(Root root, CriteriaBuilder cb, String... entityPropName) {
         return createAscOrderList(root, cb, Arrays.asList(entityPropName));
     }
-    
-//    public static List<Order> createAscOrderList(Root root, CriteriaBuilder cb, String[] entityPropNames) {
-//        return createAscOrderList(root, cb, Arrays.asList(entityPropNames));
-//    }
+   
 
     public static List<Order> createAscOrderList(Root root, CriteriaBuilder cb, List<String> entityPropNameList) {
         return entityPropNameList.stream()
@@ -29,5 +26,22 @@ public class OrderHelper {
 
     public static Order createAscOrder(Root root, CriteriaBuilder cb, String entityPropName) {
         return cb.asc(root.get(entityPropName));
+    }
+    
+    // --------------------------------------------------------------------------------------------------------------
+
+    public static List<Order> createDescOrderList(Root root, CriteriaBuilder cb, String... entityPropName) {
+        return createDescOrderList(root, cb, Arrays.asList(entityPropName));
+    }
+   
+
+    public static List<Order> createDescOrderList(Root root, CriteriaBuilder cb, List<String> entityPropNameList) {
+        return entityPropNameList.stream()
+                .map(propName -> cb.desc(root.get(propName)))
+                .collect(Collectors.toList());
+    }
+
+    public static Order createDescOrder(Root root, CriteriaBuilder cb, String entityPropName) {
+        return cb.desc(root.get(entityPropName));
     }
 }

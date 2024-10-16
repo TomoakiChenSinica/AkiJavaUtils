@@ -56,6 +56,8 @@ public class ExpressionHelper {
         return cb.equal(root.get(entityPropName), value);
     }
     
+    
+    
     public static Expression createNotEqualExpression(Root root, CriteriaBuilder cb, String entityPropName, Object value) {
         return createNotEqualExpression(root, cb, entityPropName, value, true);
     }       
@@ -82,7 +84,9 @@ public class ExpressionHelper {
         }
         return cb.notEqual(root.get(entityPropName), value);
     }
-      
+    
+    
+    
     public static Predicate createEqualPredicate(Root root, CriteriaBuilder cb, String entityPropName, Object value) {
         return createEqualPredicate(root, cb, entityPropName, value, true);
     }    

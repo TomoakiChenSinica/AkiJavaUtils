@@ -108,6 +108,52 @@ public interface QueryFacade<T> {
     public T getByEquals(String entityPropName, Object value);    
 //</editor-fold>
  
+//<editor-fold defaultstate="collapsed" desc="單一條件查詢，但是是 Pattern Match">
+    /**
+     * 查詢字串值「(格式)符合」的結果
+     * 
+     * @param entityPropName Table Column (即 Entity 之 Property) 的文字
+     * @param pattern Table Column (即 Entity 之 Property)值的 pattern
+     * @param orderEntityPropNames 排序方式
+     * @return 查詢結果
+     */
+    public List<T> findByMatch(String entityPropName, String pattern, String... orderEntityPropNames);    
+    
+    
+    /**
+     * 查詢字串值「(格式)符合」的結果
+     * 
+     * @param entityPropName Table Column (即 Entity 之 Property) 的文字
+     * @param pattern Table Column (即 Entity 之 Property)值的 pattern
+     * @param orderEntityPropNameList 排序方式
+     * @return 查詢結果
+     */
+    public List<T> findByMatch(String entityPropName, String pattern, List<String> orderEntityPropNameList);
+        
+    
+
+    /**
+     * 查詢字串值「(格式)符合」的結果
+     * 
+     * @param entityPropName Table Column (即 Entity 之 Property) 的文字
+     * @param pattern Table Column (即 Entity 之 Property)值的 pattern
+     * @param orderEntityPropNames 排序方式
+     * @return 查詢結果
+     */
+    public List<T> findByNotMatch(String entityPropName, String pattern, String... orderEntityPropNames);
+    
+    
+    /**
+     * 查詢字串值「不」「(格式)符合」的結果 
+     * 
+     * @param entityPropName Table Column (即 Entity 之 Property) 的文字
+     * @param pattern Table Column (即 Entity 之 Property)值的 pattern
+     * @param orderEntityPropNameList 
+     * @return 查詢結果
+     */
+    public List<T> findByNotMatch(String entityPropName, String pattern, List<String> orderEntityPropNameList);
+//</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="findByAndEqual系列">    
     public List<T> findByAndEquals(List<String> entityPropNameList, List<Object> valueList);
 
