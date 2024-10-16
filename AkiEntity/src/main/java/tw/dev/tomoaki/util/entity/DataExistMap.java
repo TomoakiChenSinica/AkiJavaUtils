@@ -28,7 +28,7 @@ public class DataExistMap<T> implements Serializable {
 
     private DataKeySerializer<T> dataKeySerializer;
 
-//<editor-fold defaultstate="collapsed" desc="以下是constructor 相關">
+//<editor-fold defaultstate="collapsed" desc="以下是 constructor 相關">
     public DataExistMap() {
         this(false);
     }

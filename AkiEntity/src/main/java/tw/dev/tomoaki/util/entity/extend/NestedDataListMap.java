@@ -56,7 +56,7 @@ public class NestedDataListMap<TKey1, TKey2, TValue> implements KeyPairDataListM
     }
 
     protected DataRecordMap<TKey2, TValue> obtainInnerMap() {
-        return new DataRecordMap();
+        return new DataRecordMap(keepOrdered4SecondKey);
 
     }
 

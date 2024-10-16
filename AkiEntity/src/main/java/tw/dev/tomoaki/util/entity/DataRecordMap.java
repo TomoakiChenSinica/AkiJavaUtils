@@ -8,6 +8,7 @@ package tw.dev.tomoaki.util.entity;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -20,57 +21,72 @@ import java.util.Set;
  */
 public class DataRecordMap<T, R> {
 
-    private Map<T, List<R>> theMap;
+    private Map<T, List<R>> containerMap;
     private Comparator<R> recordComparator;
-
+    
     public DataRecordMap() {
-        theMap = new HashMap();
+        this(false);
+    }
+
+    public DataRecordMap(Boolean isKeepOrdered) {
+        containerMap = isKeepOrdered ? new LinkedHashMap() : new HashMap();
     }
 
     public static class Factory {
 
-        public static <T, R> DataRecordMap<T, R> create() {
-            DataRecordMap<T, R> dataMap = new DataRecordMap();
+        public static <T, R> DataRecordMap<T, R> create(Boolean isKeepOrdered) {
+            DataRecordMap<T, R> dataMap = new DataRecordMap(isKeepOrdered);
             return dataMap;
         }
 
-        public static <T, R> DataRecordMap<T, R> create(Comparator<R> recordComparator) {
-            DataRecordMap<T, R> dataMap = new DataRecordMap();
+        public static <T, R> DataRecordMap<T, R> create(Boolean isKeepOrdered, Comparator<R> recordComparator) {
+            DataRecordMap<T, R> dataMap = new DataRecordMap(isKeepOrdered);
             dataMap.recordComparator = recordComparator;
             return dataMap;
         }
     }
 
     public void add(T key, R recordMemo) {
-        List<R> records = theMap.get(key);
+        List<R> records = containerMap.get(key);
         if (records == null) {
             records = new ArrayList();
         }
         records.add(recordMemo);
         records = trySortRecords(records);
-        theMap.put(key, records);
+        containerMap.put(key, records);
     }
+    
+    public void addAll(T key, List<R> recordMemoList) {
+        if (recordMemoList != null) {
+            recordMemoList.forEach(memo -> {
+                this.add(key, memo);
+            });
+        }
+    }    
+    
+    
+// ------------------------------------------------------------------------    
 
     public void createEmptyRecord(T key) {
-        List<R> records = theMap.get(key);
+        List<R> records = containerMap.get(key);
         if (records == null) {
             records = new ArrayList();
-            theMap.put(key, records);
+            containerMap.put(key, records);
         } else {
             System.err.println("Record[" + key + "] already exist");
         }
     }
 
     public List<R> getRecords(T key) {
-        return theMap.get(key);
+        return containerMap.get(key);
     }
 
     public Set<Map.Entry<T, List<R>>> entrySet() {
-        return theMap.entrySet();
+        return containerMap.entrySet();
     }
 
     public Set<T> keySet() {
-        return theMap.keySet();
+        return containerMap.keySet();
     }
 
     /**
@@ -79,7 +95,7 @@ public class DataRecordMap<T, R> {
      * @return Map
      */
     public Map<T, List<R>> asMap() {
-        return this.theMap;
+        return this.containerMap;
     }
 
     /**
@@ -88,7 +104,7 @@ public class DataRecordMap<T, R> {
      * @return 總共有幾種值，也就是統計 key 的數量
      */
     public Integer numsOfDatas() {
-        return theMap.size();
+        return containerMap.size();
     }
     
     
