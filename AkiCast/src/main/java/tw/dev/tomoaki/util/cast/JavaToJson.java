@@ -57,8 +57,10 @@ public class JavaToJson {
         Boolean mapWriteNullValue = !mapIgnoreNull;
         mapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, mapWriteNullValue);
 
-        DateFormat dateFormat = new SimpleDateFormat(dateTimePattern);
-        mapper.setDateFormat(dateFormat);
+        if(dateTimePattern != null) {
+            DateFormat dateFormat = new SimpleDateFormat(dateTimePattern);
+            mapper.setDateFormat(dateFormat);
+        }
 
         String json = mapper.writeValueAsString(javaObject);
         return json;
@@ -78,8 +80,12 @@ public class JavaToJson {
         ObjectMapper mapper = ObjectMapperHelper.tryObtainObjectMapper(desigMapper, allowJavaTime);
         mapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, mapWriteNullValue);
 
-        DateFormat dateFormat = new SimpleDateFormat(dateTimePattern);
-        mapper.setDateFormat(dateFormat);
+//        DateFormat dateFormat = new SimpleDateFormat(dateTimePattern);
+//        mapper.setDateFormat(dateFormat);
+        if(dateTimePattern != null) {
+            DateFormat dateFormat = new SimpleDateFormat(dateTimePattern);
+            mapper.setDateFormat(dateFormat);
+        }
 
         String json = mapper.writeValueAsString(javaMap);
         return json;

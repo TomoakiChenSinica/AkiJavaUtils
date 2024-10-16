@@ -18,9 +18,12 @@ import com.fasterxml.jackson.databind.type.MapType;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 import static tw.dev.tomoaki.util.cast.JavaToJson.allowJavaTime;
+import static tw.dev.tomoaki.util.cast.JavaToJson.dateTimePattern;
 import tw.dev.tomoaki.util.cast.helper.ObjectMapperHelper;
 
 /**
@@ -33,6 +36,11 @@ import tw.dev.tomoaki.util.cast.helper.ObjectMapperHelper;
  */
 public class JsonToJava<T> {   //要加在這裡
 
+    /* 以下從 JavaToJson 過來 */ 
+    private final static String DEFAULT_DATETIME_PATTREN = "yyyy-MM-dd HH:mm";
+
+    public static String dateTimePattern = DEFAULT_DATETIME_PATTREN;    
+    
     public static Boolean allowJavaTime = Boolean.FALSE;
     
     
@@ -52,10 +60,15 @@ public class JsonToJava<T> {   //要加在這裡
             T javaObject;
             JsonFactory jsonFactory = new JsonFactory();
             JsonParser jp = jsonFactory.createParser(json);
-//            ObjectMapper mapper = new ObjectMapper();
-            ObjectMapper mapper = ObjectMapperHelper.tryObtainObjectMapper(desigMapper, allowJavaTime);
+            ObjectMapper mapper = ObjectMapperHelper.tryObtainObjectMapper(desigMapper, allowJavaTime); // new ObjectMapper();
 
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+           
+            if (dateTimePattern != null) {
+                DateFormat dateFormat = new SimpleDateFormat(dateTimePattern);
+                mapper.setDateFormat(dateFormat);
+            }
+
             javaObject = mapper.readValue(jp, objectType);
             return (T) javaObject;
         } else {
@@ -72,9 +85,15 @@ public class JsonToJava<T> {   //要加在這裡
         T javaObject;
         JsonFactory jsonFactory = new JsonFactory();
         JsonParser jp = jsonFactory.createParser(is);
-//        ObjectMapper mapper = new ObjectMapper();
-        ObjectMapper mapper = ObjectMapperHelper.tryObtainObjectMapper(desigMapper, allowJavaTime);
+        
+        ObjectMapper mapper = ObjectMapperHelper.tryObtainObjectMapper(desigMapper, allowJavaTime); // new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    
+        if (dateTimePattern != null) {
+            DateFormat dateFormat = new SimpleDateFormat(dateTimePattern);
+            mapper.setDateFormat(dateFormat);
+        }
+        
         javaObject = mapper.readValue(jp, objectType);
         return javaObject;
     }
@@ -112,6 +131,12 @@ public class JsonToJava<T> {   //要加在這裡
         ObjectMapper mapper = ObjectMapperHelper.tryObtainObjectMapper(desigMapper, allowJavaTime);
         
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        if (dateTimePattern != null) {
+            DateFormat dateFormat = new SimpleDateFormat(dateTimePattern);
+            mapper.setDateFormat(dateFormat);
+        }
+        
         CollectionType collectionType = mapper.getTypeFactory().constructCollectionType(List.class, objectType);
         javaListObject = mapper.readValue(jp, collectionType);
         return javaListObject;
@@ -132,7 +157,14 @@ public class JsonToJava<T> {   //要加在這裡
         JsonFactory jsonFactory = new JsonFactory();
         JsonParser jp = jsonFactory.createParser(json);
         ObjectMapper mapper = new ObjectMapper();
+        
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    
+        if (dateTimePattern != null) {
+            DateFormat dateFormat = new SimpleDateFormat(dateTimePattern);
+            mapper.setDateFormat(dateFormat);
+        }        
+        
         MapType mapType = mapper.getTypeFactory().constructMapType(Map.class, mapKeyType, objectType);
         javaListObject = mapper.readValue(jp, mapType);
         return javaListObject;
@@ -146,6 +178,12 @@ public class JsonToJava<T> {   //要加在這裡
         Object javaObject;
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        
+        if (dateTimePattern != null) {
+            DateFormat dateFormat = new SimpleDateFormat(dateTimePattern);
+            mapper.setDateFormat(dateFormat);
+        }        
+        
         javaObject = mapper.readValue(json, typeRef);
         return javaObject;
     }
@@ -155,6 +193,12 @@ public class JsonToJava<T> {   //要加在這裡
     private static <T> T getJavaObject(String json, JavaType javaType) throws IOException {
         T javaObject;
         ObjectMapper mapper = new ObjectMapper();
+     
+        if (dateTimePattern != null) {
+            DateFormat dateFormat = new SimpleDateFormat(dateTimePattern);
+            mapper.setDateFormat(dateFormat);
+        }        
+        
         javaObject = mapper.readValue(json, javaType);
         return javaObject;
     }
