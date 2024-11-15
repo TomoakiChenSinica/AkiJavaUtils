@@ -4,9 +4,14 @@
  */
 package tw.dev.tomoaki.util.entity;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
-import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  *
@@ -22,15 +27,14 @@ public class LocaleDiffField<VALUE> extends HashMap<String, VALUE> {
     }
 
     public VALUE get(String langTag) {
-        // System.out.println("get(String)");
         return super.get(langTag);
     }
 
     public VALUE get(Locale locale) {
-        // System.out.println("get(Locale)");
-        return this.get(locale.toLanguageTag());   
+        return this.get(locale.toLanguageTag());
+    }
+
+    public List<String> getLanguageTagList() {
+        return new ArrayList(this.keySet());
     }
 }
-
-//public class DiffField<KEY, VALUE> extends HashMap<KEY, VALUE> {    
-//}
