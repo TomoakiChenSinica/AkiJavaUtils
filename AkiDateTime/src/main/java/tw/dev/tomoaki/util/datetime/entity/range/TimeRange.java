@@ -6,33 +6,34 @@
 package tw.dev.tomoaki.util.datetime.entity.range;
 
 import java.time.LocalTime;
+import tw.dev.tomoaki.util.datetime.util.RangeHelper;
 
 /**
  *
  * @author Tomoaki Chen
  */
 public class TimeRange {
-    
-     private LocalTime startTime;
-     private LocalTime endTime;
-     
-     protected TimeRange() {
-     }
-     
+
+    private LocalTime startTime;
+    private LocalTime endTime;
+
+    protected TimeRange() {
+    }
+
     public static class Factory {
-        
+
         public static TimeRange create(LocalTime startTime, LocalTime endTime) {
             TimeRange timeRange = new TimeRange();
             timeRange.startTime = startTime;
             timeRange.endTime = endTime;
             return timeRange;
         }
-        
+
         public static TimeRange create() {
             return TimeRange.Factory.create(null, null);
-        }           
-    
-    }     
+        }
+
+    }
 
     public LocalTime getStartTime() {
         return startTime;
@@ -49,6 +50,9 @@ public class TimeRange {
     public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
     }
-     
-     
+
+    @Override
+    public String toString() {
+        return RangeHelper.obtainString(this, startTime, endTime);
+    }
 }

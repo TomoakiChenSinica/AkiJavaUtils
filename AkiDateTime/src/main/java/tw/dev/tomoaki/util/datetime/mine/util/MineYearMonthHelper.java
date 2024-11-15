@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tw.dev.tomoaki.main;
+package tw.dev.tomoaki.util.datetime.mine.util;
 
 import tw.dev.tomoaki.util.datetime.mine.entity.MineYearMonth;
 
@@ -21,22 +21,12 @@ import tw.dev.tomoaki.util.datetime.mine.entity.MineYearMonth;
  *
  * @author tomoaki
  */
-public class LocalYearMonthTestMain {
+public class MineYearMonthHelper {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-        test1();
+    public static MineYearMonth parseStandardFormat(String strYearMonth) {
+        String[] arr = strYearMonth.split("-");
+        String year = arr[0];
+        String month = arr[1];
+        return MineYearMonth.of(Integer.parseInt(year), Integer.parseInt(month));
     }
-
-    private static void test1() {
-//        final var yearMonth1 = LocalYearMonth.of(2024, 10);
-//        System.out.println(yearMonth1.plusMonths(3));
-
-//        final var yearMonth2 = LocalYearMonth.of(2024, 10);
-//        System.out.println(yearMonth1.plusMonths(2));
-    }
-
 }

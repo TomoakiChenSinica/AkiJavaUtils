@@ -15,18 +15,17 @@
  */
 package tw.dev.tomoaki.util.datetime.util;
 
-import tw.dev.tomoaki.util.datetime.entity.LocalYearMonth;
-
 /**
  *
  * @author tomoaki
  */
-public class LocalYearMonthHelper {
-
-    public static LocalYearMonth parseStandardFormat(String strYearMonth) {
-        String[] arr = strYearMonth.split("-");
-        String year = arr[0];
-        String month = arr[1];
-        return LocalYearMonth.of(Integer.parseInt(year), Integer.parseInt(month));
+public class RangeHelper {
+    
+    public static String obtainString(Object rangeObject, Object start, Object end) {
+        return obtainString(rangeObject.getClass(), start, end);
     }
+    
+    public static String obtainString(Class rangeClazz, Object start, Object end) {
+        return String.format("%s[%s ~ %s]", rangeClazz.getName(), start, end);
+    }    
 }

@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import tw.dev.tomoaki.util.datetime.DateTimeUtil;
+import tw.dev.tomoaki.util.datetime.util.RangeHelper;
 
 /**
  *
@@ -80,10 +81,12 @@ public class DateTimeRange {
     
     @Override
     public String toString() {
-        String result = this.startDateTime + " ~ " + this.endDateTime;
-        return result;
+//        String result = this.startDateTime + " ~ " + this.endDateTime;
+//        return result;
+        return RangeHelper.obtainString(this, startDateTime, endDateTime);
     }
-//<editor-fold defaultstate="collapsed" desc="一些輔助計算method">
+    
+//<editor-fold defaultstate="collapsed" desc="一些輔助計算 methods">
     public DateTimeRange plusWeeks(Long weeks) {        
         LocalDateTime newStartDateTime = this.startDateTime.plusWeeks(weeks);
         LocalDateTime newEndDateTime = this.endDateTime.plusWeeks(weeks);

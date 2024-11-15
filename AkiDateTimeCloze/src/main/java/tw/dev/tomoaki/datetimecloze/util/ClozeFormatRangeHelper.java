@@ -9,7 +9,7 @@ import tw.dev.tomoaki.datetimecloze.bundle.LocalDateCloze;
 import tw.dev.tomoaki.datetimecloze.entity.ClozeFormatRange;
 import tw.dev.tomoaki.datetimecloze.entity.date.DateCloze;
 import tw.dev.tomoaki.datetimecloze.exception.BadClozeFormatRangeException;
-import tw.dev.tomoaki.util.datetime.entity.LocalYearMonth;
+import tw.dev.tomoaki.util.datetime.mine.entity.MineYearMonth;
 import tw.dev.tomoaki.util.datetime.entity.range.DateRange;
 
 /**
@@ -48,7 +48,7 @@ public class ClozeFormatRangeHelper {
         return null;
     }
     
-    public static DateRange calculateAsRangeStart(ClozeFormatRange formatRange, LocalYearMonth labledYearMonth) {
+    public static DateRange calculateAsRangeStart(ClozeFormatRange formatRange, MineYearMonth labledYearMonth) {
         // 把 labledYearMonth 當成起始條件
         doValidateFormatRange4YearMonth(formatRange);
         return ClozeFormatRangeHelper.straightCovert(formatRange, labledYearMonth);
@@ -60,11 +60,11 @@ public class ClozeFormatRangeHelper {
 
 //<editor-fold defaultstate="collapsed" desc="內部輔助 Methods - 產生 DateRange">
         
-    // 以下幾項調整成「不開放直接使用，因為 ClozeFormatRange 跟 LocalDate、LocalYearMonth 等」
-    // doConvert 系列是直接將 LocalDate、LocalYearMonth 的 年、月、日 無腦(?)填入。
+    // 以下幾項調整成「不開放直接使用，因為 ClozeFormatRange 跟 LocalDate、MineYearMonth 等」
+    // doConvert 系列是直接將 LocalDate、MineYearMonth 的 年、月、日 無腦(?)填入。
     // 配合上述說明， doConvert 系列改名 straightCovert
     
-    protected static DateRange straightCovert(ClozeFormatRange formatRange, LocalYearMonth desigYearMonth) {
+    protected static DateRange straightCovert(ClozeFormatRange formatRange, MineYearMonth desigYearMonth) {
         return ClozeFormatRangeHelper.straightCovert(formatRange, desigYearMonth.getYear(), (int) desigYearMonth.getMonth());
     }
     

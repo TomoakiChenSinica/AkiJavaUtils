@@ -2,21 +2,24 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package tw.dev.tomoaki.util.datetime.entity;
+package tw.dev.tomoaki.util.datetime.mine.entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import static java.time.temporal.ChronoField.YEAR;
 import static java.time.temporal.ChronoField.MONTH_OF_YEAR;
-import java.time.temporal.TemporalAccessor;
 import java.util.Objects;
+import tw.dev.tomoaki.util.datetime.DateTimeUtil;
+import tw.dev.tomoaki.util.datetime.entity.ChronoLocalYearMonth;
 
 /**
  *
  * @author tomoaki
+ * 
+ * 2024-10-29 發現有 java.time.YearMonth.....
  */
-public class LocalYearMonth implements ChronoLocalYearMonth, Comparable<LocalYearMonth> { //implements Temporal {
+public class MineYearMonth implements ChronoLocalYearMonth, Comparable<MineYearMonth> { //implements Temporal {
 
     public static String DEFAULT_FORMAT_PATTERN = "yyyy-MM";
 
@@ -24,50 +27,55 @@ public class LocalYearMonth implements ChronoLocalYearMonth, Comparable<LocalYea
 
     private final short month;
 
-    private LocalYearMonth(int year, int month) {
+    private MineYearMonth(int year, int month) {
         this.year = year;
         this.month = (short) month;
     }
 
-    public static LocalYearMonth of(int year, int month) {
+    public static MineYearMonth of(int year, int month) {
         // if(year == default || month == default)  
-        if(year == 0 || month == 0) {
+        if (year == 0 || month == 0) {
             return null;
         }
         YEAR.checkValidValue(year);
         MONTH_OF_YEAR.checkValidValue(month);
-        return new LocalYearMonth(year, month);
+        return new MineYearMonth(year, month);
     }
 
-    public static LocalYearMonth from(LocalDate date) {
+    public static MineYearMonth from(LocalDate date) {
         final int tempeYear = date.getYear();
         final int tempMonth = date.getMonthValue();
-        return LocalYearMonth.of(tempeYear, tempMonth);
+        return MineYearMonth.of(tempeYear, tempMonth);
     }
 
-    public static LocalYearMonth from(LocalDateTime dateTime) {
+    public static MineYearMonth from(LocalDateTime dateTime) {
         final int tempYear = dateTime.getYear();
         final int tempMonth = dateTime.getMonthValue();
-        return LocalYearMonth.of(tempYear, tempMonth);
+        return MineYearMonth.of(tempYear, tempMonth);
     }
 
-    public static LocalYearMonth now() {
+    public static MineYearMonth from(java.util.Date utilDate) {
+        LocalDate date = DateTimeUtil.Converter.convert2Date(utilDate);
+        return MineYearMonth.from(date);
+    }
+
+    public static MineYearMonth now() {
         final LocalDate date = LocalDate.now();
         return from(date);
     }
+
     /*
     Temporal TemporalAccessor TemporalQuery
     https://zq99299.github.io/java-tutorial/datetime/iso/Temporal.html#chronofield-%E5%92%8C-isofields
-    */
+     */
 
-    /*public static LocalYearMonth from(TemporalAccessor temporal) {
+ /*public static LocalYearMonth from(TemporalAccessor temporal) {
     
     public static LocalYearMonth parse(CharSequence text, DateTimeFormatter formatter) {
         Objects.requireNonNull(formatter, "formatter");
         return formatter.parse(text, LocalYearMonth::from);    
     }*/
     // -----------------------------------------------------------------------------------------------------------------
-    
     public int getYear() {
         return year;
     }
@@ -91,25 +99,41 @@ public class LocalYearMonth implements ChronoLocalYearMonth, Comparable<LocalYea
         return date.format(formatter);
     }
 
-    public LocalYearMonth plusYears(int yearsToAdd) {
+    public MineYearMonth plusYears(int yearsToAdd) {
         int newYear = this.year + yearsToAdd;
-        return LocalYearMonth.of(newYear, month);
+        return MineYearMonth.of(newYear, month);
     }
 
-    public LocalYearMonth plusMonths(int monthsToAdd) {
+    public MineYearMonth plusYears(long yearsToAdd) {
+        return plusYears((int) yearsToAdd);
+    }
+
+    public MineYearMonth plusMonths(int monthsToAdd) {
         LocalDate resultDate = this.atDay(1).plusMonths(monthsToAdd);
-        return LocalYearMonth.from(resultDate);
+        return MineYearMonth.from(resultDate);
     }
 
-    public LocalYearMonth minusYears(int yearsToSubstract) {
+    public MineYearMonth plusMonths(long monthsToAdd) {
+        return plusMonths((int) monthsToAdd);
+    }
+
+    public MineYearMonth minusYears(int yearsToSubstract) {
         int newYear = this.year - yearsToSubstract;
-        return LocalYearMonth.of(newYear, month);
+        return MineYearMonth.of(newYear, month);
     }
 
-    public LocalYearMonth minusMonths(int monthsToSubstract) {
-        LocalDate resultDate = this.atDay(1).minusMonths(monthsToSubstract);
-        return LocalYearMonth.from(resultDate);
+    public MineYearMonth minusYears(long yearsToSubstract) {
+        return this.minusYears((int) yearsToSubstract);
     }
+
+    public MineYearMonth minusMonths(int monthsToSubstract) {
+        LocalDate resultDate = this.atDay(1).minusMonths(monthsToSubstract);
+        return MineYearMonth.from(resultDate);
+    }
+    
+    public MineYearMonth minusMonths(long monthsToSubstract) {
+        return this.minusMonths((int) monthsToSubstract);
+    }    
 
     @Override
     public LocalDate atDay(Integer dayOfMonth) {
@@ -136,10 +160,18 @@ public class LocalYearMonth implements ChronoLocalYearMonth, Comparable<LocalYea
         LocalDate otherDate = otherYearMonth.atDay(1);
         return selfDate.isEqual(otherDate);
     }
-    
+
     @Override
     public boolean equals(Object otherYearMonth) {
         return isEqual((ChronoLocalYearMonth) otherYearMonth);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 59 * hash + this.year;
+        hash = 59 * hash + this.month;
+        return hash;
     }
 
     @Override
@@ -148,7 +180,7 @@ public class LocalYearMonth implements ChronoLocalYearMonth, Comparable<LocalYea
     }
 
     @Override
-    public int compareTo(LocalYearMonth other) {
+    public int compareTo(MineYearMonth other) {
         if (this.isBefore(other)) {
             return -1;
         }
