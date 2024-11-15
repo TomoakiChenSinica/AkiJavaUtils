@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import tw.dev.tomoaki.util.entity.DataExistMap;
 
 /**
  *
@@ -156,5 +157,17 @@ public class DataCollectionUtils {
         dataList.remove(fromIndex); // https://stackoverflow.com/questions/21795376/java-how-to-remove-an-integer-item-in-an-arraylist
         dataList.add(toIndex, desigData);
         return dataList;
+    }
+    
+    // --------------------------------------------------------------------------------------------------------
+    
+    public static <T> List<T> removeFrom(List<T> fromDataList, List<T> removingDataList) {
+        if(removingDataList == null || removingDataList.isEmpty()) {
+            return fromDataList;
+        }
+        
+        DataExistMap<T> dataExist = DataExistMap.Factory.createOrdered(fromDataList);
+        removingDataList.forEach(dataExist::remove);
+        return dataExist.existList();
     }
 }
