@@ -15,15 +15,25 @@
  */
 package tw.dev.tomoaki.jpa;
 
+import java.lang.reflect.InvocationTargetException;
 import tw.dev.tomoaki.jpa.entity.KeyValuePair;
 import java.util.List;
+import tw.dev.tomoaki.jpa.helper.JPAEntityHelper;
 
 /**
  *
  * @author tomoaki
  */
+
 public interface QueryFacade<T> {
 
+    public void clear();
+    
+    /*evict 是為了 findSelf 而拉到底層，配合 [FIXME202411081103] 思考一下是否要這樣*/
+    public void evictAllCache();
+    
+    public void evictCache(Object id);
+        
 //<editor-fold defaultstate="collapsed" desc="findAll系列 及 find(用 PrimaryKey) 查詢">
     public List<T> findAll();
     
@@ -31,11 +41,33 @@ public interface QueryFacade<T> {
     
     public List<T> findAllAscOrdered(String... entityPropNames); //有點疑惑是否要同時有
     
-    public List<T> findAllAscOrdered(List<String> entityPropNameList);
-
-    public T find(Object id);
+    public List<T> findAllAscOrdered(List<String> entityPropNameList);    
+//</editor-fold>
     
-//</editor-fold>   
+    default public T findSelf(T entity) throws IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+        /*Class entityClass = entity.getClass();
+        Field[] fields = entityClass.getDeclaredFields();
+        Field idField = Stream.of(fields)
+                .filter(field -> field.getAnnotation(javax.persistence.Id.class) != null)
+                .findAny()
+                .orElse(null);
+        
+        if(idField != null) {
+            // Object id = idField.get(entity); // privaate Field 不直接 get
+            String methodName = "get" + AkiStringUtil.capitalizeHeader(idField.getName(), 1);
+            Method method = entityClass.getDeclaredMethod(methodName);
+            // System.out.println(method.invoke(entity));
+            return this.find(method.invoke(entity));
+        }
+        return null; */
+        Object id = JPAEntityHelper.obtainIdValue(entity);
+        this.clear();
+        this.evictAllCache(); // this.evictCache(id);
+        return this.find(id);
+    }
+    
+    public T find(Object id);    
+    
     public List<T> findRange(int[] range);
 
     public int count();

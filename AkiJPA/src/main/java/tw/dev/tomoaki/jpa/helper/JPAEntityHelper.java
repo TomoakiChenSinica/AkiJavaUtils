@@ -15,9 +15,14 @@
  */
 package tw.dev.tomoaki.jpa.helper;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.stream.Stream;
 import javax.persistence.EntityManager;
 import org.eclipse.persistence.jpa.JpaEntityManager;
 import org.eclipse.persistence.sessions.UnitOfWork;
+import tw.dev.tomoaki.util.string.AkiStringUtil;
 
 /**
  *
@@ -39,4 +44,30 @@ public class JPAEntityHelper {
 //            ex.printStackTrace();
 //        }    
 //    }
+    public static Field obtainIdField(Object entity) {
+        Class entityClass = entity.getClass();
+        Field[] fields = entityClass.getDeclaredFields();
+        Field idField = Stream.of(fields)
+                .filter(field -> field.getAnnotation(javax.persistence.Id.class) != null)
+                .findAny()
+                .orElse(null);
+        return idField;
+    }
+
+    public static Method guessIdGetter(Object entity, Field idField) throws NoSuchMethodException {
+        if (idField == null) {
+            throw new IllegalArgumentException("idField Is Not Existed");
+        }
+
+        Class entityClass = entity.getClass();
+        String methodName = "get" + AkiStringUtil.capitalizeHeader(idField.getName(), 1);
+        Method method = entityClass.getDeclaredMethod(methodName);
+        return method;
+    }
+
+    public static Object obtainIdValue(Object entity) throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        Field idField = obtainIdField(entity);
+        Method idGetter = guessIdGetter(entity, idField);
+        return idGetter.invoke(entity);
+    }
 }

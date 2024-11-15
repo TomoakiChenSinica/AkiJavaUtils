@@ -4,6 +4,7 @@
  */
 package tw.dev.tomoaki.jpa;
 
+import java.lang.reflect.InvocationTargetException;
 import tw.dev.tomoaki.jpa.entity.KeyValuePair;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,7 +19,9 @@ import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import tw.dev.tomoaki.jpa.exception.JPAFacadeException;
 import tw.dev.tomoaki.jpa.helper.JPAEntityHelper;
+import tw.dev.tomoaki.jpa.helper.JPAFacadeHelper;
 import tw.dev.tomoaki.jpa.helper.KeyValuePairHelper;
 import tw.dev.tomoaki.jpa.query.criteria.helper.ExpressionHelper;
 import tw.dev.tomoaki.jpa.query.criteria.helper.OrderHelper;
@@ -45,31 +48,7 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
         this.entityClass = entityClass;
     }
 
-    public void clear() {
-        this.getEntityManager().clear();
-    }
 
-    public void evictAllCache() {
-        this.getEntityManager().getEntityManagerFactory().getCache().evictAll();
-    }
-
-    public void evictAllCache(Object id) {
-        this.getEntityManager().getEntityManagerFactory().getCache().evict(entityClass, id);
-    }
-
-    /*public void getEntityState(T entity) {
-        return this.getEntityManager().getR
-    }*/
-    /**
-     * https://stackoverflow.com/questions/13135309/how-to-find-out-whether-an-entity-is-detached-in-jpa-hibernate
-     * 注意這只能判斷 entity 是不是 Managed，但有可能是 Detached、Transient、Removed
-     *
-     * @param entity 確認 entity 是否是 Managed 狀態
-     * @return 是否是 Managed 狀態
-     */
-    public Boolean isManaged(T entity) {
-        return this.getEntityManager().contains(entity);
-    }
 
     public T manage(T entity) {
         return this.isManaged(entity) ? entity : this.merge(entity);
@@ -97,21 +76,41 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
         this.getEntityManager().flush();
     }
 
-    public void refresh(T entity) {
-        this.getEntityManager().refresh(entity);
+    /**
+     * @param entity 要刷新的原資料庫映射的 enttiy  
+     * @throws JPAFacadeException
+     */
+    public T refresh(T entity) {// void refresh(T entity) {
+//        this.getEntityManager().refresh(entity);
+        if (this.isManaged(entity)) {
+            // JPA 中， entity 的 (JPA?) State 要是 Managed 才能 refresh
+            this.getEntityManager().refresh(entity);
+        } else {
+            try {
+                this.clear();
+                entity = this.findSelf(entity);
+                // System.err.println(String.format("[%s] entity= %s Is Not Managed, Cannot Be Refresh", getClass().getSimpleName(), entity));
+            } catch (IllegalArgumentException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
+                throw new JPAFacadeException(ex);
+            }
+        }
+        return entity;
     }
 
     @Override
     public T find(Object id) {
         EntityManager em = getEntityManager();
-        this.tryEvictCache(em, id);
+        tryEvictCache(id);
         return em.find(entityClass, id);
     }
 
     @Override
     public List<T> findAll() {
         EntityManager em = getEntityManager();
-        this.tryEvictAllCache(em);        
+        if(EVICT_CACHE) {
+            // JPAFacadeHelper.evictAllCache(em, entityClass);
+            evictAllCache();
+        }
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery(); // javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(entityClass));
         return getEntityManager().createQuery(cq).getResultList();
@@ -128,7 +127,7 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
         CriteriaBuilder cb = this.getEntityManager().getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
         Root<T> root = cq.from(entityClass);
-        
+
         cq.orderBy(OrderHelper.createAscOrder(root, cb, entityPropName));
 
         Query query = this.getEntityManager().createQuery(cq);
@@ -236,7 +235,7 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
         EntityManager em = this.getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
-        this.tryEvictAllCache(em);
+        this.tryEvictAllCache();//(em);      
         Root<T> root = cq.from(entityClass);
 
         orderEntityPropNameList = (ListValidator.isListExist(orderEntityPropNameList)) ? orderEntityPropNameList : Arrays.asList(entityPropName);
@@ -277,8 +276,8 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
     public List<T> findByNotEquals(String entityPropName, Object value, List<String> orderEntityPropNameList) {
         EntityManager em = this.getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
-        this.tryEvictAllCache(em);
+        CriteriaQuery<T> cq = cb.createQuery(this.entityClass);        
+        this.tryEvictAllCache(); //(em);
         Root<T> root = cq.from(entityClass);
 
         orderEntityPropNameList = (ListValidator.isListExist(orderEntityPropNameList)) ? orderEntityPropNameList : Arrays.asList(entityPropName);
@@ -291,7 +290,6 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
     }
 
 //</editor-fold>
-
 //<editor-fold defaultstate="collapsed" desc="findByAndEqual系列">
     /*
     https://stackoverflow.com/questions/39741718/java-lang-illegalargumentexception-the-attribute-state-id-is-not-present-in-t 
@@ -415,44 +413,43 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
     public List<T> findByMatch(String entityPropName, String value, String... orderEntityPropNames) {
         return this.findByMatch(entityPropName, value, Arrays.asList(orderEntityPropNames));
     }
-    
+
     @Override
     public List<T> findByMatch(String entityPropName, String value, List<String> orderEntityPropNameList) {
         EntityManager em = this.getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
-        Root<T> root = cq.from(entityClass);        
-               
+        Root<T> root = cq.from(entityClass);
+
         String pattern = new StringBuilder().append("%").append(value).append("%").toString();
         cq = cq.where(cb.like(root.get(entityPropName), pattern));
         cq = cq.orderBy(OrderHelper.createAscOrderList(root, cb, orderEntityPropNameList));
-        
+
         Query query = em.createQuery(cq);
         return query.getResultList();
     }
-    
+
     @Override
     public List<T> findByNotMatch(String entityPropName, String value, String... orderEntityPropNames) {
         return this.findByNotMatch(entityPropName, value, Arrays.asList(orderEntityPropNames));
-    }    
-    
+    }
+
     @Override
     public List<T> findByNotMatch(String entityPropName, String value, List<String> orderEntityPropNameList) {
         EntityManager em = this.getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
-        Root<T> root = cq.from(entityClass);        
-               
+        Root<T> root = cq.from(entityClass);
+
         String pattern = new StringBuilder().append("%").append(value).append("%").toString();
-        cq = cq.where(cb.notLike( root.get(entityPropName), pattern));
-        cq = cq.orderBy(OrderHelper.createAscOrderList(root, cb, orderEntityPropNameList));        
-        
+        cq = cq.where(cb.notLike(root.get(entityPropName), pattern));
+        cq = cq.orderBy(OrderHelper.createAscOrderList(root, cb, orderEntityPropNameList));
+
         Query query = em.createQuery(cq);
         return query.getResultList();
-    }    
+    }
 //</editor-fold>
-    
-    
+
 //<editor-fold defaultstate="collapsed" desc="IN 系列">
     /**
      *
@@ -628,7 +625,7 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
     protected List<T> findByAnd(List<Expression> expressionList, List<Order> orderList) {
         EntityManager em = this.getEntityManager();
         // em.getEntityManagerFactory().getCache().evictAll();
-        this.tryEvictAllCache(em);
+        this.tryEvictAllCache();//(em);        
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
 
@@ -643,8 +640,10 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
 
     protected List<T> findByOr(List<Expression> expressionList, List<Order> orderList) {
         EntityManager em = this.getEntityManager();
-        // em.getEntityManagerFactory().getCache().evictAll();
-        this.tryEvictAllCache(em);
+        
+        // em.getEntityManagerFactory().getCache().evictAll();        
+        this.tryEvictAllCache();//(em);
+        
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
 
@@ -655,11 +654,10 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
         Query query = em.createQuery(cq);
         return query.getResultList();
     }
-    
-    // ---------------------------------------------------------------------------------------------
-    
-//</editor-fold>    
 
+    // ---------------------------------------------------------------------------------------------
+//</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="getByEquals 系列">
     @Override
     public T getByEquals(String columnName, Object columnValue) {
@@ -681,37 +679,74 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
 //</editor-fold>    
 
 //<editor-fold defaultstate="collapsed" desc="其他輔助methods">
+    @Override
+    public void clear() {
+        this.getEntityManager().clear();
+    }
+
+    // tomoaki 20241108: 在底層定義此 Method (注意這樣會變成不能變成 proected，[FIXME202411081103] 思考一下這個 public 是否不好)
+    @Override
+    public void evictAllCache() {
+        this.getEntityManager().getEntityManagerFactory().getCache().evictAll();
+    }
+
+    // tomoaki 20241108: 在底層定義此 Method (注意這樣會變成不能變成 proected，[FIXME202411081103] 思考一下這個 public 是否不好)
+    /**
+     * 清空指定的 id 相關的資料 enttiy 的快取
+     * @param id entity 的 Id(一般就是 Primary Key)
+     */
+    @Override
+    public void evictCache(Object id) {
+        this.getEntityManager().getEntityManagerFactory().getCache().evict(entityClass, id);
+    }
+
+    /*public void getEntityState(T entity) {
+        return this.getEntityManager().getR
+    }*/
+    /**
+     * https://stackoverflow.com/questions/13135309/how-to-find-out-whether-an-entity-is-detached-in-jpa-hibernate
+     * 注意這只能判斷 entity 是不是 Managed，但有可能是 Detached、Transient、Removed
+     *
+     * @param entity 確認 entity 是否是 Managed 狀態
+     * @return 是否是 Managed 狀態
+     */
+    public Boolean isManaged(T entity) {
+        return this.getEntityManager().contains(entity);
+    }    
+    
     /**
      *
      * 執行 JPA evict，此方法會讓 Entity 由 Managed 轉為 Detached
      */
-    private void tryEvictCache(EntityManager em, Object id) {
+    private void tryEvictCache(Object id) { //(EntityManager em, Object id) {
         tryPrintLog("tryEvictCache(): EVICT_CACHE= %s", EVICT_CACHE);
         if (EVICT_CACHE) {
             tryPrintLog("tryEvictCache(): Will Evict Cache With id= %s", id);
-            em.getEntityManagerFactory().getCache().evict(entityClass, id);
+            // em.getEntityManagerFactory().getCache().evict(entityClass, id);
+            this.evictCache(id);
         }
     }
-
+              
     /**
      *
      * 執行 JPA evict，此方法會讓 Entity 由 Managed 轉為 Detached
      */
-    private void tryEvictAllCache(EntityManager em) {
+    private void tryEvictAllCache() { // EntityManager em) {
         tryPrintLog("tryEvictAllCache(): EVICT_CACHE= %s", EVICT_CACHE);
         if (EVICT_CACHE) {
             tryPrintLog("tryEvictAllCache(): Will Evict All Cache");
-            em.getEntityManagerFactory().getCache().evictAll();
+            // em.getEntityManagerFactory().getCache().evictAll();
+            this.evictAllCache();
         }
     }
 
     private List<String> obtainEntityPropNameList(List<KeyValuePair> pairList) {
         return pairList.stream().map(pair -> pair.getColName()).collect(Collectors.toList());
     }
-    
+
     public Boolean isDataUpdate(T entity) {
         return JPAEntityHelper.isDataUpdate(this.getEntityManager(), entity);
-    }    
+    }
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="其他輔助 Methods，Log 類">
