@@ -56,5 +56,7 @@ public class AnnotationHelper {
         // Method selfMethod = MethodHelper.obtainCurrentMethod(); //這樣會把 Method 抓成「這個 Method 自己」
         T[] annotations = methodInClass.getAnnotationsByType(classOfAnnotation);
         return annotations;
-    }        
+    }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------   
 }
