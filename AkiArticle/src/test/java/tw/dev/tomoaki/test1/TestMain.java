@@ -5,11 +5,13 @@
  */
 package tw.dev.tomoaki.test1;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import tw.dev.tomoaki.article.helper.ArticleHelper;
 import tw.dev.tomoaki.test1.entity.Player;
 import tw.dev.tomoaki.test1.report.PlayerReportCreator;
+import tw.dev.tomoaki.test1.report.PlayerTokenModule;
 import tw.dev.tomoaki.util.regularexpression.RegExpProcessor;
 
 /**
@@ -23,8 +25,9 @@ public class TestMain {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        test1();
+//        test1();
 //        test0();
+        test2();
     }
     
     private static void test0() {
@@ -61,5 +64,10 @@ public class TestMain {
     }
     
     private static void test2() {
+        try {
+            System.out.println(ArticleHelper.obtainModuleTokenListWithModuleClass(PlayerTokenModule.class));
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }  

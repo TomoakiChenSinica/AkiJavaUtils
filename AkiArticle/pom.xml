@@ -3,12 +3,14 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>tw.dev.tomoaki</groupId>
     <artifactId>AkiArticle</artifactId>
-    <version>1.3.0-SNAPSHOT</version>
+    <version>1.4.0-SNAPSHOT</version>
     <description>
         1.3.0:
             1. ArticleEntityDataTokenRuleModule 刪除 void addRule(ArticleCreator creator, List dataList)
             2. ArticleCreator 加入 addModule Methods
-        
+        1.4.0: 
+            ArticleHelper 加入「載入指定 Package 下，全部 Module Token」 的 Method
+            ArticleHelper 改良一些 codes
     </description>
     <packaging>jar</packaging>
     <build>
@@ -48,7 +50,7 @@
             <groupId>tw.dev.tomoaki</groupId>
             <artifactId>AkiReflectionKit</artifactId>
             <!-- <version>[0.1.0-SNAPSHOT,)</version> -->
-            <version>[0.3.8,)</version>
+            <version>[0.4.0-SNAPSHOT,)</version>
         </dependency>        
     </dependencies>
     <properties>

@@ -43,7 +43,10 @@ public abstract class ArticleCreator {
         }
     }
 
+    // protected abstract void doCustomRulesSetup();
     protected abstract void doCustomRulesSetup();
+    
+    protected abstract void doDynamicRulesSetup(String article);
 
     // ------------------------------------------------------------------------------
     public void addModule(ArticleEntityDataTokenRuleModule entityTokenModule) {
@@ -90,6 +93,7 @@ public abstract class ArticleCreator {
 
     public String getArticle(String oriText) {
         this.doCustomRulesSetup();
+        this.doDynamicRulesSetup(oriText);
         this.doValidateTokenImpl();
         String newText = this.replaceTokens(oriText/*, tokensReplaceMapper*/);
         return newText;
@@ -109,7 +113,7 @@ public abstract class ArticleCreator {
             if (this.moduleList != null && this.moduleList.isEmpty() == false) {
                 List<ArticleTokenOption> optionList = new ArrayList();
                 for (ArticleTokenModule module : moduleList) {
-                    List<ArticleTokenOption> partOptionList = ArticleHelper.obtainModuleTokenList(module);
+                    List<ArticleTokenOption> partOptionList = ArticleHelper.obtainModuleTokenListWithModuleInstance(module);
                     optionList.addAll(partOptionList);
                 }
                 return optionList;

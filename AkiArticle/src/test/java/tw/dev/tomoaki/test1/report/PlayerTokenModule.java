@@ -20,14 +20,14 @@ import tw.dev.tomoaki.test1.entity.Player;
 public class PlayerTokenModule extends ArticleEntityDataTokenRuleModule<Player>{
 
     @ArticleToken(summary="球員名")
-    public String TOKEN_PLAYER_FIRST_NAME = "${Player.FirstName}";
+    public static String TOKEN_PLAYER_FIRST_NAME = "${Player.FirstName}";
     @ArticleToken(summary="球員姓")
-    public String TOKEN_PLAYER_LAST_NAME = "${Player.LastName}";
+    public static String TOKEN_PLAYER_LAST_NAME = "${Player.LastName}";
     @ArticleToken(summary="球員年型")
-    public String TOKEN_PLAYER_AGE = "${Player.Age}";
+    public static String TOKEN_PLAYER_AGE = "${Player.Age}";
 
     @ArticleToken(summary="球員清單", level=2)
-    public String TOKEN_PLAYER_INFO_LIST = "${PlayerList,Standard}";
+    public static String TOKEN_PLAYER_INFO_LIST = "${PlayerList,Standard}";
     
     @Override
     public void addRule(ArticleCreator creator, Player player) {

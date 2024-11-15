@@ -10,5 +10,5 @@ package tw.dev.tomoaki.article.module.intf;
  * @author Tomoaki Chen
  */
 public interface ArticleTokenModule {
-    
+
 }

@@ -35,6 +35,11 @@ public class PlayerReportCreator extends ArticleCreator {
         this.moduleList = Arrays.asList(playerTokenModule);
     }
     
+    @Override
+    protected void doDynamicRulesSetup(String article) {
+        
+    }
+    
     public PlayerReportCreator setupPlayerInfo(Player player) {       
         this.playerTokenModule.addRule(this, player);
 //        this.playerTokenModule.addRule(this, Arrays.asList(player));

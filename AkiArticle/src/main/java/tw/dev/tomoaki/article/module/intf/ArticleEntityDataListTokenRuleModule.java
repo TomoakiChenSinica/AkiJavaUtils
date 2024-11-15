@@ -20,5 +20,9 @@ package tw.dev.tomoaki.article.module.intf;
  * @author tomoaki
  */
 public abstract class ArticleEntityDataListTokenRuleModule {
-    
+
+    @Override
+    public String toString() {
+        return this.getClass().getName();
+    }
 }

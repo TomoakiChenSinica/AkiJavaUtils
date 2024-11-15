@@ -14,4 +14,9 @@ import tw.dev.tomoaki.article.ArticleCreator;
 public abstract class ArticleIndependentTokenRuleModule implements ArticleTokenModule {
 
     public abstract void addRule(ArticleCreator creator);
+
+    @Override
+    public String toString() {
+        return this.getClass().getName();
+    }
 }
