@@ -5,11 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>tw.dev.tomoaki</groupId>
     <artifactId>AkiDateTimeCloze</artifactId>
-    <version>0.2.4-SNAPSHOT</version>    
+    <version>0.2.5-SNAPSHOT</version>    
     <packaging>jar</packaging>
     <description>
         0.2.3 版: 比較完整可以用。
         0.2.4 版: 部分不適合直接使用(可能須多判斷條件)的變成 protected
+        0.2.5 版: 配合 AkiDateTme 1.6.2 版調整
     </description>
 
     <properties>

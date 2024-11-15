@@ -32,7 +32,7 @@ import tw.dev.tomoaki.util.cast.helper.ObjectMapperHelper;
  *
  * 2016-11-xx 新增 method getJavaListObject : 轉換 list包裝的
  *
- *
+ *[FIXME202411081617] 因為內部都是 static Method，似乎不用在這裡定義 Generic Type
  */
 public class JsonToJava<T> {   //要加在這裡
 
