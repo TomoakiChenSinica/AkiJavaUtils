@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import static sun.jvm.hotspot.HelloWorld.e;
 import tw.dev.tomoaki.article.entity.AritcleTokenMap;
 import tw.dev.tomoaki.article.entity.ArticleTokenOption;
 import tw.dev.tomoaki.article.exception.ArticleCreatorException;
@@ -19,6 +18,7 @@ import tw.dev.tomoaki.article.module.BasicTokenModule;
 import tw.dev.tomoaki.article.module.intf.ArticleEntityDataTokenRuleModule;
 import tw.dev.tomoaki.article.module.intf.ArticleTokenModule;
 import tw.dev.tomoaki.util.entity.extend.PairDataDiff;
+import tw.dev.tomoaki.util.string.AkiStringUtil;
 //import tw.dev.tomoaki.util.DateTimeProvider;
 
 /**
@@ -97,6 +97,11 @@ public abstract class ArticleCreator {
         this.doValidateTokenImpl();
         String newText = this.replaceTokens(oriText/*, tokensReplaceMapper*/);
         return newText;
+    }
+    
+    public String getArticleAsHTML(String oriText) {
+        String article = this.getArticle(oriText);
+        return AkiStringUtil.parseHtmlFormat(article);
     }
 
     public List<ArticleTokenModule> getModuleList() {
