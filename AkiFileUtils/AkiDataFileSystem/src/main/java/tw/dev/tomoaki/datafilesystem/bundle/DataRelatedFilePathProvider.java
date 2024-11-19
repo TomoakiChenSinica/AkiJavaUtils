@@ -11,7 +11,9 @@ import java.util.UUID;
 import tw.dev.tomoaki.datafilesystem.core.NewDataFilePathProvider;
 import tw.dev.tomoaki.datafilesystem.core.RecentDataFilePathProvider;
 import tw.dev.tomoaki.datafilesystem.core.entity.DataFileRelation;
+import tw.dev.tomoaki.datafilesystem.core.exception.PermissionDeninedException;
 import tw.dev.tomoaki.datafilesystem.core.helper.DataFileRelationHelper;
+import tw.dev.tomoaki.nioext.PathExt;
 
 /**
  *
@@ -29,12 +31,20 @@ public abstract class DataRelatedFilePathProvider<DATA, DATA_FILE extends DataFi
     public Path obtainRecentFilePath(DATA dataEntity) {
         DATA_FILE dataFile = this.obtainDataFile(dataEntity);
         Path dbPath = DataFileRelationHelper.obtainFilePath(getFileRoot(), dataFile);
+        if(PathExt.isUnderRoot(dbPath, getFileRoot())) {
+            throw PermissionDeninedException.Factory.create(dbPath);
+        }
         return dbPath;
     }
 
     @Override
     public Path obtainNewFilePath(DATA dataEntity) {
-        return Paths.get(getFileRoot(), createFileName(dataEntity));
+        // return Paths.get(getFileRoot(), createFileName(dataEntity));
+        Path newPath = Paths.get(getFileRoot(), createFileName(dataEntity));
+        if(PathExt.isUnderRoot(newPath, getFileRoot())) {
+            throw PermissionDeninedException.Factory.create(newPath);
+        }        
+        return newPath;
     }
 
     @Override

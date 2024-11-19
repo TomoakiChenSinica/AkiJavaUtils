@@ -14,14 +14,16 @@ import java.nio.file.Path;
  *
  * @author tomoaki
  *
- * 這支總覺得好像沒甚麼等待實作的必要...................?
+ * 
  */
-public class DefaultFileManager {
+public class SimpleFileManager {
 
     private static final Integer DEFAULT_BUFFER_SIZE = 1024;
     private Integer bufferSize = DEFAULT_BUFFER_SIZE;
+    
+    private String rootFilePathText;
 
-    public File save(Path path, InputStream inputStream) throws IOException {
+    public File save(Path targetPath, InputStream inputStream) throws IOException {
         if (inputStream == null) {
             throw new IllegalArgumentException("inputParam Is Null");
         }
@@ -31,9 +33,9 @@ public class DefaultFileManager {
 //        }
         byte[] byteBuffer = new byte[bufferSize];
         while ((inputStream.read(byteBuffer)) != -1) {
-            Files.write(path, byteBuffer);
-        }
-        return path.toFile();
+            Files.write(targetPath, byteBuffer);
+        } 
+        return targetPath.toFile();
     }
 
     public File copy(Path sourcePath, Path targetPath) {

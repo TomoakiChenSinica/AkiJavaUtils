@@ -44,10 +44,7 @@ public class AkiFileWriteUtils {
             Files.createDirectories(directoryPath);
         }
     }
-    
-    
-    
-
+            
 //<editor-fold defaultstate="collapsed" desc="之前就寫到的，當時已知道nio為New IO">
     public static File write(InputStream sourceFileStream, String targetFilePath) throws IOException {
         if (targetFilePath == null) {
