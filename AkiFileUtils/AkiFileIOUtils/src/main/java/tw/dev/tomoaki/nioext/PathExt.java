@@ -15,6 +15,12 @@ public class PathExt {
 
 //    public static String obtainPureTextPath(Path thePath, String separator) {
 //    }
+    /**
+     * java.nio.Path.toRealPath() 會檢查實際檔案是否存在。<br>
+     * 此 Method 僅將路徑轉成無冗餘的絕對路徑。
+     * 
+     * @param targetPath 目標路徑
+     */
     public static Path toLaxRealPath(Path targetPath) {
         return targetPath.toAbsolutePath().normalize();
     }

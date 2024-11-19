@@ -6,7 +6,7 @@
     <version>0.3.1-SNAPSHOT</version>
     <description>
         0.3.1:
-           加入讀取/寫入的路徑的權限判斷
+           加入讀取/寫入的路徑的權限判斷。完善 AkiSimpleFileManager
     </description>
     <packaging>jar</packaging>
     <properties>

@@ -29,6 +29,7 @@ public class JavaPathTestMain {
     }
 
     protected static void test1(Path targetPath) {
+        // https://stackoverflow.com/questions/1844688/how-can-i-read-all-files-in-a-folder-from-java?page=1&tab=scoredesc#tab-top
         // targetPath.getFileSystem().newWatchService().
         try (Stream<Path> paths = Files.walk(targetPath, 1)) { // 舊方法: 從 File.listFiles() 取得 ，targetPath.toFile().listFiles()
             paths.forEach(System.out::println);

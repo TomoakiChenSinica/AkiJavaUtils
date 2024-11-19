@@ -1,4 +1,4 @@
-package tw.dev.tomoaki.datafilesystem.core.exception;
+package tw.dev.tomoaki.filesystem.exception;
 
 import java.nio.file.Path;
 
@@ -21,21 +21,25 @@ import java.nio.file.Path;
  *
  * @author tomoaki
  */
-public class PermissionDeninedException extends RuntimeException {
+public class FileAccessDeninedException extends RuntimeException {
 
     public static class Factory {
         
-        public static PermissionDeninedException create(Path targetPath) {
+        public static FileAccessDeninedException create(Path targetPath) {
             String msgFmt = "%s Is Not Readable/Writeable";
-            return new PermissionDeninedException(String.format(msgFmt, targetPath));
+            return new FileAccessDeninedException(String.format(msgFmt, targetPath));
         }
+        
+        public static FileAccessDeninedException create(String msgFmt, Object... args) {
+            return new FileAccessDeninedException(String.format(msgFmt, args));
+        }        
     }
     
-    public PermissionDeninedException(String msg) {
+    public FileAccessDeninedException(String msg) {
         super(msg);
     }
 
-    public PermissionDeninedException(Exception ex) {
+    public FileAccessDeninedException(Exception ex) {
         super(ex);
     }
 }
