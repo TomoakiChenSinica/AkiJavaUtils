@@ -20,6 +20,7 @@ public class PathExt {
      * 此 Method 僅將路徑轉成無冗餘的絕對路徑。
      * 
      * @param targetPath 目標路徑
+     * @return 去除冗餘的絕對路徑。
      */
     public static Path toLaxRealPath(Path targetPath) {
         return targetPath.toAbsolutePath().normalize();

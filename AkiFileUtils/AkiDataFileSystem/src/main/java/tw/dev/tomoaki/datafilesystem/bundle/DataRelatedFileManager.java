@@ -30,7 +30,6 @@ import tw.dev.tomoaki.nioext.PathExt;
  * @param <DATA>
  * @param <PATH_PROVIDER>
  */
-//public abstract class DataRelatedFileManager<DATA, FILE extends DataFileRelation<DATA>, PATH_PROVIDER extends DataRelatedFilePathProvider<DATA, FILE>> implements DataFileManager<DATA> {
 public abstract class DataRelatedFileManager<DATA, PATH_PROVIDER extends DataRelatedFilePathProvider> implements DataFileManager<DATA> {
 
     private PATH_PROVIDER pathProvider;

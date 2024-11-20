@@ -18,15 +18,41 @@ import tw.dev.tomoaki.nioext.PathExt;
 /**
  *
  * @author tomoaki
- * @param <DATA>
- * @param <DATA_FILE>
+ * @param <DATA> 主要資料，DATA 和 DATA_FILE 是「一對多」
+ * @param <DATA_FILE> 繼承於 DataFileRelation(又繼承於 DataFile) 的類別
+ * 
+ * 實作 RecentDataFilePathProvider 和 NewDataFilePathProvider，<br>
+ * 此類別適合用在當資料庫或資料架構，是 DATA --> DATA_FILE，DATA 和 DATA_FILE 是「一對多」。<br>
+ * 檔案實際存放路徑邏輯是: <br>
+ * getFileRoot() 和 DATA_FILE.getFileRealName() (定義於 DataFileRelation --> DataFile) 串起來，<br>
+ * 詳情可以看 DataFileRelationHelper <br>。
+ * 
  */
 public abstract class DataRelatedFilePathProvider<DATA, DATA_FILE extends DataFileRelation<DATA>> implements RecentDataFilePathProvider<DATA>, NewDataFilePathProvider<DATA> {
 
+    /**
+     * 
+     * 此類檔案的根目錄
+     * 
+     * @return 根目錄
+     */
     protected abstract String getFileRoot();
 
+    /**
+     * 需實作從 DATA 轉換為 DATA_FILE，<br>
+     * DATA 和 DATA_FILE 在資料庫為 一對多。
+     * 
+     * @param data 
+     * @return 相關的檔案
+     */
     protected abstract DATA_FILE obtainDataFile(DATA data);
 
+    /**
+     * 產生「既有的」檔案路徑。<br>
+     * 
+     * @return 「既有檔案」的實際路徑
+     * @throws FileAccessDeninedException 當欲尋找的檔案路徑在根目錄之外會丟出此 Exception
+     */
     @Override
     public Path obtainRecentFilePath(DATA dataEntity) {
         DATA_FILE dataFile = this.obtainDataFile(dataEntity);
