@@ -6,6 +6,7 @@
 package tw.dev.tomoaki.util.string;
 
 import java.util.Collections;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -91,14 +92,50 @@ public class AkiStringUtil {
 
     }
 
-    public static String concatSafely(String replaceNullText, String... texts) {
+    public static String concatSafely(String... texts) {
+        return concatSafelyWith("", texts);
+    }
+
+    public static String concatSafelyWith(String replaceNullText, String... texts) {
         return Stream.of(texts).map(text -> text == null ? replaceNullText : text).collect(Collectors.joining());
     }
 
-    public static String concatWithSafely(String replaceNullText, String concatWithText, String... texts) {
-        return Stream.of(texts).map(text -> text == null ? replaceNullText : text).collect(Collectors.joining(concatWithText));
+    public static String concatBetweenSafely(String concatWithText, String... texts) {
+        return concatBetweenSafelyWith("", concatWithText, texts);
     }
 
+    public static String concatBetweenSafelyWith(String replaceNullText, String concatWithText, String... texts) {
+        return Stream.of(texts).map(text -> text == null ? replaceNullText : text).collect(Collectors.joining(concatWithText));
+    }
+    
+    public static String concatActually(String... texts) {
+        return Stream.of(texts).filter(Objects::nonNull).filter(text -> !text.isBlank()).collect(Collectors.joining());
+    }
+    
+    public static String concatBetweenActually(String concatWithText, String... texts) {
+        return Stream.of(texts).filter(Objects::nonNull).filter(text -> !text.isBlank()).collect(Collectors.joining(concatWithText));
+    }    
+
+    /*
+    public static String concatSafely(String first, String... others) {
+        return concatSafelyWith("", first, others);
+    }    
+
+    public static String concatSafelyWith(String replaceNullText, String first, String... others) {
+        return Stream.concat(Stream.of(first), Stream.of(others))
+                .map(text -> text == null ? replaceNullText : text)
+                .collect(Collectors.joining());
+    }
+
+    public static String concatBetweenSafely(String concatWithText, String first, String... others) {
+        return concatBetweenSafelyWith("", concatWithText, first, others);
+    }    
+    
+    public static String concatBetweenSafelyWith(String replaceNullText, String concatWithText, String first, String... others) {
+        return Stream.concat(Stream.of(first), Stream.of(others))
+                .map(text -> text == null ? replaceNullText : text)
+                .collect(Collectors.joining(concatWithText));
+    }*/
     // ---------------------------------------------------------------------------------------------------------------
     /**
      * 參考:
@@ -126,6 +163,7 @@ public class AkiStringUtil {
     }
 
     // ---------------------------------------------------------------------------------------------------------------
+    
     public static String imputation(Number number, Integer minDigits, Character imputationWith) {
         String strNumber = number.toString();
         Integer oriDigits = strNumber.length();
@@ -139,5 +177,5 @@ public class AkiStringUtil {
             // 
             return strNumber;
         }
-    }
+    }    
 }

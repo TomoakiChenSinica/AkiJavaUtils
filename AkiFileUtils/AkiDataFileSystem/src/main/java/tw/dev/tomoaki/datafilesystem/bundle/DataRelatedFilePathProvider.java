@@ -32,24 +32,25 @@ public abstract class DataRelatedFilePathProvider<DATA, DATA_FILE extends DataFi
 
     /**
      * 
-     * 此類檔案的根目錄
+     * 需實作，指定檔案所在的根目錄
      * 
      * @return 根目錄
      */
     protected abstract String getFileRoot();
 
     /**
-     * 需實作從 DATA 轉換為 DATA_FILE，<br>
+     * 需實作，從 DATA 轉換為 DATA_FILE。<br>
      * DATA 和 DATA_FILE 在資料庫為 一對多。
      * 
-     * @param data 
+     * @param dataEntity 主資料 
      * @return 相關的檔案
      */
-    protected abstract DATA_FILE obtainDataFile(DATA data);
+    protected abstract DATA_FILE obtainDataFile(DATA dataEntity);
 
     /**
      * 產生「既有的」檔案路徑。<br>
      * 
+     * @param dataEntity 主資料 
      * @return 「既有檔案」的實際路徑
      * @throws FileAccessDeninedException 當欲尋找的檔案路徑在根目錄之外會丟出此 Exception
      */

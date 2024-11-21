@@ -27,7 +27,8 @@ public class StringTestMain {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        testImputation();
+//        testImputation();
+        testConcat();
     }
 
     private static void testShorten() {
@@ -38,13 +39,16 @@ public class StringTestMain {
     }
 
     private static void testConcat() {
-        System.out.println(AkiStringUtil.concatSafely(" ", "this", "is", "a", "book"));
-        System.out.println(AkiStringUtil.concatWithSafely("", " ", "this", "is", "a", "book"));
-        System.out.println(AkiStringUtil.concatWithSafely("!", " ", "this", "is", null, "book", null));
+        System.out.println(AkiStringUtil.concatSafelyWith(" ", "this", "is", "a", "book"));
+        System.out.println(AkiStringUtil.concatBetweenSafelyWith("", " ", "this", "is", "a", "book"));
+        System.out.println(AkiStringUtil.concatBetweenSafelyWith("!", " ", "this", "is", null, "book", null));
+        System.out.println(AkiStringUtil.concatBetweenSafely("!", "this", "is", null, "book", null));
+        System.out.println(AkiStringUtil.concatBetweenSafely(" ", "this", "is", null, "book", null));
+        System.out.println(AkiStringUtil.concatBetweenActually("!", "this", "is", null, "book", null));
     }
-    
+
     private static void testImputation() {
         System.out.println(AkiStringUtil.imputation(1, 2, '0'));
-        System.out.println(AkiStringUtil.imputation(12, 2, '0'));        
+        System.out.println(AkiStringUtil.imputation(12, 2, '0'));
     }
 }
