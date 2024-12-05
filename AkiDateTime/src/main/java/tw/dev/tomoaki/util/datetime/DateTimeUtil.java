@@ -12,6 +12,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.YearMonth;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.WeekFields;
@@ -338,7 +339,7 @@ public class DateTimeUtil {
 
     public static class Converter {
 
-        public static LocalDateTime convert2DateTime(Date utilDateTime) {
+        public static LocalDateTime convert2DateTime(java.util.Date utilDateTime) {
             LocalDateTime ldt = utilDateTime == null ? null : LocalDateTime.ofInstant(utilDateTime.toInstant(), ZoneId.systemDefault());
             return ldt;
         }
@@ -347,6 +348,8 @@ public class DateTimeUtil {
             return timeStamp == null ? null : timeStamp.toLocalDateTime();
         }
 
+        // ----------------------------------------------------------------------------------------------------        
+        
         public static LocalDate convert2Date(java.util.Date utilDate) {
             //https://www.baeldung.com/java-date-to-localdate-and-localdatetime (主要)
             //https://stackoverflow.com/questions/21242110/convert-java-util-date-to-java-time-localdate
@@ -358,8 +361,32 @@ public class DateTimeUtil {
         public static LocalDate convert2Date(Timestamp timeStamp) {
             return timeStamp == null ? null : timeStamp.toLocalDateTime().toLocalDate();
         }
-
         
+        // ----------------------------------------------------------------------------------------------------
+        
+
+        public static YearMonth convert2YearMonth(java.util.Date utilDateTime) {
+            LocalDate date = DateTimeUtil.Converter.convert2Date(utilDateTime);
+            return DateTimeUtil.Converter.convert2YearMonth(date);
+        }
+        
+        public static YearMonth convert2YearMonth(Timestamp timeStamp) {
+            LocalDate date = DateTimeUtil.Converter.convert2Date(timeStamp);
+            return DateTimeUtil.Converter.convert2YearMonth(date);
+        }        
+        
+        public static YearMonth convert2YearMonth(LocalDateTime localDateTime) {
+            // return YearMonth.from(localDateTime);            
+            YearMonth ym = localDateTime == null ? null : YearMonth.from(localDateTime);
+            return ym;            
+        }
+        
+        public static YearMonth convert2YearMonth(LocalDate localDate) {
+            YearMonth ym = localDate == null ? null : YearMonth.from(localDate);
+            return ym;
+        }        
+        
+        // ----------------------------------------------------------------------------------------------------
         
         /*
           https://www.baeldung.com/java-date-to-localdate-and-localdatetime 
@@ -387,6 +414,22 @@ public class DateTimeUtil {
             return localDate == null ? null : java.sql.Date.valueOf(localDate);
         }
         //以上這個可以改成 convert2UtilDate
+        
+        /**
+         * 將 日期時間 轉成 日期 跟以前DateTimeProvider是用字串去拆解不同，這裡應用LocalDateTime 、
+         * LocalDate
+         *
+         * @param utilDateTime 日期時間資訊，即資料中包含 年月日+時間 ，格式為 java.util.Date
+         * @return 日期，擷取出年月日出來
+         *
+         */
+        public static Date parseDateTime2Date(Date utilDateTime) {
+            LocalDateTime dateTime = Converter.convert2DateTime(utilDateTime);
+            LocalDate date = dateTime.toLocalDate();
+            return Converter.convert(date);
+        }        
+        
+        // ----------------------------------------------------------------------------------------------------
 
         /**
          * 詳細解說：<br>
@@ -413,21 +456,6 @@ public class DateTimeUtil {
 
         public static java.sql.Timestamp convert2SqlTimestamp(LocalDateTime dateTime) {
             return dateTime == null ? null : Timestamp.valueOf(dateTime);
-        }
-
-        /* ============================ 2023-01-30 15:24，從DateTimeProvider新增過來 ============================ */
-        /**
-         * 將 日期時間 轉成 日期 跟以前DateTimeProvider是用字串去拆解不同，這裡應用LocalDateTime 、
-         * LocalDate
-         *
-         * @param utilDateTime 日期時間資訊，即資料中包含 年月日+時間 ，格式為 java.util.Date
-         * @return 日期，擷取出年月日出來
-         *
-         */
-        public static Date parseDateTime2Date(Date utilDateTime) {
-            LocalDateTime dateTime = Converter.convert2DateTime(utilDateTime);
-            LocalDate date = dateTime.toLocalDate();
-            return Converter.convert(date);
         }
 
     }

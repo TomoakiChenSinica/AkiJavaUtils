@@ -3,11 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>tw.dev.tomoaki</groupId>
     <artifactId>AkiDataFileSystem</artifactId>
-    <version>0.4.0-SNAPSHOT</version>
+    <version>0.4.1-SNAPSHOT</version>
     <description>
         0.3.1:
            加入讀取/寫入的路徑的權限判斷。完善 AkiSimpleFileManager
-        0.4.0: 擴充 filesystem.bundle 底下的 XxxxPathProvider 
+        0.4.0: 擴充 filesystem.bundle 底下的 XxxxPathProviderbug
+        0.4.1: 修正 bug
     </description>
     <packaging>jar</packaging>
     <properties>

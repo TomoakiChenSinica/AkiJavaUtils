@@ -62,7 +62,7 @@ public interface QueryFacade<T> {
         return null; */
         Object id = JPAEntityHelper.obtainIdValue(entity);
         this.clear();
-        this.evictAllCache(); // this.evictCache(id);
+        this.evictCache(id); // this.evictAllCache();
         return this.find(id);
     }
     
