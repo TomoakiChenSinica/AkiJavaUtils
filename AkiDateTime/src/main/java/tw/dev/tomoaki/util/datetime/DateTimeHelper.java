@@ -48,5 +48,24 @@ public class DateTimeHelper {
     public static Boolean isBeforeEq(LocalDateTime standardDateTime, LocalDateTime compareDatetime) {
         return standardDateTime.isBefore(compareDatetime) || standardDateTime.equals(compareDatetime);
     }
+    
+    
+    // ---------------------------------------------------------------------
+    
+//    public static Integer obtainDaysOfMonth(short month) {
+//        if(month <= 0) {
+//            String msgFmt = "month= %s, should be larger than 0";
+//            throw new IllegalArgumentException(String.format(msgFmt, month));
+//        }
+//        
+////        if(month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
+////            return 31;
+////        } else if(m)
+//        switch(month) {
+//            case 2: {
+//                return 2
+//            }
+//        }
+//    }
 
 }

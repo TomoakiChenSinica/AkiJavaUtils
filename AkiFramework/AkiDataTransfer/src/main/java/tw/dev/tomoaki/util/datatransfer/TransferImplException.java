@@ -24,7 +24,7 @@ public class TransferImplException extends Exception{
             Integer exceptionNum = transferImpl.getNumsOfException();
             // String msg = obtainMsg(transferImpl.getExceptionList());//transferImpl.getExceptionList().toString();
             String msg = obtainMsg(transferImpl);
-            return new TransferImplException("資料轉換完成，但過程遇到錯誤。 數量: " +  exceptionNum + "完整訊息: \r\n" + msg);
+            return new TransferImplException("資料轉換完成，但過程遇到錯誤，數量: " +  exceptionNum + "。完整訊息: \r\n" + msg);
         }
         
 
