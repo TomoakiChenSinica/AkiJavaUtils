@@ -26,7 +26,7 @@ import tw.dev.tomoaki.util.web.webservice.exception.WebServiceResponseException;
  * @author Tomoaki Chen
  */
 public abstract class BasicRestClient {
-
+ 
 //<editor-fold defaultstate="collapsed" desc="一些共用的底層">
     //<editor-fold defaultstate="collapsed" desc="doGet">
     protected Response doGet(WebTarget target, MediaType acceptMediaType) {
