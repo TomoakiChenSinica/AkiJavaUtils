@@ -33,6 +33,14 @@ public class LocaleDiffField<VALUE> extends HashMap<String, VALUE> {
     public VALUE get(Locale locale) {
         return this.get(locale.toLanguageTag());
     }
+    
+    public Boolean containssLang(String langTag) {
+        return containsKey(langTag);
+    }
+    
+    public Boolean containsLang(Locale locale) {
+        return containsKey(locale.toLanguageTag());
+    }
 
     public List<String> getLanguageTagList() {
         return new ArrayList(this.keySet());

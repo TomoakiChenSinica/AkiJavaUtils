@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>tw.dev.tomoaki</groupId>
     <artifactId>AkiWeb</artifactId>
-    <version>2.4.1-SNAPSHOT</version>    
+    <version>2.4.7</version>    
     <description>
         1.1版，加上 System Permission Denined
         1.1.1 版，修正改善 System Permission Denined 機制
@@ -15,6 +15,10 @@
         2.3 版。 JavaWebUtils --> AkiWebUtils
         2.4 版: 改良 UrlProvider
         2.4.1 版: 改 provided
+        2.4.2 ~ 2.4.6版: 新增 ProxyRequestHelper 
+        2.4.7 版: 改良 UrlProvider，提供基礎針對 Proxy 環境下的支援
+        2.4.8 版: 改良 UrlAppender，目前的 UrlAppender，無法做到「固定一個URL Header」
+        2.5.0 版: 繼續改良UrlProvider，預計可以針對 Proxy 環境下的支援更好
     </description>
     <packaging>jar</packaging>
     <build>
@@ -87,6 +91,14 @@
             <version>2.19</version>
             <scope>provided</scope>
         </dependency>        
+        
+        <!--  -->        
+        <dependency>
+            <groupId>tw.dev.tomoaki</groupId>
+            <artifactId>AkiCommonDataValidator</artifactId>
+            <version>1.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>                
     </dependencies>
     
     <distributionManagement>

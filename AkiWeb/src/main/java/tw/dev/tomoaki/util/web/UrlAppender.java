@@ -6,9 +6,12 @@
 package tw.dev.tomoaki.util.web;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  *
@@ -16,6 +19,8 @@ import java.util.Map;
  */
 public class UrlAppender {
 
+    protected List<String> staticUrlHeaderList;
+    
     protected List<String> urlPathList;
     protected Map<String, Object> queryParamMap;
 
@@ -31,10 +36,19 @@ public class UrlAppender {
 
         public static UrlAppender create() {
             UrlAppender appender = new UrlAppender();
+            appender.staticUrlHeaderList = Arrays.asList();
             appender.initUrlPathList();
             appender.initQueryParamMap();
             return appender;
-        }
+        }         
+        
+        public static UrlAppender create(String staticPath, String... otherStaticPaths) {
+            UrlAppender appender = new UrlAppender();
+            appender.staticUrlHeaderList = Stream.concat(Stream.of(staticPath), Stream.of(otherStaticPaths)).collect(Collectors.toList());
+            appender.initUrlPathList();
+            appender.initQueryParamMap();
+            return appender;
+        }        
     }
     
 //<editor-fold defaultstate="collapsed" desc="初始化/設定 變數的 methods">
@@ -89,13 +103,15 @@ public class UrlAppender {
     public String buildUrl() {
         String url = "";
         Integer pathCounter = 0;
-        for(String path : this.urlPathList) {
+        List<String> allUrlPathList = Stream.concat(this.staticUrlHeaderList.stream(), this.urlPathList.stream()).collect(Collectors.toList());
+        for(String path : allUrlPathList) {
             pathCounter++;
             if(pathCounter >= 2) {
                 url += "/";
             }
             url += path;
         }
+        
         if(!this.queryParamMap.isEmpty()) {
             url += "?";
             Integer paramCounter = 0;            

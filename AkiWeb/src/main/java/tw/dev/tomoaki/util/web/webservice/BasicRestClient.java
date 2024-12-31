@@ -26,9 +26,25 @@ import tw.dev.tomoaki.util.web.webservice.exception.WebServiceResponseException;
  * @author Tomoaki Chen
  */
 public abstract class BasicRestClient {
- 
-//<editor-fold defaultstate="collapsed" desc="一些共用的底層">
-    //<editor-fold defaultstate="collapsed" desc="doGet">
+
+//    protected <RESULT> RESULT obtainResultByGet(WebTarget target, MediaType[] acceptMediaTypes, String bearerToken, List<String> cookies) {
+//        Response response = this.doGet(target, acceptMediaTypes, bearerToken, cookies);
+//        Integer statusCode = response.getStatus();
+//        if (statusCode / 100 == 2) {
+//            String result = response.readEntity(String.class);
+//            response.close();
+//            client.close();
+//            return result;
+//        } else {
+//            WebServiceResponseException ex = WebServiceResponseException.Factory.create(target, response);
+//            response.close();
+//            client.close();
+//            throw ex;
+//        }
+//    }
+
+//<editor-fold defaultstate="collapsed" desc="共用的底層，doGet() 系列">
+    // [FIXME202412181117] doGet(WebTarget target, MediaType acceptMediaType) 這種要不要用 Varargs(doGet(WebTarget target, MediaType acceptMediaType))    
     protected Response doGet(WebTarget target, MediaType acceptMediaType) {
         MediaType[] acceptMediaTypes = {acceptMediaType};
         return this.doGet(target, acceptMediaTypes, null, null);
@@ -67,9 +83,9 @@ public abstract class BasicRestClient {
             throw resultEx;
         }
     }
-    //</editor-fold>
+//</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="doPut()">    
+//<editor-fold defaultstate="collapsed" desc="共用的底層，doPut() 系列">
     protected <T> Response doPut(WebTarget target, MediaType acceptMediaType, MediaType requestMediaType, T entity) {
         MediaType[] acceptMediaTypes = {acceptMediaType};
         return this.doPut(target, acceptMediaTypes, requestMediaType, null, entity);
@@ -112,27 +128,25 @@ public abstract class BasicRestClient {
             throw resultEx;
         }
     }
-    //</editor-fold>
+//</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="doPost()">    
-    
+//<editor-fold defaultstate="collapsed" desc="共用的底層，doPost() 系列">
 //    protected <T> Response doPostMultiForm(WebTarget target, MediaType[] acceptMediaTypes, List<String> cookies, String bearerToken, MultipartBody  form) {
 //        return this.doPost(target, acceptMediaTypes, MediaType.MULTIPART_FORM_DATA, bearerToken, cookies);        
 //    }
-    
     protected <T> Response doPostMultiPartForm(WebTarget target, MediaType acceptMediaType, MultiPart multiPart) {
         return this.doPost(target, acceptMediaType, null, null, multiPart);
     }
-    
+
     protected <T> Response doPostMultiPartForm(WebTarget target, MediaType acceptMediaType, String bearerToken, List<String> cookies, MultiPart multiPart) {
         MediaType[] acceptMediaTypes = {acceptMediaType};
         return this.doPost(target, acceptMediaTypes, acceptMediaType, bearerToken, cookies, multiPart);
     }
-    
+
     protected <T> Response doPostMultiPartForm(WebTarget target, MediaType[] acceptMediaTypes, String bearerToken, List<String> cookies, MultiPart multiPart) {
         return this.doPost(target, acceptMediaTypes, MediaType.MULTIPART_FORM_DATA_TYPE, bearerToken, cookies, multiPart);
     }
-        
+
     protected <T> Response doPostForm(WebTarget target, MediaType acceptMediaType, Form form) {
         MediaType[] acceptMediaTypes = {acceptMediaType};
         return this.doPostForm(target, acceptMediaTypes, null, null, form);
@@ -146,7 +160,7 @@ public abstract class BasicRestClient {
     protected <T> Response doPostForm(WebTarget target, MediaType[] acceptMediaTypes, String bearerToken, List<String> cookies, Form form) {
         return this.doPost(target, acceptMediaTypes, MediaType.APPLICATION_FORM_URLENCODED_TYPE, bearerToken, cookies, form);
     }
-    
+
     protected <T> Response doPost(WebTarget target, MediaType acceptMediaType, MediaType requestMediaType, T entity) {
         MediaType[] acceptMediaTypes = {acceptMediaType};
         return this.doPost(target, acceptMediaTypes, requestMediaType, null, entity);
@@ -232,9 +246,9 @@ public abstract class BasicRestClient {
         }
     }
      */
-    //</editor-fold>
+//</editor-fold>
     
-    //<editor-fold defaultstate="collapsed" desc="doDelete()">    
+//<editor-fold defaultstate="collapsed" desc="共用的底層，doDelete() 系列">    
     protected <T> Response doDelete(WebTarget target, MediaType acceptMediaType, MediaType requestMediaType/*, T entity*/) {
         MediaType[] acceptMediaTypes = {acceptMediaType};
         return this.doDelete(target, acceptMediaTypes, requestMediaType, null/*, entity*/);
@@ -278,12 +292,9 @@ public abstract class BasicRestClient {
             throw resultEx;
         }
     }
-    //</editor-fold>
+//</editor-fold>
 
-//    public Client newClientInstance(String url) {
-//        return RestClientFactory.configureClient(url);
-//    }
     public Client obtainNewClientInstance(String url) {
         return RestClientFactory.configureClient(url);
-    }    
+    }
 }

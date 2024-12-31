@@ -5,7 +5,9 @@
  */
 package tw.dev.tomoaki.util.web;
 
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import tw.dev.tomoaki.util.web.request.ProxyRequestHelper;
 
 /**
  *
@@ -14,14 +16,17 @@ import javax.servlet.http.HttpServletRequest;
 public class UrlProvider {
 
     public static String[] urlHeaderList = {"https://", "http://"};
-    
+
     private HttpServletRequest initRequest;
     private String url = "";
     private String protocol = "";
     private String hostName = "";  //domain name，即該server的名稱
-    private Integer port = 80;
+    private Integer port = null; // 80;
     private String contextPath = "";
     private String pathInfo = "";
+    
+    private List<String> hostHeaderNames;
+    private List<String> portHeaderNames;
 
     protected UrlProvider(HttpServletRequest request) {
         this.initRequest = request;
@@ -30,42 +35,38 @@ public class UrlProvider {
     public static class Factory {
 
         public static UrlProvider create(HttpServletRequest initRequest) {
+            return Factory.create(initRequest, false);
+        }
+
+        public static UrlProvider create(HttpServletRequest initRequest, Boolean isUnderProxy) {
             UrlProvider urlProvider = new UrlProvider(initRequest);
-            urlProvider.doParseRequestInfo();
+            urlProvider.doParseRequestInfo(isUnderProxy);
             return urlProvider;
         }
+        
+        
     }
 
-    protected void doParseRequestInfo() {
+//<editor-fold defaultstate="collapsed" desc="內部 Methods - 設定、初始化變數 Methods">
+    protected void doParseRequestInfo(Boolean isUnderProxy) {
+        /*
         this.protocol = initRequest.getScheme();
         this.hostName = initRequest.getServerName();
-        this.port = initRequest.getServerPort();
+        this.port = isUnderProxy ? ProxyRequestHelper.obtainServerPort(initRequest) : initRequest.getServerPort();
+        if (initRequest.getContextPath() != null) {
+            this.contextPath = initRequest.getContextPath().replaceAll("/", "");
+        } */
+        this.hostName = initRequest.getServerName();
+        this.port = this.obtainPort(isUnderProxy);
+        this.protocol = this.obtainProtocol(isUnderProxy);
         if (initRequest.getContextPath() != null) {
             this.contextPath = initRequest.getContextPath().replaceAll("/", "");
         }
+        //fffffffff        
     }
+//</editor-fold>    
 
-
-    public String obtainSystemRootPath() {
-        String rootPath = "";
-        rootPath += this.protocol + "://";
-        rootPath += this.hostName;
-        if (this.port != 80 && this.port != 443) {
-            rootPath += ":" + this.port + "/";
-        } else {
-            rootPath += "/";
-        }
-
-        if (!"".equals(this.contextPath)) {
-            rootPath += this.contextPath + "/";
-        }
-        return rootPath;
-    }
-
-//    public String getURL() {
-//        return null;
-//    }
-    
+//<editor-fold defaultstate="collapsed" desc="外部可以呼叫的 Methods">
     public String appendUrl(String tempPathInfo) {
         String theURL = this.obtainSystemRootPath();
         if (tempPathInfo.charAt(0) == '/') {
@@ -83,9 +84,15 @@ public class UrlProvider {
         appender.append(this.obtainSystemRootPath());
         return appender;
     }
-    
 
-//<editor-fold defaultstate="collapsed" desc="其他輔助method">
+    @Override
+    public String toString() {
+        String msgFmt = "%s[protocol= %s, hostName= %s, port= %s, contextPath= %s]";
+        return String.format(msgFmt, getClass().getName(), protocol, hostName, port, contextPath);
+    }
+//</editor-fold>   
+
+//<editor-fold defaultstate="collapsed" desc="其他輔助 Methods">
     public static String createConnectableUrl(String oriUrl) {
         String connectAbleUrl = oriUrl;
         if (checkContainsUrlHeader(oriUrl) == false) {
@@ -101,7 +108,58 @@ public class UrlProvider {
             }
         }
         return false;
-    }    
+    }
+//</editor-fold>   
+
+//<editor-fold defaultstate="collapsed" desc="內部 Methods - 產生資料用">
+    protected /*public*/ String obtainSystemRootPath() {
+        String rootPath = "";
+        rootPath += this.protocol + "://";
+        rootPath += this.hostName;
+        if (this.port != 80 && this.port != 443) {
+            rootPath += ":" + this.port + "/";
+        } else {
+            rootPath += "/";
+        }
+
+        if (!"".equals(this.contextPath)) {
+            rootPath += this.contextPath + "/";
+        }
+        return rootPath;
+    }
+
+    protected Integer obtainPort(Boolean isUnderProxy) {
+        return isUnderProxy ? ProxyRequestHelper.obtainServerPort(initRequest) : initRequest.getServerPort();
+    }
+
+    protected String obtainProtocol(Boolean isUnderProxy) {
+        if (isUnderProxy) {
+            String tempProtocol = this.obtainProtocolWithPort();
+            if (tempProtocol != null) {
+                return tempProtocol;
+            }
+        }        
+        return initRequest.getScheme();
+    }
+
+    protected String obtainProtocolWithPort() {
+        if (port == null) {
+            return null;
+        }
+
+        switch (port) {
+            case 80: {
+                return "http";
+            }
+            case 443: {
+                return "https";
+            }
+            default: {
+                return null;
+            }
+        }
+    }
 //</editor-fold>
 
+    
 }
