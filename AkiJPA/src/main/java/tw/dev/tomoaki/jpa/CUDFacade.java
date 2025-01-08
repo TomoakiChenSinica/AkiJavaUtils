@@ -19,11 +19,11 @@ package tw.dev.tomoaki.jpa;
  *
  * @author tomoaki
  */
-public interface CUDFacade {
-    
-    public void removeByEquals(String entityPropName, Object value);
-    
-    public void removeByLessThan(String entityPropName, Object value);    
-    
-    public void removeByLessThanOrEqual(String entityPropName, Object value);    
+public interface CUDFacade<T> {
+
+    public <C extends Comparable> int removeByEquals(String entityPropName, C comparedValue);
+
+    public <C extends Comparable> int removeByLessThan(String entityPropName, C comparedValue);
+
+    public <C extends Comparable> int removeByLessThanOrEqual(String entityPropName, C comparedValue);
 }
