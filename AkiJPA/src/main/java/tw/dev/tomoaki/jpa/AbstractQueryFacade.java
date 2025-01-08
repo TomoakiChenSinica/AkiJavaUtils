@@ -290,6 +290,7 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
     }
 
 //</editor-fold>
+
 //<editor-fold defaultstate="collapsed" desc="findByAndEqual系列">
     /*
     https://stackoverflow.com/questions/39741718/java-lang-illegalargumentexception-the-attribute-state-id-is-not-present-in-t 
@@ -620,7 +621,31 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
         return this.findByOr(expressionList, orderList);
     }
 //</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="findByGreaterThan 系列">    
+    @Override
+    public <C extends Comparable> List<T> findByLessThanOrEqualsTo(String entityPropName, C comparedValue, String... orderEntityPropNames) {
+        return this.findByLessThanOrEqualsTo(entityPropName, comparedValue, Arrays.asList(orderEntityPropNames));
+    }
+    
+    @Override
+    public <C extends Comparable> List<T> findByLessThanOrEqualsTo(String entityPropName, C comparedValue, List<String> orderEntityPropNameList) {
+        EntityManager em = this.getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
+        this.tryEvictAllCache();//(em);      
+        Root<T> root = cq.from(entityClass);
 
+        orderEntityPropNameList = (ListValidator.isListExist(orderEntityPropNameList)) ? orderEntityPropNameList : Arrays.asList(entityPropName);
+
+        cq = cq.where(ExpressionHelper.createLessThanOrEqualToExpression(root, cb, entityPropName, comparedValue));
+        cq = cq.orderBy(OrderHelper.createAscOrderList(root, cb, orderEntityPropNameList));
+
+        Query query = em.createQuery(cq);
+        return query.getResultList();        
+    }    
+//</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="核心(?)，可以給無限(?)的查詢條件及排序條件">
     protected List<T> findByAnd(List<Expression> expressionList, List<Order> orderList) {
         EntityManager em = this.getEntityManager();

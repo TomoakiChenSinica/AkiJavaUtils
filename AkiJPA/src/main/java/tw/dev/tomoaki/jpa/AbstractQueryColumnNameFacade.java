@@ -24,6 +24,7 @@ import tw.dev.tomoaki.util.commondatavalidator.ListValidator;
  * @author tomoaki
  * @deprecated 可能是舊的
  */
+@Deprecated
 public abstract class AbstractQueryColumnNameFacade<T> {
 
 //    public static Boolean EVICT_CACHE = Boolean.TRUE;

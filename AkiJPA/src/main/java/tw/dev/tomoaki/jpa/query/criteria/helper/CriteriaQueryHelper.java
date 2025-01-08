@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tw.dev.tomoaki.jpa.query.criteria;
+package tw.dev.tomoaki.jpa.query.criteria.helper;
 
 import java.time.LocalDateTime;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -51,11 +51,13 @@ public class CriteriaQueryHelper {
     }
      */
     
+    
+    /* [FIMXE202501081557] 先搬到 ExpressionHelper，改為 static， createAfterDateTimeExpression、createBeforeDateTimeExpression
     public <T> Expression obtainAfter(CriteriaBuilder cb, Path<LocalDateTime> entityProp, LocalDateTime startDateTime) {
         return cb.greaterThanOrEqualTo(entityProp, startDateTime);
     }
     
     public <T> Expression obtainBefore(CriteriaBuilder cb, Path<LocalDateTime> entityProp, LocalDateTime endDateTime) {
         return cb.lessThanOrEqualTo(entityProp, endDateTime);
-    }    
+    } */
 }

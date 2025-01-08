@@ -186,6 +186,12 @@ public interface QueryFacade<T> {
     public List<T> findByNotMatch(String entityPropName, String pattern, List<String> orderEntityPropNameList);
 //</editor-fold>
     
+//<editor-fold defaultstate="collapsed" desc="單一條件查詢 - 比較數值大小">
+    public <C extends Comparable> List<T> findByLessThanOrEqualsTo(String entityPropName, C comparedValue, String... orderEntityPropNames);
+    
+    public <C extends Comparable> List<T> findByLessThanOrEqualsTo(String entityPropName, C comparedValue, List<String> orderEntityPropNameList);
+//</editor-fold>    
+    
 //<editor-fold defaultstate="collapsed" desc="findByAndEqual系列">    
     public List<T> findByAndEquals(List<String> entityPropNameList, List<Object> valueList);
 
@@ -312,9 +318,9 @@ public interface QueryFacade<T> {
 
 //<editor-fold defaultstate="collapsed" desc="getByAndEquals 系列">
     public T getByAndEquals(List<String> columnNameList, List<Object> columnValueList);
-//</editor-fold>        
+//</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="getByOrEquals 系列">
     public T getByOrEquals(List<String> columnNameList, List<Object> columnValueList);
-//</editor-fold>
+//</editor-fold>   
 }
