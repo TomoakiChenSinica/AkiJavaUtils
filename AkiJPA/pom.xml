@@ -6,7 +6,7 @@
     <version>2.8.0-SNAPHOST</version>
     <description>
         2.7.1 refresh 改成回傳值
-        2.8.0 對多筆資料的 CUD 進行一些支援
+        2.8.0 對多筆資料的 CUD 進行一些支援，加上 Commit、Rollback 等支援
     </description>
     <artifactId>AkiJPA</artifactId>
     <packaging>jar</packaging>

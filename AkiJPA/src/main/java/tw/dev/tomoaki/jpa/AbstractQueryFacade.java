@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -19,6 +20,7 @@ import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.transaction.UserTransaction;
 import tw.dev.tomoaki.jpa.exception.JPAFacadeException;
 import tw.dev.tomoaki.jpa.helper.JPAEntityHelper;
 import tw.dev.tomoaki.jpa.helper.JPAFacadeHelper;
@@ -42,6 +44,9 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
 
     protected Class<T> entityClass;
 
+    @Resource
+    private UserTransaction jtaTransaction;
+    
     protected abstract EntityManager getEntityManager();
 
     public AbstractQueryFacade(Class<T> entityClass) {
@@ -49,7 +54,7 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
     }
 
 
-
+//<editor-fold defaultstate="collapsed" desc="最底層，也對應到 Postgres 一些底層">
     public T manage(T entity) {
         return this.isManaged(entity) ? entity : this.merge(entity);
     }
@@ -74,7 +79,39 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
      */
     public void flush() {
         this.getEntityManager().flush();
+    }    
+    
+    // -------------------------------------------------------------------------
+    
+    public void commit() {
+        if(jtaTransaction != null) {
+            try {
+                jtaTransaction.commit();
+            } catch(Exception ex) {
+                throw new JPAFacadeException(ex);
+            }
+        } else {
+            this.getEntityManager().getTransaction().commit();
+        }
     }
+
+    
+    /**
+     * 最終會觸發 DB 本身的 Rollback 機制
+     */
+    public void rollback() {
+        if(jtaTransaction != null) {
+            try {
+                jtaTransaction.rollback();
+            } catch(Exception ex) {
+                throw new JPAFacadeException(ex);
+            }
+        } else {
+            this.getEntityManager().getTransaction().rollback();            
+        }
+    }
+//</editor-fold>
+
 
     /**
      * @param entity 要刷新的原資料庫映射的 enttiy  
