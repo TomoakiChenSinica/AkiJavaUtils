@@ -44,14 +44,21 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
 
     protected Class<T> entityClass;
 
-    @Resource
-    private UserTransaction jtaTransaction;
-    
-    protected abstract EntityManager getEntityManager();
+//    @Resource(lookup="UserTransaction")
+//    private UserTransaction jtaTransaction;   
 
     public AbstractQueryFacade(Class<T> entityClass) {
         this.entityClass = entityClass;
+    }    
+    
+//<editor-fold defaultstate="collapsed" desc="取得資源(?)的 Methods">
+    protected abstract EntityManager getEntityManager();
+
+    protected UserTransaction getUserTransaction() {
+        return null;
     }
+//</editor-fold>
+    
 
 
 //<editor-fold defaultstate="collapsed" desc="最底層，也對應到 Postgres 一些底層">
@@ -84,6 +91,7 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
     // -------------------------------------------------------------------------
     
     public void commit() {
+        UserTransaction jtaTransaction = getUserTransaction();
         if(jtaTransaction != null) {
             try {
                 jtaTransaction.commit();
@@ -100,6 +108,7 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
      * 最終會觸發 DB 本身的 Rollback 機制
      */
     public void rollback() {
+        UserTransaction jtaTransaction = getUserTransaction();        
         if(jtaTransaction != null) {
             try {
                 jtaTransaction.rollback();
@@ -111,7 +120,6 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
         }
     }
 //</editor-fold>
-
 
     /**
      * @param entity 要刷新的原資料庫映射的 enttiy  
@@ -204,6 +212,25 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
         Query query = this.getEntityManager().createQuery(cq);
         return query.getResultList();
     }
+    
+    /**
+     *
+     * @param entityPropName 請注意是要使用「(Table所對應的) Entity 之 (Table Column所對應的)
+     * Property名稱 」
+     * @return 查詢結果
+     */
+    @Override
+    public List<T> findAllDescOrdered(String entityPropName) {
+        CriteriaBuilder cb = this.getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<T> cq = cb.createQuery(this.entityClass);
+        Root<T> root = cq.from(entityClass);
+
+        cq.orderBy(OrderHelper.createDescOrder(root, cb, entityPropName));
+
+        Query query = this.getEntityManager().createQuery(cq);
+        return query.getResultList();
+    }    
+    
 
     @Override
     public List<T> findRange(int[] range) {

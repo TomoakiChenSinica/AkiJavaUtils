@@ -41,7 +41,9 @@ public interface QueryFacade<T> {
     
     public List<T> findAllAscOrdered(String... entityPropNames); //有點疑惑是否要同時有
     
-    public List<T> findAllAscOrdered(List<String> entityPropNameList);    
+    public List<T> findAllAscOrdered(List<String> entityPropNameList);
+    
+    public List<T> findAllDescOrdered(String entityPropName);
 //</editor-fold>
     
     default public T findSelf(T entity) throws IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {

@@ -15,6 +15,8 @@
  */
 package tw.dev.tomoaki.jpa;
 
+import java.util.List;
+
 /**
  *
  * @author tomoaki
@@ -26,4 +28,10 @@ public interface CUDFacade<T> {
     public <C extends Comparable> int removeByLessThan(String entityPropName, C comparedValue);
 
     public <C extends Comparable> int removeByLessThanOrEqual(String entityPropName, C comparedValue);
+    
+//    public <C extends Comparable> List<T> removeByEquals(String entityPropName, C comparedValue);
+//
+//    public <C extends Comparable> List<T> removeByLessThan(String entityPropName, C comparedValue);
+//
+//    public <C extends Comparable> List<T> removeByLessThanOrEqual(String entityPropName, C comparedValue);    
 }

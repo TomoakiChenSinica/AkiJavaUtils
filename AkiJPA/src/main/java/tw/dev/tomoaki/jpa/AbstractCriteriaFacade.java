@@ -4,6 +4,7 @@
  */
 package tw.dev.tomoaki.jpa;
 
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
@@ -27,19 +28,31 @@ public abstract class AbstractCriteriaFacade<T> extends AbstractFacade<T> implem
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaDelete<T> cq = cb.createCriteriaDelete(entityClass);
         Root<T> root = cq.from(entityClass);
-
+        
         cq.where(ExpressionHelper.createLessThanOrEqualToExpression(root, cb, entityPropName, comparedValue));
         return em.createQuery(cq).executeUpdate();
     }
 
     @Override
     public <C extends Comparable> int removeByEquals(String entityPropName, C comparedValue) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        EntityManager em = this.getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaDelete<T> cq = cb.createCriteriaDelete(entityClass);
+        Root<T> root = cq.from(entityClass);
+
+        cq.where(ExpressionHelper.createEqualExpression(root, cb, entityPropName, comparedValue));
+        return em.createQuery(cq).executeUpdate();
     }
 
     @Override
     public <C extends Comparable> int removeByLessThan(String entityPropName, C comparedValue) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        EntityManager em = this.getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaDelete<T> cq = cb.createCriteriaDelete(entityClass);
+        Root<T> root = cq.from(entityClass);
+
+        cq.where(ExpressionHelper.createLessThanExpression(root, cb, entityPropName, comparedValue));
+        return em.createQuery(cq).executeUpdate();        
     }
 
 }
