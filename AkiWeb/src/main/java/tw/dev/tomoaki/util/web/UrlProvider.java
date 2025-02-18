@@ -78,6 +78,10 @@ public class UrlProvider {
         //theURL += request.getRequestURI();
         return theURL;
     }
+    
+    public String obtainRootUrl() {
+        return this.obtainSystemRootPath();
+    }
 
     public UrlAppender newUrlAppender() {
         UrlAppender appender = UrlAppender.Factory.create();

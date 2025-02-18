@@ -20,6 +20,7 @@ public class UrlAppenderMain {
         // TODO code application logic here
         test1();
         test2();
+        test3();
     }
 
     private static void test1() {
@@ -37,6 +38,7 @@ public class UrlAppenderMain {
 
     private static void test2() {
         UrlAppender appender = UrlAppender.Factory.create("https://eform.iis.sincia.edu.tw/");
+        // UrlAppender appender = UrlAppender.Factory.create("https://eform.iis.sincia.edu.tw");
         String url = appender.append("")
                 .append("/test")
                 .append("\\123")
@@ -46,4 +48,17 @@ public class UrlAppenderMain {
         String url2 = appender.buildUrl();
         System.out.println("url2= " + url2);
     }
+    
+    private static void test3() {
+        UrlAppender appender = UrlAppender.Factory.create("https://eform.iis.sincia.edu.tw/123");
+        String url = appender.append("")
+                .append("/test/456")
+                .append("\\789")
+                .buildUrl();
+        System.out.println("url= " + url);
+
+        String url2 = appender.buildUrl();
+        System.out.println("url2= " + url2);
+    }    
+    
 }

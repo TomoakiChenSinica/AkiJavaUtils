@@ -12,10 +12,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import tw.dev.tomoaki.util.commondatavalidator.StringValidator;
 
 /**
  *
  * @author Tomoaki Chen
+ * 
+ * 並沒有以很正規(?)的角度看「哪一段才叫做 PATH」
+ * https://zh.wikipedia.org/zh-tw/%E7%BB%9F%E4%B8%80%E8%B5%84%E6%BA%90%E6%A0%87%E8%AF%86%E7%AC%A6
  */
 public class UrlAppender {
 
@@ -61,37 +65,43 @@ public class UrlAppender {
     }
 //</editor-fold>
     
-//<editor-fold defaultstate="collapsed" desc="調整設定">
-    public void turnOnTrimHeadSlash() {
+//<editor-fold defaultstate="collapsed" desc="外部呼叫以調整設定的 Methods">
+    public UrlAppender turnOnTrimHeadSlash() {
         this.trimHeadSlash = true;
+        return this;
     }
     
-    public void turnOffTrimHeadSlash() {
+    public UrlAppender turnOffTrimHeadSlash() {
         this.trimHeadSlash = true;
+        return this;
     }
     
-    public void turnOnTrimTailSlash() {
+    public UrlAppender turnOnTrimTailSlash() {
         this.trimTailSlash = true;
+        return this;
     }
     
-    public void turnOffTrimTailSlash() {
+    public UrlAppender turnOffTrimTailSlash() {
         this.trimTailSlash = true;
+        return this;
     }        
 //</editor-fold>
             
-//<editor-fold defaultstate="collapsed" desc="給外部的實際 Methods">
+//<editor-fold defaultstate="collapsed" desc="外部呼叫的主要 Methods">
     public UrlAppender append(String path) {
-        if(path == null) {
+        if(StringValidator.isValueTrimNotExist(path)) { // if(path == null) {
             return this;
         }
         
-        String resultPath = path;
-        resultPath = this.trim(path);
-        resultPath = this.trimSlash(resultPath);       
+        /* 2025-01-02 tomoaki: 這裡改成存最原始類型
+        // String resultPath = path;
+        String resultPath = this.trim(path);
+        resultPath = this.trimSlash(resultPath);
 
         if(resultPath.isEmpty() == false) {
             this.urlPathList.add(resultPath);
-        }
+        }*/
+        this.urlPathList.add(path);
         return this;
     }
     
@@ -99,18 +109,14 @@ public class UrlAppender {
         queryParamMap.put(paramName, paramValue);
         return this;
     }
-    
+        
     public String buildUrl() {
         String url = "";
-        Integer pathCounter = 0;
-        List<String> allUrlPathList = Stream.concat(this.staticUrlHeaderList.stream(), this.urlPathList.stream()).collect(Collectors.toList());
-        for(String path : allUrlPathList) {
-            pathCounter++;
-            if(pathCounter >= 2) {
-                url += "/";
-            }
-            url += path;
-        }
+        Stream<String> allPathsStream = Stream.concat(this.staticUrlHeaderList.stream(), this.urlPathList.stream());
+        Stream<String> processedPathsStream = allPathsStream.filter(StringValidator::isValueTrimExist).map(this::trim).map(this::trimSlash);
+        // processedPathsStream.forEach(System.out::println); // 執行完就會結束
+        url += processedPathsStream.collect(Collectors.joining("/"));
+               
         
         if(!this.queryParamMap.isEmpty()) {
             url += "?";
@@ -124,7 +130,7 @@ public class UrlAppender {
                 if(paramValue != null) {
                     url += paramName + "=" + paramValue;
                 } else {
-                     url += paramName + "=";               
+                    url += paramName + "=";               
                 }
             }
         }
@@ -132,9 +138,17 @@ public class UrlAppender {
         this.initUrlPathList();
         this.initQueryParamMap();
         return url;
-    }    
+    }
+    
+    
+    @Override
+    public String toString() {
+        String msgFmt = "%s[staticUrlHeaderList= %s]";
+        return String.format(msgFmt, this.staticUrlHeaderList);
+    }
 //</editor-fold>
         
+//<editor-fold defaultstate="collapsed" desc="內部輔助 Methods，對 path 做一些處理、修飾">
     protected String trim(String path) {
         return path.trim();
     }
@@ -143,5 +157,11 @@ public class UrlAppender {
         if(this.trimHeadSlash) path = path.replaceAll("^[\\\\|/]", "");
         if(this.trimTailSlash) path = path.replaceAll("[\\\\|/]$", "");
         return path;
-    } 
+    }
+    
+    protected String compactSlash(String path) {
+       path = path.replaceAll("[^:]/{2,}", "/");
+       return path;
+    }    
+//</editor-fold>    
 }
