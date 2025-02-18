@@ -4,6 +4,7 @@
  */
 package tw.dev.tomoaki.datautils;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
@@ -141,6 +142,23 @@ public class DataCollectionUtils {
             return dataStream1;
         }
         return Stream.concat(dataStream1, dataStream2);
+    }    
+    
+    public static <T> List<T> appendAll(T data, List<T> dataList) {
+        if(data == null && dataList == null) {
+            return null;
+        }
+        
+        if(dataList == null) {
+            return Arrays.asList(data);
+        }
+        
+        if(data == null) {
+            // 印出資訊?
+            return dataList;
+        }
+        
+        return appendAll(Stream.of(data), dataList.stream()).collect(Collectors.toList());
     }    
     
     // --------------------------------------------------------------------------------------------------------
