@@ -8,6 +8,7 @@ package tw.dev.tomoaki.util.commondatavalidator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -19,6 +20,9 @@ public class ListValidator {
     private class DataExistMap {
     }
 
+    /**
+     * 清單是否存在，即清單本身並非 null，且不為空清單 
+     */
     public static Boolean isListExist(List theList) {
         return theList != null && !theList.isEmpty();
     }
@@ -26,6 +30,28 @@ public class ListValidator {
     public static Boolean isListNotExist(List theList) {
         return theList == null || theList.isEmpty();
     }
+    
+    // --------------------------------------------------------
+    
+    public static Boolean isStrictkyExist(List<?> theList) {
+        if(theList == null) {
+            return false;
+        }
+        
+        List<?> tempList = theList.stream().filter(Objects::nonNull).collect(Collectors.toList());
+        return isListExist(tempList);
+    }
+    
+    public static Boolean isStrictkyNotExist(List<?> theList) {
+        if(theList == null) {
+            return true;
+        }
+
+        List<?> tempList = theList.stream().filter(Objects::nonNull).collect(Collectors.toList());
+        return isListNotExist(tempList);
+    }    
+    
+    // --------------------------------------------------------
 
     /**
      * 判斷兩個List 是否完全相等，即資料相同，且資料順序相同。

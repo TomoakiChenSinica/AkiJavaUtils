@@ -7,7 +7,8 @@ package tw.dev.tomoaki.taiwandatavalidtor;
 
 import java.util.HashMap;
 import java.util.Map;
-import tw.dev.tomoaki.util.stringutils.AkiStringUtil;
+import tw.dev.tomoaki.util.string.AkiStringUtil;
+// import tw.dev.tomoaki.util.stringutils.AkiStringUtil;
 
 /**
  *
