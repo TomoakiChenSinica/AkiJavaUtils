@@ -55,7 +55,7 @@ public class ExpressionHelper {
              Expression expression = cb.isNull(root.get(entityPropName));
              return expression;
         }
-        return cb.equal(root.get(entityPropName), value);*/
+        return cb.equal(root.get(entityPropName), value);*/ 
         Path entityProp = root.get(entityPropName);
         return ExpressionHelper.createEqualExpression(root, cb, entityProp, value, valueNullAble);
     }
