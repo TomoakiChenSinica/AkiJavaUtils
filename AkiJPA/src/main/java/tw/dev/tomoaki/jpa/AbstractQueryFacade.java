@@ -543,7 +543,7 @@ public abstract class AbstractQueryFacade<T> implements QueryFacade<T> {
 
         orderEntityPropNameList = (ListValidator.isListExist(orderEntityPropNameList)) ? orderEntityPropNameList : Arrays.asList(entityPropName);
 
-        cq = cq.where(root.get(entityPropName).in(valueList));
+        cq = cq.where(root.get(entityPropName).in(valueList)); // [FIXME202503131622] 要不要用 ExpressionHelper.createInExpression()
         cq = cq.orderBy(OrderHelper.createAscOrderList(root, cb, orderEntityPropNameList));
 
         Query query = em.createQuery(cq);

@@ -7,6 +7,7 @@ package tw.dev.tomoaki.datautils;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -187,5 +188,23 @@ public class DataCollectionUtils {
         DataExistMap<T> dataExist = DataExistMap.Factory.createOrdered(fromDataList);
         removingDataList.forEach(dataExist::remove);
         return dataExist.existList();
+    }
+    
+    // --------------------------------------------------------------------------------------------------------
+    
+    public static <T> List<T> preordering(List<T> dataList, T... needPreorderingDatas) {
+        return preordering(dataList, Arrays.asList(needPreorderingDatas));
+    }
+    
+    public static <T> List<T> preordering(List<T> dataList, List<T> needPreorderingDataList) {
+        DataExistMap<T> needPreorderingMap = DataExistMap.Factory.create(needPreorderingDataList);
+        Predicate<T> needPreordering = data -> needPreorderingMap.contains(data);
+        return preordering(dataList, needPreordering);
+    }
+    
+    public static <T> List<T> preordering(List<T> dataList, Predicate<T> needPreordering) {
+        Stream<T> preorderingDataStream = dataList.stream().filter(needPreordering);        
+        Stream<T> otherDataStream = dataList.stream().filter(needPreordering.negate()); //.filter(Predicate.not(needPreordering));
+        return Stream.concat(preorderingDataStream, otherDataStream).collect(Collectors.toList());
     }
 }

@@ -47,15 +47,6 @@ public class ExpressionHelper {
     }    
     
     public static Expression createEqualExpression(Root root, CriteriaBuilder cb, String entityPropName, Object value, Boolean valueNullAble) {
-        /*if(!valueNullAble && value == null) {
-            throw new IllegalArgumentException("value Is Null");
-        }
-        
-        if(value == null) {
-             Expression expression = cb.isNull(root.get(entityPropName));
-             return expression;
-        }
-        return cb.equal(root.get(entityPropName), value);*/ 
         Path entityProp = root.get(entityPropName);
         return ExpressionHelper.createEqualExpression(root, cb, entityProp, value, valueNullAble);
     }
@@ -104,7 +95,28 @@ public class ExpressionHelper {
              return expression;
         }
         return cb.notEqual(entityProp, value);
+    }
+    
+    // -------------------------------------------------------------------------------------------------------------------------------------------------------    
+
+    public static Expression createInExpression(Root root, CriteriaBuilder cb, String entityPropName, List<?> valueList) { // List<Object> valueList) {
+        if(valueList == null || valueList.isEmpty()) {
+            throw new IllegalArgumentException("valueList is null");
+        }
+        
+        return root.get(entityPropName).in(valueList);
+    }
+    
+    // -------------------------------------------------------------------------------------------------------------------------------------------------------    
+
+    public static Expression createNotInExpression(Root root, CriteriaBuilder cb, String entityPropName, List<?> valueList) { //, List<Object> valueList) {
+        if(valueList == null || valueList.isEmpty()) {
+            throw new IllegalArgumentException("valueList is null");
+        }
+        
+        return root.get(entityPropName).in(valueList).not();
     }    
+        
     
     // -------------------------------------------------------------------------------------------------------------------------------------------------------
            
@@ -203,14 +215,12 @@ public class ExpressionHelper {
     
     // -------------------------------------------------------------------------------------------------------------------------------------------------------
     
-    public static Expression createAfterDateTimeExpression(Root root, CriteriaBuilder cb, Path<LocalDateTime> entityProp, LocalDateTime startDateTime, Boolean valueNullAble) {
-        // return cb.greaterThanOrEqualTo(entityProp, startDateTime);
-        return ExpressionHelper.createGreaterThanOrEqualToExpression(root, cb, entityProp, startDateTime, valueNullAble);
+    public static Expression createAfterDateTimeExpression(Root root, CriteriaBuilder cb, Path<LocalDateTime> entityProp, LocalDateTime startDateTime, Boolean valueNullAble) {        
+        return ExpressionHelper.createGreaterThanOrEqualToExpression(root, cb, entityProp, startDateTime, valueNullAble); // return cb.greaterThanOrEqualTo(entityProp, startDateTime);
     }
     
-    public static Expression createBeforeDateTimeExpression(Root root, CriteriaBuilder cb, Path<LocalDateTime> entityProp, LocalDateTime endDateTime, Boolean valueNullAble) {
-        // return cb.lessThanOrEqualTo(entityProp, endDateTime);
-        return ExpressionHelper.createLessThanOrEqualToExpression(root, cb, entityProp, endDateTime, valueNullAble);
+    public static Expression createBeforeDateTimeExpression(Root root, CriteriaBuilder cb, Path<LocalDateTime> entityProp, LocalDateTime endDateTime, Boolean valueNullAble) {        
+        return ExpressionHelper.createLessThanOrEqualToExpression(root, cb, entityProp, endDateTime, valueNullAble); // return cb.lessThanOrEqualTo(entityProp, endDateTime);
     }    
     
     // -------------------------------------------------------------------------------------------------------------------------------------------------------    
@@ -249,8 +259,5 @@ public class ExpressionHelper {
     }
         
 //</editor-fold>   
-    
-//    public static <T>Predicate convert2Predicate(Expression expression) {
-//        
-//    }
+
 }

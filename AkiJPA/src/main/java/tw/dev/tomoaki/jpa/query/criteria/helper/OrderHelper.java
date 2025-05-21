@@ -20,7 +20,8 @@ public class OrderHelper {
 
     public static List<Order> createAscOrderList(Root root, CriteriaBuilder cb, List<String> entityPropNameList) {
         return entityPropNameList.stream()
-                .map(propName -> cb.asc(root.get(propName)))
+                // .map(propName -> cb.asc(root.get(propName)))
+                .map(propName -> createAscOrder(root, cb, propName))
                 .collect(Collectors.toList());
     }
 
