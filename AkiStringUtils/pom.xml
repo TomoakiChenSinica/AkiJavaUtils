@@ -39,9 +39,9 @@
     
     <repositories>
         <repository>
-            <id>ccs-packages</id>
+            <id>ccs-gitea</id>
             <name>CCS Packages</name>            
-            <url>http://192.168.107.166:8082/repository/ccs-packages/</url>
+            <url>https://ccs-git.iis.sinica.edu.tw/api/packages/IIS/maven</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>            
@@ -61,10 +61,16 @@
             <url>https://maven.pkg.github.com/TomoakiChenSinica/AkiJavaUtils</url>
         </repository>                
         -->
-        <snapshotRepository>
-            <id>ccs-packages</id>
+        <repository>
+            <id>ccs-gitea</id>
             <name>CCS Packages</name>
-            <url>http://192.168.111.101:8082/repository/ccs-packages</url>
+            <url>https://ccs-git.iis.sinica.edu.tw/api/packages/IIS/maven</url>
+        </repository>
+        
+        <snapshotRepository>
+            <id>ccs-gitea</id>
+            <name>CCS Packages</name>
+            <url>https://ccs-git.iis.sinica.edu.tw/api/packages/IIS/maven</url>
         </snapshotRepository>    
     </distributionManagement>
     

@@ -62,24 +62,17 @@
     </dependencies>
 
     <distributionManagement>
-        <!--
         <repository>
-            <id>github</id>
-            <name>GitHub OWNER Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/TomoakiChenSinica/AkiJavaUtils</url>
-        </repository>        
-        -->
-        <repository>
-            <id>ccs-packages</id>
+            <id>ccs-gitea</id>
             <name>CCS Packages</name>
-            <url>http://192.168.111.101:8082/repository/ccs-packages</url>
+            <url>https://ccs-git.iis.sinica.edu.tw/api/packages/IIS/maven</url>
         </repository>
         
         <snapshotRepository>
-            <id>ccs-packages</id>
+            <id>ccs-gitea</id>
             <name>CCS Packages</name>
-            <url>http://192.168.111.101:8082/repository/ccs-packages</url>
-        </snapshotRepository>          
+            <url>https://ccs-git.iis.sinica.edu.tw/api/packages/IIS/maven </url>
+        </snapshotRepository>        
     </distributionManagement>
     
     <licenses>        

@@ -2,12 +2,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>tw.dev.tomoaki</groupId>
-    <version>0.6.2-SNAPSHOT</version>
+    <version>0.6.3-SNAPSHOT</version>
     <artifactId>AkiDataUtils</artifactId>
     <packaging>jar</packaging>
     <description>
-        0.5.0: 
-            * DataCollectionUtils 新增 removeFrom()
+        * 0.5.0 ~ 0.6.2: 
+          * DataCollectionUtils 新增 removeFrom()
+          * appednAll(T, List)
+        * 0.6.3: 
+          * preordering()
     </description>
     <build>
         <plugins>
@@ -35,14 +38,8 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+    <!--
     <distributionManagement>
-        <!--        
-        <repository>
-            <id>github</id>
-            <name>GitHub OWNER Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/TomoakiChenSinica/AkiJavaUtils</url>
-        </repository>                
-        -->
         <repository>
             <id>ccs-packages</id>
             <name>CCS Packages</name>
@@ -54,7 +51,22 @@
             <url>http://192.168.111.101:8082/repository/ccs-packages</url>
         </snapshotRepository>                  
     </distributionManagement>
+    -->
     
+     <distributionManagement>
+        <repository>
+            <id>ccs-gitea</id>
+            <name>CCS Packages</name>
+            <url>https://ccs-git.iis.sinica.edu.tw/api/packages/IIS/maven</url>
+        </repository>
+        
+        <snapshotRepository>
+            <id>ccs-gitea</id>
+            <name>CCS Packages</name>
+            <url>https://ccs-git.iis.sinica.edu.tw/api/packages/IIS/maven </url>
+        </snapshotRepository>       
+    </distributionManagement>
+
     <licenses>        
         <license>
             <name>The Apache License, Version 2.0</name>

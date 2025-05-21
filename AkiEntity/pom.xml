@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>tw.dev.tomoaki</groupId>
     <artifactId>AkiEntity</artifactId>
-    <version>2.4.2-SNAPSHOT</version>
+    <version>2.4.5-SNAPSHOT</version>
     <packaging>jar</packaging>
     <build>
         <plugins>
@@ -33,15 +33,16 @@
     
     <distributionManagement>
         <repository>
-            <id>ccs-packages</id>
+            <id>ccs-gitea</id>
             <name>CCS Packages</name>
-            <url>http://192.168.111.101:8082/repository/ccs-packages</url>
-        </repository>        
+            <url>https://ccs-git.iis.sinica.edu.tw/api/packages/IIS/maven</url>
+        </repository>
+        
         <snapshotRepository>
-            <id>ccs-packages</id>
+            <id>ccs-gitea</id>
             <name>CCS Packages</name>
-            <url>http://192.168.111.101:8082/repository/ccs-packages</url>
-        </snapshotRepository>        
+            <url>https://ccs-git.iis.sinica.edu.tw/api/packages/IIS/maven </url>
+        </snapshotRepository> 
     </distributionManagement>  
     
     <licenses>        
