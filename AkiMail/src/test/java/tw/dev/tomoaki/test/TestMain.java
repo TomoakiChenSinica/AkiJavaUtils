@@ -26,6 +26,7 @@ public class TestMain {
         String strReceipts = "tomoaki.sinica@gmail.com , tomoaki.nccu@gmail.com";
         List<String> receipts = MailReceiptHelper.analyzeReceiptsByCommaSplit(strReceipts);
         File file = new File("C:\\Users\\tomokai\\Pictures\\素材\\喜多中指.gif");
+        // trySendPlainTextMessageWithMultipleReceivers(receipts);
         trySendPlainTextMessageWithMultipleReceivers(receipts);
     }
     

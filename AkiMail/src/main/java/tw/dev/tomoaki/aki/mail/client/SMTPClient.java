@@ -12,6 +12,8 @@ import javax.mail.MessagingException;
 import javax.mail.Transport;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import tw.dev.tomoaki.aki.mail.entity.SMTPTransport;
+import tw.dev.tomoaki.aki.mail.entity.SimpleSMTPTransport;
 import tw.dev.tomoaki.aki.mail.factory.MimeBodyMessageFactory;
 import tw.dev.tomoaki.aki.mail.factory.TextMessageFactory;
 import tw.dev.tomoaki.aki.mail.factory.MultiPartMessageFactory;
@@ -22,12 +24,16 @@ import tw.dev.tomoaki.aki.mail.factory.MultiPartMessageFactory;
  */
 public class SMTPClient {
 
-    private String hostName = "localhost";
-    private Integer port;
-    private Boolean needParseHtml = true;
-
     private static final String DEFAULT_HOST = "localhost";
     private static final Integer DEFAULT_PORT = 25;
+       
+    private String hostName;
+    private Integer port;
+    private Boolean needParseHtml = true;
+    
+    private SMTPTransport transport;
+
+    
 
     protected SMTPClient() {
     }
@@ -39,6 +45,7 @@ public class SMTPClient {
             client.hostName = DEFAULT_HOST;
             client.port = DEFAULT_PORT;
             client.doSetupMailProperty();
+            client.trySetupDefaultTransport();
             return client;
         }
         
@@ -48,6 +55,7 @@ public class SMTPClient {
             client.port = DEFAULT_PORT;
             client.needParseHtml = needParseHtml;
             client.doSetupMailProperty();
+            client.trySetupDefaultTransport();
             return client;
         }        
 
@@ -56,6 +64,7 @@ public class SMTPClient {
             client.hostName = hostName;
             client.port = DEFAULT_PORT;
             client.doSetupMailProperty();
+            client.trySetupDefaultTransport();
             return client;
         }
 
@@ -64,35 +73,55 @@ public class SMTPClient {
             client.hostName = hostName;
             client.port = port;
             client.doSetupMailProperty();
+            client.trySetupDefaultTransport();
             return client;
         }
+        
+        public static SMTPClient create(String hostName, Integer port, SMTPTransport transport) {
+            SMTPClient client = new SMTPClient();
+            client.hostName = hostName;
+            client.port = port;
+            client.transport = transport;
+            client.doSetupMailProperty();
+            client.trySetupDefaultTransport();
+            return client;
+        }        
     }
-
+    
+//<editor-fold defaultstate="collapsed" desc="設定、初始化類別變數 或 Java System Properties">
     private void doSetupMailProperty() {
         System.setProperty("mail.mime.splitlongparameters", "false");
     }
 
+    protected void trySetupDefaultTransport() {
+        if(this.transport == null) {
+            this.transport = SimpleSMTPTransport.Factory.create();
+        }
+    }
+//</editor-fold>
+
+
     public void sendPlainTextMessage(String fromAddr, String toAddr, String subject, String plainText) throws MessagingException {
         MimeMessage msg = TextMessageFactory.createPlainTextMsg(hostName, port, fromAddr, subject, plainText, toAddr);
-        Transport.send(msg);
+        this.transport.send(msg); // Transport.send(msg);
     }
 
     public void sendPlainTextMessage(String fromAddr, List<String> toAddr, String subject, String plainText) throws MessagingException {
         MimeMessage msg = TextMessageFactory.createPlainTextMsg(hostName, port, fromAddr, subject, plainText, toAddr);
-        Transport.send(msg);
+        this.transport.send(msg); // Transport.send(msg);
     }
 
     public void sendPlainTextMessage(String fromAddr, String toAddr, String subject, String plainText, File file) throws MessagingException, IOException {
         MultiPartMessageFactory multiPartMsgFactory = MultiPartMessageFactory.obtain(hostName, port, fromAddr);
         MimeMessage msg = multiPartMsgFactory.addReceiver(toAddr).setupSubject(subject).appendContent(plainText).addAttachment(file).produceMessage();
-        Transport.send(msg);
+        this.transport.send(msg); // Transport.send(msg);
     }
 
 
     public void sendPlainTextMessage(String fromAddr, String toAddr, String subject, String plainText, MimeBodyPart fileBodyPart) throws MessagingException, IOException {
         MimeBodyMessageFactory mimeBodyMessageFactory = MimeBodyMessageFactory.obtain(hostName, port, fromAddr);
         MimeMessage msg = mimeBodyMessageFactory.addReceiver(toAddr).setupSubject(subject).appendMimeBody(fileBodyPart).produceMessage();
-        Transport.send(msg);
+        this.transport.send(msg); // Transport.send(msg);
     }
 
     public void sendPlainTextMessage(String fromAddr, String toAddr, String subject, String plainText, List attachmentList) throws MessagingException, IOException {
@@ -113,14 +142,14 @@ public class SMTPClient {
                     msg = mimeBodyMessageFactory.produceMessage();
                 }
             }
-            Transport.send(msg);
+            this.transport.send(msg); // Transport.send(msg);
         }
     }
 
     public void sendPlainTextMessage(String fromAddr, List<String> toAddr, String subject, String plainText, File file) throws MessagingException, IOException {
         MultiPartMessageFactory multiPartMsgFactory = MultiPartMessageFactory.obtain(hostName, fromAddr);
         MimeMessage msg = multiPartMsgFactory.addAllReceiver(toAddr).setupSubject(subject).appendContent(plainText).addAttachment(file).produceMessage();
-        Transport.send(msg);
+        this.transport.send(msg); // Transport.send(msg);
     }
 
     public void sendPlainTextMessage(String fromAddr, List<String> toAddr, String subject, String plainText, List attachmentList) throws MessagingException, IOException {
@@ -141,7 +170,7 @@ public class SMTPClient {
                     msg = mimeBodyMessageFactory.produceMessage();
                 }
             }
-            Transport.send(msg);
+            this.transport.send(msg); // Transport.send(msg);
         }
     }
 
@@ -149,18 +178,18 @@ public class SMTPClient {
     
     public void sendHtmlMessage(String fromAddr, String toAddr, String subject, String htmlText) throws MessagingException {
         MimeMessage msg = TextMessageFactory.createHtmlTextMsg(hostName, port, fromAddr, subject, processHtmlMessage(htmlText), toAddr);
-        Transport.send(msg);
+        this.transport.send(msg); // Transport.send(msg);
     }
 
     public void sendHtmlMessage(String fromAddr, List<String> toAddr, String subject, String htmlText) throws MessagingException {
         MimeMessage msg = TextMessageFactory.createHtmlTextMsg(hostName, port, fromAddr, subject, processHtmlMessage(htmlText), toAddr);
-        Transport.send(msg);
+        this.transport.send(msg);//  Transport.send(msg);
     }
 
     public void sendHtmlMessage(String fromAddr, String toAddr, String subject, String htmlText, File file) throws MessagingException, IOException {
         MultiPartMessageFactory multiPartMsgFactory = MultiPartMessageFactory.obtain(hostName, port, fromAddr);
         MimeMessage msg = multiPartMsgFactory.addReceiver(toAddr).setupSubject(subject).appendContent(htmlText).addAttachment(file).produceMessage();
-        Transport.send(msg);
+        this.transport.send(msg); // Transport.send(msg);
     }
 
     public void sendHtmlMessage(String fromAddr, String toAddr, String subject, String htmlText, List attachmentList) throws MessagingException, IOException {
@@ -181,14 +210,14 @@ public class SMTPClient {
                     msg = mimeBodyMessageFactory.produceMessage();
                 }
             }
-            Transport.send(msg);
+            this.transport.send(msg); // Transport.send(msg);
         }
     }
 
     public void sendHtmlMessage(String fromAddr, List<String> toAddr, String subject, String htmlText, File file) throws MessagingException, IOException {
         MultiPartMessageFactory multiPartMsgFactory = MultiPartMessageFactory.obtain(hostName, port, fromAddr);
         MimeMessage msg = multiPartMsgFactory.addAllReceiver(toAddr).setupSubject(subject).appendContent(htmlText).addAttachment(file).produceMessage();
-        Transport.send(msg);
+        this.transport.send(msg); // Transport.send(msg);
     }
 
     public void sendHtmlMessage(String fromAddr, List<String> toAddr, String subject, String htmlText, List attachmentList) throws MessagingException, IOException {
@@ -209,7 +238,7 @@ public class SMTPClient {
                     msg = mimeBodyMessageFactory.produceMessage();
                 }
             }
-            Transport.send(msg);
+            this.transport.send(msg); // Transport.send(msg);
         }
     }
 
