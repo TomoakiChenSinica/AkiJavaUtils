@@ -54,10 +54,12 @@
         <module>AkiMail</module>
         <module>AkiRegularExpression</module>
         <module>AkiReflectionKit</module>
+        <module>AkiSecurity</module>
         <module>AkiSSH</module>
         <module>AkiStringUtils</module>
         <module>AkiWeb</module>
         <module>AkiDateTimeCloze</module>
+        <module>AkiJPAHistory</module>
     </modules>
     <!-- 
     不用特別加這個，直接
@@ -83,49 +85,17 @@
     </properties>
       
     <distributionManagement>
-        <!--
         <repository>
-            <id>corp1</id>
-                  <name>Corporate Repository</name>
-                  <url>scp://repo/maven2</url>
-                  <uniqueVersion>false</uniqueVersion>
-            <layout>default</layout>
-        </repository>
-        -->
-        <!--
-        <repository>
-            <id> maven-central-https</id>
-            <name> Maven Central Https</name>
-            <url> https://repo.maven.apache.org/maven2/</url>
-        </repository>
-        -->
-        <!--
-        <repository>
-            <id>github</id>
-            <name>GitHub OWNER Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/TomoakiChenSinica/AkiJavaUtils</url>
-        </repository>        
-        -->
-        <!--
-        <snapshotRepository>
-            <id>archiva-testing</id>
-            <name>Archiva Testing</name>
-            <url>http://localhost:9090/repository/testing/</url>
-        </snapshotRepository>
-        -->
-        <repository>
-            <id>ccs-packages</id>
+            <id>ccs-gitea</id>
             <name>CCS Packages</name>
-            <url>http://192.168.111.101:8082/repository/ccs-packages</url>
-       
-        </repository>          
+             <url>https://ccs-git.iis.sinica.edu.tw/api/packages/IIS/maven</url>
+        </repository>
         
         <snapshotRepository>
-            <id>ccs-packages</id>
+            <id>ccs-gitea</id>
             <name>CCS Packages</name>
-            <url>http://192.168.111.101:8082/repository/ccs-packages</url>
-        </snapshotRepository>
-        
+            <url>https://ccs-git.iis.sinica.edu.tw/api/packages/IIS/maven</url>
+        </snapshotRepository>        
     </distributionManagement>
 
     
