@@ -9,6 +9,7 @@
         <module>AkiDataMiner</module>
         <module>AkiDataTransfer</module>
         <module>AkiDataKeeper</module>
+        <module>AkiOAuthClient</module>
     </modules>
     <distributionManagement>
         <repository>
