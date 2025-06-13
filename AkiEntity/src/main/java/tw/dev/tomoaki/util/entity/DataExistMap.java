@@ -51,33 +51,31 @@ public class DataExistMap<T> implements Serializable {
     }
 //</editor-fold>
 
-    public static class Factory {
+    public static <T> DataExistMap<T> create(Collection<T> dataList) {
+        DataExistMap<T> dataExistMap = new DataExistMap(dataList);
+        return dataExistMap;
+    }
 
-        public static <T> DataExistMap<T> create(Collection<T> dataList) {
-            DataExistMap<T> dataExistMap = new DataExistMap(dataList);
-            return dataExistMap;
-        }
+    public static <T> DataExistMap<T> create(T... datas) {
+        T[] dataArr = datas;
+        return create(Arrays.asList(dataArr));
+    }
 
-        public static <T> DataExistMap<T> create(T... datas) {
-            T[] dataArr = datas;
-            return Factory.create(Arrays.asList(dataArr));
-        }
+    public static <T> DataExistMap<T> createOrdered() {
+        DataExistMap<T> dataExistMap = new DataExistMap(true);
+        return dataExistMap;
+    }
 
-        public static <T> DataExistMap<T> createOrdered() {
-            DataExistMap<T> dataExistMap = new DataExistMap(true);
-            return dataExistMap;
-        }
-
-        public static <T> DataExistMap<T> createOrdered(Collection<T> dataList) {
-            DataExistMap<T> dataExistMap = new DataExistMap(true, dataList);
-            return dataExistMap;
-        }
+    public static <T> DataExistMap<T> createOrdered(Collection<T> dataList) {
+        DataExistMap<T> dataExistMap = new DataExistMap(true, dataList);
+        return dataExistMap;
+    }
 
 //        因為外部其實只要 call addAll 就可以做到append 的事情，所以就先不加此methods了      
 //        public static <T> DataExistMap<T> append(DataExistMap<T> oriMap, T... data) {
 //        }
-    }
-
+    
+    
     public void add(T data) {
         dataExistMap.put(data, Boolean.TRUE);
     }
@@ -140,9 +138,9 @@ public class DataExistMap<T> implements Serializable {
         DataExistMap<T> copiedDataExistMap;
         Class clazz = this.dataExistMap.getClass();
         if (LinkedHashMap.class.equals(clazz)) {
-            copiedDataExistMap = Factory.createOrdered(this.dataExistMap.keySet());
+            copiedDataExistMap = createOrdered(this.dataExistMap.keySet());
         } else {
-            copiedDataExistMap = Factory.create(this.dataExistMap.keySet());
+            copiedDataExistMap = create(this.dataExistMap.keySet());
         }
         return copiedDataExistMap;
     }

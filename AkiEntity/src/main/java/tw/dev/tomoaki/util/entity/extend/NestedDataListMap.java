@@ -26,25 +26,22 @@ public class NestedDataListMap<TKey1, TKey2, TValue> implements KeyPairDataListM
     protected NestedDataListMap() {
     }
 
-    public static class Factory {
+    public static <Tkey1, Tkey2, Tvalue> NestedDataListMap<Tkey1, Tkey2, Tvalue> create() {
+        NestedDataListMap theMap = new NestedDataListMap();
+        theMap.doSetupContainerMap();
+        return theMap;
+    }
 
-        public static <Tkey1, Tkey2, Tvalue> NestedDataListMap<Tkey1, Tkey2, Tvalue> create() {
-            NestedDataListMap theMap = new NestedDataListMap();
-            theMap.doSetupContainerMap();
-            return theMap;
-        }
+    public static <Tkey1, Tkey2, Tvalue> NestedDataListMap<Tkey1, Tkey2, Tvalue> create(Boolean keepOrdered) {
+        return create(keepOrdered, keepOrdered);
+    }
 
-        public static <Tkey1, Tkey2, Tvalue> NestedDataListMap<Tkey1, Tkey2, Tvalue> create(Boolean keepOrdered) {
-            return Factory.create(keepOrdered, keepOrdered);
-        }
-
-        public static <Tkey1, Tkey2, Tvalue> NestedDataListMap<Tkey1, Tkey2, Tvalue> create(Boolean keepOrdered4FirstKey, Boolean keepOrdered4SecondKey) {
-            NestedDataListMap theMap = new NestedDataListMap();
-            theMap.keepOrdered4FirstKey = keepOrdered4FirstKey;
-            theMap.keepOrdered4SecondKey = keepOrdered4SecondKey;
-            theMap.doSetupContainerMap();
-            return theMap;
-        }
+    public static <Tkey1, Tkey2, Tvalue> NestedDataListMap<Tkey1, Tkey2, Tvalue> create(Boolean keepOrdered4FirstKey, Boolean keepOrdered4SecondKey) {
+        NestedDataListMap theMap = new NestedDataListMap();
+        theMap.keepOrdered4FirstKey = keepOrdered4FirstKey;
+        theMap.keepOrdered4SecondKey = keepOrdered4SecondKey;
+        theMap.doSetupContainerMap();
+        return theMap;
     }
 
     protected Map<TKey1, DataRecordMap<TKey2, TValue>> obtainContainerMap() {

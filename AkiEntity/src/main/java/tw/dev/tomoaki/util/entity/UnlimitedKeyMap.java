@@ -23,19 +23,16 @@ public class UnlimitedKeyMap<K extends Object, V> {
     protected UnlimitedKeyMap() {
     }
 
-    public static class Factory {
+    public static UnlimitedKeyMap create() {
+        UnlimitedKeyMap theMap = new UnlimitedKeyMap();
+        theMap.dataMap = new HashMap();
+        return theMap;
+    }
 
-        public static UnlimitedKeyMap create() {
-            UnlimitedKeyMap theMap = new UnlimitedKeyMap();
-            theMap.dataMap = new HashMap();
-            return theMap;
-        }
-
-        public static UnlimitedKeyMap createInOrdered() {
-            UnlimitedKeyMap theMap = new UnlimitedKeyMap();
-            theMap.dataMap = new LinkedHashMap();
-            return theMap;
-        }
+    public static UnlimitedKeyMap createInOrdered() {
+        UnlimitedKeyMap theMap = new UnlimitedKeyMap();
+        theMap.dataMap = new LinkedHashMap();
+        return theMap;
     }
 
     public void put(V value, K... keys) {
