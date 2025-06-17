@@ -12,9 +12,9 @@ import tw.dev.tomoaki.util.oauth.entity.OAuthResponse;
  */
 public interface AccessTokenKeeper extends AccessTokenFinder {
     
-    default public void saveAccessToken(String clientId, String clientSecret, OAuthResponse response) {
+    default public void saveAccessToken(String clientId, String clientSecret, OAuthResponse response, Object... args) {
         this.saveAccessToken(clientId, clientSecret, response.getAccessToken());
     }
     
-    public void saveAccessToken(String clientId, String clientSecret, String accessToken);
+    public void saveAccessToken(String clientId, String clientSecret, String accessToken, Object... args);
 }

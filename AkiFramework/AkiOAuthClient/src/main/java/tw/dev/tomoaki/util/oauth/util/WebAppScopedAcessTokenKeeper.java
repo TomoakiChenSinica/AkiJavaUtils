@@ -18,7 +18,12 @@ import tw.dev.tomoaki.util.oauth.AccessTokenKeeper;
 public class WebAppScopedAcessTokenKeeper implements AccessTokenKeeper {
 
     private ServletContext context;
+
+    public WebAppScopedAcessTokenKeeper(HttpServletRequest request) {
+        this.context = request.getServletContext();
+    }
     
+    /*
     public static class Factory {
         
         public WebAppScopedAcessTokenKeeper create(HttpServletRequest request) {
@@ -27,7 +32,7 @@ public class WebAppScopedAcessTokenKeeper implements AccessTokenKeeper {
             return keeper;
         }
         
-    }
+    }*/
   
     /*
     public void saveAccessToken(HttpServletRequest request, String clientId, String clientSecret, AccessToken accessToken, Object... args) {
@@ -47,13 +52,13 @@ public class WebAppScopedAcessTokenKeeper implements AccessTokenKeeper {
     }
 
     @Override
-    public void saveAccessToken(String clientId, String clientSecret, String accessToken) {
-        String appAttrKey = obtainAccessTokenKey(clientId, clientSecret);
+    public void saveAccessToken(String clientId, String clientSecret, String accessToken, Object... args) {
+        String appAttrKey = obtainAccessTokenKey(clientId, clientSecret, args);
         this.context.setAttribute(appAttrKey, accessToken);
     }
 
     @Override
-    public String getAccessToken(String clientId, String clientSecret) {
+    public String getAccessToken(String clientId, String clientSecret, Object... args) {
         String appAttrKey = obtainAccessTokenKey(clientId, clientSecret);
         Object objAccessToken = context.getAttribute(appAttrKey);
         return (objAccessToken != null) ? (String)objAccessToken : null;

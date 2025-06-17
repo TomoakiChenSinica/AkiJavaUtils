@@ -20,29 +20,33 @@ public class WebAppScopedOAuthResponseKeeper<T extends OAuthResponse> implements
 
     private ServletContext context;
     
+    public WebAppScopedOAuthResponseKeeper(HttpServletRequest request) {
+        this.context = request.getServletContext();
+    }    
+    
+    /* https://chatgpt.com/share/684bdcc9-d114-800d-b769-5ebe6321b3af
     public static class Factory {
         
         public static WebAppScopedOAuthResponseKeeper create(HttpServletRequest request) {
             WebAppScopedOAuthResponseKeeper keeper = new WebAppScopedOAuthResponseKeeper();
             keeper.context = request.getServletContext();
             return keeper;
-        }
-        
-    }
+        }        
+    }*/
 
     protected String obtainAttributeKey(String clientId, String clientSecret, Object... args) {
         return Stream.concat(Stream.of(clientId, clientSecret), Arrays.stream(args)).map(arg -> arg.toString()).collect(Collectors.joining("-"));
     }
 
     @Override
-    public void saveAccessToken(String clientId, String clientSecret, T oauthResponse) {
-        String appAttrKey = obtainAttributeKey(clientId, clientSecret);
+    public void saveOAuthResponse(String clientId, String clientSecret, T oauthResponse, Object... args) {
+        String appAttrKey = obtainAttributeKey(clientId, clientSecret, args);
         this.context.setAttribute(appAttrKey, oauthResponse);
     }
 
     @Override
-    public T getAccessToken(String clientId, String clientSecret) {
-        String appAttrKey = obtainAttributeKey(clientId, clientSecret);
+    public T getOAuthResponse(String clientId, String clientSecret, Object... args) {
+        String appAttrKey = obtainAttributeKey(clientId, clientSecret, args);
         Object objOAuthResponse = context.getAttribute(appAttrKey);
         return (objOAuthResponse != null) ? (T)objOAuthResponse : null;
     }

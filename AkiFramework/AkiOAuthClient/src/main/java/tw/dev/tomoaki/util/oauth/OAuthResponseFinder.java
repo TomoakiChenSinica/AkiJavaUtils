@@ -12,5 +12,5 @@ import tw.dev.tomoaki.util.oauth.entity.OAuthResponse;
  */
 public interface OAuthResponseFinder<T extends OAuthResponse> {
         
-    public T getAccessToken(String clientId, String clientSecret);
+    public T getOAuthResponse(String clientId, String clientSecret, Object... args);
 }

@@ -12,5 +12,5 @@ import tw.dev.tomoaki.util.oauth.entity.OAuthResponse;
  */
 public interface OAuthResponseKeeper<T extends OAuthResponse> extends OAuthResponseFinder<T> {
     
-    public void saveAccessToken(String clientId, String clientSecret, T response);
+    public void saveOAuthResponse(String clientId, String clientSecret, T response, Object... args);
 }
