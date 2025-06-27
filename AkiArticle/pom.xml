@@ -71,14 +71,14 @@
         <repository>
             <id>ccs-gitea</id>
             <name>CCS Packages</name>
-            <url>https://ccs-git.iis.sinica.edu.tw/api/packages/IIS/maven</url>
+            <url>${iis.repo.url}</url>
         </repository>
         
         <snapshotRepository>
             <id>ccs-gitea</id>
             <name>CCS Packages</name>
-            <url>https://ccs-git.iis.sinica.edu.tw/api/packages/IIS/maven </url>
-        </snapshotRepository>
+            <url>${iis.repo.url}</url>
+        </snapshotRepository>   
     </distributionManagement>  
 
     <licenses>        

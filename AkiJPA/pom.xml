@@ -11,6 +11,8 @@
     </description>
     <artifactId>AkiJPA</artifactId>
     <packaging>jar</packaging>
+    <name>AkiJPA</name>
+    
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -104,7 +106,7 @@
             <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
         </license>
     </licenses>
-    <name>AkiJPA</name>
+    
     <build>
         <plugins>
             <plugin>

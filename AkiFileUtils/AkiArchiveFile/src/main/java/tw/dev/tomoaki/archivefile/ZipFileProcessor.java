@@ -16,8 +16,11 @@ import tw.dev.tomoaki.archivefile.entity.ArchiveFileOutputStream;
  */
 public class ZipFileProcessor {
 
-//    private Integer unarchiveBufferSize = 1024 * 1024;
-    private Integer outputBufferSize = 1024 * 1024;
+    // https://www.tutorialspoint.com/javazip/javazip_deflateroutputstream.htm
+    // https://www.tutorialspoint.com/javazip/javazip_zipoutputstream.htm
+    // https://www.tutorialspoint.com/javazip/javazip_zipoutputstream_putnextentry.htm
+    
+    private Integer outputBufferSize = 1024 * 1024; // private Integer unarchiveBufferSize = 1024 * 1024;
     private Boolean printLog = Boolean.TRUE;
 
     public static class Factory {
