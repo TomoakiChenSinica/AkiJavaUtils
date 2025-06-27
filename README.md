@@ -87,3 +87,19 @@
     >   2.4.8 版: 改良 UrlAppender，目前的 UrlAppender，無法做到「固定一個URL Header」
     > 
     >   2.5.0 版: 繼續改良UrlProvider，預計可以針對 Proxy 環境下的支援更好 
+
+
+
+## 開發流程說明
+
+* 本專案目前單一開發者使用雙帳號進行維護
+  
+  * [TomoakiChenSinica - tomoaki.sinica@gmail.com](https://github.com/TomoakiChenSinica) 專案擁有者
+  
+  * [TomoakiChen - archerugly@gmail.com](https://github.com/TomoakiChen) 協作者
+
+* 協作者的變更透過 Pull Request 流程進行，以確保
+  
+  * 主支為 protected
+  
+  * 為未來團隊協作做準備(如果可以)
