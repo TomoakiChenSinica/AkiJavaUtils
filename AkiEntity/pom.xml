@@ -5,6 +5,10 @@
     <artifactId>AkiEntity</artifactId>
     <version>2.5.0-SNAPSHOT</version>
     <packaging>jar</packaging>
+    <description>
+        2.4.7: DataExistMap、DataRecordExistMap 的 constructor 換成 public，方便繼承。Factory.create 就視為輔助
+    </description>
+    
     <build>
         <plugins>
             <plugin>

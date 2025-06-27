@@ -10,7 +10,7 @@ import tw.dev.tomoaki.util.oauth.entity.OAuthResponse;
  *
  * @author tomoaki
  */
-public interface AccessTokenFinder {
+public interface OAuthResponseFinder<T extends OAuthResponse> {
         
-    public String getAccessToken(String clientId, String clientSecret, Object... args);
+    public T getOAuthResponse(String clientId, String clientSecret, Object... args);
 }

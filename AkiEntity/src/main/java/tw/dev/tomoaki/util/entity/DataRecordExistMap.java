@@ -24,14 +24,30 @@ public class DataRecordExistMap<T, R> {
     private Map<T, DataExistMap<R>> container; // = new HashMap();
 
 //<editor-fold defaultstate="collapsed" desc="以下是跟 constrctor 相關">
+
+    public DataRecordExistMap() {
+        this(false);
+    }
+    
     public DataRecordExistMap(Boolean isKeepOrdered) {
         container = isKeepOrdered ? new LinkedHashMap() : new HashMap();
     }
-//</editor-fold>
 
     public static DataRecordExistMap create(Boolean isKeepOrdered) {
         DataRecordExistMap existMap = new DataRecordExistMap(isKeepOrdered);
         return existMap;
+      
+    public static class Factory {
+        
+        public static DataRecordExistMap create() {
+            DataRecordExistMap existMap = new DataRecordExistMap(false);
+            return existMap;
+        }
+        
+        public static DataRecordExistMap create(Boolean isKeepOrdered) {
+            DataRecordExistMap existMap = new DataRecordExistMap(isKeepOrdered);
+            return existMap;
+        }
     }
     
 //<editor-fold defaultstate="collapsed" desc="外部呼叫 Methods">    
@@ -61,7 +77,12 @@ public class DataRecordExistMap<T, R> {
             return recordExistMap.existList();
         }
     }
-
+    
+    public int getRecordCount(T key) {
+        List<R> recordList = this.getRecords(key);
+        return recordList != null ? recordList.size() : 0;
+    }
+    
     public Set<T> keySet() {
         return container.keySet();
     }
@@ -86,6 +107,15 @@ public class DataRecordExistMap<T, R> {
     public Integer numsOfDatas() {
         return container.size();
     }
+    
+    public Boolean contains(T key, R reord) {
+        DataExistMap<R> dataExistMap = this.container.get(key);
+        if (dataExistMap == null) {
+            return false;
+        } else {
+            return dataExistMap.contains(reord);
+        }
+    }    
 //</editor-fold>
 
 }

@@ -8,15 +8,9 @@ package tw.dev.tomoaki.util.oauth.entity;
  *
  * @author tomoaki
  */
-public class OAuthResponse {
-    
-    private String accessToken;
+public interface OAuthResponse {
 
-    public String getAccessToken() {
-        return accessToken;
-    }
+    public String getAccessToken();
 
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
+    public void setAccessToken(String accessToken);
 }

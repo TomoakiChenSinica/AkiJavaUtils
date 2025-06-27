@@ -33,7 +33,7 @@ public class DataExistMap<T> implements Serializable {
         this(false);
     }
 
-    protected DataExistMap(Boolean isKeepOrdered) {
+    public DataExistMap(Boolean isKeepOrdered) {
         dataExistMap = isKeepOrdered ? new LinkedHashMap() : new HashMap();
     }
 

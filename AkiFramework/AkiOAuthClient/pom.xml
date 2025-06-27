@@ -3,11 +3,35 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>tw.dev.tomoaki</groupId>
     <artifactId>AkiOAuthClient</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.1.2</version>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <exec.mainClass>tw.dev.tomoaki.akioauth.AkiOAuth</exec.mainClass>
     </properties>
     <name>AkiOAuthClient</name>
+    
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+    
+    <distributionManagement>
+        <repository>
+            <id>ccs-gitea</id>
+            <name>CCS Packages</name>
+            <url>${iis.repo.url}</url>
+        </repository>
+        
+        <snapshotRepository>
+            <id>ccs-gitea</id>
+            <name>CCS Packages</name>
+            <url>${iis.repo.url}</url>
+        </snapshotRepository>   
+    </distributionManagement>
 </project>
