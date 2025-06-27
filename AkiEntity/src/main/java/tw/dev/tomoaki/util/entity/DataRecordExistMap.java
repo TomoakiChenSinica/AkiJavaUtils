@@ -24,6 +24,7 @@ public class DataRecordExistMap<T, R> {
     private Map<T, DataExistMap<R>> container; // = new HashMap();
 
 //<editor-fold defaultstate="collapsed" desc="以下是跟 constrctor 相關">
+
     public DataRecordExistMap() {
         this(false);
     }
@@ -31,8 +32,11 @@ public class DataRecordExistMap<T, R> {
     public DataRecordExistMap(Boolean isKeepOrdered) {
         container = isKeepOrdered ? new LinkedHashMap() : new HashMap();
     }
-//</editor-fold>
 
+    public static DataRecordExistMap create(Boolean isKeepOrdered) {
+        DataRecordExistMap existMap = new DataRecordExistMap(isKeepOrdered);
+        return existMap;
+      
     public static class Factory {
         
         public static DataRecordExistMap create() {
@@ -47,10 +51,11 @@ public class DataRecordExistMap<T, R> {
     }
     
 //<editor-fold defaultstate="collapsed" desc="外部呼叫 Methods">    
+
     public void add(T key, R recordMemo) {
         DataExistMap<R> recordExistMap = container.get(key);
         if (recordExistMap == null) {
-            recordExistMap = DataExistMap.Factory.createOrdered(); // 讓它保持原有順序
+            recordExistMap = DataExistMap.createOrdered(); // 讓它保持原有順序
         }
         recordExistMap.add(recordMemo);
         container.put(key, recordExistMap);
@@ -78,25 +83,22 @@ public class DataRecordExistMap<T, R> {
         return recordList != null ? recordList.size() : 0;
     }
     
-    
-    
     public Set<T> keySet() {
         return container.keySet();
     }
-    
 
 //    public Set<Map.Entry<T, List<R>>> entrySet() {
 //        return theMap.entrySet();
 //    }
-
-    public Map<T, List<R>> asMap(){
+    public Map<T, List<R>> asMap() {
         Map<T, List<R>> theMap = new LinkedHashMap();
-        for(T key : this.keySet()) {
+        for (T key : this.keySet()) {
             List<R> records = this.getRecords(key);
             theMap.put(key, records);
         }
         return theMap;
     }
+
     /**
      * 總共有幾種值，也就是 key 的數量
      *

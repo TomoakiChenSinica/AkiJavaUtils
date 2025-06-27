@@ -37,7 +37,7 @@ public class DataExistMapMain {
         Animal bird = new Animal("Bird", 6);
         Animal bird2 = new Animal("Bird", 2);
 
-        DataExistMap<Animal> animalExistMap = DataExistMap.Factory.createOrdered();//new DataExistMap();
+        DataExistMap<Animal> animalExistMap = DataExistMap.createOrdered();//new DataExistMap();
         animalExistMap.add(dog);
         animalExistMap.add(cat);
         animalExistMap.add(bird);
@@ -60,7 +60,7 @@ public class DataExistMapMain {
     }
 
     protected static void test3() {
-        DataExistMap<PersonInfo> existMap = DataExistMap.Factory.create();
+        DataExistMap<PersonInfo> existMap = DataExistMap.create();
         PersonInfo ackley = new PersonInfo(1l, "Ackley", "Dustin");
         ackley.addTeamAbbrev("SEA");
         PersonInfo smoak = new PersonInfo(2l, "Smoak", "Justin");
@@ -85,7 +85,7 @@ public class DataExistMapMain {
         PersonInfo smoak = new PersonInfo(2l, "Smoak", "Justin");
         smoak.addTeamAbbrev("TOR");
         
-        DataExistMap<PersonInfo> existMap = DataExistMap.Factory.create(Arrays.asList(ackley, smoak));        
+        DataExistMap<PersonInfo> existMap = DataExistMap.create(Arrays.asList(ackley, smoak));        
 
         existMap.existList().forEach(person -> {
             System.out.println("Person.Name= " + person.getFirstName() + " " + person.getLastName() + ", Person.Teams= " + person.getTeamAbbrevs());
@@ -110,7 +110,7 @@ public class DataExistMapMain {
         PersonInfo smoak = new PersonInfo(2l, "Smoak", "Justin");
         smoak.addTeamAbbrev("TOR");
         
-        DataExistMap<PersonInfo> existMap = DataExistMap.Factory.create(Arrays.asList(ackley, smoak));        
+        DataExistMap<PersonInfo> existMap = DataExistMap.create(Arrays.asList(ackley, smoak));        
 
         existMap.existList().forEach(person -> {
             System.out.println("Person.Name= " + person.getFirstName() + " " + person.getLastName() + ", Person.Pets= " + person.getPets());
@@ -138,7 +138,7 @@ public class DataExistMapMain {
         PersonInfo smoak = new PersonInfo(2l, "Smoak", "Justin");
         smoak.addTeamAbbrev("TOR");
         
-        DataExistMap<PersonInfo> existMap = DataExistMap.Factory.create(Arrays.asList(ackley, smoak));        
+        DataExistMap<PersonInfo> existMap = DataExistMap.create(Arrays.asList(ackley, smoak));        
         
         existMap.existList().forEach(person -> {
             System.out.println("Person.Name= " + person.getFirstName() + " " + person.getLastName() + ", Person.Pets= " + person.getPets());

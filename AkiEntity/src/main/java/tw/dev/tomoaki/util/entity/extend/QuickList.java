@@ -24,7 +24,7 @@ public class QuickList<T extends Object> implements List<T> {
     public QuickList() {
 //        this.dataExistMap = new DataExistMap();
 //        this.dataExistMap.useLinkedMap();
-        this.dataExistMap = DataExistMap.Factory.createOrdered();
+        this.dataExistMap = DataExistMap.createOrdered();
     }
 
     @Override
@@ -109,9 +109,7 @@ public class QuickList<T extends Object> implements List<T> {
 
     @Override
     public void clear() {
-//        this.dataExistMap = new DataExistMap();
-//        this.dataExistMap.useLinkedMap();
-        this.dataExistMap = DataExistMap.Factory.createOrdered();
+        this.dataExistMap = DataExistMap.createOrdered();
     }
 
     @Override

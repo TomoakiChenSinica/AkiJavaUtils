@@ -33,7 +33,7 @@ public class KeyPairMapTestMain {
     }
 
     protected static void test1() {
-        KeyPairMap<String, String, String> teamAllLevelsPlayerMap = NestedMap.Factory.create();
+        KeyPairMap<String, String, String> teamAllLevelsPlayerMap = NestedMap.create();
         teamAllLevelsPlayerMap.put("Seattle Mariners", "MLB", "G.Kirby");
         teamAllLevelsPlayerMap.put("Seattle Mariners", "2A", "E.Hancock"); //今天升上了了
         teamAllLevelsPlayerMap.put("L.Angels", "MLB", "S.Ohtani");
@@ -44,7 +44,7 @@ public class KeyPairMapTestMain {
     }
 
     protected static void test2() {
-        KeyPairMap<String, String, String> teamAllLevelsPlayerMap = NestedMap.Factory.create(Boolean.TRUE);
+        KeyPairMap<String, String, String> teamAllLevelsPlayerMap = NestedMap.create(Boolean.TRUE);
         teamAllLevelsPlayerMap.put("Seattle Mariners", "MLB", "G.Kirby");
         teamAllLevelsPlayerMap.put("Seattle Mariners", "2A", "E.Hancock"); //今天升上了了
         teamAllLevelsPlayerMap.put("L.Angels", "MLB", "S.Ohtani");
@@ -55,7 +55,7 @@ public class KeyPairMapTestMain {
     }
 
     protected static void test3() {
-        NestedMap<String, String, String> teamAllLevelsPlayerMap = NestedMap.Factory.create(Boolean.TRUE);
+        NestedMap<String, String, String> teamAllLevelsPlayerMap = NestedMap.create(Boolean.TRUE);
         teamAllLevelsPlayerMap.put("Seattle Mariners", "MLB", "G.Kirby");
         teamAllLevelsPlayerMap.put("Seattle Mariners", "2A", "E.Hancock"); //今天升上了了
         teamAllLevelsPlayerMap.put("L.Angels", "MLB", "S.Ohtani");
@@ -63,7 +63,7 @@ public class KeyPairMapTestMain {
     }
 
     protected static void test4() {
-        NestedMap<String, String, String> teamAllLevelsPlayerMap = NestedMap.Factory.create(Boolean.TRUE);
+        NestedMap<String, String, String> teamAllLevelsPlayerMap = NestedMap.create(Boolean.TRUE);
         teamAllLevelsPlayerMap.put("Seattle Mariners", "MLB", "G.Kirby");
         teamAllLevelsPlayerMap.put("Seattle Mariners", "MLB", "E.Hancock"); //今天升上了了
         teamAllLevelsPlayerMap.put("L.Angels", "MLB", "S.Ohtani");
@@ -72,7 +72,7 @@ public class KeyPairMapTestMain {
     }
 
     protected static void test5() {
-        NestedMap<String, String, List<String>> teamAllLevelsPlayerMap = NestedMap.Factory.create(Boolean.TRUE);
+        NestedMap<String, String, List<String>> teamAllLevelsPlayerMap = NestedMap.create(Boolean.TRUE);
 
     }
 }

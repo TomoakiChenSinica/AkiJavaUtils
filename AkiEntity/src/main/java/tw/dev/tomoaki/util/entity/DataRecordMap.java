@@ -23,7 +23,7 @@ public class DataRecordMap<T, R> {
 
     private Map<T, List<R>> containerMap;
     private Comparator<R> recordComparator;
-    
+
     public DataRecordMap() {
         this(false);
     }
@@ -32,18 +32,15 @@ public class DataRecordMap<T, R> {
         containerMap = isKeepOrdered ? new LinkedHashMap() : new HashMap();
     }
 
-    public static class Factory {
+    public static <T, R> DataRecordMap<T, R> create(Boolean isKeepOrdered) {
+        DataRecordMap<T, R> dataMap = new DataRecordMap(isKeepOrdered);
+        return dataMap;
+    }
 
-        public static <T, R> DataRecordMap<T, R> create(Boolean isKeepOrdered) {
-            DataRecordMap<T, R> dataMap = new DataRecordMap(isKeepOrdered);
-            return dataMap;
-        }
-
-        public static <T, R> DataRecordMap<T, R> create(Boolean isKeepOrdered, Comparator<R> recordComparator) {
-            DataRecordMap<T, R> dataMap = new DataRecordMap(isKeepOrdered);
-            dataMap.recordComparator = recordComparator;
-            return dataMap;
-        }
+    public static <T, R> DataRecordMap<T, R> create(Boolean isKeepOrdered, Comparator<R> recordComparator) {
+        DataRecordMap<T, R> dataMap = new DataRecordMap(isKeepOrdered);
+        dataMap.recordComparator = recordComparator;
+        return dataMap;
     }
 
     public void add(T key, R recordMemo) {
@@ -55,18 +52,16 @@ public class DataRecordMap<T, R> {
         records = trySortRecords(records);
         containerMap.put(key, records);
     }
-    
+
     public void addAll(T key, List<R> recordMemoList) {
         if (recordMemoList != null) {
             recordMemoList.forEach(memo -> {
                 this.add(key, memo);
             });
         }
-    }    
-    
-    
-// ------------------------------------------------------------------------    
+    }
 
+// ------------------------------------------------------------------------    
     public void createEmptyRecord(T key) {
         List<R> records = containerMap.get(key);
         if (records == null) {
@@ -106,11 +101,10 @@ public class DataRecordMap<T, R> {
     public Integer numsOfDatas() {
         return containerMap.size();
     }
-    
-    
+
 //<editor-fold defaultstate="collapsed" desc="內部輔助 Methods">
     protected List<R> trySortRecords(List<R> sortingList) {
-        if(this.recordComparator != null) {
+        if (this.recordComparator != null) {
             sortingList.sort(recordComparator);
         }
         return sortingList;

@@ -46,28 +46,25 @@ public class NestedMap<Tkey1, Tkey2, Tvalue> implements KeyPairMap<Tkey1, Tkey2,
          */
     }
 
-    public static class Factory {
-
-        public static <Tkey1, Tkey2, Tvalue> NestedMap<Tkey1, Tkey2, Tvalue> create() {
-            NestedMap theMap = new NestedMap();
-            theMap.doSetupContainerMap();
-            return theMap;
-        }
-
-        public static <Tkey1, Tkey2, Tvalue> NestedMap<Tkey1, Tkey2, Tvalue> create(Boolean keepOrdered) {
-            return Factory.create(keepOrdered, keepOrdered);
-        }
-
-        public static <Tkey1, Tkey2, Tvalue> NestedMap<Tkey1, Tkey2, Tvalue> create(Boolean keepOrdered4FirstKey, Boolean keepOrdered4SecondKey) {
-            NestedMap theMap = new NestedMap();
-            theMap.keepOrdered4FirstKey = keepOrdered4FirstKey;
-            theMap.keepOrdered4SecondKey = keepOrdered4SecondKey;
-            theMap.doSetupContainerMap();
-            return theMap;
-        }
+    public static <Tkey1, Tkey2, Tvalue> NestedMap<Tkey1, Tkey2, Tvalue> create() {
+        NestedMap theMap = new NestedMap();
+        theMap.doSetupContainerMap();
+        return theMap;
     }
 
+    public static <Tkey1, Tkey2, Tvalue> NestedMap<Tkey1, Tkey2, Tvalue> create(Boolean keepOrdered) {
+        return create(keepOrdered, keepOrdered);
+    }
+
+    public static <Tkey1, Tkey2, Tvalue> NestedMap<Tkey1, Tkey2, Tvalue> create(Boolean keepOrdered4FirstKey, Boolean keepOrdered4SecondKey) {
+        NestedMap theMap = new NestedMap();
+        theMap.keepOrdered4FirstKey = keepOrdered4FirstKey;
+        theMap.keepOrdered4SecondKey = keepOrdered4SecondKey;
+        theMap.doSetupContainerMap();
+        return theMap;
+    }
 //<editor-fold defaultstate="collapsed" desc="設定、初始話此 Entity 的 Methods">
+
     /**
      * 產生用來裝資料的容器(Container)，在這裡是用 Map<Tkey1, Map<Tkey2, Tvalue>>
      *

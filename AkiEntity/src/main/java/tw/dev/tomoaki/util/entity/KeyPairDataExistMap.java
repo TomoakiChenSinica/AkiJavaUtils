@@ -18,14 +18,9 @@ public class KeyPairDataExistMap<Tkey1, Tkey2> {
     private NestedMap<Tkey1, Tkey2, Boolean> dataExistMap; // = new NestedMap<Tkey1, Tkey2, Boolean>();
 
     public KeyPairDataExistMap() {
-        dataExistMap = NestedMap.Factory.create();
+        dataExistMap = NestedMap.create();
     }
 
-    public static class Factory {
-
-//        public static KeyPairMap create() {
-//        }
-    }
 
     public void add(Tkey1 data1, Tkey2 data2) {
         dataExistMap.put(data1, data2, Boolean.TRUE);
