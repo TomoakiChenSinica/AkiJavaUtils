@@ -23,26 +23,18 @@ import javax.mail.Transport;
  *
  * @author tomoaki
  */
-public final class SimpleSMTPTransport implements SMTPTransport, AutoCloseable {
+public class BatchedSMTPTransport implements SMTPTransport, AutoCloseable {
 
-    protected SimpleSMTPTransport() {
-    }
-
-    public static class Factory {
-
-        public static SimpleSMTPTransport create() {
-            return new SimpleSMTPTransport();
-        }
-    }
-
+    private Transport transport;
+    
     @Override
     public void send(Message message) throws MessagingException {
-        Transport.send(message);
+        transport.sendMessage(message, message.getAllRecipients());
     }
 
     @Override
     public void close() throws MessagingException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody        
-        //Transport Keep 住不是問題，問題在甚麼時候關閉?
+        transport.close();
     }
+    
 }
