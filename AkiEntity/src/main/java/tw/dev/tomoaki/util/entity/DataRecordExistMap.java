@@ -36,7 +36,9 @@ public class DataRecordExistMap<T, R> {
     public static DataRecordExistMap create(Boolean isKeepOrdered) {
         DataRecordExistMap existMap = new DataRecordExistMap(isKeepOrdered);
         return existMap;
-      
+    }
+
+    /* 之前用 TomoakiChen 好像漏改
     public static class Factory {
         
         public static DataRecordExistMap create() {
@@ -48,7 +50,7 @@ public class DataRecordExistMap<T, R> {
             DataRecordExistMap existMap = new DataRecordExistMap(isKeepOrdered);
             return existMap;
         }
-    }
+    } */
     
 //<editor-fold defaultstate="collapsed" desc="外部呼叫 Methods">    
 
