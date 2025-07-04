@@ -13,7 +13,7 @@ import tw.dev.tomoaki.util.web.request.ProxyRequestHelper;
  *
  * @author Tomoaki Chen
  */
-public class UrlProvider {
+public class AppUrlProvider {
 
     public static String[] urlHeaderList = {"https://", "http://"};
 
@@ -28,23 +28,18 @@ public class UrlProvider {
     private List<String> hostHeaderNames;
     private List<String> portHeaderNames;
 
-    protected UrlProvider(HttpServletRequest request) {
+    protected AppUrlProvider(HttpServletRequest request) {
         this.initRequest = request;
     }
 
-    public static class Factory {
+    public static AppUrlProvider create(HttpServletRequest initRequest) {
+        return AppUrlProvider.create(initRequest, false);
+    }
 
-        public static UrlProvider create(HttpServletRequest initRequest) {
-            return Factory.create(initRequest, false);
-        }
-
-        public static UrlProvider create(HttpServletRequest initRequest, Boolean isUnderProxy) {
-            UrlProvider urlProvider = new UrlProvider(initRequest);
-            urlProvider.doParseRequestInfo(isUnderProxy);
-            return urlProvider;
-        }
-        
-        
+    public static AppUrlProvider create(HttpServletRequest initRequest, Boolean isUnderProxy) {
+        AppUrlProvider urlProvider = new AppUrlProvider(initRequest);
+        urlProvider.doParseRequestInfo(isUnderProxy);
+        return urlProvider;
     }
 
 //<editor-fold defaultstate="collapsed" desc="內部 Methods - 設定、初始化變數 Methods">
@@ -84,7 +79,7 @@ public class UrlProvider {
     }
 
     public UrlAppender newUrlAppender() {
-        UrlAppender appender = UrlAppender.Factory.create();
+        UrlAppender appender = UrlAppender.create();
         appender.append(this.obtainSystemRootPath());
         return appender;
     }

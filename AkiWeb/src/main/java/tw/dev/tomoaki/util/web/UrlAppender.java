@@ -36,24 +36,23 @@ public class UrlAppender {
         
     }
 
-    public static class Factory {
 
-        public static UrlAppender create() {
-            UrlAppender appender = new UrlAppender();
-            appender.staticUrlHeaderList = Arrays.asList();
-            appender.initUrlPathList();
-            appender.initQueryParamMap();
-            return appender;
-        }         
-        
-        public static UrlAppender create(String staticPath, String... otherStaticPaths) {
-            UrlAppender appender = new UrlAppender();
-            appender.staticUrlHeaderList = Stream.concat(Stream.of(staticPath), Stream.of(otherStaticPaths)).collect(Collectors.toList());
-            appender.initUrlPathList();
-            appender.initQueryParamMap();
-            return appender;
-        }        
+    public static UrlAppender create() {
+        UrlAppender appender = new UrlAppender();
+        appender.staticUrlHeaderList = Arrays.asList();
+        appender.initUrlPathList();
+        appender.initQueryParamMap();
+        return appender;
     }
+
+    public static UrlAppender create(String staticPath, String... otherStaticPaths) {
+        UrlAppender appender = new UrlAppender();
+        appender.staticUrlHeaderList = Stream.concat(Stream.of(staticPath), Stream.of(otherStaticPaths)).collect(Collectors.toList());
+        appender.initUrlPathList();
+        appender.initQueryParamMap();
+        return appender;
+    }
+
     
 //<editor-fold defaultstate="collapsed" desc="初始化/設定 變數的 methods">
     protected void initUrlPathList() {

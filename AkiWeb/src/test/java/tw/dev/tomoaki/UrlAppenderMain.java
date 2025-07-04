@@ -24,7 +24,7 @@ public class UrlAppenderMain {
     }
 
     private static void test1() {
-        UrlAppender appender = UrlAppender.Factory.create();
+        UrlAppender appender = UrlAppender.create();
         String url = appender.append("https://eform.iis.sincia.edu.tw/")
                 .append("")
                 .append("/test")
@@ -37,7 +37,7 @@ public class UrlAppenderMain {
     }
 
     private static void test2() {
-        UrlAppender appender = UrlAppender.Factory.create("https://eform.iis.sincia.edu.tw/");
+        UrlAppender appender = UrlAppender.create("https://eform.iis.sincia.edu.tw/");
         // UrlAppender appender = UrlAppender.Factory.create("https://eform.iis.sincia.edu.tw");
         String url = appender.append("")
                 .append("/test")
@@ -50,7 +50,7 @@ public class UrlAppenderMain {
     }
     
     private static void test3() {
-        UrlAppender appender = UrlAppender.Factory.create("https://eform.iis.sincia.edu.tw/123");
+        UrlAppender appender = UrlAppender.create("https://eform.iis.sincia.edu.tw/123");
         String url = appender.append("")
                 .append("/test/456")
                 .append("\\789")
