@@ -11,7 +11,7 @@ import java.util.List;
  * @author tomoaki
  * @param <T>
  */
-public interface CircledList<T> extends List<T> {
+public interface CircularList<T> extends List<T> {
 
 //    public T previous();
 //    

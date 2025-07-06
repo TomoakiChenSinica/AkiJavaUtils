@@ -123,5 +123,9 @@ public class PairDataDiff<T> {
     public List<T> getOverlappingDataList() {
         return overlappingDataList;
     }
+    
+    public Boolean isDiffExist() {
+        return !this.lessDataList.isEmpty() || !this.moreDataList.isEmpty();
+    }
 
 }

@@ -7,20 +7,20 @@ package tw.dev.tomoaki.util.entity;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import tw.dev.tomoaki.util.entity.core.CircledList;
+import tw.dev.tomoaki.util.entity.core.CircularList;
 
 /**
  *
  * @author tomoaki
  * @param <T> 資料型態
  */
-public class CircledArrayList<T> extends ArrayList<T> implements CircledList<T> {
+public class CircularArrayList<T> extends ArrayList<T> implements CircularList<T> {
 
-    public CircledArrayList(Collection<T> dataCollection) {
+    public CircularArrayList(Collection<T> dataCollection) {
         super(dataCollection);
     }
 
-    public CircledArrayList(T... datas) {
+    public CircularArrayList(T... datas) {
         super(Arrays.asList(datas));
     }
 
