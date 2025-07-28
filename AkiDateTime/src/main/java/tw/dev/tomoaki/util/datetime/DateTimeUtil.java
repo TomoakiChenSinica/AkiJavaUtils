@@ -472,15 +472,21 @@ public class DateTimeUtil {
                     && (endDate == null || !theDate.isAfter(endDate)));
         }
 
-//        public static Boolean isOverlap(Date utilStartDate1, Date utilEndDate1, Date utilStartDate2, Date utilEndDate2) {
-//            
-//        }
         public static Boolean inRange(LocalDateTime theDateTime, LocalDateTime startDateTime, LocalDateTime endDateTime) {
             return ((startDateTime == null || !theDateTime.isBefore(startDateTime))
                     && (endDateTime == null || !theDateTime.isAfter(endDateTime)));
             //不在開始時間之前、不在開始時間之後-->在時間區間之間            
         }
 
+        public static Boolean inRange(YearMonth theYearMonth, YearMonth startYearMonth, YearMonth endYearMonth) {
+            return ((startYearMonth == null || !theYearMonth.isBefore(startYearMonth))
+                    && (endYearMonth == null || !theYearMonth.isAfter(endYearMonth)));
+        }
+        
+        // public static Boolean isOverlap(Date utilStartDate1, Date utilEndDate1, Date utilStartDate2, Date utilEndDate2) {
+        //            
+        // }
+        
         public static LocalDate analyze4SameDay(LocalDateTime theDateTime, LocalTime dayStartTime, LocalTime dayEndTime) {
             if (dayEndTime.isBefore(dayStartTime)) {
                 throw new IllegalArgumentException("dayEndTime shoud not before dayStartTime");
