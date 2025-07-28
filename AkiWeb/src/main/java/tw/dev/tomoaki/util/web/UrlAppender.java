@@ -23,6 +23,9 @@ import tw.dev.tomoaki.util.commondatavalidator.StringValidator;
  */
 public class UrlAppender {
 
+    /**
+     * 會固定當成 
+     */
     protected List<String> staticUrlHeaderList;
     
     protected List<String> urlPathList;
@@ -35,7 +38,6 @@ public class UrlAppender {
     protected UrlAppender() {
         
     }
-
 
     public static UrlAppender create() {
         UrlAppender appender = new UrlAppender();
