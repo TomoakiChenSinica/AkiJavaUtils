@@ -51,6 +51,10 @@ public class DataExistMap<T> implements Serializable {
     }
 //</editor-fold>
 
+    public static <T> DataExistMap<T> create() {
+        return new DataExistMap();
+    }
+    
     public static <T> DataExistMap<T> create(Collection<T> dataList) {
         DataExistMap<T> dataExistMap = new DataExistMap(dataList);
         return dataExistMap;

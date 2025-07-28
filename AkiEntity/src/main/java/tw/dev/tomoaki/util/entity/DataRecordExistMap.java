@@ -29,10 +29,16 @@ public class DataRecordExistMap<T, R> {
         this(false);
     }
     
+
+    
     public DataRecordExistMap(Boolean isKeepOrdered) {
         container = isKeepOrdered ? new LinkedHashMap() : new HashMap();
     }
 
+    public static DataRecordExistMap create() {
+        return new DataRecordExistMap();
+    }
+    
     public static DataRecordExistMap create(Boolean isKeepOrdered) {
         DataRecordExistMap existMap = new DataRecordExistMap(isKeepOrdered);
         return existMap;
