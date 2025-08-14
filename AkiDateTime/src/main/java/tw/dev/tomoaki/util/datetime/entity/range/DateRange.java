@@ -7,6 +7,9 @@ package tw.dev.tomoaki.util.datetime.entity.range;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Stream;
+import tw.dev.tomoaki.util.datetime.DateTimeRangeUtil;
 import tw.dev.tomoaki.util.datetime.DateTimeUtil;
 import tw.dev.tomoaki.util.datetime.util.RangeHelper;
 
@@ -122,8 +125,15 @@ public class DateRange {
 
     @Override
     public String toString() {
-//        return this.startDate + " ~ " + this.endDate;
         return RangeHelper.obtainString(this, startDate, endDate);
     }
+    
+    public List<LocalDate> toDateList() {
+        return DateTimeRangeUtil.Analyzer.obtainDateList(this);
+    }
+    
+    public Stream<LocalDate> toDateStream() {
+        return DateTimeRangeUtil.Analyzer.obtainDateList(this).stream();
+    }    
 
 }

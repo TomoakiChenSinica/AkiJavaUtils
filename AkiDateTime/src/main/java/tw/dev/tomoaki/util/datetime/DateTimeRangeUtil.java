@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import tw.dev.tomoaki.util.datetime.entity.range.DateRange;
+import tw.dev.tomoaki.util.datetime.entity.range.DateTimeRange;
 import tw.dev.tomoaki.util.datetime.util.NanoMathHelper;
 
 /**
