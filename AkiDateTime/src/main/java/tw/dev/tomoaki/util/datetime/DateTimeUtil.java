@@ -15,6 +15,7 @@ import java.time.LocalTime;
 import java.time.YearMonth;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.format.ResolverStyle;
 import java.time.temporal.WeekFields;
 import java.util.Date;
 import java.util.Locale;
@@ -48,15 +49,13 @@ public class DateTimeUtil {
     private static final DateTimeFormatter DEFAULT_DATE_FORMMATTER = DateTimeUtil.Provider.obtainFormatter(DEFAULT_DATE_FORMAT);
     private static final DateTimeFormatter DEFAULT_TIME_FORMMATTER = DateTimeUtil.Provider.obtainFormatter(DEFAULT_TIME_FORMAT);
 
-//    public static Date MIN_UTIL_DATE = DateTimeUtil.Converter.convert(LocalDateTime.MIN);
-//    public static Date MAX_UTIL_DATE = DateTimeUtil.Converter.convert(LocalDateTime.MAX);
     public static Date MIN_UTIL_DATE = new Date(Long.MIN_VALUE);
     public static Date MAX_UTIL_DATE = new Date(Long.MAX_VALUE);
 
     /**
      * 
-     * 此一系列在 LocalDateTIme、LocalDate、LocalTime 後， <br>
-     * 比較的功能是對 LocalXxxx.parse 更進一步包裝， <br>
+     * 此一系列在 LocalDateTIme、LocalDate、LocalTime 出現後， <br>
+     * 功能上比較是對 LocalXxxx.parse 更進一步包裝， <br>
      * DateTimeFormatter 可以透過傳入 String format 協助轉換 (雖然也不難就是...)
      */
     public static class Provider {
@@ -487,6 +486,24 @@ public class DateTimeUtil {
         //            
         // }
         
+        // ---------------------------------------------------------------------------------------------------------
+        
+        public static Boolean isLegalFormat(String strDate, String strFormat) {
+            return isLegalFormat(strDate, DateTimeUtil.Provider.obtainFormatter(strFormat));
+        }
+        
+        public static Boolean isLegalFormat(String strDate, DateTimeFormatter formatter) {
+            formatter = formatter.withResolverStyle(ResolverStyle.STRICT); // 嚴格檢查除了格式要對，日期時間也要合理
+            try {
+                formatter.parse(strDate);
+                return true;
+            } catch(Exception ex) {
+                return false;
+            }
+        }        
+        
+        // ---------------------------------------------------------------------------------------------------------
+        
         public static LocalDate analyze4SameDay(LocalDateTime theDateTime, LocalTime dayStartTime, LocalTime dayEndTime) {
             if (dayEndTime.isBefore(dayStartTime)) {
                 throw new IllegalArgumentException("dayEndTime shoud not before dayStartTime");
@@ -544,8 +561,11 @@ public class DateTimeUtil {
     }
     
     
-//<editor-fold defaultstate="collapsed" desc="以下從 BPM Copy 過來">
+//<editor-fold defaultstate="collapsed" desc="以下從 BPM Copy 過來，暫時跟上面分隔開來">
 
+    /**
+     * 之前從外面合併進此工具包，要再分析看看要怎麼更好的與其他 子 class、Methods 合併
+     */
     public static class Parser {
         public static Date doParse(String strDate, String format) throws ParseException{
             if(strDate == null){
@@ -557,7 +577,12 @@ public class DateTimeUtil {
         }
     }
     
+    
+    /**
+     * 之前從外面合併進此工具包，要再分析看看要怎麼更好的與其他 子 class、Methods 合併
+     */
     public static class Formatter {
+        
         public static final String FORMAT_DATE = "yyyy-MM-dd";
         public static final String FORMAT_DATETIME = "yyyy-MM-dd HH:mm:ss";                
         public static final String FORMAT_DATE_ZH = "yyyy年MM月dd日";
