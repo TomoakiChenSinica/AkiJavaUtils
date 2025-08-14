@@ -3,10 +3,10 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>tw.dev.tomoaki</groupId>
     <artifactId>AkiCommonDataValidator</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.1.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <description>
-        1.1 版，StringValdiator 加入一些 equals
+        1.1 版，StringValdiator 加入一些 equals、static 類型的 class，化為 private constructor
     </description>
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>

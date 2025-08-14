@@ -20,6 +20,9 @@ public class ListValidator {
     private class DataExistMap {
     }
 
+    private ListValidator() {
+    }
+    
     /**
      * 清單是否存在，即清單本身並非 null，且不為空清單 
      */

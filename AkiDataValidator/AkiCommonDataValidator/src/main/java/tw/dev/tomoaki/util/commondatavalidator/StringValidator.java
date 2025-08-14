@@ -13,6 +13,9 @@ import java.util.stream.Stream;
  * @author Tomoaki Chen
  */
 public class StringValidator {
+    
+    private StringValidator() {
+    }
 
     public static Boolean isValueExist(String text) {
         return text != null && !text.isEmpty();
