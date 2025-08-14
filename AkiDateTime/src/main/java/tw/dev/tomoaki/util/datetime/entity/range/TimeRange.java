@@ -20,20 +20,18 @@ public class TimeRange {
     protected TimeRange() {
     }
 
-    public static class Factory {
 
-        public static TimeRange create(LocalTime startTime, LocalTime endTime) {
-            TimeRange timeRange = new TimeRange();
-            timeRange.startTime = startTime;
-            timeRange.endTime = endTime;
-            return timeRange;
-        }
-
-        public static TimeRange create() {
-            return TimeRange.Factory.create(null, null);
-        }
-
+    public static TimeRange create(LocalTime startTime, LocalTime endTime) {
+        TimeRange timeRange = new TimeRange();
+        timeRange.startTime = startTime;
+        timeRange.endTime = endTime;
+        return timeRange;
     }
+
+    public static TimeRange create() {
+        return TimeRange.create(null, null);
+    }
+
 
     public LocalTime getStartTime() {
         return startTime;

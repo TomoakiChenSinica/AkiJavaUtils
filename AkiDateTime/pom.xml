@@ -4,16 +4,14 @@
     <groupId>tw.dev.tomoaki</groupId>
     <artifactId>AkiDateTime</artifactId>
     <!--<version>1.4.6-SNAPSHOT</version>-->
-    <version>1.6.3-SNAPSHOT</version>
+    <version>1.6.4-SNAPSHOT</version>
     <packaging>jar</packaging>
     <description>
-        1.4.6 版中，LocalYearMonth、IncompleteYearMonth 較穩定可用
-        1.5.0 版，整理 entity。LocalYearMonth、IncompleteYearMonth 也是 entity
-        
         1.6.0 版，新增 YearMonthRange，LocalYearMonth plusXxx、minusXxx 系列加上傳入 long 的 Methods
         1.6.1 版，因為 java.time 底下有原生的 YearMonth，LocalYearMonth 獨立到 datetime.mine 底下 中，並改名 MineYearMonth
         1.6.2 版，DateTimeUtil.Converter 新增 java.util.Date、LocalDateTime、LocalDate 轉換成 YearMonth 之 Methods
-        1.6.3 版，Analyzer 新增 isLegalFormat，協助判斷格式是否正確及日期本身是否合理
+        1.6.3 版，DateTimeUtil.Analyzer 新增 isLegalFormat，協助判斷格式是否正確及日期本身是否合理
+        1.6.4 版，entity 刪除多餘的 Factory 層
     </description>
 
     <properties>

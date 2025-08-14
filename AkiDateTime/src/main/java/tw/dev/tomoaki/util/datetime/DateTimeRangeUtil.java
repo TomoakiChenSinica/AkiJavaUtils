@@ -24,7 +24,7 @@ public class DateTimeRangeUtil {
         public static DateRange obtainWeekDateRange(LocalDate theDate) {
             LocalDate weekStartDate = DateTimeUtil.Provider.obtainDayOfWeek(theDate, 1);
             LocalDate weekEndDate = DateTimeUtil.Provider.obtainDayOfWeek(theDate, 7);
-            return DateRange.Factory.create(weekStartDate, weekEndDate);
+            return DateRange.create(weekStartDate, weekEndDate);
         }
     }
 
