@@ -11,6 +11,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
+import tw.dev.tomoaki.util.web.webservice.helper.SOAPClientHelper;
 import tw.dev.tomoaki.util.web.webservice.helper.SOAPMessageHelper;
 
 /**
@@ -37,5 +38,23 @@ public class SOAPClient extends BasicHttpClient { // 之後可以嘗試依賴反
     public Response call(WebTarget target, String strSOAPRequest, String cookie) {
         Response resp = this.doPost(target, MediaType.APPLICATION_XML_TYPE, MediaType.APPLICATION_XML_TYPE, null, Arrays.asList(cookie), strSOAPRequest);
         return resp;
+    }
+
+    // -------------------------------------------------------------------------------------------------
+    
+    public SOAPMessage responseMessage(WebTarget target, SOAPMessage requestMessage) throws SOAPException, IOException {
+        return SOAPClientHelper.parseMessage(this.call(target, requestMessage));
+    }
+
+    public SOAPMessage responseMessage(WebTarget target, String strSOAPRequest) throws SOAPException, IOException {
+        return SOAPClientHelper.parseMessage(this.call(target, strSOAPRequest));
+    }
+
+    public SOAPMessage responseMessage(WebTarget target, SOAPMessage requestMessage, String cookie) throws SOAPException, IOException {
+        return SOAPClientHelper.parseMessage(this.call(target, requestMessage, cookie));
+    }
+
+    public SOAPMessage responseMessage(WebTarget target, String strSOAPRequest, String cookie) throws SOAPException, IOException {
+        return SOAPClientHelper.parseMessage(this.call(target, strSOAPRequest, cookie));
     }
 }
