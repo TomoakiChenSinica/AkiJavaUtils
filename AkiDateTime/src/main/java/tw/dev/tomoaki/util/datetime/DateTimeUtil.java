@@ -14,7 +14,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.YearMonth;
 import java.time.ZoneId;
+import java.time.chrono.Chronology;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.DecimalStyle;
 import java.time.format.ResolverStyle;
 import java.time.temporal.WeekFields;
 import java.util.Date;
@@ -64,6 +67,15 @@ public class DateTimeUtil {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern(strFormat);
             return formatter;
         }
+        
+        public static DateTimeFormatter obtainFormatter(String strFormat, Chronology chrono) {
+            DateTimeFormatter formatter = new DateTimeFormatterBuilder().parseLenient()
+                    .appendPattern(strFormat)
+                    .toFormatter()
+                    .withChronology(chrono)
+                    .withDecimalStyle(DecimalStyle.of(Locale.getDefault()));
+            return formatter;
+        }   
 
         /**
          * 將比較舊的日期時間 java.util.Date 轉成 String。<br>
