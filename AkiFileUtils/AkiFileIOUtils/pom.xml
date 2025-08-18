@@ -44,15 +44,15 @@
             <version>1.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-        
-        <!--
+
+        <!-- JUnit -->
+        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
         <dependency>
-            <groupId>tw.dev.tomoaki</groupId>
-            <artifactId>AkiStringUtils</artifactId>
-            <version>1.1-SNAPSHOT</version>
-            <scope>provided</scope>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.13.4</version>
+            <scope>test</scope>
         </dependency>
-        -->
     </dependencies>    
     
     <licenses>        
