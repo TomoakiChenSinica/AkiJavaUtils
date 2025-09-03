@@ -185,7 +185,7 @@ public class DataCollectionUtils {
             return fromDataList;
         }
         
-        DataExistMap<T> dataExist = DataExistMap.Factory.createOrdered(fromDataList);
+        DataExistMap<T> dataExist = DataExistMap.createOrdered(fromDataList);
         removingDataList.forEach(dataExist::remove);
         return dataExist.existList();
     }
@@ -197,7 +197,7 @@ public class DataCollectionUtils {
     }
     
     public static <T> List<T> preordering(List<T> dataList, List<T> needPreorderingDataList) {
-        DataExistMap<T> needPreorderingMap = DataExistMap.Factory.create(needPreorderingDataList);
+        DataExistMap<T> needPreorderingMap = DataExistMap.create(needPreorderingDataList);
         Predicate<T> needPreordering = data -> needPreorderingMap.contains(data);
         return preordering(dataList, needPreordering);
     }
