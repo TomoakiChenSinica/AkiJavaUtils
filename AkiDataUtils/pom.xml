@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>tw.dev.tomoaki</groupId>
-    <version>0.6.3-SNAPSHOT</version>
+    <version>0.6.4-SNAPSHOT</version>
     <artifactId>AkiDataUtils</artifactId>
     <packaging>jar</packaging>
     <description>
@@ -11,6 +11,8 @@
           * appednAll(T, List)
         * 0.6.3: 
           * preordering()
+        * 0.6.4:
+          * 因應 DataExistMap 做調整
     </description>
     <build>
         <plugins>

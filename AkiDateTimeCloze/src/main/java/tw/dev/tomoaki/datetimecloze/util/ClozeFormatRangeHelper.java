@@ -79,7 +79,7 @@ public class ClozeFormatRangeHelper {
         String endFormat = formatRange.getEndClozeFormat();
         LocalDate endDate = LocalDateCloze.fillWith(endFormat, annual, month);
 
-        return DateRange.Factory.create(startDate, endDate);
+        return DateRange.create(startDate, endDate);
     }
 
     protected static DateRange straightCovert(ClozeFormatRange formatRange, Integer annual, Integer month, Integer dayOfMonth) {
@@ -89,7 +89,7 @@ public class ClozeFormatRangeHelper {
         String endFormat = formatRange.getEndClozeFormat();
         LocalDate endDate = LocalDateCloze.fillWith(endFormat, annual, month, dayOfMonth);
 
-        return DateRange.Factory.create(startDate, endDate);
+        return DateRange.create(startDate, endDate);
     }
 //</editor-fold>
     

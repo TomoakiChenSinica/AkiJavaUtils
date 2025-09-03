@@ -69,6 +69,7 @@ public class DateTimeUtil {
         }
         
         public static DateTimeFormatter obtainFormatter(String strFormat, Chronology chrono) {
+            // 參考自: https://gist.github.com/erics/8eada72001a03853cff741bdbe3815d5
             DateTimeFormatter formatter = new DateTimeFormatterBuilder().parseLenient()
                     .appendPattern(strFormat)
                     .toFormatter()
