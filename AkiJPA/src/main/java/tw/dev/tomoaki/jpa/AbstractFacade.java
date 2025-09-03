@@ -4,6 +4,8 @@
  */
 package tw.dev.tomoaki.jpa;
 
+import javax.validation.ConstraintViolationException;
+import tw.dev.tomoaki.jpa.helper.ConstraintViolationHelper;
 import tw.dev.tomoaki.jpa.helper.JPAEntityHelper;
 
 /**
@@ -17,14 +19,26 @@ public abstract class AbstractFacade<T> extends AbstractQueryFacade<T> {
     }
 
     public void create(T entity) {
-        getEntityManager().persist(entity);
+        try {
+            getEntityManager().persist(entity);
+        } catch (ConstraintViolationException ex) {
+            ConstraintViolationHelper.handleException(ex);
+        }
     }
 
     public void edit(T entity) {
-        getEntityManager().merge(entity);
+        try {
+            getEntityManager().merge(entity);
+        } catch (ConstraintViolationException ex) {
+            ConstraintViolationHelper.handleException(ex);
+        }
     }
 
     public void remove(T entity) {
-        getEntityManager().remove(getEntityManager().merge(entity));
+        try {
+            getEntityManager().remove(getEntityManager().merge(entity));
+        } catch (ConstraintViolationException ex) {
+            ConstraintViolationHelper.handleException(ex);
+        }
     }
 }
