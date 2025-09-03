@@ -40,8 +40,7 @@
         <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcprov-jdk18on</artifactId>       
-             <version>1.75</version> 
-            <!-- <version>1.78</version> -->
+             <version>1.78</version> <!--<version>1.75</version> 根據 GitHub Dependent Bot 升級--> 
         </dependency>
         
         <dependency>
@@ -62,7 +61,7 @@
         <dependency>
             <groupId>tw.dev.tomoaki</groupId>
             <artifactId>AkiFileIOUtils</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.2-SNAPSHOT</version>
         </dependency>    
     </dependencies>
     
