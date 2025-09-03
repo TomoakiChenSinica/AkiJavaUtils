@@ -40,6 +40,7 @@
         <module>AkiDataUtils</module>
         <module>AkiDataValidator</module>
         <module>AkiDateTime</module>
+        <module>AkiDateTimeCloze</module>
         <module>AkiEntity</module>
         <module>AkiEnumOption</module>
         <module>AkiException</module>
@@ -49,6 +50,7 @@
         <module>AkiHttp</module>
         <module>AkiImageUtils</module>
         <module>AkiJPA</module>
+        <module>AkiJPAHistory</module>
         <module>AkiLocaleExt</module>
         <module>AkiLogger</module>
         <module>AkiMail</module>
@@ -58,8 +60,6 @@
         <module>AkiSSH</module>
         <module>AkiStringUtils</module>
         <module>AkiWeb</module>
-        <module>AkiDateTimeCloze</module>
-        <module>AkiJPAHistory</module>
     </modules>
     <!-- 
     不用特別加這個，直接
