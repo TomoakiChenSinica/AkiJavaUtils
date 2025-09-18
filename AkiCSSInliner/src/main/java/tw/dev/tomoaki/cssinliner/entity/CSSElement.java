@@ -20,13 +20,10 @@ public class CSSElement {
         this.styleList = new ArrayList();
     }
 
-    public static class Factory {
-
-        public static CSSElement create(String selector) {
-            CSSElement element = new CSSElement();
-            element.selector = selector;
-            return element;
-        }
+    public static CSSElement create(String selector) {
+        CSSElement element = new CSSElement();
+        element.selector = selector;
+        return element;
     }
     
     public void addStyle(String name, String value) {

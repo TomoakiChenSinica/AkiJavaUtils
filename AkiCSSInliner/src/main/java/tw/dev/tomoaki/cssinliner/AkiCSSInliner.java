@@ -110,21 +110,40 @@ public class AkiCSSInliner {
         CSSStyleSheetImpl styleSheet = parser.parseStyleSheet(source, null);
 
         CSSRuleListImpl rules = styleSheet.getCssRules();
-        List<CSSStyleRuleImpl> ruleList = rules.getRules().stream().map(data -> (CSSStyleRuleImpl) data).collect(Collectors.toList());
-        List<CSSElement> cssList = ruleList.stream().map(rule -> {
-            String selector = rule.getSelectorText();
-            CSSElement cssElement = CSSElement.Factory.create(selector);
-            rule.getStyle().getProperties().forEach(property -> {
-                String name = property.getName();
-//                String value = property.getValue().getStringValue(); //遇到比如 16px會錯
-                String value = property.getValue().getCssText();
-                cssElement.addStyle(name, value);
-            });
-            return cssElement;
-        }).collect(Collectors.toList());
+        List<CSSStyleRuleImpl> ruleList = rules.getRules().stream()
+                .map(data -> (CSSStyleRuleImpl) data)
+                .collect(Collectors.toList());
+        
+        List<CSSElement> cssList = ruleList.stream()
+                /*.map(rule -> {
+                    String selector = rule.getSelectorText();
+                    CSSElement cssElement = CSSElement.create(selector);
+                    rule.getStyle().getProperties().forEach(property -> {
+                        String name = property.getName();
+                        // String value = property.getValue().getStringValue(); //遇到比如 16px會錯
+                        String value = property.getValue().getCssText();
+                        cssElement.addStyle(name, value);
+                    });
+                    return cssElement;
+                })*/
+                .map(this::processCSSStyleRule)
+                .collect(Collectors.toList());
         return cssList;
     }
+    
+    protected CSSElement processCSSStyleRule(CSSStyleRuleImpl rule) {
+        String selector = rule.getSelectorText();
+        CSSElement cssElement = CSSElement.create(selector);
+        rule.getStyle().getProperties().forEach(property -> {
+            String name = property.getName();
+            // String value = property.getValue().getStringValue(); //遇到比如 16px會錯
+            String value = property.getValue().getCssText();
+            cssElement.addStyle(name, value);
+        });
+        return cssElement;        
+    }
 
+//<editor-fold defaultstate="collapsed" desc="註解掉的 Codes">
 //    public CSSElement obtainRule(CSSStyleRuleImpl ruleImpl) {
 //    }
 
@@ -158,5 +177,6 @@ public class AkiCSSInliner {
         });     
         return null;
     }    
-     */
+     */    
+//</editor-fold>    
 }
