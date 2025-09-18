@@ -179,7 +179,7 @@ public abstract class ArticleCreator {
         if (this.printLog) {
             List<String> optionalTokenList = this.getOptionalTokenList();
             List<String> implTokenList = this.getImplTokenList();
-            PairDataDiff diff = PairDataDiff.Factory.create(optionalTokenList, implTokenList);
+            PairDataDiff diff = PairDataDiff.create(optionalTokenList, implTokenList);
             if (diff.getLessDataList() != null && diff.getLessDataList().isEmpty() == false) {
                 System.err.println(diff.getLessDataList() + " Not Implement Yet");
             }
