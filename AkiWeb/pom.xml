@@ -6,8 +6,8 @@
     <version>2.6.0-SNAPSHOT</version>    
     <description>
         2.5.0 版: UrlProvider 改名為 AppUrlProvider。Factory.Create 改 Create。預計繼續改良，預計可以針對 Application 在 Proxy 環境下的支援更好。
-        2.6.0 版
-        2.6.1 版: 支援 SOAPMessage 由字串產生
+        2.6.0 版: 支援 SOAPMessage 由字串產生
+        2.6.1 版: 
     </description>
     <packaging>jar</packaging>
     <build>
