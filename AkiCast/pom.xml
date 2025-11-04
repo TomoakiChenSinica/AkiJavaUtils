@@ -4,9 +4,9 @@
     <groupId>tw.dev.tomoaki</groupId>
     <artifactId>AkiCast</artifactId>
     <!--    <version>1.4-SNAPSHOT</version>-->
-    <version>1.4-jackson2.8.9-SNAPSHOT</version>
+    <version>1.5-SNAPSHOT</version>
     <description>
-        於 1.4 版中，處理 JavaToJson 和 JsonToJava 的 Date Pattern 問題
+        於 1.4 版中，處理 JavaToJson 和 JsonToJava 的 Date Pattern 問題。此版本與 Jackson 2.8.9 相容。
     </description>
     <packaging>jar</packaging>
     
