@@ -30,7 +30,7 @@ public class JavaToXml {
     }
 
     public static <T> String getXmlString(T obj) throws JsonProcessingException {
-        XmlMapper xmlMapper = XmlMapper// XmlMapper.builder()
+        XmlMapper xmlMapper = XmlMapper.builder()
                 .defaultUseWrapper(false)
                 .build();
         if (allowJavaTime) {
