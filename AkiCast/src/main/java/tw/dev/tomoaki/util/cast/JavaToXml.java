@@ -20,6 +20,7 @@ import static tw.dev.tomoaki.util.cast.XmlToJava.NEED_WRITE_XML_DECLARATION;
  */
 public class JavaToXml {
 
+    /*
     public static Boolean needWriteXMLDeclaration = Boolean.FALSE;
     public static Boolean allowJavaTime = Boolean.FALSE;
 
@@ -42,5 +43,5 @@ public class JavaToXml {
         xmlMapper.configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, needWriteXMLDeclaration); //https://xmlwriter.net/xml_guide/xml_declaration.shtml
         String xml = xmlMapper.writeValueAsString(obj);
         return xml;
-    }
+    }*/
 }

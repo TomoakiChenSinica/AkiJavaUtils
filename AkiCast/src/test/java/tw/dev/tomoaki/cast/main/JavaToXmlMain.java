@@ -32,11 +32,11 @@ public class JavaToXmlMain {
         Batter smoak = new Batter("Justin", "Smoak", 0.232);
         List<Batter> batterList = Arrays.asList(ackley, smoak);
         
-        String xmlData4BatterSmoak = JavaToXml.getXmlString(smoak);
-        System.out.println(xmlData4BatterSmoak);
-        
-        String xmlData4BatterList = JavaToXml.getXmlString(batterList); //出來的會怪怪的
-        System.out.println(xmlData4BatterList);    
+//        String xmlData4BatterSmoak = JavaToXml.getXmlString(smoak);
+//        System.out.println(xmlData4BatterSmoak);
+//        
+//        String xmlData4BatterList = JavaToXml.getXmlString(batterList); //出來的會怪怪的
+//        System.out.println(xmlData4BatterList);    
     }
     
     private static void test2() throws JsonProcessingException {
@@ -44,8 +44,8 @@ public class JavaToXmlMain {
         player.setName("Link");
         player.setHealthPoint(1000000000);
         player.setSpecialPoint(99999);
-        String xmlData4Player = JavaToXml.getXmlString(player);
-        System.out.format("player= %s \n", xmlData4Player);        
+//        String xmlData4Player = JavaToXml.getXmlString(player);
+//        System.out.format("player= %s \n", xmlData4Player);        
     }
     
 }

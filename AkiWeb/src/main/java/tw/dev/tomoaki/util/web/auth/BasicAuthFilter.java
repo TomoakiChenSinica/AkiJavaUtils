@@ -354,7 +354,6 @@ public abstract class BasicAuthFilter<SESSION_CONTEXT extends BasicSessionContex
     
 //</editor-fold>
 
-    
 //<editor-fold defaultstate="collapsed" desc="輔助 Methods，待實作的 Methods">
     protected abstract Class<SESSION_CONTEXT> getSessionContextClazz();
 
