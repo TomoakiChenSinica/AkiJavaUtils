@@ -13,13 +13,13 @@
     </modules>
     <distributionManagement>
         <repository>
-            <id>ccs-gitea</id>
+            <id>ccs-git</id>
             <name>CCS Packages</name>
             <url>https://ccs-git.iis.sinica.edu.tw/api/packages/IIS/maven</url>
         </repository>
         
         <snapshotRepository>
-            <id>ccs-gitea</id>
+            <id>ccs-git</id>
             <name>CCS Packages</name>
             <url>https://ccs-git.iis.sinica.edu.tw/api/packages/IIS/maven </url>
         </snapshotRepository>      

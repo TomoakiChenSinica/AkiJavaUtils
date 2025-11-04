@@ -37,7 +37,7 @@
     </properties>
     <repositories>
         <repository>
-            <id>ccs-gitea</id>
+            <id>ccs-git</id>
             <name>CCS Packages</name>            
             <url>https://ccs-git.iis.sinica.edu.tw/api/packages/IIS/maven</url>
             <snapshots>
@@ -91,21 +91,14 @@
     </dependencies>
     
     <distributionManagement>
-        <!--
         <repository>
-            <id>github</id>
-            <name>GitHub OWNER Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/TomoakiChenSinica/AkiJavaUtils</url>
-        </repository>        
-        -->
-        <repository>
-            <id>ccs-gitea</id>
+            <id>ccs-git</id>
             <name>CCS Packages</name>
             <url>https://ccs-git.iis.sinica.edu.tw/api/packages/IIS/maven</url>
         </repository>
         
         <snapshotRepository>
-            <id>ccs-gitea</id>
+            <id>ccs-git</id>
             <name>CCS Packages</name>
             <url>https://ccs-git.iis.sinica.edu.tw/api/packages/IIS/maven</url>
         </snapshotRepository>        
