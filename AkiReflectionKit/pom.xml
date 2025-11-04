@@ -16,13 +16,13 @@
     
     <distributionManagement>
         <repository>
-            <id>ccs-gitea</id>
+            <id>ccs-git</id>
             <name>CCS Packages</name>
             <url>https://ccs-git.iis.sinica.edu.tw/api/packages/IIS/maven</url>
         </repository>
         
         <snapshotRepository>
-            <id>ccs-gitea</id>
+            <id>ccs-git</id>
             <name>CCS Packages</name>
             <url>https://ccs-git.iis.sinica.edu.tw/api/packages/IIS/maven </url>
         </snapshotRepository>       
@@ -37,7 +37,7 @@
     
     <repositories>
         <repository>
-            <id>ccs-gitea</id>
+            <id>ccs-git</id>
             <name>CCS Packages</name>
             <url>https://ccs-git.iis.sinica.edu.tw/api/packages/IIS/maven/</url>
             <!-- <url>http://192.168.111.101:8082/repository/ccs-packages/</url> -->

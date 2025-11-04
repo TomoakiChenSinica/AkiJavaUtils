@@ -23,13 +23,13 @@
     
     <distributionManagement>
         <repository>
-            <id>ccs-gitea</id>
+            <id>ccs-git</id>
             <name>CCS Packages</name>
             <url>${iis.repo.url}</url>
         </repository>
         
         <snapshotRepository>
-            <id>ccs-gitea</id>
+            <id>ccs-git</id>
             <name>CCS Packages</name>
             <url>${iis.repo.url}</url>
         </snapshotRepository>   
