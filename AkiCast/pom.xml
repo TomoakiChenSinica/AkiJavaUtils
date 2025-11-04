@@ -3,7 +3,8 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>tw.dev.tomoaki</groupId>
     <artifactId>AkiCast</artifactId>
-    <version>1.4-SNAPSHOT</version>
+    <!--    <version>1.4-SNAPSHOT</version>-->
+    <version>1.4-jackson2.8.9-SNAPSHOT</version>
     <description>
         於 1.4 版中，處理 JavaToJson 和 JsonToJava 的 Date Pattern 問題
     </description>
@@ -12,9 +13,9 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <jackson.version>[2.14.3.2,)</jackson.version>        
-        <!--<jackson.version>2.8.9</jackson.version>-->
+        <maven.compiler.target>1.8</maven.compiler.target>               
+        <jackson.version>2.8.9</jackson.version>
+        <!--<jackson.version>[2.14.3.2,)</jackson.version> -->
     </properties>    
     
     <dependencies>
