@@ -77,26 +77,7 @@ public class CountryInfoHelper {
         return countryInfoList;
     }
 
-//    public static List<CountryInfo> obtainCountryInfoList(Locale desigLocale1, Locale desigLocale2) {
-//        if (desigLocale1 == null) {
-//            throw new IllegalArgumentException("desigLocale1 Is Null");
-//        }
-//
-//        List<CountryInfo> countryInfoList = new ArrayList();
-//
-//        String[] countryISOCodes = Locale.getISOCountries();
-//        for (String iso2Code : countryISOCodes) {
-//            Locale locale = new Locale("", iso2Code);
-//
-//            String iso3Code = locale.getISO3Country();
-//            String displayName = LocaleHelper.createCountryDisplayName(locale, desigLocale1, desigLocale2);
-//
-//            CountryInfo countryInfo = CountryInfo.newInstance(displayName, locale, iso2Code, iso3Code);
-//            countryInfoList.add(countryInfo);
-//        }
-//        return countryInfoList;
-//    }
-    private static final CountryInfoMap countryInfoKeyByISOCodeMap = CountryInfoMap.Factory.create(Locale.getDefault());
+    private static final CountryInfoMap countryInfoKeyByISOCodeMap = CountryInfoMap.create(Locale.getDefault());
 
     public static CountryInfo convertLocale2Country(Locale desigLocale) {
         String iso3Code = desigLocale.getISO3Country();

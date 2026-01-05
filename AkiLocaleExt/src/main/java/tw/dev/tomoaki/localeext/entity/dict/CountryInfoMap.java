@@ -22,21 +22,19 @@ public class CountryInfoMap {
         this.countryInfoKeyByISO3CodeMap = new LinkedHashMap();
     }
 
-    public static class Factory {
 
-        public static CountryInfoMap create(Locale desigLang) {
-            CountryInfoMap theMap = new CountryInfoMap();
-            List<CountryInfo> countryInfoList = CountryInfoHelper.obtainCountryInfoList(desigLang);
-            theMap.addAll(countryInfoList);
-            return theMap;
-        }
-        
-        public static CountryInfoMap create(List<CountryInfo> countryInfoList) {
-            CountryInfoMap theMap = new CountryInfoMap();
-            theMap.addAll(countryInfoList);
-            return theMap;
-        }        
+    public static CountryInfoMap create(Locale desigLang) {
+        CountryInfoMap theMap = new CountryInfoMap();
+        List<CountryInfo> countryInfoList = CountryInfoHelper.obtainCountryInfoList(desigLang);
+        theMap.addAll(countryInfoList);
+        return theMap;
     }
+
+    public static CountryInfoMap create(List<CountryInfo> countryInfoList) {
+        CountryInfoMap theMap = new CountryInfoMap();
+        theMap.addAll(countryInfoList);
+        return theMap;
+    }       
     
     public void addAll(List<CountryInfo> countryInfoList) {
         if(countryInfoList != null) {

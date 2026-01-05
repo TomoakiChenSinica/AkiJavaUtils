@@ -2,29 +2,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>tw.dev.tomoaki</groupId>
-    <version>0.3.0-SNAPSHOT</version>
+    <version>0.4.0-SNAPSHOT</version>
     <description>
         1. 新增一些 Helper 和 Helper底下 Method
         2. 新增 LanguageInfo、及快速查詢其的 Map
+        0.4.0: 刪除 static Factory 多餘的 Factory 路徑
     </description>
     <artifactId>AkiLocaleExt</artifactId>
     <packaging>jar</packaging>
+    
     <properties>
         <exec.mainClass>tw.dev.tomoaki.akicountryutils.AkiCountryUtils</exec.mainClass>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <!--
-    <distributionManagement>
-        <repository>
-            <id>github</id>
-            <name>GitHub OWNER Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/TomoakiChenSinica/AkiJavaUtils</url>
-        </repository>        
-        
-    </distributionManagement>
-    -->
+    
     <distributionManagement>
         <repository>
             <id>ccs-git</id>

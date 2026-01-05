@@ -41,23 +41,21 @@ public class LanguageInfoMap {
         this.languageInfoKeyByLanguageTagMap = new LinkedHashMap();
     }
 
-    public static class Factory {
 
-        public static LanguageInfoMap create(Locale desigLang) {
-            List<LanguageInfo> languageInfoList = LanguageInfoHelper.obtainLanguageInfoList(desigLang);
-            return Factory.create(languageInfoList);
-        }
+    public static LanguageInfoMap create(Locale desigLang) {
+        List<LanguageInfo> languageInfoList = LanguageInfoHelper.obtainLanguageInfoList(desigLang);
+        return create(languageInfoList);
+    }
 
-        public static LanguageInfoMap create(Locale desigLang, LocaleSource localeSource) {
-            List<LanguageInfo> languageInfoList = LanguageInfoHelper.obtainLanguageInfoList(desigLang, localeSource);
-            return Factory.create(languageInfoList);
-        }
+    public static LanguageInfoMap create(Locale desigLang, LocaleSource localeSource) {
+        List<LanguageInfo> languageInfoList = LanguageInfoHelper.obtainLanguageInfoList(desigLang, localeSource);
+        return create(languageInfoList);
+    }
 
-        public static LanguageInfoMap create(List<LanguageInfo> languageInfoList) {
-            LanguageInfoMap theMap = new LanguageInfoMap();
-            theMap.addAll(languageInfoList);
-            return theMap;
-        }
+    public static LanguageInfoMap create(List<LanguageInfo> languageInfoList) {
+        LanguageInfoMap theMap = new LanguageInfoMap();
+        theMap.addAll(languageInfoList);
+        return theMap;
     }
 
     protected void addAll(List<LanguageInfo> languageInfoList) {
