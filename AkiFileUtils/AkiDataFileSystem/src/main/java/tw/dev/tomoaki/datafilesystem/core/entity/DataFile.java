@@ -18,6 +18,8 @@ package tw.dev.tomoaki.datafilesystem.core.entity;
 /**
  *
  * @author tomoaki
+ * 
+ * 最底層的「殼」，基本上不會直接用到
  */
 public interface DataFile {
 
