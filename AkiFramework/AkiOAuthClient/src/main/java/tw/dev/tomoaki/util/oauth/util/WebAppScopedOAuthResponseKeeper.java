@@ -24,7 +24,7 @@ public class WebAppScopedOAuthResponseKeeper<T extends OAuthResponse> implements
         this.context = request.getServletContext();
     }    
     
-    /* https://chatgpt.com/share/684bdcc9-d114-800d-b769-5ebe6321b3af
+    /* 取消 Factory 原因: https://chatgpt.com/share/684bdcc9-d114-800d-b769-5ebe6321b3af
     public static class Factory {
         
         public static WebAppScopedOAuthResponseKeeper create(HttpServletRequest request) {

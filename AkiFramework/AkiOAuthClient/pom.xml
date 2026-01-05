@@ -3,13 +3,14 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>tw.dev.tomoaki</groupId>
     <artifactId>AkiOAuthClient</artifactId>
-    <version>0.1.2</version>
+    <version>0.1.3-SNAPSHOT</version>
     <packaging>jar</packaging>
+    <name>AkiOAuthClient</name>
+    
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <exec.mainClass>tw.dev.tomoaki.akioauth.AkiOAuth</exec.mainClass>
-    </properties>
-    <name>AkiOAuthClient</name>
+    </properties>    
     
     <dependencies>
         <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
