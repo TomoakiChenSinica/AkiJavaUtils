@@ -351,6 +351,13 @@ public class DateTimeUtil {
 
     public static class Converter {
 
+        /**
+         * 將比較舊的日期時間 java.util.Date 轉成 java.time.LocalDateTime 。<br>
+         * 
+         * @param utilDateTime 日期時間資訊，格式為 java.util.Date
+         * @return 將丟入的 java.util.Date轉成新的日期格式(java.time.LocalDateTime)。 
+         * 
+         */
         public static LocalDateTime convert2DateTime(java.util.Date utilDateTime) {
             LocalDateTime ldt = utilDateTime == null ? null : LocalDateTime.ofInstant(utilDateTime.toInstant(), ZoneId.systemDefault());
             return ldt;
@@ -516,7 +523,7 @@ public class DateTimeUtil {
         }        
         
         // ---------------------------------------------------------------------------------------------------------
-        
+
         public static LocalDate analyze4SameDay(LocalDateTime theDateTime, LocalTime dayStartTime, LocalTime dayEndTime) {
             if (dayEndTime.isBefore(dayStartTime)) {
                 throw new IllegalArgumentException("dayEndTime shoud not before dayStartTime");
@@ -527,6 +534,16 @@ public class DateTimeUtil {
 
         }
 
+        /**
+         * 實作有些狀況下，要統計的一天可能不是直接由實際的一天的00:00 ~ 23:59 <br>
+         * 實際需求甚至會有跨日的狀況(比如第一天的 17:30 到第二天的 08:30 這種 (AI 生成補完)
+         *
+         * @param strTheDateTime 指定要判斷的日期時間字串
+         * @param strDayStartTime 指定單日的起始時間字串
+         * @param strDayEndTime 指定單日的結束時間字串
+         * @return 指定要判斷的時間日期，應該要被分類到哪一個單日
+         *
+         */
         public static LocalDate analyze4CrossDay(String strTheDateTime, String strDayStartTime, String strDayEndTime) {
             LocalDateTime theDateTime = DateTimeUtil.Provider.parse2DateTime(strTheDateTime);
             LocalTime dayStartTime = DateTimeUtil.Provider.parse2Time(strDayStartTime);
@@ -541,10 +558,12 @@ public class DateTimeUtil {
          * @param theDateTime 指定要判斷的日期時間
          * @param dayStartTime 指定單日的起始時間
          * @param dayEndTime 指定單日的結束時間
-         * @return 指定要判斷的時間日期，應該要被分類到哪一個單日
+         * @return 指定要判斷的時間日期，應該要被分類到哪一個單日。一般是 theDateTime 前一天、當天、後一天 其中之一。
          *
          */
         public static LocalDate analyze4CrossDay(LocalDateTime theDateTime, LocalTime dayStartTime, LocalTime dayEndTime) {
+
+            // 當 dayStartTime 與 dayEndTime 相同時，讓結束時間是 dayStartTime 減一秒(可視為隔天同時間(dayStartTime)的前一秒)
             if (dayStartTime.equals(dayEndTime)) {
                 dayEndTime = dayEndTime.minusSeconds(1);
             }

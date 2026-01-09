@@ -20,17 +20,17 @@ import tw.dev.tomoaki.util.datetime.util.RangeHelper;
  */
 public class DateRange {
 
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private LocalDate since;
+    private LocalDate until;
 
     protected DateRange() {
     }
 
 
-    public static DateRange create(LocalDate startDate, LocalDate endDate) {
+    public static DateRange create(LocalDate since, LocalDate until) {
         DateRange dateRange = new DateRange();
-        dateRange.startDate = startDate;
-        dateRange.endDate = endDate;
+        dateRange.since = since;
+        dateRange.until = until;
         return dateRange;
     }
 
@@ -39,93 +39,112 @@ public class DateRange {
     }
 
     public LocalDate getStartDate() {
-        return startDate;
+        return since;
     }
 
     public Date getUtilStartDate() {
-        return DateTimeUtil.Converter.convert(startDate);
+        return DateTimeUtil.Converter.convert(since);
     }
 
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
+    public void setStartDate(LocalDate since) {
+        this.since = since;
     }
 
     public LocalDate getEndDate() {
-        return endDate;
+        return until;
     }
 
     public Date getUtilEndDate() {
-        return DateTimeUtil.Converter.convert(endDate);
+        return DateTimeUtil.Converter.convert(until);
     }
 
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
+    public void setEndDate(LocalDate until) {
+        this.until = until;
     }
 
-    public DateRange plusWeeks(Long weeks) {
-        LocalDate newStartDate = this.startDate == null ? null : this.startDate.plusWeeks(weeks);
-        LocalDate newEndDate = this.endDate == null ? null : this.endDate.plusWeeks(weeks);
-        return DateRange.create(newStartDate, newEndDate);
+    public LocalDate getSince() {
+        return since;
     }
 
-    public DateRange minusWeeks(Long weeks) {
-        LocalDate newStartDate = this.startDate == null ? null : this.startDate.minusWeeks(weeks);
-        LocalDate newEndDate = this.endDate == null ? null : this.endDate.minusWeeks(weeks);
-        return DateRange.create(newStartDate, newEndDate);
+    public void setSince(LocalDate since) {
+        this.since = since;
     }
 
+    public LocalDate getUntil() {
+        return until;
+    }
+
+    public void setUntil(LocalDate until) {
+        this.until = until;
+    }
+    
+    
+//<editor-fold defaultstate="collapsed" desc="一些輔助計算 methods">    
     public DateRange plusYears(Long years) {
-        LocalDate newStartDate = this.startDate == null ? null : this.startDate.plusYears(years);
-        LocalDate newEndDate = this.endDate == null ? null : this.endDate.plusYears(years);
+        LocalDate newStartDate = this.since == null ? null : this.since.plusYears(years);
+        LocalDate newEndDate = this.until == null ? null : this.until.plusYears(years);
         return DateRange.create(newStartDate, newEndDate);
     }
 
     public DateRange minusYears(Long years) {
-        LocalDate newStartDate = this.startDate == null ? null : this.startDate.minusYears(years);
-        LocalDate newEndDate = this.endDate == null ? null : this.endDate.minusYears(years);
+        LocalDate newStartDate = this.since == null ? null : this.since.minusYears(years);
+        LocalDate newEndDate = this.until == null ? null : this.until.minusYears(years);
         return DateRange.create(newStartDate, newEndDate);
     }
 
-    public DateRange plusMonths(Long years) {
-        LocalDate newStartDate = this.startDate == null ? null : this.startDate.plusMonths(years);
-        LocalDate newEndDate = this.endDate == null ? null : this.endDate.plusMonths(years);
+    public DateRange plusMonths(Long months) {
+        LocalDate newStartDate = this.since == null ? null : this.since.plusMonths(months);
+        LocalDate newEndDate = this.until == null ? null : this.until.plusMonths(months);
         return DateRange.create(newStartDate, newEndDate);
     }
 
-    public DateRange minusMonths(Long years) {
-        LocalDate newStartDate = this.startDate == null ? null : this.startDate.minusMonths(years);
-        LocalDate newEndDate = this.endDate == null ? null : this.endDate.minusMonths(years);
+    public DateRange minusMonths(Long months) {
+        LocalDate newStartDate = this.since == null ? null : this.since.minusMonths(months);
+        LocalDate newEndDate = this.until == null ? null : this.until.minusMonths(months);
+        return DateRange.create(newStartDate, newEndDate);
+    }
+    
+    public DateRange plusWeeks(Long weeks) {
+        LocalDate newStartDate = this.since == null ? null : this.since.plusWeeks(weeks);
+        LocalDate newEndDate = this.until == null ? null : this.until.plusWeeks(weeks);
         return DateRange.create(newStartDate, newEndDate);
     }
 
-    public DateRange plusDays(Long years) {
-        LocalDate newStartDate = this.startDate == null ? null : this.startDate.plusDays(years);
-        LocalDate newEndDate = this.endDate == null ? null : this.endDate.plusDays(years);
+    public DateRange minusWeeks(Long weeks) {
+        LocalDate newStartDate = this.since == null ? null : this.since.minusWeeks(weeks);
+        LocalDate newEndDate = this.until == null ? null : this.until.minusWeeks(weeks);
+        return DateRange.create(newStartDate, newEndDate);
+    }    
+
+    public DateRange plusDays(Long days) {
+        LocalDate newStartDate = this.since == null ? null : this.since.plusDays(days);
+        LocalDate newEndDate = this.until == null ? null : this.until.plusDays(days);
         return DateRange.create(newStartDate, newEndDate);
     }
 
-    public DateRange minusDays(Long years) {
-        LocalDate newStartDate = this.startDate == null ? null : this.startDate.minusDays(years);
-        LocalDate newEndDate = this.endDate == null ? null : this.endDate.minusDays(years);
+    public DateRange minusDays(Long days) {
+        LocalDate newStartDate = this.since == null ? null : this.since.minusDays(days);
+        LocalDate newEndDate = this.until == null ? null : this.until.minusDays(days);
         return DateRange.create(newStartDate, newEndDate);
     }
 
     public Boolean isBefore(LocalDate desigDate) {
-        return desigDate.isBefore(startDate);
+        return desigDate.isBefore(since);
     }
 
     public Boolean isBetween(LocalDate desigDate) {
-        //不早於startDate --> 在startDate相等或之後 && 不婉瑜endDate -->等於或早於endDate
-        return !desigDate.isBefore(startDate) && !desigDate.isAfter(endDate);
+        //不早於since --> 在since相等或之後 && 不婉瑜until -->等於或早於until
+        return !desigDate.isBefore(since) && !desigDate.isAfter(until);
     }
 
     public Boolean isAfter(LocalDate desigDate) {
-        return desigDate.isAfter(endDate);
+        return desigDate.isAfter(until);
     }
+//</editor-fold>
 
     @Override
     public String toString() {
-        return RangeHelper.obtainString(this, startDate, endDate);
+        return RangeHelper.obtainString(this, since, until);
     }
     
     public List<LocalDate> toDateList() {
