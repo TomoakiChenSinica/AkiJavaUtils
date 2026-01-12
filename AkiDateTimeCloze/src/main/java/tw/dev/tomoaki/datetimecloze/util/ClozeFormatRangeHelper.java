@@ -5,12 +5,14 @@
 package tw.dev.tomoaki.datetimecloze.util;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import tw.dev.tomoaki.datetimecloze.bundle.LocalDateCloze;
 import tw.dev.tomoaki.datetimecloze.entity.ClozeFormatRange;
 import tw.dev.tomoaki.datetimecloze.entity.date.DateCloze;
 import tw.dev.tomoaki.datetimecloze.exception.BadClozeFormatRangeException;
 import tw.dev.tomoaki.util.datetime.mine.entity.MineYearMonth;
 import tw.dev.tomoaki.util.datetime.entity.range.DateRange;
+import tw.dev.tomoaki.util.datetime.entity.range.DateTimeRange;
 
 /**
  *
@@ -53,10 +55,35 @@ public class ClozeFormatRangeHelper {
         doValidateFormatRange4YearMonth(formatRange);
         return ClozeFormatRangeHelper.straightCovert(formatRange, labledYearMonth);
     }
+    
+//    public static DateTimeRange calculateInRange(ClozeFormatRange formatRange, LocalDateTime desigDate) {
+//        DateCloze shift = DateCloze.Factory.create(formatRange.getEndClozeFormat());
+//        DateRange range = ClozeFormatRangeHelper.straightCovert(formatRange, desigDate);
+//        if (range.isBetween(desigDate)) {
+//            return range;
+//        }
+//
+//        if (range.isBefore(desigDate)) {
+//            return range.minusYears(shift.getAddendYears().longValue())
+//                        .minusMonths(shift.getAddendMonths().longValue())
+//                        .minusDays(shift.getAddendDayOfMonth().longValue());
+//        }
+//
+//        if (range.isAfter(desigDate)) {
+//            return range.plusYears(shift.getAddendYears().longValue())
+//                        .plusMonths(shift.getAddendMonths().longValue())
+//                        .plusDays(shift.getAddendDayOfMonth().longValue());
+//        }
+//        return null;
+//    }
+//    
+//    public static DateRange calculateAsRangeStart(ClozeFormatRange formatRange, MineYearMonth labledYearMonth) {
+//        // 把 labledYearMonth 當成起始條件
+//        doValidateFormatRange4YearMonth(formatRange);
+//        return ClozeFormatRangeHelper.straightCovert(formatRange, labledYearMonth);
+//    }    
 //</editor-fold>
     
-//<editor-fold defaultstate="collapsed" desc="這裡是">
-//</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="內部輔助 Methods - 產生 DateRange">
         

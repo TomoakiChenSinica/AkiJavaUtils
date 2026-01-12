@@ -21,14 +21,41 @@ import tw.dev.tomoaki.util.datetime.DateTimeUtil;
  */
 public class LocalDateCloze {
 
+    /**
+     * 填寫填空題/克漏字(Cloze)。
+     * 
+     * @param clozeFormat (日期)填空題
+     * @param annualYear 填空到年度的數值
+     * @return (日期)填空題(clozeFormat)填入各項數值後的結果。
+     * 
+     */    
     public static LocalDate fillWith(String clozeFormat, Integer annualYear) {
         return fillWith(clozeFormat, annualYear, null, null);
     }
 
+    /**
+     * 填寫填空題/克漏字(Cloze)。
+     * 
+     * @param clozeFormat (日期)填空題
+     * @param annualYear 填空到年度的數值
+     * @param monthOfAnnual 填空到月份的數值
+     * @return (日期)填空題(clozeFormat)填入各項數值後的結果。
+     * 
+     */    
     public static LocalDate fillWith(String clozeFormat, Integer annualYear, Integer monthOfAnnual) {
         return fillWith(clozeFormat, annualYear, monthOfAnnual, null);
     }
 
+    /**
+     * 填寫填空題/克漏字(Cloze)。
+     * 
+     * @param clozeFormat (日期)填空題
+     * @param annualYear 填空到年度的數值
+     * @param monthOfAnnual 填空到月份的數值
+     * @param dayOfMonth 填空到日期的數值
+     * @return (日期)填空題(clozeFormat)填入各項數值後的結果。
+     * 
+     */
     public static LocalDate fillWith(String clozeFormat, Integer annualYear, Integer monthOfAnnual, Integer dayOfMonth) {
         String strDate = clozeFormat;
         DateCloze cloze = DateCloze.Factory.create(clozeFormat);
@@ -46,6 +73,15 @@ public class LocalDateCloze {
     }
 
 //<editor-fold defaultstate="collapsed" desc="內部輔助 Methods - 處理各「部分」，部分指的是年、月、日">
+    
+    /**
+     * 
+     * 
+     * @param strDate
+     * @param cloze
+     * @param annualYear
+     * 
+     */
     protected static String processYearPart(String strDate, DateCloze cloze, Integer annualYear) {
         if (annualYear == null) {
             return strDate;
@@ -78,9 +114,10 @@ public class LocalDateCloze {
             return strDate;
         }
         if (cloze.getIsDayOfMonthFillable()) {
-            //將日期區塊先用 指定年度(dayOfMonth)更換
+            // 將日期區塊先用 指定年度(dayOfMonth)更換
             String match = cloze.getDayOfMonthPartMatchText();
-            strDate = strDate.replace(match, dayOfMonth.toString());
+            String strDayOfMonth = (dayOfMonth >= 10) ? dayOfMonth.toString() : "0" + dayOfMonth.toString();
+            strDate = strDate.replace(match, strDayOfMonth);
         }
         return strDate;
     }

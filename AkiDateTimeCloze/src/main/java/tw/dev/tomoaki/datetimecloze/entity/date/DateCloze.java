@@ -32,6 +32,7 @@ public final class DateCloze {
     protected DateCloze() {
     }
 
+    // FIXME: 刪除多餘的 Factory 路徑
     public static class Factory {
 
         public static DateCloze create(String format) {
@@ -43,7 +44,7 @@ public final class DateCloze {
     }
 
     protected void doSetupParts() {
-//        clozeYearPart = clozeYearPart = ClozeFormatHelper.analyzeYearPart(format);
+        // clozeYearPart = clozeYearPart = ClozeFormatHelper.analyzeYearPart(format);
         clozeYearPart = ClozeFormatHelper.analyzeYearPart(format);
         clozeMonthPart = ClozeFormatHelper.analyzeMonthPart(format);
         clozeDayOfMonthPart = ClozeFormatHelper.analyzeDayOfMonthPart(format);
