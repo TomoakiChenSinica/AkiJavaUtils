@@ -99,88 +99,102 @@ public class DateTimeRange {
     }
 
 //<editor-fold defaultstate="collapsed" desc="一些輔助計算 methods">    
-    public DateTimeRange plusYears(Long years) {
+    public DateTimeRange plusYears(long years) {
         LocalDateTime newSince = this.since == null ? null : this.since.plusYears(years);
         LocalDateTime newUntil = this.until == null ? null : this.until.plusYears(years);
         return DateTimeRange.create(newSince, newUntil);
     }
 
-    public DateTimeRange minusYears(Long years) {
+    public DateTimeRange minusYears(long years) {
         LocalDateTime newSince = this.since == null ? null : this.since.minusYears(years);
         LocalDateTime newUntil = this.until == null ? null : this.until.minusYears(years);
         return DateTimeRange.create(newSince, newUntil);
     }
 
-    public DateTimeRange plusMonths(Long months) {
+    public DateTimeRange plusMonths(long months) {
         LocalDateTime newSince = this.since == null ? null : this.since.plusMonths(months);
         LocalDateTime newUntil = this.until == null ? null : this.until.plusMonths(months);
         return DateTimeRange.create(newSince, newUntil);
     }
 
-    public DateTimeRange minusMonths(Long months) {
+    public DateTimeRange minusMonths(long months) {
         LocalDateTime newSince = this.since == null ? null : this.since.minusMonths(months);
         LocalDateTime newUntil = this.until == null ? null : this.until.minusMonths(months);
         return DateTimeRange.create(newSince, newUntil);
     }
 
-    public DateTimeRange plusWeeks(Long weeks) {
+    public DateTimeRange plusWeeks(long weeks) {
         LocalDateTime newSince = since == null ? null : this.since.plusWeeks(weeks);
         LocalDateTime newUntil = until == null ? null : this.until.plusWeeks(weeks);
         return DateTimeRange.create(newSince, newUntil);
     }
 
-    public DateTimeRange minusWeeks(Long weeks) {
+    public DateTimeRange minusWeeks(long weeks) {
         LocalDateTime newSince = since == null ? null : this.since.minusWeeks(weeks);
         LocalDateTime newUntil = until == null ? null : this.until.minusWeeks(weeks);
         return DateTimeRange.create(newSince, newUntil);
     }
 
-    public DateTimeRange plusDays(Long days) {
+    public DateTimeRange plusDays(long days) {
         LocalDateTime newSince = this.since == null ? null : this.since.plusDays(days);
         LocalDateTime newUntil = this.until == null ? null : this.until.plusDays(days);
         return DateTimeRange.create(newSince, newUntil);
     }
 
-    public DateTimeRange minusDays(Long days) {
+    public DateTimeRange minusDays(long days) {
         LocalDateTime newSince = this.since == null ? null : this.since.minusDays(days);
         LocalDateTime newUntil = this.until == null ? null : this.until.minusDays(days);
         return DateTimeRange.create(newSince, newUntil);
     }
     
-    public DateTimeRange plusHours(Long hours) {
+    public DateTimeRange plusHours(long hours) {
         LocalDateTime newSince = this.since == null ? null : this.since.plusHours(hours);
         LocalDateTime newUntil = this.until == null ? null : this.until.plusHours(hours);
         return DateTimeRange.create(newSince, newUntil);
     }
 
-    public DateTimeRange minusHours(Long hours) {
+    public DateTimeRange minusHours(long hours) {
         LocalDateTime newSince = this.since == null ? null : this.since.minusHours(hours);
         LocalDateTime newUntil = this.until == null ? null : this.until.minusHours(hours);
         return DateTimeRange.create(newSince, newUntil);
     }
 
-    public DateTimeRange plusMinutes(Long minutes) {
+    public DateTimeRange plusMinutes(long minutes) {
         LocalDateTime newSince = this.since == null ? null : this.since.plusMinutes(minutes);
         LocalDateTime newUntil = this.until == null ? null : this.until.plusMinutes(minutes);
         return DateTimeRange.create(newSince, newUntil);
     }
 
-    public DateTimeRange minusMinutes(Long minutes) {
+    public DateTimeRange minusMinutes(long minutes) {
         LocalDateTime newSince = this.since == null ? null : this.since.minusMinutes(minutes);
         LocalDateTime newUntil = this.until == null ? null : this.until.minusMinutes(minutes);
         return DateTimeRange.create(newSince, newUntil);
     }
     
-    public DateTimeRange plusSeconds(Long seconds) {
+    public DateTimeRange plusSeconds(long seconds) {
         LocalDateTime newSince = this.since == null ? null : this.since.plusSeconds(seconds);
         LocalDateTime newUntil = this.until == null ? null : this.until.plusSeconds(seconds);
         return DateTimeRange.create(newSince, newUntil);
     }
 
-    public DateTimeRange minusSeconds(Long seconds) {
+    public DateTimeRange minusSeconds(long seconds) {
         LocalDateTime newSince = this.since == null ? null : this.since.minusSeconds(seconds);
         LocalDateTime newUntil = this.until == null ? null : this.until.minusSeconds(seconds);
         return DateTimeRange.create(newSince, newUntil);
-    }     
+    }
+    
+    
+    public Boolean isBefore(LocalDateTime desigDateTime) {
+        return desigDateTime.isBefore(since);
+    }
+
+    public Boolean isBetween(LocalDateTime desigDateTime) {
+        //不早於since --> 在since相等或之後 && 不婉瑜until -->等於或早於until
+        return !desigDateTime.isBefore(since) && !desigDateTime.isAfter(until);
+    }
+
+    public Boolean isAfter(LocalDateTime desigDateTime) {
+        return desigDateTime.isAfter(until);
+    }    
 //</editor-fold>
 }

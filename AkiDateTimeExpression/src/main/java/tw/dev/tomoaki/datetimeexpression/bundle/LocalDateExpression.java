@@ -5,8 +5,11 @@
 package tw.dev.tomoaki.datetimeexpression.bundle;
 
 import java.time.LocalDate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import tw.dev.tomoaki.datetimeexpression.entity.date.DateExpression;
 import tw.dev.tomoaki.datetimeexpression.entity.time.TimeExpression;
+import tw.dev.tomoaki.datetimeexpression.util.ExpressionProcessor;
 import tw.dev.tomoaki.util.datetime.DateTimeUtil;
 
 
@@ -21,8 +24,9 @@ import tw.dev.tomoaki.util.datetime.DateTimeUtil;
  *
  */
 public class LocalDateExpression {
+    
+    private static Logger logger = Logger.getLogger(LocalDateExpression.class.getName());
 
-    private final String strExpression;
     private final DateExpression expression;
     private Integer annualYear;
     private Integer monthOfAnnual;
@@ -30,7 +34,6 @@ public class LocalDateExpression {
     
     
     protected LocalDateExpression(String strExpression) {
-        this.strExpression = strExpression;
         this.expression = (strExpression != null) ? DateExpression.create(strExpression) : null;
     }
     
@@ -74,9 +77,9 @@ public class LocalDateExpression {
     private LocalDate resolve(DateExpression finalExpression) {
         String strDate = finalExpression.getFormat();
 
-        strDate = processYearPart(strDate, finalExpression, annualYear);
-        strDate = processMonthPart(strDate, finalExpression, monthOfAnnual);
-        strDate = processDayPart(strDate, finalExpression, dayOfMonth);
+        strDate = ExpressionProcessor.processYearPart(strDate, finalExpression, annualYear);
+        strDate = ExpressionProcessor.processMonthPart(strDate, finalExpression, monthOfAnnual);
+        strDate = ExpressionProcessor.processDayPart(strDate, finalExpression, dayOfMonth);
 
         LocalDate standardDate = DateTimeUtil.Provider.parse2Date(strDate);
         standardDate = standardDate.plusYears(finalExpression.getAddendYears());
@@ -85,57 +88,6 @@ public class LocalDateExpression {
 
         return standardDate;
     }
-
-//<editor-fold defaultstate="collapsed" desc="內部輔助 Methods - 處理各「部分」，部分指的是年、月、日">
-    
-    /**
-     * 
-     * 
-     * @param strDate
-     * @param cloze
-     * @param annualYear
-     * 
-     */
-    protected static String processYearPart(String strDate, DateExpression cloze, Integer annualYear) {
-        if (annualYear == null) {
-            return strDate;
-        }
-
-        if (cloze.getIsYearFillable()) {
-            //將年分區塊先用 指定年度(annualYear)更換
-            String match = cloze.getYearPartMatchText();
-            strDate = strDate.replace(match, annualYear.toString());
-        }
-        return strDate;
-    }
-
-    protected static String processMonthPart(String strDate, DateExpression cloze, Integer monthOfAnnual) {
-        if (monthOfAnnual == null) {
-            return strDate;
-        }
-
-        if (cloze.getIsMonthFillable()) {
-            //將月份區塊先用 指定年度(monthOfAnnual)更換
-            String match = cloze.getMonthPartMatchText();
-            String strMonth = (monthOfAnnual >= 10) ? monthOfAnnual.toString() : "0" + monthOfAnnual.toString(); //補0上去
-            strDate = strDate.replace(match, strMonth);
-        }
-        return strDate;
-    }
-
-    protected static String processDayPart(String strDate, DateExpression cloze, Integer dayOfMonth) {
-        if (dayOfMonth == null) {
-            return strDate;
-        }
-        if (cloze.getIsDayOfMonthFillable()) {
-            // 將日期區塊先用 指定年度(dayOfMonth)更換
-            String match = cloze.getDayOfMonthPartMatchText();
-            String strDayOfMonth = (dayOfMonth >= 10) ? dayOfMonth.toString() : "0" + dayOfMonth.toString();
-            strDate = strDate.replace(match, strDayOfMonth);
-        }
-        return strDate;
-    }
-//</editor-fold>
 
     private void init() {
         this.annualYear = null;

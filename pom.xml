@@ -40,7 +40,7 @@
         <module>AkiDataUtils</module>
         <module>AkiDataValidator</module>
         <module>AkiDateTime</module>
-        <module>AkiDateTimeCloze</module>
+        <module>AkiDateTimeExpression</module>
         <module>AkiEntity</module>
         <module>AkiEnumOption</module>
         <module>AkiException</module>

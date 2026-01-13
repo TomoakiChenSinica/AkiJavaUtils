@@ -35,36 +35,34 @@ public class YearMonthRange {
     protected YearMonthRange() {
     }
 
-    public static class Factory {
 
-        public static YearMonthRange create(Date utilStartDateTime, Date utilEndDateTime) {
-            LocalDateTime startDateTime = DateTimeUtil.Converter.convert2DateTime(utilStartDateTime);
-            LocalDateTime endDateTime = DateTimeUtil.Converter.convert2DateTime(utilEndDateTime);
-            return Factory.create(YearMonth.from(startDateTime), YearMonth.from(endDateTime));
-        }
-
-        public static YearMonthRange create(LocalDate startDate, LocalDate endDate) {
-            return Factory.create(YearMonth.from(startDate), YearMonth.from(endDate));
-        }
-
-        public static YearMonthRange create(LocalDateTime startDateTime, LocalDateTime endDateTime) {
-            return Factory.create(YearMonth.from(startDateTime), YearMonth.from(endDateTime));
-        }
-
-        public static YearMonthRange create(YearMonth startYearMonth, YearMonth endYearMonth) {
-            YearMonthRange range = new YearMonthRange();
-            range.startYearMonth = startYearMonth;
-            range.endYearMonth = endYearMonth;
-            return range;
-        }
-
-        public static YearMonthRange create() {
-            LocalDateTime start = null;
-            LocalDateTime end = null;
-            return Factory.create(start, end);
-        }
-
+    public static YearMonthRange create(Date utilStartDateTime, Date utilEndDateTime) {
+        LocalDateTime startDateTime = DateTimeUtil.Converter.convert2DateTime(utilStartDateTime);
+        LocalDateTime endDateTime = DateTimeUtil.Converter.convert2DateTime(utilEndDateTime);
+        return create(YearMonth.from(startDateTime), YearMonth.from(endDateTime));
     }
+
+    public static YearMonthRange create(LocalDate startDate, LocalDate endDate) {
+        return create(YearMonth.from(startDate), YearMonth.from(endDate));
+    }
+
+    public static YearMonthRange create(LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        return create(YearMonth.from(startDateTime), YearMonth.from(endDateTime));
+    }
+
+    public static YearMonthRange create(YearMonth startYearMonth, YearMonth endYearMonth) {
+        YearMonthRange range = new YearMonthRange();
+        range.startYearMonth = startYearMonth;
+        range.endYearMonth = endYearMonth;
+        return range;
+    }
+
+    public static YearMonthRange create() {
+        LocalDateTime start = null;
+        LocalDateTime end = null;
+        return create(start, end);
+    }
+
 
     public YearMonth getStartYearMonth() {
         return startYearMonth;
@@ -82,36 +80,36 @@ public class YearMonthRange {
         this.endYearMonth = endYearMonth;
     }
 
-    public YearMonthRange plusYears(Long years) {
-        return Factory.create(startYearMonth.plusYears(years), endYearMonth);
+    public YearMonthRange plusYears(long years) {
+        return create(startYearMonth.plusYears(years), endYearMonth);
     }
 
-    public YearMonthRange plusYears(Integer years) {
-        return Factory.create(startYearMonth.plusYears(years), endYearMonth);
+    public YearMonthRange plusYears(int years) {
+        return create(startYearMonth.plusYears(years), endYearMonth);
     }
 
-    public YearMonthRange plusMonths(Long months) {
-        return Factory.create(startYearMonth, endYearMonth.plusMonths(months));
+    public YearMonthRange plusMonths(long months) {
+        return create(startYearMonth, endYearMonth.plusMonths(months));
     }
 
-    public YearMonthRange plusMonths(Integer months) {
-        return Factory.create(startYearMonth, endYearMonth.plusMonths(months));
+    public YearMonthRange plusMonths(int months) {
+        return create(startYearMonth, endYearMonth.plusMonths(months));
     }
 
-    public YearMonthRange minusYears(Long years) {
-        return Factory.create(startYearMonth.minusYears(years), endYearMonth);
+    public YearMonthRange minusYears(long years) {
+        return create(startYearMonth.minusYears(years), endYearMonth);
     }
     
-    public YearMonthRange minusYears(Integer years) {
-        return Factory.create(startYearMonth.minusYears(years), endYearMonth);
+    public YearMonthRange minusYears(int years) {
+        return create(startYearMonth.minusYears(years), endYearMonth);
     }    
 
-    public YearMonthRange minusMonths(Long months) {
-        return Factory.create(startYearMonth, endYearMonth.minusMonths(months));
+    public YearMonthRange minusMonths(long months) {
+        return create(startYearMonth, endYearMonth.minusMonths(months));
     }
     
-    public YearMonthRange minusMonths(Integer months) {
-        return Factory.create(startYearMonth, endYearMonth.minusMonths(months));
+    public YearMonthRange minusMonths(int months) {
+        return create(startYearMonth, endYearMonth.minusMonths(months));
     }    
 
     @Override

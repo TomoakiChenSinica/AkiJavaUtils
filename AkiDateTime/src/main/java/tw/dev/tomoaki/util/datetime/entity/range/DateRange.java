@@ -80,49 +80,49 @@ public class DateRange {
     
     
 //<editor-fold defaultstate="collapsed" desc="一些輔助計算 methods">    
-    public DateRange plusYears(Long years) {
+    public DateRange plusYears(long years) {
         LocalDate newStartDate = this.since == null ? null : this.since.plusYears(years);
         LocalDate newEndDate = this.until == null ? null : this.until.plusYears(years);
         return DateRange.create(newStartDate, newEndDate);
     }
 
-    public DateRange minusYears(Long years) {
+    public DateRange minusYears(long years) {
         LocalDate newStartDate = this.since == null ? null : this.since.minusYears(years);
         LocalDate newEndDate = this.until == null ? null : this.until.minusYears(years);
         return DateRange.create(newStartDate, newEndDate);
     }
 
-    public DateRange plusMonths(Long months) {
+    public DateRange plusMonths(long months) {
         LocalDate newStartDate = this.since == null ? null : this.since.plusMonths(months);
         LocalDate newEndDate = this.until == null ? null : this.until.plusMonths(months);
         return DateRange.create(newStartDate, newEndDate);
     }
 
-    public DateRange minusMonths(Long months) {
+    public DateRange minusMonths(long months) {
         LocalDate newStartDate = this.since == null ? null : this.since.minusMonths(months);
         LocalDate newEndDate = this.until == null ? null : this.until.minusMonths(months);
         return DateRange.create(newStartDate, newEndDate);
     }
     
-    public DateRange plusWeeks(Long weeks) {
+    public DateRange plusWeeks(long weeks) {
         LocalDate newStartDate = this.since == null ? null : this.since.plusWeeks(weeks);
         LocalDate newEndDate = this.until == null ? null : this.until.plusWeeks(weeks);
         return DateRange.create(newStartDate, newEndDate);
     }
 
-    public DateRange minusWeeks(Long weeks) {
+    public DateRange minusWeeks(long weeks) {
         LocalDate newStartDate = this.since == null ? null : this.since.minusWeeks(weeks);
         LocalDate newEndDate = this.until == null ? null : this.until.minusWeeks(weeks);
         return DateRange.create(newStartDate, newEndDate);
     }    
 
-    public DateRange plusDays(Long days) {
+    public DateRange plusDays(long days) {
         LocalDate newStartDate = this.since == null ? null : this.since.plusDays(days);
         LocalDate newEndDate = this.until == null ? null : this.until.plusDays(days);
         return DateRange.create(newStartDate, newEndDate);
     }
 
-    public DateRange minusDays(Long days) {
+    public DateRange minusDays(long days) {
         LocalDate newStartDate = this.since == null ? null : this.since.minusDays(days);
         LocalDate newEndDate = this.until == null ? null : this.until.minusDays(days);
         return DateRange.create(newStartDate, newEndDate);

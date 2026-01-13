@@ -33,11 +33,11 @@ import tw.dev.tomoaki.util.regularexpression.RegExpResult;
  */
 public class ExpressionHelper {
 
-    private static final String YEAR_PART_PATTERN = "\\[(YYYY(\\+?\\-?)[0-9]*)\\]";
+    private static final String YEAR_PART_PATTERN = "\\[(yyyy(\\+?\\-?)[0-9]*)\\]";
     private static final String MONTH_PART_PATTERN = "\\[(MM(\\+?\\-?)[0-9]*)\\]";
-    private static final String DAY_OF_MONTH_PART_PATTERN = "\\[(DD(\\+?\\-?)[0-9]*)\\]";
+    private static final String DAY_OF_MONTH_PART_PATTERN = "\\[(dd(\\+?\\-?)[0-9]*)\\]";
     
-    private static final String HOUR_PART_PATTERN = "\\[(HH(\\+?\\-?)[0-9]*)\\]";
+    private static final String HOUR_PART_PATTERN = "\\[(hh(\\+?\\-?)[0-9]*)\\]";
     private static final String MINUTE_PART_PATTERN = "\\[(mm(\\+?\\-?)[0-9]*)\\]";
     private static final String SECOND_PART_PATTERN = "\\[(ss(\\+?\\-?)[0-9]*)\\]";
 
@@ -170,7 +170,6 @@ public class ExpressionHelper {
     
 //</editor-fold>
     
-
 //<editor-fold defaultstate="collapsed" desc="這裡是做「判斷是否符合(某)條件」">
     public static Boolean validateYearFillable(String clozeFormat) {  // public class ExpressionHelper {
         RegExpResult yearRegExpResult = yearPartRegExp.processMatch(clozeFormat);
