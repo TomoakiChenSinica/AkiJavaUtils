@@ -17,6 +17,7 @@ package tw.dev.tomoaki.main;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Month;
 import tw.dev.tomoaki.util.datetime.entity.range.DateRange;
 import tw.dev.tomoaki.util.datetime.entity.range.DateTimeRange;
@@ -65,5 +66,15 @@ public class RangeTestMain {
         
         System.out.println("range+1week= " + range.plusWeeks(1l));
         System.out.println("range-1week= " + range.minusWeeks(1l));        
-    }    
+    }
+    
+    private static void test_DateTimeRange_Compare() {
+        DateTimeRange range = DateTimeRange.create(LocalDateTime.of(2025, 1, 1, 0, 0, 0), LocalDateTime.of(2025, 1, 31, 23, 59, 59));
+        LocalDateTime beforeDateTIme1 = LocalDateTime.of(2024, 12, 31, 0, 0 , 0);
+        LocalDateTime beforeDateTIme2 = LocalDateTime.of(2025, 1, 15, 0, 0 , 0);
+        LocalDateTime beforeDateTIme3 = LocalDateTime.of(2025, 1, 15, 0, 0 , 0);
+        
+//        System.out.println("range= " range.isBefore(beforeDateTIme1));
+//        
+    }
 }

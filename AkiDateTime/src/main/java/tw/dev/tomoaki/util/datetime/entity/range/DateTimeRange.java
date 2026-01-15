@@ -8,6 +8,7 @@ package tw.dev.tomoaki.util.datetime.entity.range;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Objects;
 import tw.dev.tomoaki.util.datetime.DateTimeUtil;
 import tw.dev.tomoaki.util.datetime.util.RangeHelper;
 
@@ -15,14 +16,15 @@ import tw.dev.tomoaki.util.datetime.util.RangeHelper;
  *
  * @author Tomoaki Chen
  */
-public class DateTimeRange {
+public class DateTimeRange extends AbstractRange<LocalDateTime> {
 
-    private LocalDateTime since;
-    private LocalDateTime until;
+//    private LocalDateTime since;
+//    private LocalDateTime until;
 
     protected DateTimeRange() {
     }
 
+//<editor-fold defaultstate="collapsed" desc="static factory pattern">
     public static DateTimeRange create(Date utilStartDateTime, Date utilEndDateTime) {
         DateTimeRange dateTimeRange = new DateTimeRange();
         dateTimeRange.since = DateTimeUtil.Converter.convert2DateTime(utilStartDateTime);
@@ -41,40 +43,44 @@ public class DateTimeRange {
         LocalDateTime start = null;
         LocalDateTime end = null;
         return DateTimeRange.create(start, end);
-    }
-
+    }    
+//</editor-fold>
+    
     public LocalDateTime getStartDateTime() {
         return since;
-    }
-
-    public Date getUtilStartDateTime() {
-        return DateTimeUtil.Converter.convert(since);
     }
 
     public void setStartDateTime(LocalDateTime startDateTime) {
         this.since = startDateTime;
     }
-
-    public void setUtilStartDateTime(Date utilStartDateTime) {
+    
+    public void setStartDateTime(Date utilStartDateTime) {
         this.since = DateTimeUtil.Converter.convert2DateTime(utilStartDateTime);
-    }
+    }    
 
     public LocalDateTime getEndDateTime() {
         return until;
     }
 
-    public Date getUtilEndDateTime() {
-        return DateTimeUtil.Converter.convert(this.until);
-    }
-
+    public void setEndDateTime(Date utilEndDateTime) {
+        this.until = DateTimeUtil.Converter.convert2DateTime(utilEndDateTime);
+    }    
+    
     public void setEndDateTime(LocalDateTime endDateTime) {
         this.until = endDateTime;
     }
-
-    public void setUtilEndDateTime(Date utilEndDateTime) {
-        this.until = DateTimeUtil.Converter.convert2DateTime(utilEndDateTime);
+    
+    public Date toUtilStartDateTime() {
+        return DateTimeUtil.Converter.convert(since);
+    }        
+    
+    public Date toUtilEndDateTime() {
+        return DateTimeUtil.Converter.convert(this.until);
     }
 
+
+
+    /*
     public LocalDateTime getSince() {
         return since;
     }
@@ -89,14 +95,33 @@ public class DateTimeRange {
 
     public void setUntil(LocalDateTime until) {
         this.until = until;
-    }
+    } 
 
     @Override
     public String toString() {
         // String result = this.startDateTime + " ~ " + this.endDateTime;
         // return result;
-        return RangeHelper.obtainString(this, since, until);
+        return RangeHelper.obtainClassString(this, since, until);
+    } */
+    
+//<editor-fold defaultstate="collapsed" desc="實作 AbstractRange">
+    
+    @Override
+    public Boolean isBefore(LocalDateTime desigDateTime) {
+        return desigDateTime.isBefore(since);
     }
+
+    @Override
+    public Boolean isBetween(LocalDateTime desigDateTime) {
+        //不早於since --> 在since相等或之後 && 不婉瑜until -->等於或早於until
+        return !desigDateTime.isBefore(since) && !desigDateTime.isAfter(until);
+    }
+
+    @Override
+    public Boolean isAfter(LocalDateTime desigDateTime) {
+        return desigDateTime.isAfter(until);
+    }     
+//</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="一些輔助計算 methods">    
     public DateTimeRange plusYears(long years) {
@@ -181,20 +206,24 @@ public class DateTimeRange {
         LocalDateTime newSince = this.since == null ? null : this.since.minusSeconds(seconds);
         LocalDateTime newUntil = this.until == null ? null : this.until.minusSeconds(seconds);
         return DateTimeRange.create(newSince, newUntil);
-    }
-    
-    
-    public Boolean isBefore(LocalDateTime desigDateTime) {
-        return desigDateTime.isBefore(since);
-    }
-
-    public Boolean isBetween(LocalDateTime desigDateTime) {
-        //不早於since --> 在since相等或之後 && 不婉瑜until -->等於或早於until
-        return !desigDateTime.isBefore(since) && !desigDateTime.isAfter(until);
-    }
-
-    public Boolean isAfter(LocalDateTime desigDateTime) {
-        return desigDateTime.isAfter(until);
-    }    
+    }       
 //</editor-fold>
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof DateTimeRange)) {
+            return false;
+        }
+
+        DateTimeRange other = (DateTimeRange) obj;
+        return Objects.equals(since, other.since) && Objects.equals(until, other.until);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 78;
+        hash = 12 * hash + Objects.hashCode(this.since);
+        hash = 12 * hash + Objects.hashCode(this.until);
+        return hash;
+    }     
 }

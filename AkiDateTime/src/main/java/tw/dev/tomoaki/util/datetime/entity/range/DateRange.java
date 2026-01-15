@@ -8,6 +8,7 @@ package tw.dev.tomoaki.util.datetime.entity.range;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 import tw.dev.tomoaki.util.datetime.DateTimeRangeUtil;
 import tw.dev.tomoaki.util.datetime.DateTimeUtil;
@@ -18,15 +19,16 @@ import tw.dev.tomoaki.util.datetime.util.RangeHelper;
  * @author Tomoaki Chen Java8 的 java.time 已經有 Period 幾乎一樣的功能，此則可以考慮廢除??? (X)
  * Period 比較適用在計算隔幾天
  */
-public class DateRange {
+public class DateRange extends AbstractRange<LocalDate> {
 
+    /*
     private LocalDate since;
-    private LocalDate until;
+    private LocalDate until;*/
 
     protected DateRange() {
     }
 
-
+//<editor-fold defaultstate="collapsed" desc="static factory pattern">
     public static DateRange create(LocalDate since, LocalDate until) {
         DateRange dateRange = new DateRange();
         dateRange.since = since;
@@ -34,34 +36,53 @@ public class DateRange {
         return dateRange;
     }
 
-    public static DateRange create() {
-        return DateRange.create(null, null);
+    public static DateRange create(Date since, Date until) {
+        return create(DateTimeUtil.Converter.convert2Date(since), DateTimeUtil.Converter.convert2Date(until));
     }
+    
+    public static DateRange create() {
+        // return DateRange.create(null, null);
+        DateRange dateRange = new DateRange();
+        dateRange.since = null;
+        dateRange.until = null;
+        return dateRange;        
+    }    
+//</editor-fold>
+
 
     public LocalDate getStartDate() {
         return since;
     }
 
-    public Date getUtilStartDate() {
-        return DateTimeUtil.Converter.convert(since);
-    }
-
     public void setStartDate(LocalDate since) {
         this.since = since;
-    }
+    }    
 
+    public void setStartDate(Date utilStartDate) {
+        this.since = DateTimeUtil.Converter.convert2Date(utilStartDate);
+    }    
+    
     public LocalDate getEndDate() {
         return until;
-    }
-
-    public Date getUtilEndDate() {
-        return DateTimeUtil.Converter.convert(until);
     }
 
     public void setEndDate(LocalDate until) {
         this.until = until;
     }
 
+    public void setEndDate(Date utilEndDate) {
+        this.until = DateTimeUtil.Converter.convert2Date(utilEndDate);
+    } 
+    
+    public Date toUtilStartDate() {
+        return DateTimeUtil.Converter.convert(since);
+    }    
+    
+    public Date toUtilEndDate() {
+        return DateTimeUtil.Converter.convert(until);
+    }    
+
+    /*拉到 AbstractRange 實作
     public LocalDate getSince() {
         return since;
     }
@@ -76,7 +97,7 @@ public class DateRange {
 
     public void setUntil(LocalDate until) {
         this.until = until;
-    }
+    }*/
     
     
 //<editor-fold defaultstate="collapsed" desc="一些輔助計算 methods">    
@@ -128,24 +149,28 @@ public class DateRange {
         return DateRange.create(newStartDate, newEndDate);
     }
 
+    @Override
     public Boolean isBefore(LocalDate desigDate) {
         return desigDate.isBefore(since);
     }
 
+    @Override
     public Boolean isBetween(LocalDate desigDate) {
         //不早於since --> 在since相等或之後 && 不婉瑜until -->等於或早於until
         return !desigDate.isBefore(since) && !desigDate.isAfter(until);
     }
 
+    @Override
     public Boolean isAfter(LocalDate desigDate) {
         return desigDate.isAfter(until);
     }
 //</editor-fold>
-
+    
+    /*
     @Override
     public String toString() {
-        return RangeHelper.obtainString(this, since, until);
-    }
+        return RangeHelper.obtainClassString(this, since, until);
+    } */
     
     public List<LocalDate> toDateList() {
         return DateTimeRangeUtil.Analyzer.obtainDateList(this);
@@ -155,4 +180,21 @@ public class DateRange {
         return DateTimeRangeUtil.Analyzer.obtainDateList(this).stream();
     }    
 
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof DateRange)) {
+            return false;
+        }
+
+        DateRange other = (DateRange) obj;
+        return Objects.equals(since, other.since) && Objects.equals(until, other.until);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 15;
+        hash = 31 * hash + Objects.hashCode(this.since);
+        hash = 31 * hash + Objects.hashCode(this.until);
+        return hash;
+    }    
 }

@@ -6,51 +6,85 @@
 package tw.dev.tomoaki.util.datetime.entity.range;
 
 import java.time.LocalTime;
-import tw.dev.tomoaki.util.datetime.util.RangeHelper;
+import java.util.Date;
+import java.util.Objects;
+import tw.dev.tomoaki.util.datetime.DateTimeUtil;
 
 /**
  *
  * @author Tomoaki Chen
  */
-public class TimeRange {
+public class TimeRange extends AbstractRange<LocalTime> {
 
-    private LocalTime startTime;
-    private LocalTime endTime;
-
+    /*
+    private LocalTime since;
+    private LocalTime until; */
     protected TimeRange() {
     }
 
+//<editor-fold defaultstate="collapsed" desc="static factory pattern">
 
-    public static TimeRange create(LocalTime startTime, LocalTime endTime) {
+    public static TimeRange create(LocalTime since, LocalTime until) {
         TimeRange timeRange = new TimeRange();
-        timeRange.startTime = startTime;
-        timeRange.endTime = endTime;
+        timeRange.since = since;
+        timeRange.until = until;
         return timeRange;
     }
 
     public static TimeRange create() {
         return TimeRange.create(null, null);
     }
-
-
+    
+//</editor-fold>
+    
     public LocalTime getStartTime() {
-        return startTime;
+        return since;
     }
 
     public void setStartTime(LocalTime startTime) {
-        this.startTime = startTime;
-    }
+        this.since = startTime;
+    }    
 
     public LocalTime getEndTime() {
-        return endTime;
+        return until;
     }
 
     public void setEndTime(LocalTime endTime) {
-        this.endTime = endTime;
+        this.until = endTime;
+    }
+
+//<editor-fold defaultstate="collapsed" desc="實作 AbtractRange<T> 所需 Methods">
+    @Override
+    public Boolean isBefore(LocalTime standard) {
+        return standard.isBefore(this.since);
     }
 
     @Override
-    public String toString() {
-        return RangeHelper.obtainString(this, startTime, endTime);
+    public Boolean isBetween(LocalTime standard) {
+        return !standard.isBefore(since) && !standard.isAfter(until);
     }
+
+    @Override
+    public Boolean isAfter(LocalTime standard) {
+        return standard.isAfter(until);
+    }    
+//</editor-fold>
+ 
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof TimeRange)) {
+            return false;
+        }
+
+        TimeRange other = (TimeRange) obj;
+        return Objects.equals(since, other.since) && Objects.equals(until, other.until);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 33;
+        hash = 87 * hash + Objects.hashCode(this.since);
+        hash = 87 * hash + Objects.hashCode(this.until);
+        return hash;
+    }    
 }

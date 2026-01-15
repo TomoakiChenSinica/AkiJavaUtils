@@ -21,11 +21,18 @@ package tw.dev.tomoaki.util.datetime.util;
  */
 public class RangeHelper {
     
-    public static String obtainString(Object rangeObject, Object start, Object end) {
-        return obtainString(rangeObject.getClass(), start, end);
+    private static final String FMT_DISPLAY = "[%s ~ %s]";
+    private static final String FMT_CLASS_STRING = "%s[%s ~ %s]";
+    
+    public static String obtainClassString(Object rangeObject, Object start, Object end) {
+        return obtainClassString(rangeObject.getClass(), start, end);
     }
     
-    public static String obtainString(Class rangeClazz, Object start, Object end) {
-        return String.format("%s[%s ~ %s]", rangeClazz.getName(), start, end);
-    }    
+    public static String obtainClassString(Class rangeClazz, Object start, Object end) {
+        return String.format(FMT_CLASS_STRING, rangeClazz.getName(), start, end);
+    }
+    
+    public static String obtainDisplayString(Object start, Object end) {
+        return String.format(FMT_DISPLAY, start, end);
+    }
 }

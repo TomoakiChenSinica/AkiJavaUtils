@@ -27,33 +27,32 @@ import tw.dev.tomoaki.util.datetime.util.RangeHelper;
  *
  * @author tomoaki
  */
-public class YearMonthRange {
+public class YearMonthRange extends AbstractRange<YearMonth> {
 
-    private YearMonth startYearMonth;
-    private YearMonth endYearMonth;
+
 
     protected YearMonthRange() {
     }
 
 
-    public static YearMonthRange create(Date utilStartDateTime, Date utilEndDateTime) {
-        LocalDateTime startDateTime = DateTimeUtil.Converter.convert2DateTime(utilStartDateTime);
-        LocalDateTime endDateTime = DateTimeUtil.Converter.convert2DateTime(utilEndDateTime);
+    public static YearMonthRange create(Date since, Date until) {
+        LocalDateTime startDateTime = DateTimeUtil.Converter.convert2DateTime(since);
+        LocalDateTime endDateTime = DateTimeUtil.Converter.convert2DateTime(until);
         return create(YearMonth.from(startDateTime), YearMonth.from(endDateTime));
     }
 
-    public static YearMonthRange create(LocalDate startDate, LocalDate endDate) {
-        return create(YearMonth.from(startDate), YearMonth.from(endDate));
+    public static YearMonthRange create(LocalDate since, LocalDate until) {
+        return create(YearMonth.from(since), YearMonth.from(until));
     }
 
-    public static YearMonthRange create(LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        return create(YearMonth.from(startDateTime), YearMonth.from(endDateTime));
+    public static YearMonthRange create(LocalDateTime since, LocalDateTime until) {
+        return create(YearMonth.from(since), YearMonth.from(until));
     }
 
-    public static YearMonthRange create(YearMonth startYearMonth, YearMonth endYearMonth) {
+    public static YearMonthRange create(YearMonth since, YearMonth until) {
         YearMonthRange range = new YearMonthRange();
-        range.startYearMonth = startYearMonth;
-        range.endYearMonth = endYearMonth;
+        range.since = since;
+        range.until = until;
         return range;
     }
 
@@ -65,53 +64,72 @@ public class YearMonthRange {
 
 
     public YearMonth getStartYearMonth() {
-        return startYearMonth;
+        return since;
     }
 
-    public void setStartYearMonth(YearMonth startYearMonth) {
-        this.startYearMonth = startYearMonth;
+    public void setStartYearMonth(YearMonth since) {
+        this.since = since;
     }
 
     public YearMonth getEndYearMonth() {
-        return endYearMonth;
+        return until;
     }
 
-    public void setEndYearMonth(YearMonth endYearMonth) {
-        this.endYearMonth = endYearMonth;
+    public void setEndYearMonth(YearMonth until) {
+        this.until = until;
+    }
+    
+//<editor-fold defaultstate="collapsed" desc="實作 AbstractRange<T> 所需 Methods">
+    /*
+    @Override
+    public String toString() {
+        // return String.format("%s[%s ~ %s]", getClass().getName(), startYearMonth, endYearMonth);
+        return RangeHelper.obtainClassString(this, since, until);
+    }*/
+
+    @Override
+    public Boolean isBefore(YearMonth standard) {
+        return standard.isBefore(since);
     }
 
+    @Override
+    public Boolean isBetween(YearMonth standard) {
+        return !standard.isBefore(since) && !standard.isAfter(until);
+    }
+
+    @Override
+    public Boolean isAfter(YearMonth standard) {
+        return standard.isAfter(until);
+    }    
+//</editor-fold>
+    
+
+//<editor-fold defaultstate="collapsed" desc="輔助計算 Methods">
     public YearMonthRange plusYears(long years) {
-        return create(startYearMonth.plusYears(years), endYearMonth);
-    }
-
-    public YearMonthRange plusYears(int years) {
-        return create(startYearMonth.plusYears(years), endYearMonth);
+        final YearMonth finalSince = (since != null) ? since.plusYears(years) : null;
+        final YearMonth finalUntil = (until != null) ? until.plusYears(years) : null;
+        return create(finalSince, finalUntil);
     }
 
     public YearMonthRange plusMonths(long months) {
-        return create(startYearMonth, endYearMonth.plusMonths(months));
-    }
-
-    public YearMonthRange plusMonths(int months) {
-        return create(startYearMonth, endYearMonth.plusMonths(months));
+        final YearMonth finalSince = (since != null) ? since.plusMonths(months) : null;
+        final YearMonth finalUntil = (until != null) ? until.plusMonths(months) : null;        
+        return create(finalSince, finalUntil);
     }
 
     public YearMonthRange minusYears(long years) {
-        return create(startYearMonth.minusYears(years), endYearMonth);
+        final YearMonth finalSince = (since != null) ? since.minusYears(years) : null;
+        final YearMonth finalUntil = (until != null) ? until.minusYears(years) : null;
+        return create(finalSince, finalUntil);
     }
-    
-    public YearMonthRange minusYears(int years) {
-        return create(startYearMonth.minusYears(years), endYearMonth);
-    }    
 
     public YearMonthRange minusMonths(long months) {
-        return create(startYearMonth, endYearMonth.minusMonths(months));
-    }
-    
-    public YearMonthRange minusMonths(int months) {
-        return create(startYearMonth, endYearMonth.minusMonths(months));
+        final YearMonth finalSince = (since != null) ? since.minusMonths(months) : null;
+        final YearMonth finalUntil = (until != null) ? until.minusMonths(months) : null;          
+        return create(finalSince, finalUntil);
     }    
-
+//</editor-fold>
+    
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof YearMonthRange)) {
@@ -119,22 +137,17 @@ public class YearMonthRange {
         }
 
         YearMonthRange other = (YearMonthRange) obj;
-        return Objects.equals(startYearMonth, other.startYearMonth) && Objects.equals(endYearMonth, other.endYearMonth);
+        return Objects.equals(since, other.since) && Objects.equals(until, other.until);
     }
 
     @Override
     public int hashCode() {
-        int hash = 37;
-        hash = 18 * hash + Objects.hashCode(this.startYearMonth);
-        hash = 18 * hash + Objects.hashCode(this.endYearMonth);
+        int hash = 91;
+        hash = 13 * hash + Objects.hashCode(this.since);
+        hash = 13 * hash + Objects.hashCode(this.until);
         return hash;
     }
-    
-    @Override
-    public String toString() {
-        // return String.format("%s[%s ~ %s]", getClass().getName(), startYearMonth, endYearMonth);
-        return RangeHelper.obtainString(this, startYearMonth, endYearMonth);
-    }
+
 
 
 }
