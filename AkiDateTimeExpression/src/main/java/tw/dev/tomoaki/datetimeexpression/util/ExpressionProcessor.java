@@ -48,7 +48,7 @@ public class ExpressionProcessor {
             strDate = strDate.replace(match, annualYear.toString());
         } else {
             String msgFmt = "expression is %s, cannot fill year, will ignore";
-            logger.log(Level.INFO, String.format(msgFmt, expression.getFormat()));
+            logger.log(Level.FINE, String.format(msgFmt, expression.getFormat()));
         }
         return strDate;
     }
@@ -65,7 +65,7 @@ public class ExpressionProcessor {
             strDate = strDate.replace(match, strMonth);
         } else {
             String msgFmt = "expression is %s, cannot fill month, will ignore";
-            logger.log(Level.INFO, String.format(msgFmt, expression.getFormat()));
+            logger.log(Level.FINE, String.format(msgFmt, expression.getFormat()));
         }
         return strDate;
     }
@@ -81,7 +81,7 @@ public class ExpressionProcessor {
             strDate = strDate.replace(match, strDayOfMonth);
         } else {
             String msgFmt = "expression is %s, cannot fill dayOfMonth, will ignore";
-            logger.log(Level.INFO, String.format(msgFmt, expression.getFormat()));
+            logger.log(Level.FINE, String.format(msgFmt, expression.getFormat()));
         }
         return strDate;
     }
@@ -106,7 +106,7 @@ public class ExpressionProcessor {
             strDate = strDate.replace(match, strHour); // strDate = strDate.replace(match, hour.toString());
         } else {
             String msgFmt = "expression is %s, cannot fill hour, will ignore";
-            logger.log(Level.INFO, String.format(msgFmt, expression.getFormat()));            
+            logger.log(Level.FINE, String.format(msgFmt, expression.getFormat()));            
         }
         return strDate;
     }
@@ -123,7 +123,7 @@ public class ExpressionProcessor {
             strDate = strDate.replace(match, strMonth);
         } else {
             String msgFmt = "expression is %s, cannot fill minute, will ignore";
-            logger.log(Level.INFO, String.format(msgFmt, expression.getFormat()));            
+            logger.log(Level.FINE, String.format(msgFmt, expression.getFormat()));            
         }
         return strDate;
     }
@@ -139,7 +139,7 @@ public class ExpressionProcessor {
             strDate = strDate.replace(match, strSecond); // strDate = strDate.replace(match, dayOfMonth.toString());
         } else {
             String msgFmt = "expression is %s, cannot fill second, will ignore";
-            logger.log(Level.INFO, String.format(msgFmt, expression.getFormat()));            
+            logger.log(Level.FINE, String.format(msgFmt, expression.getFormat()));            
         }
         return strDate;
     }
