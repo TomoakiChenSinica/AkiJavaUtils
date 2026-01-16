@@ -20,7 +20,7 @@ import org.apache.commons.io.IOUtils;
  */
 public class AkiFileWriteUtils {
 
-    //https://stackoverflow.com/questions/4685563/how-to-pass-a-function-as-a-parameter-in-java
+    // https://stackoverflow.com/questions/4685563/how-to-pass-a-function-as-a-parameter-in-java
     private static final FileNeedCopy DEFAULT = (sourcePath, targetPath) -> {
         try {
             if (Files.notExists(targetPath)) {
@@ -89,11 +89,20 @@ public class AkiFileWriteUtils {
         return write(sourceFilePath, targetPath);
     }
 
+    
+    
     public static File write(String sourceFilePath, Path targetPath) throws IOException {
         Path sourcePath = Paths.get(sourceFilePath);
         return write(sourcePath, targetPath);
     }
-
+    
+    /**
+     *
+     * 
+     * @param sourcePath
+     * @param targetPath 寫到哪一個目標
+     * @return 寫檔
+     */
     public static File write(Path sourcePath, Path targetPath) throws IOException {
         Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
         return targetPath.toFile();
