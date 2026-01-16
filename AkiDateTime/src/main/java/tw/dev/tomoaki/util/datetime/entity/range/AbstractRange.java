@@ -51,6 +51,21 @@ public abstract class AbstractRange<T> {
     public abstract Boolean isAfter(T standard);
     
     
+    protected void doValidateStandard(T standard) {
+        if(standard == null) {
+            throw new IllegalArgumentException(obtainStandardIsNullMsg());
+        }
+    }
+    
+    protected String obtainStandardIsNullMsg() {
+        return "standard cannot be null";
+    }
+    
+    public String toDisplayText() {
+        return RangeHelper.obtainDisplayString(since, until);
+    }
+    
+    
     @Override
     public String toString() {
         return RangeHelper.obtainClassString(this, since, until);

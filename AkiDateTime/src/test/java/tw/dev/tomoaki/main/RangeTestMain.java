@@ -30,7 +30,8 @@ public class RangeTestMain {
 
     public static void main(String[] args) {
         // test_DateRange();
-        test_DateTimeRange();
+        // test_DateTimeRange();
+        test_DateTimeRange_Compare();
     }
 
     private static void test_DateRange() {
@@ -70,11 +71,26 @@ public class RangeTestMain {
     
     private static void test_DateTimeRange_Compare() {
         DateTimeRange range = DateTimeRange.create(LocalDateTime.of(2025, 1, 1, 0, 0, 0), LocalDateTime.of(2025, 1, 31, 23, 59, 59));
-        LocalDateTime beforeDateTIme1 = LocalDateTime.of(2024, 12, 31, 0, 0 , 0);
-        LocalDateTime beforeDateTIme2 = LocalDateTime.of(2025, 1, 15, 0, 0 , 0);
-        LocalDateTime beforeDateTIme3 = LocalDateTime.of(2025, 1, 15, 0, 0 , 0);
+        LocalDateTime d1 = LocalDateTime.of(2024, 12, 31, 0, 0 , 0);
+        LocalDateTime d2 = LocalDateTime.of(2025, 1, 15, 0, 0 , 0);
+        LocalDateTime d3 = LocalDateTime.of(2026, 1, 15, 0, 0 , 0);
         
-//        System.out.println("range= " range.isBefore(beforeDateTIme1));
-//        
+        
+        System.out.println("range= " + range.toDisplayText());
+        System.out.println("d1= " + d1);
+        System.out.println("d2= " + d2);
+        System.out.println("d3= " + d3);
+        
+        System.out.println("range.isBefore(d1)? " +  range.isBefore(d1));
+        System.out.println("range.isBetween(d1)? " +  range.isBetween(d1));
+        System.out.println("range.isAfter(d1)? " +  range.isAfter(d1));
+
+        System.out.println("range.isBefore(d2)? " +  range.isBefore(d2));
+        System.out.println("range.isBetween(d2)? " +  range.isBetween(d2));
+        System.out.println("range.isAfter(d2)? " +  range.isAfter(d2));
+
+        System.out.println("range.isBefore(d3)? " +  range.isBefore(d3));
+        System.out.println("range.isBetween(d3)? " +  range.isBetween(d3));
+        System.out.println("range.isAfter(d3)? " +  range.isAfter(d3));        
     }
 }
