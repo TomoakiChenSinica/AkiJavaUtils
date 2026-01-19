@@ -55,4 +55,14 @@ public abstract class AbstractCriteriaFacade<T> extends AbstractFacade<T> implem
         return em.createQuery(cq).executeUpdate();        
     }
 
+    @Override
+    public int removeByIn(String entityPropName, List<?> comparedValueList) {
+        EntityManager em = this.getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaDelete<T> cq = cb.createCriteriaDelete(entityClass);
+        Root<T> root = cq.from(entityClass);
+
+        cq.where(ExpressionHelper.createInExpression(root, cb, entityPropName, comparedValueList));
+        return em.createQuery(cq).executeUpdate();        
+    }
 }

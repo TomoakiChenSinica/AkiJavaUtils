@@ -33,5 +33,7 @@ public interface CUDFacade<T> {
 //
 //    public <C extends Comparable> List<T> removeByLessThan(String entityPropName, C comparedValue);
 //
-//    public <C extends Comparable> List<T> removeByLessThanOrEqual(String entityPropName, C comparedValue);    
+//    public <C extends Comparable> List<T> removeByLessThanOrEqual(String entityPropName, C comparedValue);
+    
+    public int removeByIn(String entityPropName, List<?> comparedValueList);
 }
