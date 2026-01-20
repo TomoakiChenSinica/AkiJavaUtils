@@ -28,16 +28,6 @@ public class UUIDNamingStrategy<T> implements DataFileNamingStrategy<T> {
     
     @Override
     public String createFileName(T data) {
-        /* claude: 直接 UUID.randomUUID().toString()
-        UUID uuid = UUID.randomUUID();
-        return new StringBuilder()
-                .append(uuid.toString())
-                .toString();*/     
-        return UUID.randomUUID().toString();
+        return UUID.randomUUID().toString(); // claude: 直接 UUID.randomUUID().toString()
     }
-    
-//    @Override
-//    public String createFileName(T data, String extension) {
-//        return this.createFileName(data);
-//    }    
 }
