@@ -18,20 +18,27 @@ package tw.dev.tomoaki.datafilesystem.core;
 /**
  *
  * @author tomoaki
- * 
+ *
  * 單純產生「檔案」相關資訊，不理會「實際路徑」
  * @param <T>
- * 
+ *
  */
-public interface DataFileCreator<T> {
+public interface DataFileNamingStrategy<T> {
 
     /**
      * 會需要存檔案時，如何依據傳進來的資料(data) 產生檔名
-     * 
+     *
      * @param data 資料，跟此資料的關聯檔案，檔案名稱如何(根據資料)產生檔名
-     * @return 
-     * 
+     * @return
+     *
      */
     public String createFileName(T data);
+
+    default public String createFileName(T data, String extension) {
+        return new StringBuilder().append(createFileName(data))
+                .append(".")
+                .append(extension)
+                .toString();
+    }
 
 }

@@ -45,11 +45,5 @@ public class DataFileRelationPathProvider<DATA_FILE extends DataFileRelation> im
     @Override
     public Path obtainNewFilePath(DATA_FILE data) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public String createFileName(DATA_FILE data) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    
+    }    
 }

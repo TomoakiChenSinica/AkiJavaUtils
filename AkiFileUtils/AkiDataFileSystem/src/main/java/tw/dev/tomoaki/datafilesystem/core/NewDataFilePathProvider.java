@@ -22,7 +22,7 @@ import java.nio.file.Path;
  * @author tomoaki
  * @param <T>
  */
-public interface NewDataFilePathProvider<T> extends DataFileCreator<T> {
+public interface NewDataFilePathProvider<T> { // extends DataFileCreator<T> {
 
     /**
      * 配合 FileCreator 繼承來的 createFileName， <br>
