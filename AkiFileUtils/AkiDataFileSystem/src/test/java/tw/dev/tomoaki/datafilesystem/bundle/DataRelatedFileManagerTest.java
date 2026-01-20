@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.logging.Logger;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -93,6 +94,11 @@ class DataRelatedFileManagerTest {
         @Override
         protected TestDataFile obtainDataFile(TestData dataEntity) {
             return dataEntity.getFile();
+        }
+
+        @Override
+        protected Logger logger() {
+            return Logger.getLogger(getClass().getName());
         }
     }
 
