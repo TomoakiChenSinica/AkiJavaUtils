@@ -4,10 +4,8 @@
  */
 package tw.dev.tomoaki.nioext;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.logging.Logger;
 
 /**
  *
@@ -37,9 +35,9 @@ public class PathExt {
      * @return 目標路徑(targetPath) 是否在指定的目錄(rootPath)底下
      */
     public static Boolean isUnderRoot(Path targetPath, Path rootPath) {
-        Path realTargetPath = PathExt.toLaxRealPath(targetPath); // targetPath.toRealPath(); toRealPath 會檢查檔案是否實際存在
+        Path realTargetPath = PathExt.toLaxRealPath(targetPath); //會檢查檔案是否實際存在
         Path realRootPath = PathExt.toLaxRealPath(rootPath);
-        return realTargetPath.startsWith(realRootPath); // return realTargetPath.startsWith(rootPath);
+        return realTargetPath.startsWith(realRootPath);
     }
 
     /**
@@ -50,9 +48,6 @@ public class PathExt {
      * @return 目標路徑(targetPath) 是否在指定的目錄(rootPath)底下
      */
     public static Boolean isUnderRoot(Path targetPath, String rootPathText) {
-        /*
-        Path realPath = PathExt.toLaxRealPath(targetPath); // targetPath.toRealPath();
-        return realPath.startsWith(rootPathText);*/
         return PathExt.isUnderRoot(targetPath, Paths.get(rootPathText));
     }
 }

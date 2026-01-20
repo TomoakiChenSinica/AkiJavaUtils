@@ -4,7 +4,6 @@
  */
 package tw.dev.tomoaki.datafilesystem.bundle;
 
-import com.sun.org.slf4j.internal.LoggerFactory;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -39,7 +38,7 @@ public abstract class DataRelatedTypedFilePathProvider<DATA, DATA_FILE extends D
     protected DataFileNamingStrategy<DATA_FILE> fileCreator;
     
     public DataRelatedTypedFilePathProvider() {
-        this.fileCreator = new UUIDNamingStrategy();        
+        this.fileCreator = new UUIDNamingStrategy<>();        
     }
     
     public DataRelatedTypedFilePathProvider(DataFileNamingStrategy<DATA_FILE> fileCreator) {
@@ -77,7 +76,7 @@ public abstract class DataRelatedTypedFilePathProvider<DATA, DATA_FILE extends D
     
     /**
      * 提供 Logger，可以覆寫
-     * @return 
+     * @return 此類別中用的 Logger
      */
     protected Logger logger() {
         return Logger.getLogger(getClass().getName());

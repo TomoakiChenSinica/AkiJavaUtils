@@ -7,7 +7,6 @@ package tw.dev.tomoaki.datafilesystem.bundle;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.UUID;
 import java.util.logging.Logger;
 import tw.dev.tomoaki.datafilesystem.core.naming.UUIDNamingStrategy;
 import tw.dev.tomoaki.datafilesystem.core.NewDataFilePathProvider;
@@ -36,7 +35,7 @@ public abstract class DataRelatedFilePathProvider<DATA, DATA_FILE extends DataFi
     protected DataFileNamingStrategy<DATA_FILE> fileCreator;
     
     public DataRelatedFilePathProvider() {
-        this.fileCreator = new UUIDNamingStrategy();
+        this.fileCreator = new UUIDNamingStrategy<>();
     }
     
     public DataRelatedFilePathProvider(DataFileNamingStrategy<DATA_FILE> fileCreator) {
@@ -63,7 +62,7 @@ public abstract class DataRelatedFilePathProvider<DATA, DATA_FILE extends DataFi
 
     /**
      * 提供 Logger，可以覆寫
-     * @return 
+     * @return 此類別中用的 Logger
      */
     protected Logger logger() {
         return Logger.getLogger(getClass().getName());
