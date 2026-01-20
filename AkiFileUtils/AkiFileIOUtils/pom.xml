@@ -3,10 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>tw.dev.tomoaki</groupId>
     <artifactId>AkiFileIOUtils</artifactId>
-    <version>1.2-SNAPSHOT</version>
+    <version>1.2.1-SNAPSHOT</version>
     <description>
         1.2: 
          (1) PathExt 新增 isUnderRoot ，協助判斷
+        1.2.1: FileAccessDeninedException 移除多餘 Factory，更符合 static factory pattern、修正PathExt 邏輯，都轉成絕對路徑
     </description>
     <packaging>jar</packaging>
     <properties>

@@ -30,17 +30,14 @@ public class AkiSimpleFileManager {
         this.rootFilePathText = rootFilePathText;
     }
 
-    public static class Factory {
-
-        public static AkiSimpleFileManager create(String rootFilePathText) {
-            AkiSimpleFileManager manager = new AkiSimpleFileManager(rootFilePathText);
-            return manager;
-        }
+    public static AkiSimpleFileManager create(String rootFilePathText) {
+        AkiSimpleFileManager manager = new AkiSimpleFileManager(rootFilePathText);
+        return manager;
     }
 
     public File read(Path targetPath) {
         if(!PathExt.isUnderRoot(targetPath, rootFilePathText)) {
-            throw FileAccessDeninedException.Factory.create(targetPath);
+            throw FileAccessDeninedException.create(targetPath);
         }
         return targetPath.toFile();
     }
@@ -63,11 +60,11 @@ public class AkiSimpleFileManager {
 
     public File copy(Path sourcePath, Path targetPath) throws IOException {
         if(!PathExt.isUnderRoot(sourcePath, rootFilePathText)) {
-            throw FileAccessDeninedException.Factory.create(sourcePath);
+            throw FileAccessDeninedException.create(sourcePath);
         }
         
         if(!PathExt.isUnderRoot(targetPath, rootFilePathText)) {
-            throw FileAccessDeninedException.Factory.create(targetPath);
+            throw FileAccessDeninedException.create(targetPath);
         }
         
         return AkiFileWriteUtils.copyNecessarily(sourcePath, targetPath);
@@ -75,7 +72,7 @@ public class AkiSimpleFileManager {
 
     public File delete(Path targetPath) {
         if(!PathExt.isUnderRoot(targetPath, rootFilePathText)) {
-            throw FileAccessDeninedException.Factory.create(targetPath);
+            throw FileAccessDeninedException.create(targetPath);
         }
         File targetFile = targetPath.toFile();
         targetFile.deleteOnExit();

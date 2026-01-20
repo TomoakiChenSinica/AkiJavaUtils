@@ -23,17 +23,14 @@ import java.nio.file.Path;
  */
 public class FileAccessDeninedException extends RuntimeException {
 
-    public static class Factory {
-        
-        public static FileAccessDeninedException create(Path targetPath) {
-            String msgFmt = "%s Is Not Readable/Writeable";
-            return new FileAccessDeninedException(String.format(msgFmt, targetPath));
-        }
-        
-        public static FileAccessDeninedException create(String msgFmt, Object... args) {
-            return new FileAccessDeninedException(String.format(msgFmt, args));
-        }        
+    public static FileAccessDeninedException create(Path targetPath) {
+        String msgFmt = "%s Is Not Readable/Writeable";
+        return new FileAccessDeninedException(String.format(msgFmt, targetPath));
     }
+
+    public static FileAccessDeninedException create(String msgFmt, Object... args) {
+        return new FileAccessDeninedException(String.format(msgFmt, args));
+    }     
     
     public FileAccessDeninedException(String msg) {
         super(msg);
