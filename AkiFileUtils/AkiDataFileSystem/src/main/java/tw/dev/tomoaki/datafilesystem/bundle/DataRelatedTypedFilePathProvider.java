@@ -6,16 +6,13 @@ package tw.dev.tomoaki.datafilesystem.bundle;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.logging.Logger;
-import tw.dev.tomoaki.datafilesystem.core.naming.UUIDNamingStrategy;
 import tw.dev.tomoaki.datafilesystem.core.NewDataFilePathProvider;
 import tw.dev.tomoaki.datafilesystem.core.RecentDataFilePathProvider;
 import tw.dev.tomoaki.datafilesystem.core.entity.DataFileRelation;
 import tw.dev.tomoaki.filesystem.exception.FileAccessDeninedException;
 import tw.dev.tomoaki.datafilesystem.core.helper.DataFileRelationHelper;
 import tw.dev.tomoaki.nioext.PathExt;
-import tw.dev.tomoaki.datafilesystem.core.DataFileNamingStrategy;
 
 /**
  *
@@ -34,16 +31,6 @@ import tw.dev.tomoaki.datafilesystem.core.DataFileNamingStrategy;
  *
  */
 public abstract class DataRelatedTypedFilePathProvider<DATA, DATA_FILE extends DataFileRelation<DATA>, FILE_TYPE> implements RecentDataFilePathProvider<DATA_FILE>, NewDataFilePathProvider<DATA_FILE> {
-    
-    protected DataFileNamingStrategy<DATA_FILE> fileCreator;
-    
-    public DataRelatedTypedFilePathProvider() {
-        this.fileCreator = new UUIDNamingStrategy<>();        
-    }
-    
-    public DataRelatedTypedFilePathProvider(DataFileNamingStrategy<DATA_FILE> fileCreator) {
-        this.fileCreator = fileCreator;
-    }    
     
     /**
      *
@@ -103,9 +90,11 @@ public abstract class DataRelatedTypedFilePathProvider<DATA, DATA_FILE extends D
      * @throws FileAccessDeninedException 當欲尋找的檔案路徑在根目錄之外會丟出此 Exception
      */
     @Override
-    public Path obtainRecentFilePath(DATA_FILE dataFile) {
+    public Path obtainRecentFilePath(DATA_FILE dataFile) {        
+        DataFileRelationHelper.doValidateDataFileRealName(dataFile);        
+        
         FILE_TYPE fileType = obtainFileType(dataFile);
-        String strFileRoot = getFileRoot(fileType); 
+        String strFileRoot = getFileRoot(fileType);
         Path dbPath = DataFileRelationHelper.obtainFilePath(strFileRoot, dataFile); // Path dbPath = DataFileRelationHelper.obtainFilePath(getFileRoot(fileType), dataFile);
         if (!PathExt.isUnderRoot(dbPath, strFileRoot)) { // if (!PathExt.isUnderRoot(dbPath, getFileRoot(fileType))) {
             String msgFmt = "'%s'(dbPath) is not under %s(fileType)'s root %s";
@@ -121,28 +110,18 @@ public abstract class DataRelatedTypedFilePathProvider<DATA, DATA_FILE extends D
     }
 
     @Override
-    public Path obtainNewFilePath(DATA_FILE dataFile) {
+    public Path obtainNewFilePath(DATA_FILE dataFile) {        
+        DataFileRelationHelper.doValidateDataFileRealName(dataFile);        
+        
         FILE_TYPE fileType = obtainFileType(dataFile);
         String strFileRoot = getFileRoot(fileType);
-        Path newPath = Paths.get(strFileRoot, createFileName(dataFile)); // Path newPath = Paths.get(getFileRoot(fileType), createFileName(dataFile));
-        if (!PathExt.isUnderRoot(newPath, strFileRoot)) { // if (!PathExt.isUnderRoot(newPath, getFileRoot(fileType))) {
+        Path newPath = DataFileRelationHelper.obtainFilePath(strFileRoot, dataFile); // Paths.get(strFileRoot, createFileName(dataFile)); // Path newPath = Paths.get(getFileRoot(fileType), createFileName(dataFile));
+        if (!PathExt.isUnderRoot(newPath, strFileRoot)) {
             String msgFmt = "'%s'(newPath) is not under %s(fileType)'s root %s";
             logger().warning(String.format(msgFmt, newPath, fileType, strFileRoot));
             throw FileAccessDeninedException.create(newPath);
         }
         return newPath;
-    }
-
-    public String createFileName(DATA dataEntity, FILE_TYPE fileType) {
-        return this.createFileName(this.obtainDataFile(dataEntity, fileType));
-    }
-    
-    public String createFileName(DATA_FILE dataFile) {
-        return this.fileCreator.createFileName(dataFile);
-    }
-    
-    public String createFileName(DATA_FILE dataFile, String extension) {
-        return this.fileCreator.createFileName(dataFile, extension);
     }
 
     public Boolean hasRecentFile(DATA dataEntity, FILE_TYPE fileType) {

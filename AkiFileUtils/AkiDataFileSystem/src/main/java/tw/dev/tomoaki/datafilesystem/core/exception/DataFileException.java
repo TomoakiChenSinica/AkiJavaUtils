@@ -13,21 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tw.dev.tomoaki.datafilesystem.core.naming;
-
-import java.util.UUID;
-import tw.dev.tomoaki.datafilesystem.core.DataFileNamingStrategy;
+package tw.dev.tomoaki.datafilesystem.core.exception;
 
 /**
  *
  * @author tomoaki
  */
-public class UUIDNamingStrategy<T> implements DataFileNamingStrategy<T> {
+public class DataFileException extends RuntimeException {
+    
+    public DataFileException(String msg) {
+        super(msg);
+    }
 
-    
-    
-    @Override
-    public String createFileName(T data) {
-        return UUID.randomUUID().toString(); // claude: 直接 UUID.randomUUID().toString()
+    public DataFileException(Exception ex) {
+        super(ex);
     }
 }

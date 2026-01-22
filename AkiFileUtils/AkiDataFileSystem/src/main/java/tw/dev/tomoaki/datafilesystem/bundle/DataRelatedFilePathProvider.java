@@ -8,14 +8,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.Logger;
-import tw.dev.tomoaki.datafilesystem.core.naming.UUIDNamingStrategy;
 import tw.dev.tomoaki.datafilesystem.core.NewDataFilePathProvider;
 import tw.dev.tomoaki.datafilesystem.core.RecentDataFilePathProvider;
 import tw.dev.tomoaki.datafilesystem.core.entity.DataFileRelation;
 import tw.dev.tomoaki.filesystem.exception.FileAccessDeninedException;
 import tw.dev.tomoaki.datafilesystem.core.helper.DataFileRelationHelper;
 import tw.dev.tomoaki.nioext.PathExt;
-import tw.dev.tomoaki.datafilesystem.core.DataFileNamingStrategy;
 
 /**
  *
@@ -32,16 +30,6 @@ import tw.dev.tomoaki.datafilesystem.core.DataFileNamingStrategy;
  */
 public abstract class DataRelatedFilePathProvider<DATA, DATA_FILE extends DataFileRelation<DATA>> implements RecentDataFilePathProvider<DATA>, NewDataFilePathProvider<DATA> {
 
-    protected DataFileNamingStrategy<DATA_FILE> fileCreator;
-    
-    public DataRelatedFilePathProvider() {
-        this.fileCreator = new UUIDNamingStrategy<>();
-    }
-    
-    public DataRelatedFilePathProvider(DataFileNamingStrategy<DATA_FILE> fileCreator) {
-        this.fileCreator = fileCreator;
-    }
-    
     /**
      * 
      * 需實作，指定檔案所在的根目錄
@@ -78,35 +66,37 @@ public abstract class DataRelatedFilePathProvider<DATA, DATA_FILE extends DataFi
     @Override
     public Path obtainRecentFilePath(DATA dataEntity) {
         DATA_FILE dataFile = this.obtainDataFile(dataEntity);
-        String strFileRoot = getFileRoot();        
+        if(!DataFileRelationHelper.hasDataFile(dataFile)) {
+            throw new IllegalArgumentException(String.format("dataFile is null for dataEntity= %s", dataEntity));
+        }
+        DataFileRelationHelper.doValidateDataFileRealName(dataFile);        
+        
+        String strFileRoot = getFileRoot();
         Path dbPath = DataFileRelationHelper.obtainFilePath(strFileRoot, dataFile); // Path dbPath = DataFileRelationHelper.obtainFilePath(getFileRoot(), dataFile);                
         if(dbPath != null && !PathExt.isUnderRoot(dbPath, strFileRoot)) { // if(dbPath != null && !PathExt.isUnderRoot(dbPath, getFileRoot())) {
             String msgFmt = "'%s'(dbPath) is not under root %s";
             logger().warning(String.format(msgFmt, dbPath, strFileRoot));              
             throw FileAccessDeninedException.create(dbPath);
-        }
+        }        
         return dbPath;
     }
 
     @Override
     public Path obtainNewFilePath(DATA dataEntity) {
+        DATA_FILE dataFile = this.obtainDataFile(dataEntity);
+        if(!DataFileRelationHelper.hasDataFile(dataFile)) {
+            throw new IllegalArgumentException(String.format("dataFile is null for dataEntity= %s", dataEntity));
+        }
+        DataFileRelationHelper.doValidateDataFileRealName(dataFile);
+        
         String strFileRoot = getFileRoot();        
-        Path newPath = Paths.get(strFileRoot, createFileName(dataEntity)); // Path newPath = Paths.get(getFileRoot(), createFileName(dataEntity));
+        Path newPath = DataFileRelationHelper.obtainFilePath(strFileRoot, dataFile); // Paths.get(strFileRoot, createFileName(dataEntity)); // Path newPath = Paths.get(getFileRoot(), createFileName(dataEntity));
         if(newPath != null && !PathExt.isUnderRoot(newPath, strFileRoot)) { // if(newPath != null && !PathExt.isUnderRoot(newPath, getFileRoot())) {
             String msgFmt = "'%s'(newPath) is not under root %s";
             logger().warning(String.format(msgFmt, newPath, strFileRoot));               
             throw FileAccessDeninedException.create(newPath);
         }        
         return newPath;
-    }
-
-    // @Override
-    public String createFileName(DATA dataEntity) {
-        return fileCreator.createFileName(this.obtainDataFile(dataEntity));        
-    }
-    
-    public String createFileName(DATA dataEntity, String extension) {
-        return fileCreator.createFileName(this.obtainDataFile(dataEntity), extension);
     }
 
     @Override

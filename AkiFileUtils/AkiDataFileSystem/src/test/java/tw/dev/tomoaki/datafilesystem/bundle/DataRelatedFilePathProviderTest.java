@@ -2,7 +2,6 @@ package tw.dev.tomoaki.datafilesystem.bundle;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.io.TempDir;
 import tw.dev.tomoaki.datafilesystem.core.entity.DataFileRelation;
@@ -14,7 +13,7 @@ import java.nio.file.Path;
 import java.util.logging.Logger;
 
 import static org.assertj.core.api.Assertions.*;
-import tw.dev.tomoaki.datafilesystem.core.DataFileNamingStrategy;
+import tw.dev.tomoaki.datafilesystem.core.exception.DataFileException;
 
 /**
  * DataRelatedFilePathProvider 單元測試
@@ -88,10 +87,11 @@ class DataRelatedFilePathProviderTest {
             this.fileRoot = fileRoot;
         }
 
+        /* 取消
         public TestPathProvider(String fileRoot, DataFileNamingStrategy<TestDataFile> fileCreator) {
             super(fileCreator);
             this.fileRoot = fileRoot;
-        }
+        }*/
 
         @Override
         protected String getFileRoot() {
@@ -109,9 +109,7 @@ class DataRelatedFilePathProviderTest {
         }        
     }
 
-    /**
-     * 測試用的自訂 DataFileCreator - 使用固定前綴
-     */
+    /*
     private static class PrefixFileCreator implements DataFileNamingStrategy<TestDataFile> {
         private final String prefix;
 
@@ -125,9 +123,6 @@ class DataRelatedFilePathProviderTest {
         }
     }
 
-    /**
-     * 測試用的自訂 DataFileCreator - 基於 displayName 生成
-     */
     private static class DisplayNameBasedFileCreator implements DataFileNamingStrategy<TestDataFile> {
         @Override
         public String createFileName(TestDataFile data) {
@@ -142,7 +137,7 @@ class DataRelatedFilePathProviderTest {
             }
             return displayName.replaceAll("[^a-zA-Z0-9]", "_");
         }
-    }
+    }*/
 
     @BeforeEach
     void setUp() {
@@ -164,7 +159,7 @@ class DataRelatedFilePathProviderTest {
         assertThat(result).isNotNull();
         assertThat(result.getFileName().toString()).isEqualTo("existing-file.txt");
         assertThat(result.getParent()).isEqualTo(tempDir);
-    }
+    }   
 
     @Test
     @DisplayName("測試 obtainRecentFilePath - dataFile 為 null")
@@ -178,6 +173,20 @@ class DataRelatedFilePathProviderTest {
         // Then
         assertThat(result).isNull();
     }
+    
+
+    @Test
+    @DisplayName("測試 obtainRecentFilePath - 測試 RealName 為 Null")
+    void testObtainRecentFilePath_DataFileNullRealName() {
+        // Given
+        TestDataFile dataFile = new TestDataFile(null, "既有檔案.txt");
+        testData.setFile(dataFile);
+
+        // When
+        assertThatThrownBy(() -> pathProvider.obtainRecentFilePath(testData))
+                .isInstanceOf(DataFileException.class);
+
+    }        
 
     @Test
     @DisplayName("測試 obtainRecentFilePath - 路徑遍歷攻擊防護")
@@ -203,6 +212,7 @@ class DataRelatedFilePathProviderTest {
         assertThat(result.getFileName().toString()).isNotEmpty();
     }
 
+    /* 取消此種預設
     @Test
     @DisplayName("測試 createFileName - UUID 格式")
     void testCreateFileName_UUIDFormat() {
@@ -217,7 +227,7 @@ class DataRelatedFilePathProviderTest {
 
         // UUID 格式檢查 (8-4-4-4-12)
         assertThat(fileName1).matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}");
-    }
+    }*/
 
     @Test
     @DisplayName("測試 hasRecentFile - 有既有檔案")
@@ -277,6 +287,7 @@ class DataRelatedFilePathProviderTest {
         assertThat(result).isFalse();
     }
 
+    /* 取消 DataFileCreator/DataNameStrategy
     // ========== 自訂 DataFileCreator 測試 ==========
 
     @Nested
@@ -390,7 +401,6 @@ class DataRelatedFilePathProviderTest {
             assertThat(displayNameFileName).isEqualTo("Document");
         }
     }
-
     // ========== 帶副檔名 (Extension) 的測試 ==========
 
     
@@ -460,5 +470,6 @@ class DataRelatedFilePathProviderTest {
             // 應該是 UUID + "."
             assertThat(fileName).endsWith(".");
         }
-    }
+    }    */
+
 }

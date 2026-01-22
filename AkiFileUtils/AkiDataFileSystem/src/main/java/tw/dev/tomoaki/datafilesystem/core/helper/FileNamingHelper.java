@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 tomoaki.
+ * Copyright 2026 tomoaki.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,32 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tw.dev.tomoaki.datafilesystem.core;
+package tw.dev.tomoaki.datafilesystem.core.helper;
+
+import java.util.UUID;
 
 /**
  *
  * @author tomoaki
- *
- * 單純產生「檔案」相關資訊，不理會「實際路徑」
- * @param <T>
- *
  */
-public interface DataFileNamingStrategy<T> {
-
-    /**
-     * 會需要存檔案時，如何依據傳進來的資料(data) 產生檔名
-     *
-     * @param data 資料，跟此資料的關聯檔案，檔案名稱如何(根據資料)產生檔名
-     * @return
-     *
-     */
-    public String createFileName(T data);
-
-    default public String createFileName(T data, String extension) {
-        return new StringBuilder().append(createFileName(data))
+public class FileNamingHelper {
+    
+    public static String obtainWithUUID() {
+        return UUID.randomUUID().toString();        
+    }
+    
+    public static String obtainWithUUID(String extension) {
+        return new StringBuilder()
+                .append(obtainWithUUID())
                 .append(".")
                 .append(extension)
                 .toString();
     }
-
 }

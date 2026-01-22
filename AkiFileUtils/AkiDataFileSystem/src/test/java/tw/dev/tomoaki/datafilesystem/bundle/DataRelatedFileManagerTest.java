@@ -53,6 +53,12 @@ class DataRelatedFileManagerTest {
         public Long getId() {
             return id;
         }
+        
+        @Override
+        public String toString() {
+            return String.format("%s{id= %s, file= %s}", getClass().getName(), id, file);
+        }
+
     }
 
     /**
@@ -80,6 +86,12 @@ class DataRelatedFileManagerTest {
         public String getFileDisplayName() {
             return displayName;
         }
+        
+        @Override
+        public String toString() {
+            return String.format("%s{realName= %s, displayName= %s}", getClass().getName(), realName, displayName);
+        }
+
     }
 
     /**
@@ -137,6 +149,10 @@ class DataRelatedFileManagerTest {
         String content = "測試內容";
         InputStream inputStream = new ByteArrayInputStream(content.getBytes());
 
+        // Setting File Name With Implement DataFile
+        TestDataFile dataFile = new TestDataFile("new.txt", "新檔案.txt");
+        testData.setFile(dataFile);        
+        
         // When
         File savedFile = fileManager.save(testData, inputStream, false);
 
@@ -152,11 +168,14 @@ class DataRelatedFileManagerTest {
     @Test
     @DisplayName("測試 save - 覆寫既有檔案")
     void testSave_OverwriteExistingFile() throws IOException {
-        // Given - 先創建一個既有檔案
-        Path existingFile = tempDir.resolve("existing.txt");
+        // Given - 設定既有檔案路徑
+        String strExistingFilePath = "existing.txt";
+        
+        // Given - 創建一個既有檔案
+        Path existingFile = tempDir.resolve(strExistingFilePath);
         Files.write(existingFile, "舊內容".getBytes());
 
-        TestDataFile dataFile = new TestDataFile("existing.txt", "既有檔案.txt");
+        TestDataFile dataFile = new TestDataFile(strExistingFilePath, "既有檔案.txt");
         testData.setFile(dataFile);
 
         String newContent = "新內容";
@@ -177,11 +196,14 @@ class DataRelatedFileManagerTest {
     @Test
     @DisplayName("測試 save - 不覆寫既有檔案")
     void testSave_NoOverwriteExistingFile() throws IOException {
-        // Given - 先創建一個既有檔案
-        Path existingFile = tempDir.resolve("existing.txt");
+        // Given - 設定既有檔案路徑
+        String strExistingFilePath = "existing.txt";
+        
+        // Given - 創建一個既有檔案
+        Path existingFile = tempDir.resolve(strExistingFilePath);
         Files.write(existingFile, "舊內容".getBytes());
 
-        TestDataFile dataFile = new TestDataFile("existing.txt", "既有檔案.txt");
+        TestDataFile dataFile = new TestDataFile(strExistingFilePath, "既有檔案.txt");
         testData.setFile(dataFile);
 
         String newContent = "新內容";
@@ -203,14 +225,19 @@ class DataRelatedFileManagerTest {
         assertThat(savedContent).isEqualTo(newContent);
     }
 
+    
+    
     @Test
     @DisplayName("測試 obtainSaveFilePath - 覆寫模式且有既有檔案")
     void testObtainSaveFilePath_OverwriteWithExisting() throws IOException {
-        // Given
-        Path existingFile = tempDir.resolve("existing.txt");
-        Files.createFile(existingFile);
+        // Given - 設定既有檔案路徑
+        String strExistingFilePath = "existing.txt";        
+        
+        // Given - 創建一個既有檔案
+        Path existingFile = tempDir.resolve(strExistingFilePath);        
+        Files.write(existingFile, "舊內容".getBytes());
 
-        TestDataFile dataFile = new TestDataFile("existing.txt", "既有檔案.txt");
+        TestDataFile dataFile = new TestDataFile(strExistingFilePath, "既有檔案.txt");
         testData.setFile(dataFile);
 
         // When
@@ -223,11 +250,16 @@ class DataRelatedFileManagerTest {
     @Test
     @DisplayName("測試 obtainSaveFilePath - 不覆寫模式")
     void testObtainSaveFilePath_NoOverwrite() throws IOException {
-        // Given
-        Path existingFile = tempDir.resolve("existing.txt");
-        Files.createFile(existingFile);
+        // Given - 設定既有檔案路徑
+        String strExistingFilePath = "existing.txt";        
+        
+        // Given - 創建一個既有檔案
+        Path existingFile = tempDir.resolve(strExistingFilePath);        
+        Files.write(existingFile, "舊內容".getBytes());
 
-        TestDataFile dataFile = new TestDataFile("existing.txt", "既有檔案.txt");
+        // Given - 設定新檔案路徑
+        String strNewFilePath = "new.txt";            
+        TestDataFile dataFile = new TestDataFile(strNewFilePath, "既有檔案.txt");
         testData.setFile(dataFile);
 
         // When
