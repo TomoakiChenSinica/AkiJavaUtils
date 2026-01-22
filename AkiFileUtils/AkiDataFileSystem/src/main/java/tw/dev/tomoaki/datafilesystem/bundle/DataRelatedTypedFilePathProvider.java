@@ -6,8 +6,7 @@ package tw.dev.tomoaki.datafilesystem.bundle;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.UUID;
+import java.util.logging.Logger;
 import tw.dev.tomoaki.datafilesystem.core.NewDataFilePathProvider;
 import tw.dev.tomoaki.datafilesystem.core.RecentDataFilePathProvider;
 import tw.dev.tomoaki.datafilesystem.core.entity.DataFileRelation;
@@ -32,7 +31,7 @@ import tw.dev.tomoaki.nioext.PathExt;
  *
  */
 public abstract class DataRelatedTypedFilePathProvider<DATA, DATA_FILE extends DataFileRelation<DATA>, FILE_TYPE> implements RecentDataFilePathProvider<DATA_FILE>, NewDataFilePathProvider<DATA_FILE> {
-
+    
     /**
      *
      * 需實作，指定檔案所在的根目錄
@@ -61,6 +60,15 @@ public abstract class DataRelatedTypedFilePathProvider<DATA, DATA_FILE extends D
      */
     protected abstract FILE_TYPE obtainFileType(DATA_FILE dataFile);
 
+    
+    /**
+     * 提供 Logger，可以覆寫
+     * @return 此類別中用的 Logger
+     */
+    protected Logger logger() {
+        return Logger.getLogger(getClass().getName());
+    }
+    
     /**
      * 需實作，從 DATA 轉換為 DATA_FILE。<br>
      * DATA 和 DATA_FILE 在資料庫為 一對多。
@@ -82,11 +90,16 @@ public abstract class DataRelatedTypedFilePathProvider<DATA, DATA_FILE extends D
      * @throws FileAccessDeninedException 當欲尋找的檔案路徑在根目錄之外會丟出此 Exception
      */
     @Override
-    public Path obtainRecentFilePath(DATA_FILE dataFile) {
+    public Path obtainRecentFilePath(DATA_FILE dataFile) {        
+        DataFileRelationHelper.doValidateDataFileRealName(dataFile);        
+        
         FILE_TYPE fileType = obtainFileType(dataFile);
-        Path dbPath = DataFileRelationHelper.obtainFilePath(getFileRoot(fileType), dataFile);
-        if (!PathExt.isUnderRoot(dbPath, getFileRoot(fileType))) {
-            throw FileAccessDeninedException.Factory.create(dbPath);
+        String strFileRoot = getFileRoot(fileType);
+        Path dbPath = DataFileRelationHelper.obtainFilePath(strFileRoot, dataFile); // Path dbPath = DataFileRelationHelper.obtainFilePath(getFileRoot(fileType), dataFile);
+        if (!PathExt.isUnderRoot(dbPath, strFileRoot)) { // if (!PathExt.isUnderRoot(dbPath, getFileRoot(fileType))) {
+            String msgFmt = "'%s'(dbPath) is not under %s(fileType)'s root %s";
+            logger().warning(String.format(msgFmt, dbPath, fileType, strFileRoot));         
+            throw FileAccessDeninedException.create(dbPath);
         }
         return dbPath;
     }
@@ -97,25 +110,18 @@ public abstract class DataRelatedTypedFilePathProvider<DATA, DATA_FILE extends D
     }
 
     @Override
-    public Path obtainNewFilePath(DATA_FILE dataFile) {
+    public Path obtainNewFilePath(DATA_FILE dataFile) {        
+        DataFileRelationHelper.doValidateDataFileRealName(dataFile);        
+        
         FILE_TYPE fileType = obtainFileType(dataFile);
-        Path newPath = Paths.get(getFileRoot(fileType), createFileName(dataFile));
-        if (!PathExt.isUnderRoot(newPath, getFileRoot(fileType))) {
-            throw FileAccessDeninedException.Factory.create(newPath);
+        String strFileRoot = getFileRoot(fileType);
+        Path newPath = DataFileRelationHelper.obtainFilePath(strFileRoot, dataFile); // Paths.get(strFileRoot, createFileName(dataFile)); // Path newPath = Paths.get(getFileRoot(fileType), createFileName(dataFile));
+        if (!PathExt.isUnderRoot(newPath, strFileRoot)) {
+            String msgFmt = "'%s'(newPath) is not under %s(fileType)'s root %s";
+            logger().warning(String.format(msgFmt, newPath, fileType, strFileRoot));
+            throw FileAccessDeninedException.create(newPath);
         }
         return newPath;
-    }
-
-    public String createFileName(DATA dataEntity, FILE_TYPE fileType) {
-        return this.createFileName(this.obtainDataFile(dataEntity, fileType));
-    }
-    
-    @Override
-    public String createFileName(DATA_FILE dataFile) {
-        UUID uuid = UUID.randomUUID();
-        return new StringBuilder()
-                .append(uuid.toString())
-                .toString();
     }
 
     public Boolean hasRecentFile(DATA dataEntity, FILE_TYPE fileType) {
@@ -138,5 +144,5 @@ public abstract class DataRelatedTypedFilePathProvider<DATA, DATA_FILE extends D
         FILE_TYPE fileType = obtainFileType(dataFile);
         Path path = DataFileRelationHelper.obtainFilePath(getFileRoot(fileType), dataFile);
         return Files.exists(path);
-    }
+    }  
 }

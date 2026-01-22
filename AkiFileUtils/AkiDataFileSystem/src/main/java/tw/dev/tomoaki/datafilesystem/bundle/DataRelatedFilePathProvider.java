@@ -7,7 +7,7 @@ package tw.dev.tomoaki.datafilesystem.bundle;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.UUID;
+import java.util.logging.Logger;
 import tw.dev.tomoaki.datafilesystem.core.NewDataFilePathProvider;
 import tw.dev.tomoaki.datafilesystem.core.RecentDataFilePathProvider;
 import tw.dev.tomoaki.datafilesystem.core.entity.DataFileRelation;
@@ -19,7 +19,7 @@ import tw.dev.tomoaki.nioext.PathExt;
  *
  * @author tomoaki
  * @param <DATA> 主要資料，DATA 和 DATA_FILE 是「一對多」
- * @param <DATA_FILE> 繼承於 DataFileRelation(又繼承於 DataFile) 的類別
+ * @param <DATA_FILE> 繼承於 DataFileRelation(又繼承於 DataFile) 的類別。會包含檔案的真實名稱、顯示(用)名稱等
  * 
  * 實作 RecentDataFilePathProvider 和 NewDataFilePathProvider，<br>
  * 此類別適合用在當資料庫或資料架構，是 DATA --> DATA_FILE，DATA 和 DATA_FILE 是「一對多」。<br>
@@ -46,6 +46,15 @@ public abstract class DataRelatedFilePathProvider<DATA, DATA_FILE extends DataFi
      * @return 相關的檔案
      */
     protected abstract DATA_FILE obtainDataFile(DATA dataEntity);
+    
+
+    /**
+     * 提供 Logger，可以覆寫
+     * @return 此類別中用的 Logger
+     */
+    protected Logger logger() {
+        return Logger.getLogger(getClass().getName());
+    }
 
     /**
      * 產生「既有的」檔案路徑。<br>
@@ -57,29 +66,37 @@ public abstract class DataRelatedFilePathProvider<DATA, DATA_FILE extends DataFi
     @Override
     public Path obtainRecentFilePath(DATA dataEntity) {
         DATA_FILE dataFile = this.obtainDataFile(dataEntity);
-        Path dbPath = DataFileRelationHelper.obtainFilePath(getFileRoot(), dataFile);
-        if(dbPath != null && !PathExt.isUnderRoot(dbPath, getFileRoot())) {
-            throw FileAccessDeninedException.Factory.create(dbPath);
+        if(!DataFileRelationHelper.hasDataFile(dataFile)) {
+            throw new IllegalArgumentException(String.format("dataFile is null for dataEntity= %s", dataEntity));
         }
+        DataFileRelationHelper.doValidateDataFileRealName(dataFile);        
+        
+        String strFileRoot = getFileRoot();
+        Path dbPath = DataFileRelationHelper.obtainFilePath(strFileRoot, dataFile); // Path dbPath = DataFileRelationHelper.obtainFilePath(getFileRoot(), dataFile);                
+        if(dbPath != null && !PathExt.isUnderRoot(dbPath, strFileRoot)) { // if(dbPath != null && !PathExt.isUnderRoot(dbPath, getFileRoot())) {
+            String msgFmt = "'%s'(dbPath) is not under root %s";
+            logger().warning(String.format(msgFmt, dbPath, strFileRoot));              
+            throw FileAccessDeninedException.create(dbPath);
+        }        
         return dbPath;
     }
 
     @Override
     public Path obtainNewFilePath(DATA dataEntity) {
-        // return Paths.get(getFileRoot(), createFileName(dataEntity));
-        Path newPath = Paths.get(getFileRoot(), createFileName(dataEntity));
-        if(newPath != null && !PathExt.isUnderRoot(newPath, getFileRoot())) {
-            throw FileAccessDeninedException.Factory.create(newPath);
+        DATA_FILE dataFile = this.obtainDataFile(dataEntity);
+        if(!DataFileRelationHelper.hasDataFile(dataFile)) {
+            throw new IllegalArgumentException(String.format("dataFile is null for dataEntity= %s", dataEntity));
+        }
+        DataFileRelationHelper.doValidateDataFileRealName(dataFile);
+        
+        String strFileRoot = getFileRoot();        
+        Path newPath = DataFileRelationHelper.obtainFilePath(strFileRoot, dataFile); // Paths.get(strFileRoot, createFileName(dataEntity)); // Path newPath = Paths.get(getFileRoot(), createFileName(dataEntity));
+        if(newPath != null && !PathExt.isUnderRoot(newPath, strFileRoot)) { // if(newPath != null && !PathExt.isUnderRoot(newPath, getFileRoot())) {
+            String msgFmt = "'%s'(newPath) is not under root %s";
+            logger().warning(String.format(msgFmt, newPath, strFileRoot));               
+            throw FileAccessDeninedException.create(newPath);
         }        
         return newPath;
-    }
-
-    @Override
-    public String createFileName(DATA dataEntity) {
-        UUID uuid = UUID.randomUUID();
-        return new StringBuilder()
-                .append(uuid.toString())
-                .toString();
     }
 
     @Override
@@ -94,4 +111,6 @@ public abstract class DataRelatedFilePathProvider<DATA, DATA_FILE extends DataFi
         Path path = DataFileRelationHelper.obtainFilePath(getFileRoot(), dataFile);
         return Files.exists(path);
     }
+    
+    
 }

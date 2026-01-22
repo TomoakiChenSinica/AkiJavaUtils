@@ -4,16 +4,17 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Java Version](https://img.shields.io/badge/Java-1.8+-orange.svg)](https://www.oracle.com/java/)
-[![Version](https://img.shields.io/badge/Version-0.4.1--SNAPSHOT-green.svg)](https://github.com)
+[![Version](https://img.shields.io/badge/Version-0.5.0--SNAPSHOT-green.svg)](https://github.com)
 
 ## 專案簡介
 
-AkiDataFileSystem 是一個高度抽象的文件系統管理框架，用於建立資料對象與實際文件之間的關聯關係。該框架提供了完整的文件生命周期管理、多類型文件支持、安全路徑控制以及遠程文件操作等功能，適用於需要複雜文件管理需求的企業級應用。
+AkiDataFileSystem 是一個高度抽象的文件系統管理框架，用於建立資料對象與實際文件之間的關聯關係。該框架提供了完整的文件生命周期管理、多類型文件支持、安全路徑控制以及可自訂的檔名生成策略，適用於需要複雜文件管理需求的企業級應用。
 
 ## 核心功能
 
 - **數據與文件關聯管理**：透過 `DataFileRelation<DATA>` 建立主資料（DATA）與檔案資料（DATA_FILE）的一對多關係
-- **文件生命周期管理**：自動文件名生成（UUID）、統一路徑管理、文件保存與刪除
+- **文件生命周期管理**：統一路徑管理、文件保存與刪除
+- **可自訂檔名策略**：透過 `DataFileNamingStrategy` 介面自訂檔名生成邏輯，支援副檔名處理
 - **多類型文件支持**：透過 `DataRelatedTypedFilePathProvider` 實現不同類型文件的分類存儲
 - **安全性與權限檢查**：防止路徑遍歷攻擊、讀寫權限判斷、非法路徑訪問保護
 - **遠程文件操作**：支持與遠程文件系統的交互（複製、刪除等）
@@ -41,9 +42,12 @@ AkiDataFileSystem 是一個高度抽象的文件系統管理框架，用於建�
 ├─────────────────────────────────────────┤
 │        核心層 (Core) - 接口定義          │
 │  • DataFileManager                     │
-│  • DataFileCreator                     │
+│  • DataFileNamingStrategy              │
 │  • RecentDataFilePathProvider          │
 │  • NewDataFilePathProvider             │
+├─────────────────────────────────────────┤
+│      命名策略 (Naming) - 檔名生成        │
+│  • UUIDNamingStrategy                  │
 ├─────────────────────────────────────────┤
 │      輔助層 (Helper) - 工具類            │
 │  • DataFileRelationHelper              │
@@ -54,20 +58,25 @@ AkiDataFileSystem 是一個高度抽象的文件系統管理框架，用於建�
 
 #### 1. 核心接口
 
-- **`DataFile`**：最底層的文件接口，定義文件顯示名稱和實際名稱（基本上不會直接使用）
+- **`DataFile`**：最底層的文件接口，定義文件顯示名稱和實際名稱
 - **`DataFileRelation<DATA>`**：檔案資料接口，`<DATA>` 表示此檔案「屬於」的主資料類型，用於建立 DATA 與檔案的一對多關係
 - **`DataFileManager<T>`**：文件管理接口，提供保存、刪除等操作
-- **`DataFileCreator<T>`**：文件創建者，負責根據資料生成檔名
+- **`DataFileNamingStrategy<T>`**：檔名生成策略接口，負責根據資料生成檔名
 - **`RecentDataFilePathProvider<T>`**：獲取已存在文件的路徑
 - **`NewDataFilePathProvider<T>`**：生成新文件的路徑
 
-#### 2. 具體實現（Bundle 層）
+#### 2. 檔名策略 (Naming Strategy)
+
+- **`UUIDNamingStrategy`**：預設策略，使用 UUID 作為檔名
+- 可自訂實作 `DataFileNamingStrategy` 來定義命名邏輯
+
+#### 3. 具體實現（Bundle 層）
 
 - **`DataRelatedFilePathProvider`**：基礎路徑提供者，適用於 DATA 與 DATA_FILE 一對多關係
 - **`DataRelatedTypedFilePathProvider`**：支持文件類型的高級路徑提供者
 - **`DataRelatedFileManager`**：文件管理器的具體實現
 
-#### 3. 遠程操作
+#### 4. 遠程操作
 
 - **`DataRemoteFileManager<T>`**：遠程文件管理接口
 - **`DataRemoteFile`**：遠程文件實體
@@ -80,7 +89,7 @@ AkiDataFileSystem 是一個高度抽象的文件系統管理框架，用於建�
 <dependency>
     <groupId>tw.dev.tomoaki</groupId>
     <artifactId>AkiDataFileSystem</artifactId>
-    <version>0.4.1-SNAPSHOT</version>
+    <version>0.5.0-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -156,7 +165,29 @@ try (InputStream inputStream = new FileInputStream("cover.jpg")) {
 File deletedFile = fileManager.delete(article);
 ```
 
-#### 4. 多類型文件支持
+#### 4. 自訂檔名策略
+
+```java
+// 實作自訂的檔名策略
+public class TimestampNamingStrategy<T> implements DataFileNamingStrategy<T> {
+
+    @Override
+    public String createFileName(T data) {
+        return "file_" + System.currentTimeMillis();
+    }
+}
+
+// 使用自訂策略
+ArticleFilePathProvider pathProvider = new ArticleFilePathProvider(
+    new TimestampNamingStrategy<>()
+);
+
+// 產生帶副檔名的檔名
+String fileName = pathProvider.createFileName(article, "jpg");
+// 結果: file_1705123456789.jpg
+```
+
+#### 5. 多類型文件支持
 
 ```java
 public class MediaFilePathProvider
@@ -183,8 +214,6 @@ public class MediaFilePathProvider
 
     @Override
     protected MediaFile obtainDataFile(Media media, MediaType fileType) {
-        // 根據類型返回對應的 MediaFile
-        // 這裡假設 Media 有 getFileByType 方法
         return media.getFileByType(fileType);
     }
 }
@@ -197,7 +226,7 @@ public class MediaFilePathProvider
 框架會自動檢查生成的文件路徑是否在允許的根目錄內，防止惡意路徑訪問：
 
 ```java
-// 自動檢查，如果路徑超出根目錄會拋出 FileAccessDeniedException
+// 自動檢查，如果路徑超出根目錄會拋出 FileAccessDeninedException
 Path newPath = pathProvider.obtainNewFilePath(data);
 ```
 
@@ -213,7 +242,7 @@ if (!Files.isWritable(parentDir)) {
 
 ## 設計模式
 
-- **策略模式（Strategy Pattern）**：不同的路徑提供策略可互換
+- **策略模式（Strategy Pattern）**：`DataFileNamingStrategy` 允許不同的檔名生成策略互換
 - **工廠模式（Factory Pattern）**：`DataRemoteFile.Factory` 創建遠程文件對象
 - **模板方法模式（Template Method Pattern）**：抽象類定義框架，子類實現具體邏輯
 - **泛型編程**：類型安全的代碼重用
@@ -222,13 +251,22 @@ if (!Files.isWritable(parentDir)) {
 
 | 依賴 | 版本 | 用途 |
 |------|------|------|
-| `AkiFileIOUtils` | [1.2-SNAPSHOT,) | 提供底層文件讀寫工具 |
+| `AkiFileIOUtils` | [1.2.1-SNAPSHOT,) | 提供底層文件讀寫工具 |
 | `AkiCommonDataValidator` | 1.0-SNAPSHOT | 提供數據驗證功能 |
 
 ## 版本歷史
 
-### 0.4.1-SNAPSHOT (當前版本)
-- 修正 bug
+### 0.5.0-SNAPSHOT (當前版本)
+- 重構檔名生成機制
+  - `DataFileCreator` 改名為 `DataFileNamingStrategy`
+  - `NewDataFilePathProvider` 不再繼承 `DataFileNamingStrategy`，改為組合模式
+  - 新增 `core.naming` package 放置命名策略實作
+  - 新增 `UUIDNamingStrategy` 作為預設策略
+- 支援帶副檔名的檔名生成：`createFileName(data, extension)`
+- 改善路徑安全檢查的日誌輸出
+
+### 0.4.1
+- 修正 bug、補充註解
 
 ### 0.4.0
 - 擴充 `filesystem.bundle` 底下的 `XxxxPathProvider` 功能

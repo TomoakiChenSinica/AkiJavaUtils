@@ -5,13 +5,18 @@
 package tw.dev.tomoaki.datafilesystem.core.entity;
 
 /**
- *
+ * Represents a file that is associated with a specific data entity.
+ * <p>
+ * This interface should be implemented by entities (e.g., database table records)
+ * that need to maintain a relationship with files. It stores the file name in the
+ * file system ({@link #getFileRealName}) and the user-facing display name ({@link #getFileDisplayName}).
+ * </p>
+ * <p>
+ * The generic type {@code <DATA>} represents the parent data entity that owns this file.
+ * This interface establishes a one-to-many relationship between {@code DATA} and its related files.
+ * </p>
  * @author tomoaki
- * @param <DATA> 此檔案「屬於」的資料/Table
- * 
- * 檔案所關聯的「資料/Table」需需作此 interfaces，存有該檔案實際的檔名、即使用者看到的名字等資訊。<br>
- * <DATA> 則是該 Table 所屬於「該資料」。<br>
- * DataFileRelation 等於用於建立 DATA 與檔案的一對多關係
+ * @param <DATA> the type of the parent data entity that this file belongs to
  * 
  */
 public interface DataFileRelation<DATA> extends DataFile {

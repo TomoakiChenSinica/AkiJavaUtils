@@ -17,8 +17,23 @@ import java.nio.file.Path;
  */
 public interface DataFileManager<T> {
 
+    /**
+     * 
+     * 
+     * @param data
+     * @param overwriteRecentFile
+     *  
+     */
     public Path obtainSaveFilePath(T data, Boolean overwriteRecentFile);
 
+    /**
+     * save Inputstream {@code is} to file with {@code data}
+     * 
+     * @param data
+     * @param is
+     * @param overwriteRecentFile
+     * 
+     */
     public File save(T data, InputStream is, Boolean overwriteRecentFile) throws IOException;
 
     public File delete(T data) throws IOException;

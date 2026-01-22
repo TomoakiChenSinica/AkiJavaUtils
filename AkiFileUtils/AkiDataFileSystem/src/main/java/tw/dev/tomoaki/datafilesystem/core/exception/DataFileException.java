@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 tomoaki.
+ * Copyright 2026 tomoaki.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,25 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tw.dev.tomoaki.datafilesystem.core;
-
-import java.nio.file.Path;
+package tw.dev.tomoaki.datafilesystem.core.exception;
 
 /**
  *
  * @author tomoaki
- * @param <T>
  */
-public interface NewDataFilePathProvider<T> {
+public class DataFileException extends RuntimeException {
+    
+    public DataFileException(String msg) {
+        super(msg);
+    }
 
-    /**
-     * 配合 FileCreator 繼承來的 createFileName， <br>
-     * 組合出「檔案的實際路徑」。
-     * 
-     * @param data 資料
-     * @return 資料關聯檔案的路徑
-     *  
-     */
-    public Path obtainNewFilePath(T data);
-
+    public DataFileException(Exception ex) {
+        super(ex);
+    }
 }

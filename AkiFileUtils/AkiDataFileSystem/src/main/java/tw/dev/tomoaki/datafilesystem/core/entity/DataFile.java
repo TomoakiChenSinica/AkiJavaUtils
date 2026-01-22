@@ -16,14 +16,28 @@
 package tw.dev.tomoaki.datafilesystem.core.entity;
 
 /**
- *
- * @author tomoaki
+ * Base interface representing a file associated with data.
+ * <p>
+ * This is the lowest-level abstraction and is typically not used directly.<br>
+ * Instead, use {@link DataFileRelation} which extends this interface.
+ * </p>
  * 
- * 最底層的「殼」，基本上不會直接用到
+ * @author tomoaki
+ *
  */
 public interface DataFile {
 
+    /**
+     * Returns the display name of the file shown to users.
+     *
+     * @return the user-friendly display name of the file
+     */    
     public String getFileDisplayName();
 
+    /**
+     * Returns the actual file name stored in the file system.
+     *
+     * @return the real file name used for storage
+     */    
     public String getFileRealName();
 }

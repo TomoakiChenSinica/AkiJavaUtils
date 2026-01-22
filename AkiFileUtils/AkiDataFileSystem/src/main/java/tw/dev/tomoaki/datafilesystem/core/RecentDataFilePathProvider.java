@@ -14,14 +14,20 @@ import java.nio.file.Path;
 public interface RecentDataFilePathProvider<T> {
 
     /**
-     * 取得與 data 資料有關的「現有」檔案
+     * Gets recent file related to the given {@code data}
      * 
-     * @param data 任意格式資料
+     * @param data 任意格式({@literal <T>})資料
      * @return 檔案路徑，型態是 java.nio.file.Path
      * 
      */
     public Path obtainRecentFilePath(T data);
 
+    /**
+     * Check {@code data} has related file or not
+     * 
+     * @param data the data with type {@literal <T>}
+     * @return the file is 
+     */
     public Boolean hasRecentFile(T data);
 
     public Boolean isRecentFileExists(T data);
