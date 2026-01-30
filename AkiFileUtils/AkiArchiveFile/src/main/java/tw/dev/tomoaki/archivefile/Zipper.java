@@ -56,34 +56,6 @@ public class Zipper {
     
     // public OutputStream zip(Path targetPath, ArchiveEntryNaming dirNaming, ArchiveEntryNaming fileNaming, Path sourcePath, Path... otherSourcePaths) throws IOException {
     public OutputStream zipFile(Path targetPath, Path sourcePath, Path... otherSourcePaths) throws IOException {    
-        /*
-        Stream<Path> sourcePaths = Stream.concat(Stream.of(sourcePath), Stream.of(otherSourcePaths));       
-        try (OutputStream os = Files.newOutputStream(targetPath); ZipArchiveOutputStream zos = new ZipArchiveOutputStream(os)) {
-            for(Path srcPath : sourcePaths.collect(Collectors.toList())) {
-                if(Files.isHidden(srcPath)) {
-                    continue;
-                }
-                
-                if (Files.isDirectory(srcPath)) {
-                    String dirName = dirNaming.obtainName(srcPath);
-                    ZipArchiveEntry dirEntry = new ZipArchiveEntry(dirName);
-                    zos.putArchiveEntry(dirEntry);
-                    // System.out.println("dirName= " + dirName);
-                    
-                    List<Path> childPaths = Files.list(srcPath).collect(Collectors.toList());
-                    for (Path childPath : childPaths) {
-                        // System.out.println("under dir= " + dirName + " find: " + childPath);
-                        archiveByApacheZip(zos, childPath, p -> dirName + fileNaming.obtainName(p));
-                        zos.closeArchiveEntry(); // 沒有寫會被警告 java.io.IOException: This archive contains unclosed entries.                  
-                    }
-                    continue;
-                }
-            }
-            
-            archiveByApacheZip(zos, sourcePath, fileNaming);
-            zos.closeArchiveEntry();            
-            return zos;
-        } */
         Path[] sourcePaths = Stream.concat(Stream.of(sourcePath), Stream.of(otherSourcePaths)).toArray(Path[]::new);
         return this.zipFile(targetPath, sourcePaths);        
     }
