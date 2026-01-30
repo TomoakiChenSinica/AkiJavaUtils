@@ -10,6 +10,15 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
     <name>AkiArchiveFile</name>
+    
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-compress</artifactId>
+            <version>1.28.0</version>
+        </dependency>
+    </dependencies>
+    
     <distributionManagement>
         <repository>
             <id>ccs-git</id>
@@ -23,12 +32,11 @@
             <url>https://ccs-git.iis.sinica.edu.tw/api/packages/IIS/maven </url>
         </snapshotRepository>           
     </distributionManagement>
-    
-    
-    <licenses>        
+        
+    <licenses>
         <license>
             <name>The Apache License, Version 2.0</name>
             <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
         </license>
-    </licenses>       
+    </licenses>        
 </project>

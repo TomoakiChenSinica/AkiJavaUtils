@@ -10,6 +10,9 @@ import java.io.FileOutputStream;
 /**
  *
  * @author arche
+ * 
+ * 為了包含壓縮檔檔名而建立的類別
+ * 
  */
 public class ArchiveFileOutputStream {
 
@@ -19,14 +22,12 @@ public class ArchiveFileOutputStream {
     protected ArchiveFileOutputStream() {
     }
 
-    public static class Factory {
 
-        public static ArchiveFileOutputStream create(String fileName, FileOutputStream fileOutputStream) {
-            ArchiveFileOutputStream afos = new ArchiveFileOutputStream();
-            afos.fileName = fileName;
-            afos.fileOutputStream = fileOutputStream;
-            return afos;
-        }
+    public static ArchiveFileOutputStream create(String fileName, FileOutputStream fileOutputStream) {
+        ArchiveFileOutputStream afos = new ArchiveFileOutputStream();
+        afos.fileName = fileName;
+        afos.fileOutputStream = fileOutputStream;
+        return afos;
     }
 
     public String getFileName() {
@@ -43,5 +44,11 @@ public class ArchiveFileOutputStream {
 
     public void setFileOutputStream(FileOutputStream fileOutputStream) {
         this.fileOutputStream = fileOutputStream;
+    }
+    
+    @Override
+    public String toString() {
+        String msgFmt = "ArchiveFileOutputStream[fileName='%s', fileOutputStream= %s]";
+        return String.format(msgFmt, fileName, fileOutputStream);
     }
 }

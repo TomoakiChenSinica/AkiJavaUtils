@@ -19,7 +19,10 @@ import tw.dev.tomoaki.archivefile.entity.ArchiveFileOutputStream;
 public class ZipFileUtilsMain {
 
     public static void main(String[] args) throws IOException {
-        System.out.println("ZipFileUtilsMain():");
+        test12();
+    }
+    
+    protected static void test1() throws IOException {
         String filePath = "D:\\Temp\\AkiJavaUtils-main-mailimprove.zip";
         String destDir = "D:\\Temp\\ZipFileTest";
 //        List<ArchiveFileOutputStream> afosList = ZipFileUtils.unzipArchive(destDir, filePath);
@@ -29,7 +32,24 @@ public class ZipFileUtilsMain {
 //            fos.write(buffer);
 //            fos.close();
 //        }
-        ZipFileProcessor fileProcessor = ZipFileProcessor.Factory.create();
-        fileProcessor.doUnzip(destDir, filePath);
+        ZipFileProcessor fileProcessor = ZipFileProcessor.create();
+        fileProcessor.doUnzip(destDir, filePath);    
     }
+    
+    protected static void test12() throws IOException {
+        String filePath = "C:\\AkiRoot\\ProgramPlayGround\\Java\\ZipFiles\\input\\素材2.zip";
+        // System.out.println(filePath);
+        String destDir =  "C:\\AkiRoot\\ProgramPlayGround\\Java\\ZipFiles\\output\\素材2";
+
+        ZipFileProcessor fileProcessor = ZipFileProcessor.create();
+        fileProcessor.doUnzip(destDir, filePath);    
+    }    
+    
+    protected static void test2() throws IOException {
+        // System.out.println("test2()");        
+        String filePath = "C:\\AkiRoot\\ProgramPlayGround\\Java\\ZipFiles\\input\\ZipFile.zip";
+        String destDir = "C:\\AkiRoot\\ProgramPlayGround\\Java\\ZipFiles\\output\\ZipFile";
+        ZipFileProcessor fileProcessor = ZipFileProcessor.create();
+        fileProcessor.doUnzip(destDir, filePath);    
+    }    
 }
