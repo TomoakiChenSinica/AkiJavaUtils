@@ -22,7 +22,8 @@ import java.nio.file.Path;
  * @author tomoaki
  */
 @FunctionalInterface
-public interface ArchiveEntryNaming<T> {
+public interface ArchiveEntryPathNaming extends ArchiveEntryNaming<Path>  {
 
-    public String obtainName(T data);
+    @Override
+    public String obtainName(Path sourcePath); // public String obtainName(Path sourcePath, String... params);
 }
