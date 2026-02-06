@@ -40,7 +40,7 @@ import tw.dev.tomoaki.archivefile.core.ArchiveEntryPathNaming;
 public class Zipper {
 
     private final static Logger LOGGER = Logger.getLogger(Zipper.class.getCanonicalName());
-    
+
     private final static ArchiveEntryPathNaming DEFAULT_DIR_NAMING = path -> path.getFileName().toString(); // + "/"; // private final static ArchiveEntryNaming DEFAULT_DIR_NAMING = path -> path.getFileName().toString() + "/";
     private final static ArchiveEntryPathNaming DEFAULT_FILE_NAMING = path -> path.getFileName().toString();
 
@@ -66,7 +66,7 @@ public class Zipper {
         return this.zipFile(targetPath, sourcePaths);
     }
 
-    public File zipFile(Path targetPath, Path[] sourcePaths) throws IOException {        
+    public File zipFile(Path targetPath, Path[] sourcePaths) throws IOException {
         try (OutputStream os = this.zipStream(targetPath, sourcePaths)) {
         }
         return targetPath.toFile();
@@ -74,12 +74,12 @@ public class Zipper {
 
     /**
      * 將檔案清單({@code sourcePaths})壓縮成壓縮檔案資料流({@link ZipArchiveOutputStream})，<br>
-     * 
+     *
      * @param targetPath 目標檔案位置
      * @param sourcePath 要壓縮的檔案清單
      * @return 寫入(壓縮資料)的資料流
-     * @throws IOException 
-     */  
+     * @throws IOException
+     */
     public OutputStream zipStream(Path targetPath, Path sourcePath, Path... otherSourcePaths) throws IOException {
         Path[] sourcePaths = Stream.concat(Stream.of(sourcePath), Stream.of(otherSourcePaths)).toArray(Path[]::new);
         return this.zipStream(targetPath, sourcePaths);
@@ -87,79 +87,79 @@ public class Zipper {
 
     /**
      * 將檔案清單({@code sourcePaths})壓縮成壓縮檔案資料流({@link ZipArchiveOutputStream})，<br>
-     * 
+     *
      * @param sourcePaths 要壓縮的檔案清單
      * @return 寫入(壓縮資料)的資料流
-     * @throws IOException 
-     */       
+     * @throws IOException
+     */
     public OutputStream zipStream(Collection<Path> sourcePaths) throws IOException {
         Path[] sourcePathArr = sourcePaths.stream().toArray(Path[]::new);
         return zipStream(sourcePathArr);
     }
-    
+
     /**
      * 將檔案清單({@code sourcePaths})壓縮成壓縮檔案資料流({@link ZipArchiveOutputStream})，<br>
      * 寫入到指定的檔案路徑{@code targetPath}，此方法是透過檔案資料流
-     * 
+     *
      * @param targetPath 要寫入壓縮資料的檔案路徑
      * @param sourcePaths 要壓縮的檔案清單
      * @return 寫入(壓縮資料)的資料流
-     * @throws IOException 
-     */      
+     * @throws IOException
+     */
     public OutputStream zipStream(Path targetPath, Collection<Path> sourcePaths) throws IOException {
         Path[] sourcePathArr = sourcePaths.stream().toArray(Path[]::new);
         return zipStream(targetPath, sourcePathArr);
-    }    
-    
+    }
+
     /**
      * 將檔案清單({@code sourcePaths})壓縮成壓縮檔案資料流({@link ZipArchiveOutputStream})，<br>
      * 此方法是透過緩存的資料流 {@link ByteArrayOutputStream}實作 <br>
-     * 
+     *
      * @param sourcePaths 要壓縮的檔案清單
      * @return 寫入(壓縮資料)的資料流
-     * @throws IOException 
-     */     
+     * @throws IOException
+     */
     public OutputStream zipStream(Path[] sourcePaths) throws IOException {
         OutputStream os = new ByteArrayOutputStream(); // https://chatgpt.com/share/698056e2-e4c8-800d-90c3-1d1df360ffa1 ，常態下，開銷交給 JVM 記憶體而非 OS 檔案系統
         return this.zipStream(os, sourcePaths);
     }
-    
+
     /**
      * 將檔案清單({@code sourcePaths})壓縮成壓縮檔案資料流({@link ZipArchiveOutputStream})，<br>
      * 寫入到指定的檔案路徑{@code targetPath}，寫入到指定的檔案路徑{@code targetPath}，此方法是透過檔案資料流
-     * 
+     *
      * @param targetPath 要寫入壓縮資料的檔案路徑
      * @param sourcePaths 要壓縮的檔案清單
      * @return 寫入(壓縮資料)的資料流
-     * @throws IOException 
-     */    
+     * @throws IOException
+     */
     public OutputStream zipStream(Path targetPath, Path[] sourcePaths) throws IOException {
         OutputStream os = Files.newOutputStream(targetPath);
         return this.zipStream(os, sourcePaths);
     }
-    
+
     /**
      * 將檔案清單({@code sourcePaths})壓縮成壓縮檔案資料流({@link ZipArchiveOutputStream})，<br>
      * 寫入到指定的檔案路徑{@code targetPath}
-     * 
+     *
      * @param os 要寫成(壓縮資料)的資料流
      * @param sourcePaths 要壓縮的檔案清單
      * @return 寫入(壓縮資料)的資料流
-     * @throws IOException 
-     */        
+     * @throws IOException
+     */
     public OutputStream zipStream(OutputStream os, Collection<Path> sourcePaths) throws IOException {
         Path[] sourcePathArr = sourcePaths.stream().toArray(Path[]::new);
         return zipStream(os, sourcePathArr);
     }
-    
+
     /**
      * 將檔案清單({@code sourcePaths})壓縮成壓縮檔案資料流({@link ZipArchiveOutputStream})，<br>
      * 寫入傳入的資料流 {@code os}
-     * 
+     *
      * @param os 要寫成(壓縮資料)的資料流
      * @param sourcePaths 要壓縮的檔案清單
      * @return 寫入(壓縮資料)的資料流
-     * @throws IOException 
+     * @throws IOException
      */
     public OutputStream zipStream(OutputStream os, Path[] sourcePaths) throws IOException { // public OutputStream zipStream(Path targetPath, Path[] sourcePaths) throws IOException {
         ZipArchiveOutputStream zos = new ZipArchiveOutputStream(os);
@@ -179,21 +179,26 @@ public class Zipper {
                 List<Path> childPaths = Files.list(srcPath).collect(Collectors.toList());
                 for (Path childPath : childPaths) {
                     LOGGER.fine(() -> "under dir= " + dirName + " find: " + childPath);
-                    archiveByApacheZip(zos, childPath, p -> dirName + "/" +fileNaming.obtainName(p));
-                    zos.closeArchiveEntry(); // 沒有寫會被警告 java.io.IOException: This archive contains unclosed entries.                  
+                    archiveByApacheZip(zos, childPath, p -> dirName + "/" + fileNaming.obtainName(p));
+                    zos.closeArchiveEntry(); // 沒有寫會被警告 java.io.IOException: This archive contains unclosed entries.
                 }
                 continue;
             }
             archiveByApacheZip(zos, srcPath, fileNaming);
             zos.closeArchiveEntry();
         }
-        return zos;
+        // return zos;
+        /* 實驗1 test1()、test4(): 回傳 OutputStream 進行 close flush 會有問題
+        return os;
+        */
+        zos.close(); // 不 close() ZipArchiveOutputStream，會傳的(原始) OutputStream 會無法正常完成使用或close()
+        return os;
     }
 
 //<editor-fold defaultstate="collapsed" desc="內部輔助 Methods">
-    
+
     private static ZipOutputStream archiveByNativeZip(ZipOutputStream zos, Path srcPath, ArchiveEntryNaming naming) throws IOException {
-        ZipEntry zipEntry = new ZipEntry(naming.obtainName(srcPath)); // new ZipEntry("hello-" + srcPath.getFileName());
+        ZipEntry zipEntry = new ZipEntry(naming.obtainName(srcPath));
         zos.putNextEntry(zipEntry);
         Files.copy(srcPath, zos); // zos 缺乏好的 write
         return zos;
@@ -201,13 +206,13 @@ public class Zipper {
 
     // ZipArchiveEntry 其實繼承 ZipEntry
     private static ZipArchiveOutputStream archiveByApacheZip(ZipArchiveOutputStream zos, Path srcPath, ArchiveEntryNaming naming) throws IOException {
-        String archivedFileName = naming.obtainName(srcPath); // "HELLO-" + srcPath.getFileName().toString();
+        String archivedFileName = naming.obtainName(srcPath);
         ZipArchiveEntry entry = new ZipArchiveEntry(archivedFileName);
         LOGGER.fine( String.format("archivedFileName= %s" , archivedFileName) );
 
         zos.putArchiveEntry(entry);
         zos.write(srcPath);
         return zos;
-    }    
+    }
 //</editor-fold>
 }
