@@ -19,7 +19,7 @@ public class AppUrlProvider {
 
     private final HttpServletRequest initRequest;
     private String protocol = "";
-    private String hostName = "";  //domain name，即該server的名稱
+    private String hostName = "";  //domain name，即該server的名稱 (HttpServletRequest.getServerName()
     private Integer port = null;
     private String contextPath = "";
     private String pathInfo = "";       
