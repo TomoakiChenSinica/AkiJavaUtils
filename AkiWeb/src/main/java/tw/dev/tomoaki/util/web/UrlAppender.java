@@ -114,7 +114,10 @@ public class UrlAppender {
     public String buildUrl() {
         String url = "";
         Stream<String> allPathsStream = Stream.concat(this.staticUrlHeaderList.stream(), this.urlPathList.stream());
-        Stream<String> processedPathsStream = allPathsStream.filter(StringValidator::isValueTrimExist).map(this::trim).map(this::trimSlash);
+        Stream<String> processedPathsStream = allPathsStream.filter(StringValidator::isValueTrimExist)
+                .map(this::trim)
+                .map(this::trimSlash);
+        
         // processedPathsStream.forEach(System.out::println); // 執行完就會結束
         url += processedPathsStream.collect(Collectors.joining("/"));
                
@@ -135,6 +138,7 @@ public class UrlAppender {
                 }
             }
         }
+        url = this.compactSlash(url);
         
         this.initUrlPathList();
         this.initQueryParamMap();

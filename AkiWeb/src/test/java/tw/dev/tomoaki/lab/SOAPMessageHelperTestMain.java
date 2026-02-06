@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tw.dev.tomoaki;
+package tw.dev.tomoaki.lab;
 
 import java.io.IOException;
 import javax.xml.soap.SOAPException;
@@ -28,20 +28,20 @@ public class SOAPMessageHelperTestMain {
     
     /**
      * @param args the command line arguments
-     */
-    public static void main(String[] args) throws SOAPException, IOException {
-        String soapXml =
-                "<?xml version=\"1.0\"?>"
-                + "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">"
-                + "  <soap:Body>"
-                + "    <m:GetPrice xmlns:m=\"https://www.example.org/stock\">"
-                + "      <m:StockName>IBM</m:StockName>"
-                + "    </m:GetPrice>"
-                + "  </soap:Body>"
-                + "</soap:Envelope>";
-
-        SOAPMessage message = SOAPMessageHelper.parseSOAP(soapXml);
-        message.writeTo(System.out);
-    }
-    
+//     */
+//    public static void main(String[] args) throws SOAPException, IOException {
+//        String soapXml =
+//                "<?xml version=\"1.0\"?>"
+//                + "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">"
+//                + "  <soap:Body>"
+//                + "    <m:GetPrice xmlns:m=\"https://www.example.org/stock\">"
+//                + "      <m:StockName>IBM</m:StockName>"
+//                + "    </m:GetPrice>"
+//                + "  </soap:Body>"
+//                + "</soap:Envelope>";
+//
+//        SOAPMessage message = SOAPMessageHelper.parseSOAP(soapXml);
+//        message.writeTo(System.out);
+//    }
+//    
 }

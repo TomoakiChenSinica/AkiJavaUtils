@@ -56,7 +56,32 @@ public class AkiWebUtils {
         ImageIO.write(bi, fileContentType, os);
     }
 
-
+    public static OutputStream obtainFileInlineOutputStream(ServletContext context, HttpServletResponse response, String downloadedFileName) throws IOException {
+        ServletOutputStream fileWriter = response.getOutputStream();
+        String mimeType = context.getMimeType(downloadedFileName);
+        if (mimeType == null) {
+            mimeType = "application/octet-stream";
+        }
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType(mimeType);   //這行是讓他變下載、而非跳轉頁面的開始
+        response.setHeader("Content-Disposition", "inline; filename=\"" + URLEncoder.encode(downloadedFileName, "UTF-8") + "\"");  //設定下載檔案名(X) 檔案名+檔案類型 --> 這行導致強制變成下載!        
+        return fileWriter;
+    }
+    
+    public static OutputStream obtainFileAttachmentOutputStream(ServletContext context, HttpServletResponse response, String downloadedFileName) throws IOException {
+        ServletOutputStream fileWriter = response.getOutputStream();
+        String mimeType = context.getMimeType(downloadedFileName);
+        if (mimeType == null) {
+            mimeType = "application/octet-stream";
+        }
+        response.setContentType(mimeType); //這行是讓他變下載、而非跳轉頁面的開始
+        // 上述描述為之前試出來的結果，但看起來可能不是這樣....，可以確定的是，和以下的配合後，現在這樣寫會強制下載
+        // response.setContentLength((int) downloadFileInputStream.available()); // FIXME 暫時移除
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + URLEncoder.encode(downloadedFileName, "UTF-8") + "\"");  //設定下載檔案名(X) 檔案名+檔案類型 --> 這行導致強制變成下載!
+        return fileWriter;
+    }
+    
+    
 
 
     /**
@@ -125,6 +150,7 @@ public class AkiWebUtils {
             return;
         }
 
+        /* 替換 fileWriter 來源
         try (ServletOutputStream fileWriter = response.getOutputStream()) {
             String mimeType = context.getMimeType(downloadedFileName);
             if (mimeType == null) {
@@ -143,6 +169,16 @@ public class AkiWebUtils {
             }
             downloadedFileInputStream.close();
             fileWriter.flush();
+        } */
+        try(OutputStream fileWriter = obtainFileInlineOutputStream(context, response, downloadedFileName)) {
+            byte[] buff = new byte[BUFFER_SIZE];
+
+            int bytesReaded;
+            while (((bytesReaded = downloadedFileInputStream.read(buff)) != -1)) {
+                fileWriter.write(buff, 0, bytesReaded);
+            }
+            downloadedFileInputStream.close();
+            fileWriter.flush();            
         }
     }
 
@@ -209,15 +245,19 @@ public class AkiWebUtils {
             return;
         }
 
-        try (ServletOutputStream fileWriter = response.getOutputStream()) { //try + 這種可以自動關閉的(這裡是 fileWriter)，所以加上後 fileWriter.close() 就不用了
+        try (OutputStream fileWriter = obtainFileAttachmentOutputStream(context, response, downloadedFileName)) { //try + 這種可以自動關閉的(這裡是 fileWriter)，所以加上後 fileWriter.close() 就不用了
+            /*
             String mimeType = context.getMimeType(downloadedFileName);
             if (mimeType == null) {
                 mimeType = "application/octet-stream";
             }
-            response.setContentType(mimeType);   //這行是讓他變下載、而非跳轉頁面的開始
-            //上述描述為之前試出來的結果，但看起來可能不是這樣....，可以確定的是，和以下的配合後，現在這樣寫會強制下載
+            response.setContentType(mimeType); //這行是讓他變下載、而非跳轉頁面的開始
+            // 上述描述為之前試出來的結果，但看起來可能不是這樣....，可以確定的是，和以下的配合後，現在這樣寫會強制下載
             response.setContentLength((int) downloadFileInputStream.available());
             response.setHeader("Content-Disposition", "attachment; filename=\"" + URLEncoder.encode(downloadedFileName, "UTF-8") + "\"");  //設定下載檔案名(X) 檔案名+檔案類型 --> 這行導致強制變成下載!
+            */            
+            response.setContentLength((int) downloadFileInputStream.available());
+            
 
             byte[] buff = new byte[BUFFER_SIZE];
 

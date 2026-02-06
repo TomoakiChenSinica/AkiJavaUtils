@@ -15,18 +15,14 @@ import tw.dev.tomoaki.util.web.request.ProxyRequestHelper;
  */
 public class AppUrlProvider {
 
-    public static String[] urlHeaderList = {"https://", "http://"};
+    private final static String[] URL_HEADERS = {"https://", "http://"};
 
-    private HttpServletRequest initRequest;
-    private String url = "";
+    private final HttpServletRequest initRequest;
     private String protocol = "";
     private String hostName = "";  //domain name，即該server的名稱
-    private Integer port = null; // 80;
+    private Integer port = null;
     private String contextPath = "";
-    private String pathInfo = "";
-    
-    private List<String> hostHeaderNames;
-    private List<String> portHeaderNames;
+    private String pathInfo = "";       
 
     protected AppUrlProvider(HttpServletRequest request) {
         this.initRequest = request;
@@ -44,20 +40,12 @@ public class AppUrlProvider {
 
 //<editor-fold defaultstate="collapsed" desc="內部 Methods - 設定、初始化變數 Methods">
     protected void doParseRequestInfo(Boolean isUnderProxy) {
-        /*
-        this.protocol = initRequest.getScheme();
-        this.hostName = initRequest.getServerName();
-        this.port = isUnderProxy ? ProxyRequestHelper.obtainServerPort(initRequest) : initRequest.getServerPort();
-        if (initRequest.getContextPath() != null) {
-            this.contextPath = initRequest.getContextPath().replaceAll("/", "");
-        } */
         this.hostName = initRequest.getServerName();
         this.port = this.obtainPort(isUnderProxy);
         this.protocol = this.obtainProtocol(isUnderProxy);
         if (initRequest.getContextPath() != null) {
             this.contextPath = initRequest.getContextPath().replaceAll("/", "");
-        }
-        //fffffffff        
+        }       
     }
 //</editor-fold>    
 
@@ -70,7 +58,6 @@ public class AppUrlProvider {
             this.pathInfo = tempPathInfo;
         }
         theURL += this.pathInfo;
-        //theURL += request.getRequestURI();
         return theURL;
     }
     
@@ -101,7 +88,7 @@ public class AppUrlProvider {
     }
 
     protected static boolean checkContainsUrlHeader(String oriUrl) {
-        for (String urlHeader : urlHeaderList) {
+        for (String urlHeader : URL_HEADERS) {
             if (oriUrl.contains(urlHeader)) {
                 return true; //只要符合其中一個即可
             }
@@ -111,7 +98,7 @@ public class AppUrlProvider {
 //</editor-fold>   
 
 //<editor-fold defaultstate="collapsed" desc="內部 Methods - 產生資料用">
-    protected /*public*/ String obtainSystemRootPath() {
+    protected String obtainSystemRootPath() {
         String rootPath = "";
         rootPath += this.protocol + "://";
         rootPath += this.hostName;
@@ -128,11 +115,15 @@ public class AppUrlProvider {
     }
 
     protected Integer obtainPort(Boolean isUnderProxy) {
-        return isUnderProxy ? ProxyRequestHelper.obtainServerPort(initRequest) : initRequest.getServerPort();
+        if(Boolean.TRUE.equals(isUnderProxy)) {
+            return ProxyRequestHelper.obtainServerPort(initRequest);
+        } else {
+            return initRequest.getServerPort();
+        }
     }
-
+        
     protected String obtainProtocol(Boolean isUnderProxy) {
-        if (isUnderProxy) {
+        if (Boolean.TRUE.equals(isUnderProxy)) {
             String tempProtocol = this.obtainProtocolWithPort();
             if (tempProtocol != null) {
                 return tempProtocol;

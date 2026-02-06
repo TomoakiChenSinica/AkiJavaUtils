@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author tomoaki
  */
 public class WebHelper {
+    
     public static String getNowPage(HttpServletRequest request){
         return request.getRequestURI();
     }
@@ -31,4 +32,6 @@ public class WebHelper {
         }
         return result;
     }
+    
+    
 }
