@@ -39,8 +39,7 @@ public class ProxyRequestHelper {
     private final static String[] COMMON_HEADERS_PORT = {"X-Forwarded-Port"};
 
     /**
-     * 取得 使用者送出請求時，使用者自身的 Address(IP)， <br>
-     * HttpServletRequest.getLocalPort。<br>
+     * 取得 使用者送出請求時，使用者自身的 Address(IP)，對應 HttpServletRequest.getRemoteAddr。<br>
      * 此 Methods 會使用 X-Forwarded-For 等常見的 Header Name 當關鍵字
      *
      * @param request 使用者的 HTTP 請求，格式為 HttpServletRequest
@@ -72,7 +71,11 @@ public class ProxyRequestHelper {
      * @return 使用者送出請求時，使用者自身的 Address(IP)
      */
     public static String obtainRemoteAddr(HttpServletRequest request, List<String> headerNameList) {
-        String remoteAddress = headerNameList.stream() // Stream.of(headerNameList).filter(Objects::nonNull)
+        if(headerNameList == null) {
+            return request.getRemoteAddr(); 
+        }
+        
+        String remoteAddress = headerNameList.stream()
                 .filter(StringValidator::isValueTrimExist)
                 .map(request::getHeader)
                 .filter(StringValidator::isValueTrimExist) // findFirst 要避免 Empty 或 Null
@@ -115,6 +118,10 @@ public class ProxyRequestHelper {
      * @return 使用者發送請求時，使用的(Server端)Host Name
      */
     public static String obtainRemoteHost(HttpServletRequest request, List<String> headerNameList) {
+        if(headerNameList == null) {
+            return request.getRemoteHost();
+        }
+        
         String remoteAddress = headerNameList.stream()
                 .filter(StringValidator::isValueTrimExist)
                 .map(request::getHeader)
@@ -161,6 +168,10 @@ public class ProxyRequestHelper {
      * @return 使用者發送請求時，使用的(Server端)Port
      */
     public static Integer obtainLocalPort(HttpServletRequest request, List<String> headerNameList) {
+        if(headerNameList == null) {
+            return request.getLocalPort();
+        }
+        
         String port = headerNameList.stream()
                 .filter(StringValidator::isValueTrimExist)
                 .map(request::getHeader)
@@ -185,7 +196,7 @@ public class ProxyRequestHelper {
 
     /**
      * 取得 使用者發送請求時，使用的(Server端)Port， <br>
-     * 原本取名 obtainPort 改名 obtainLocalPort 以對應 HttpServletRequest.getLocalPort
+     * 原本取名 obtainPort 改名 obtainServerPort 以對應 HttpServletRequest.getServerPort
      *
      * @param request 使用者的 HTTP 請求，格式為 HttpServletRequest
      * @param headerName Request 的 Header Name，用來取得使用者呼叫時的 Port
@@ -199,13 +210,17 @@ public class ProxyRequestHelper {
 
     /**
      * 取得 使用者發送請求時，使用的(Server端)Port， <br>
-     * 原本取名 obtainPort 改名 obtainLocalPort 以對應 HttpServletRequest.getLocalPort
+     * 原本取名 obtainPort 改名 obtainServerPort 以對應 HttpServletRequest.getServerPort
      *
      * @param request 使用者的 HTTP 請求，格式為 HttpServletRequest
      * @param headerNameList Request 的 Header Name 清單，用來取得使用者呼叫時的 Port
      * @return 使用者發送請求時，使用的(Server端)Port
      */
     public static Integer obtainServerPort(HttpServletRequest request, List<String> headerNameList) {
+        if(headerNameList == null) {
+            return request.getServerPort();
+        }
+                
         String port = headerNameList.stream()
                 .filter(StringValidator::isValueTrimExist)
                 .map(request::getHeader)
