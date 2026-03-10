@@ -13,6 +13,12 @@ import tw.dev.tomoaki.util.oauth.OAuthResponseKeeper;
 import tw.dev.tomoaki.util.oauth.entity.OAuthResponse;
 
 /**
+ * An {@link OAuthResponseKeeper} implementation that stores OAuth responses
+ * as {@link ServletContext} attributes, giving them Web Application scope.
+ *
+ * <p>
+ * The stored response persists for the lifetime of the web application and
+ * is shared across all requests within the same application context.</p>
  *
  * @param <T>          the type of the OAuth response
  * @see 取消 Factory 原因 <a href="https://chatgpt.com/share/684bdcc9-d114-800d-b769-5ebe6321b3af">與 GPT 討論</a>
